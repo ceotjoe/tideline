@@ -68,6 +68,7 @@ class SettingsScreen extends ConsumerWidget {
           ),
           _SectionHeader(l10n.settingsLanguage),
           _Group<String>(
+            showTitle: false,
             title: l10n.settingsLanguage,
             value: settings.localeOverride?.toLanguageTag() ?? '',
             onChanged: (tag) {
@@ -134,28 +135,48 @@ class _Group<T> extends StatelessWidget {
     required this.value,
     required this.onChanged,
     required this.options,
+    this.showTitle = true,
   });
 
   final String title;
+  final bool showTitle;
   final T value;
   final ValueChanged<T> onChanged;
   final Map<T, String> options;
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    label: title,
-    container: true,
-    child: RadioGroup<T>(
-      groupValue: value,
-      onChanged: (v) {
-        if (v != null) onChanged(v);
-      },
-      child: Column(
-        children: [
-          for (final MapEntry(key: option, value: label) in options.entries)
-            RadioListTile<T>(value: option, title: Text(label)),
-        ],
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      if (showTitle)
+        Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(
+            context.metrics.md,
+            context.metrics.sm,
+            context.metrics.md,
+            0,
+          ),
+          child: Semantics(
+            header: true,
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.labelLarge
+                  ?.copyWith(color: context.colors.textSecondary),
+            ),
+          ),
+        ),
+      RadioGroup<T>(
+        groupValue: value,
+        onChanged: (v) {
+          if (v != null) onChanged(v);
+        },
+        child: Column(
+          children: [
+            for (final MapEntry(key: option, value: label) in options.entries)
+              RadioListTile<T>(value: option, title: Text(label)),
+          ],
+        ),
       ),
-    ),
+    ],
   );
 }
