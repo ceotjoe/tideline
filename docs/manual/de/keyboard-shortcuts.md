@@ -1,3 +1,22 @@
 # Tastenkürzel
 
-_Dieses Kapitel entsteht zusammen mit der Funktion._
+Tideline lässt sich auf Desktop, iPad und Android-Tablets vollständig mit einer Hardware-Tastatur bedienen. Mit **Strg + /** (**⌘ /** auf Apple-Geräten) oder **F1** zeigt die App jederzeit alle Tastenkürzel an. Kürzel für Log- und Contest-Bildschirme funktionieren nur dort.
+
+Diese Tabelle wird aus dem Befehlsverzeichnis der App erzeugt.
+
+
+<!-- generated: shortcut table -->
+| Tastenkürzel | | macOS / iPadOS | Windows / Android |
+|---|---|---|---|
+| Tastenkürzel anzeigen | Überall | `⌘/` oder `F1` | `Strg+/` oder `F1` |
+| Zum Log | Überall | `⌘1` | `Strg+1` |
+| Zur Synchronisierung | Überall | `⌘2` | `Strg+2` |
+| Einstellungen öffnen | Überall | `⌘,` | `Strg+,` |
+| Jetzt synchronisieren | Überall | `⇧⌘S` | `Strg+Umschalt+S` |
+| Neues QSO | Loggen | `⌘N` | `Strg+N` |
+| QSO loggen | Loggen | `Eingabe` | `Eingabe` |
+| Eingabe verwerfen | Loggen | `Esc` | `Esc` |
+| Letztes QSO bearbeiten | Loggen | `⌘E` | `Strg+E` |
+| Nächstes Band | Contest-Modus | `Bild auf` | `Bild auf` |
+| Vorheriges Band | Contest-Modus | `Bild ab` | `Bild ab` |
+| Nächste Betriebsart | Contest-Modus | `⌘M` | `Strg+M` |

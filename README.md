@@ -93,7 +93,7 @@ below are based on each project's public description as of October 2026; correct
 - [Wavelog API notes](docs/architecture/wavelog-api.md)
 - [Security](docs/security/threat-model.md) · [Privacy](PRIVACY.md) · [Security policy](SECURITY.md)
 - [Design system](docs/design/design-system.md) · [Accessibility](docs/design/accessibility.md)
-- [Translating](docs/translating.md)
+- [Translating](docs/translating.md) · [Releasing](docs/release.md)
 
 ## Licence
 

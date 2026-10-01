@@ -26,8 +26,20 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  msix: ^3.18.0
   very_good_analysis: ^11.0.0
 
 flutter:
   generate: true
   uses-material-design: true
+
+# Windows packaging (dart run msix:create). Signing certificate and
+# publisher are supplied by the release workflow from CI secrets.
+msix_config:
+  display_name: Tideline
+  publisher_display_name: Jörg Holzapfel (DO1HOZ)
+  identity_name: com.ITWebService.tideline
+  msix_version: 0.0.1.0
+  # Wavelog on the internet and on the local network.
+  capabilities: internetClient,privateNetworkClientServer
+  store: false
