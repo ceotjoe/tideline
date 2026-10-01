@@ -1,0 +1,19 @@
+# Architecture decision records
+
+- [0001](0001-record-architecture-decisions.md) Record architecture decisions
+- [0002](0002-dart-workspace-monorepo.md) Dart pub workspace monorepo
+- [0003](0003-state-management-riverpod.md) State management: Riverpod 3
+- [0004](0004-navigation-go-router.md) Navigation: go_router
+- [0005](0005-encrypted-database-sqlite3mc.md) Encrypted database: drift + SQLite3MultipleCiphers
+- [0006](0006-secrets-secure-storage.md) Secrets: flutter_secure_storage
+- [0007](0007-wavelog-api-v2-only.md) Use Wavelog API v2 only
+- [0008](0008-sync-idempotency-without-server-uuid.md) Sync idempotency without a server-side client id
+- [0009](0009-tls-tofu-pinning.md) TLS: platform trust plus explicit trust-on-first-use pinning
+- [0010](0010-adaptive-size-classes.md) Adaptive layouts by window size class
+- [0011](0011-command-registry.md) Central command registry for actions and shortcuts
+- [0012](0012-i18n-gen-l10n.md) Internationalisation with gen-l10n and ARB
+- [0013](0013-reference-data-licensing.md) Reference data: bundle only what we may redistribute
+- [0014](0014-design-direction-low-tide.md) Design direction: "Low Tide"
+- [0015](0015-platforms-and-identifiers.md) Platforms, minimum versions and identifiers
+
+New ADRs start from [0000-template.md](0000-template.md).
