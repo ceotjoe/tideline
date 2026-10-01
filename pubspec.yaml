@@ -15,3 +15,10 @@ workspace:
 
 dev_dependencies:
   very_good_analysis: ^11.0.0
+
+# Native SQLite build used by package:sqlite3 (drift). SQLite3MultipleCiphers
+# provides encryption at rest — see docs/adr/0005-encrypted-database-sqlite3mc.md.
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3mc

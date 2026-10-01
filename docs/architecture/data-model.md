@@ -85,7 +85,7 @@ Serials are **monotonic and never reused**. A deleted QSO keeps its allocation r
 | `reference_packs` | `id`, `kind` (`dxcc`/`sota`/`pota`/`wwff`/`iota`/`scp`), `version`, `source_url`, `sha256`, `fetched_at`, `region_filter`, `licence_note` |
 | `dxcc_entities` | `dxcc`, `name`, `prefix`, `cqz`, `ituz`, `cont`, `lat`, `lon`, `deleted` |
 | `dxcc_prefixes` | `prefix_or_call`, `exact` (bool), `dxcc`, `cqz_override`, `ituz_override` |
-| `refs` | `program`, `ref`, `name`, `region`, `lat`, `lon`, `valid_from`, `valid_to` |
+| `program_references` | `program`, `ref`, `name`, `region`, `lat`, `lon`, `valid_from`, `valid_to` |
 | `scp_calls` | `call` |
 
 ### worked_before
