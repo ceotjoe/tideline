@@ -10,3 +10,7 @@ environment:
 dev_dependencies:
   test: any
   very_good_analysis: ^11.0.0
+  wavelog_mock: any
+dependencies:
+  http: ^1.6.0
+  meta: ^1.19.0
