@@ -1,0 +1,3 @@
+tags:
+  # Golden images are rendered on macOS; run them there (CI macOS job).
+  golden:

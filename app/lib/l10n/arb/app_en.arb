@@ -1,0 +1,253 @@
+{
+  "@@locale": "en",
+  "appTitle": "Tideline",
+  "@appTitle": {
+    "description": "App name. Do not translate."
+  },
+  "appTagline": "The offline logger for Wavelog",
+  "@appTagline": {
+    "description": "Tagline under the app name."
+  },
+  "navLog": "Log",
+  "@navLog": {
+    "description": "Navigation destination: the QSO log."
+  },
+  "navSync": "Sync",
+  "@navSync": {
+    "description": "Navigation destination: sync status and history."
+  },
+  "navSettings": "Settings",
+  "@navSettings": {
+    "description": "Navigation destination: settings."
+  },
+  "logEmptyTitle": "No QSOs yet",
+  "@logEmptyTitle": {
+    "description": "Title shown when the log is empty."
+  },
+  "logEmptyBody": "Logging arrives in the next release. Everything you log will be saved on this device first, with or without a connection.",
+  "@logEmptyBody": {
+    "description": "Explanation shown when the log is empty during the foundation phase."
+  },
+  "syncEmptyTitle": "Nothing to sync",
+  "@syncEmptyTitle": {
+    "description": "Title on the sync screen when the queue is empty."
+  },
+  "syncEmptyBody": "When you log QSOs, they wait here until Tideline can reach your Wavelog server.",
+  "@syncEmptyBody": {
+    "description": "Explanation on the sync screen."
+  },
+  "tideGaugeLabel": "{count, plural, =0{All QSOs synced} =1{1 QSO waiting to sync} other{{count} QSOs waiting to sync}}",
+  "@tideGaugeLabel": {
+    "description": "Text equivalent of the tide gauge sync indicator.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "settingsAppearance": "Appearance",
+  "@settingsAppearance": {
+    "description": "Settings section heading."
+  },
+  "settingsTheme": "Theme",
+  "@settingsTheme": {
+    "description": "Setting label: colour theme."
+  },
+  "themeSystem": "Match system",
+  "@themeSystem": {
+    "description": "Theme option: follow the OS light/dark setting."
+  },
+  "themeLight": "Light",
+  "@themeLight": {
+    "description": "Theme option."
+  },
+  "themeDark": "Dark",
+  "@themeDark": {
+    "description": "Theme option."
+  },
+  "themeSunlight": "Sunlight (maximum contrast)",
+  "@themeSunlight": {
+    "description": "Theme option for bright outdoor use."
+  },
+  "themeNightRed": "Night red",
+  "@themeNightRed": {
+    "description": "Theme option: red on black to preserve night vision."
+  },
+  "settingsDensity": "Touch targets",
+  "@settingsDensity": {
+    "description": "Setting label: size and spacing of controls."
+  },
+  "densityComfortable": "Standard",
+  "@densityComfortable": {
+    "description": "Density option."
+  },
+  "densityGlove": "Glove mode (extra large)",
+  "@densityGlove": {
+    "description": "Density option with larger touch targets for gloves."
+  },
+  "settingsTextSpacing": "Extra text spacing",
+  "@settingsTextSpacing": {
+    "description": "Toggle: wider letter, word and line spacing for easier reading."
+  },
+  "settingsLanguage": "Language",
+  "@settingsLanguage": {
+    "description": "Setting label: app language."
+  },
+  "languageSystem": "Match system",
+  "@languageSystem": {
+    "description": "Language option: use the device language."
+  },
+  "settingsKeyboard": "Keyboard shortcuts",
+  "@settingsKeyboard": {
+    "description": "Settings entry that opens the shortcut overview."
+  },
+  "shortcutsTitle": "Keyboard shortcuts",
+  "@shortcutsTitle": {
+    "description": "Title of the shortcut overview overlay."
+  },
+  "shortcutsClose": "Close",
+  "@shortcutsClose": {
+    "description": "Button closing the shortcut overview."
+  },
+  "shortcutScopeGlobal": "Everywhere",
+  "@shortcutScopeGlobal": {
+    "description": "Group heading for shortcuts that work on every screen."
+  },
+  "shortcutScopeLogging": "Logging",
+  "@shortcutScopeLogging": {
+    "description": "Group heading for logging shortcuts."
+  },
+  "shortcutScopeContest": "Contest mode",
+  "@shortcutScopeContest": {
+    "description": "Group heading for contest shortcuts."
+  },
+  "commandShowShortcuts": "Show keyboard shortcuts",
+  "@commandShowShortcuts": {
+    "description": "Command name."
+  },
+  "commandGoToLog": "Go to log",
+  "@commandGoToLog": {
+    "description": "Command name."
+  },
+  "commandGoToSync": "Go to sync",
+  "@commandGoToSync": {
+    "description": "Command name."
+  },
+  "commandGoToSettings": "Open settings",
+  "@commandGoToSettings": {
+    "description": "Command name."
+  },
+  "commandSyncNow": "Sync now",
+  "@commandSyncNow": {
+    "description": "Command name: start synchronisation immediately."
+  },
+  "commandNewQso": "New QSO",
+  "@commandNewQso": {
+    "description": "Command name: start entering a new contact."
+  },
+  "commandLogQso": "Log QSO",
+  "@commandLogQso": {
+    "description": "Command name: save the contact being entered."
+  },
+  "commandClearEntry": "Clear entry",
+  "@commandClearEntry": {
+    "description": "Command name: discard the contact being entered."
+  },
+  "commandEditLastQso": "Edit last QSO",
+  "@commandEditLastQso": {
+    "description": "Command name."
+  },
+  "commandNextField": "Next field",
+  "@commandNextField": {
+    "description": "Command name: move to the next entry field."
+  },
+  "commandBandUp": "Next band",
+  "@commandBandUp": {
+    "description": "Command name: switch to the next higher band."
+  },
+  "commandBandDown": "Previous band",
+  "@commandBandDown": {
+    "description": "Command name: switch to the next lower band."
+  },
+  "commandNextMode": "Next mode",
+  "@commandNextMode": {
+    "description": "Command name: cycle the operating mode."
+  },
+  "syncNotYetAvailable": "Sync arrives in the next release.",
+  "@syncNotYetAvailable": {
+    "description": "Message when the user triggers sync in the foundation build."
+  },
+  "keyControl": "Ctrl",
+  "@keyControl": {
+    "description": "Name of the Control key in shortcut lists."
+  },
+  "keyShift": "Shift",
+  "@keyShift": {
+    "description": "Name of the Shift key."
+  },
+  "keyAlt": "Alt",
+  "@keyAlt": {
+    "description": "Name of the Alt key (Option on Apple keyboards is shown as a symbol)."
+  },
+  "keyEnter": "Enter",
+  "@keyEnter": {
+    "description": "Name of the Enter/Return key."
+  },
+  "keyEscape": "Esc",
+  "@keyEscape": {
+    "description": "Name of the Escape key."
+  },
+  "keySpace": "Space",
+  "@keySpace": {
+    "description": "Name of the space bar."
+  },
+  "keyTab": "Tab",
+  "@keyTab": {
+    "description": "Name of the Tab key."
+  },
+  "keyPageUp": "Page Up",
+  "@keyPageUp": {
+    "description": "Name of the Page Up key."
+  },
+  "keyPageDown": "Page Down",
+  "@keyPageDown": {
+    "description": "Name of the Page Down key."
+  },
+  "settingsDeveloper": "Developer options",
+  "@settingsDeveloper": {
+    "description": "Settings section shown only in debug builds."
+  },
+  "debugForceRtl": "Force right-to-left layout",
+  "@debugForceRtl": {
+    "description": "Debug toggle that mirrors the layout to test right-to-left languages."
+  },
+  "languagePseudo": "Pseudo-locale (testing)",
+  "@languagePseudo": {
+    "description": "Debug-only language option with accented, longer text."
+  },
+  "startupKeyMissingTitle": "Your log can't be unlocked",
+  "@startupKeyMissingTitle": {
+    "description": "Title when the database exists but its key is gone from the secure store."
+  },
+  "startupKeyMissingBody": "Tideline found its log on this device, but the key that unlocks it is missing from the system's secure storage. This can happen after restoring the device from a backup. Nothing has been deleted. Restore a Tideline backup, or reinstall the app to start a new log.",
+  "@startupKeyMissingBody": {
+    "description": "Explanation of the missing database key situation."
+  },
+  "startupErrorTitle": "Tideline couldn't start",
+  "@startupErrorTitle": {
+    "description": "Title of the generic startup error screen."
+  },
+  "startupErrorBody": "Something went wrong while opening your log. Your QSOs have not been changed. Please restart the app; if this keeps happening, report it on GitHub.",
+  "@startupErrorBody": {
+    "description": "Generic startup error explanation."
+  },
+  "shortcutsUnbound": "Not assigned",
+  "@shortcutsUnbound": {
+    "description": "Shown in the shortcut list for a command without a shortcut."
+  },
+  "shortcutsOr": "or",
+  "@shortcutsOr": {
+    "description": "Separator between two alternative shortcuts for the same command."
+  }
+}

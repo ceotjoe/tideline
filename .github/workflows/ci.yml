@@ -34,7 +34,9 @@ jobs:
         run: dart format --output=none --set-exit-if-changed .
       - name: Analyze (zero warnings, zero infos)
         run: dart analyze --fatal-infos --fatal-warnings
-      - name: Test packages
+      - name: Test all packages (goldens run on macOS)
         run: tool/test_all.sh
+        env:
+          FLUTTER_TEST_ARGS: --exclude-tags golden
       - name: Report outdated dependencies
         run: flutter pub outdated --no-dev-dependencies || true

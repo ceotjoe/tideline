@@ -12,7 +12,7 @@ for dir in packages/* app; do
   fi
   echo "::group::$dir"
   if grep -q 'sdk: flutter' "$dir/pubspec.yaml"; then
-    (cd "$dir" && flutter test) || status=1
+    (cd "$dir" && flutter test ${FLUTTER_TEST_ARGS:-}) || status=1
   else
     (cd "$dir" && dart test) || status=1
   fi

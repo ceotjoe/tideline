@@ -5,7 +5,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 (cd packages/tideline_data && dart run build_runner build -d && dart run drift_dev make-migrations)
-if [ -f app/l10n.yaml ]; then (cd app && flutter gen-l10n); fi
+(cd app && dart run tool/generate_pseudo_locales.dart && flutter gen-l10n)
 
 if ! git diff --exit-code --stat; then
   echo "Generated files are out of date. Run tool/check_generated.sh locally and commit the result." >&2
