@@ -1,0 +1,17 @@
+name: tideline_workspace
+description: Workspace root for Tideline — the offline logger for Wavelog.
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+
+workspace:
+  - app
+  - packages/tideline_domain
+  - packages/tideline_adif
+  - packages/wavelog_client
+  - packages/tideline_data
+  - packages/wavelog_mock
+
+dev_dependencies:
+  very_good_analysis: ^11.0.0

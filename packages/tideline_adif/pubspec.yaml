@@ -1,0 +1,12 @@
+name: tideline_adif
+description: Strict ADIF 3.1.x parser/writer and Cabrillo writer for Tideline (pure Dart).
+version: 0.0.1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.13.0
+
+dev_dependencies:
+  test: any
+  very_good_analysis: ^11.0.0

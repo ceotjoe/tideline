@@ -1,0 +1,12 @@
+name: wavelog_client
+description: Pure-Dart client for the Wavelog API v2.
+version: 0.0.1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.13.0
+
+dev_dependencies:
+  test: any
+  very_good_analysis: ^11.0.0
