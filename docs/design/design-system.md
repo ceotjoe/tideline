@@ -96,3 +96,29 @@ Four themes are derived from the same tokens:
 - **light** and **dark** (following the system by default);
 - **sunlight** (maximum contrast), which is also used when the OS "increase contrast" setting is on;
 - **night red** (one red hue on black). For best night vision, also lower the screen brightness.
+
+## App icon (planned for Phase 2)
+
+**Requirement:** the icon must be built for Apple's Liquid Glass (iOS/iPadOS 26 and macOS 26 and later), not just
+look acceptable there.
+
+- **Layered source, not a flat image.** The artwork is kept as separate vector layers (background, then one to three
+  foreground groups) and assembled with Apple's Icon Composer into an `.icon` file. The system renders the glass
+  material, highlights, shadows and depth from those layers.
+- **No baked-in effects.** No gradients that imitate light, no drop shadows, no highlights and no texture in the
+  artwork itself. The system adds them, and baked-in versions conflict with them.
+- **Bold, simple foreground.** One clear motif (the Low Tide wave horizon) with solid shapes and thick strokes. Thin
+  lines and fine detail disappear under the glass.
+- **Every appearance must work:**
+  - default (light);
+  - dark;
+  - clear, which is translucent;
+  - tinted, which is monochrome in the user's colour.
+
+  Each foreground layer must therefore read well as a flat silhouette.
+- **One shape for all Apple platforms.** On macOS 26 the system applies the same rounded-square mask as on iOS. No
+  custom silhouettes: legacy macOS icons get placed inside a grey tile.
+- **Older systems:** the app supports iOS 16 and macOS 12, so a flattened fallback for older OS versions must come from
+  the same source. Verify how Xcode generates this when the icon is built.
+- **Other platforms reuse the layers.** The same layers become the Android adaptive icon (foreground + background) and
+  the monochrome themed icon, and are flattened for Windows (MSIX tiles, `.ico`) and Linux.
