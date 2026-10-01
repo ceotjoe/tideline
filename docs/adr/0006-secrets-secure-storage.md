@@ -1,6 +1,6 @@
 # 0006. Secrets: flutter_secure_storage
 
-- Status: accepted (Windows backend pending verification)
+- Status: accepted
 - Date: 2026-10-01
 
 ## Context
@@ -9,15 +9,18 @@
     EncryptedSharedPreferences option is removed.
   - **iOS/macOS:** Keychain. macOS needs the Keychain Sharing entitlement, which requires a provisioning profile, or the
     data-protection keychain must be disabled.
-  - **Windows:** since v10 values are stored as encrypted files rather than in the Credential Manager. Whether those files
-    are protected by DPAPI was **not verified**.
+  - **Windows:** since v10 values are stored in an encrypted file instead of the Credential Manager. **Verified in
+    `flutter_secure_storage_windows` 4.2.2 source:** the active implementation (`dartPluginClass`,
+    `DpapiJsonFileMapStorage`) encrypts the file `flutter_secure_storage.dat` in the app-support directory with DPAPI
+    (`CryptProtectData`/`CryptUnprotectData`, current-user scope).
 - Android auto-backup can restore prefs whose keys no longer exist, which causes `InvalidKeyException`.
 
 ## Decision
 - Use flutter_secure_storage behind a `SecretStore` port in the domain.
 - Exclude its storage from Android auto-backup (`android:fullBackupContent`/`dataExtractionRules`).
-- **Before the first release**, read the plugin's Windows source. If it does not use DPAPI (`CryptProtectData`, user scope),
-  implement the Windows `SecretStore` with DPAPI via FFI instead.
+- Windows needs no custom DPAPI wrapper. Re-check the Windows backend whenever the plugin's major version changes.
+- iOS/macOS items use `KeychainAccessibility.first_unlock_this_device`: they are available after the first unlock (needed
+  when the app resumes in the background) and are never migrated to another device or iCloud Keychain.
 
 ## Consequences
 - Tokens never touch prefs, the DB, backups or logs.
