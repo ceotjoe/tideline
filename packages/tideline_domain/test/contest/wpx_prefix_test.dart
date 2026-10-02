@@ -30,6 +30,8 @@ void main() {
       'DL1ABC/P/QRP': 'DL1',
       // A trailing digit replaces the prefix digit.
       'K1ABC/2': 'K2',
+      'K1ABC/E': 'K1',
+      'W1AW/AG': 'W1',
       'N8BJQ/7': 'N7',
       'OH2AAA/7': 'OH7',
       '3DA0XX/5': '3DA5',

@@ -68,8 +68,7 @@ CQ WW and CQ WPX needed no change.
   are not separate multipliers and QSOs with them are scored as the DXCC entity. Maritime mobile stations count only for
   the zone multiplier; this is not modelled.
 - **CQ WPX prefixes:** the rules say that /A, /E, /J, /P, maritime mobile and other licence-class identifiers do not
-  count as prefixes. `WpxPrefix` ignores /P, /M, /MM, /AM, /QRP, /A and /LH, but not /E or /J. I did not change the
-  prefix parser.
+  count as prefixes. `WpxPrefix` ignores /P, /M, /MM, /AM, /QRP, /A, /LH, /E, /J, /AE and /AG and uses the home prefix.
 - **ARRL DX:** W/VE to W/VE and DX to DX contacts are not valid in the real contest. The definition cannot exclude a
   QSO, so they score 0 points and credit no multiplier. A station whose DXCC is unknown scores 0 points and credits no
   multiplier (a negated list needs a known value). Labrador is not distinguished from the rest of Newfoundland

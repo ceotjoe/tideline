@@ -11,7 +11,8 @@ import 'package:tideline_domain/src/values/callsign.dart';
 /// - A call without a digit gets `0` appended to its first two letters
 ///   (`RAEM` gives `RA0`).
 /// - Operating suffixes in [Callsign.operatingSuffixes] (`/P`, `/M`, `/MM`,
-///   `/AM`, `/QRP`, `/A`, `/LH`) are ignored. (The official rules do not give
+///   `/AM`, `/QRP`, `/A`, `/LH`) and licence-class identifiers (`/E`, `/J`,
+///   `/AE`, `/AG`) are ignored. (The official rules do not give
 ///   multiplier credit for `/MM` and `/AM`; this function still returns the
 ///   home prefix, so the caller can decide.)
 /// - A single trailing digit (`/7`) replaces the digit of the prefix:
@@ -27,6 +28,9 @@ import 'package:tideline_domain/src/values/callsign.dart';
 /// - Anything with more than two parts after removing suffixes and a trailing
 ///   digit, or with characters other than `A-Z0-9/`, gives null.
 abstract final class WpxPrefix {
+  /// Licence-class identifiers, which the rules say are not prefixes.
+  static const Set<String> _licenceClass = {'E', 'J', 'AE', 'AG'};
+
   static final RegExp _valid = RegExp(r'^[A-Z0-9]+$');
   static final RegExp _callLike = RegExp(r'^[A-Z0-9]*[0-9][A-Z]+$');
   static final RegExp _split = RegExp(r'^([A-Z0-9]*[0-9])[A-Z]+$');
@@ -44,7 +48,13 @@ abstract final class WpxPrefix {
     // Drop operating suffixes (never the first part).
     var kept = [
       parts.first,
-      ...parts.skip(1).where((p) => !Callsign.operatingSuffixes.contains(p)),
+      ...parts
+          .skip(1)
+          .where(
+            (p) =>
+                !Callsign.operatingSuffixes.contains(p) &&
+                !_licenceClass.contains(p),
+          ),
     ];
     // A trailing single digit replaces the prefix digit.
     String? digit;
