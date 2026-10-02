@@ -36,6 +36,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   msix: ^3.18.0
   very_good_analysis: ^11.0.0
 

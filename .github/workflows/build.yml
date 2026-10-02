@@ -52,6 +52,17 @@ jobs:
       - name: Build macOS
         working-directory: app
         run: flutter build macos --debug
+      - name: End-to-end test on macOS against the mock Wavelog
+        run: |
+          (cd packages/wavelog_mock && dart run bin/serve.dart 8765 > "$RUNNER_TEMP/mock.log" 2>&1 &)
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:8765/index.php/api/v2/status && break
+            sleep 1
+          done
+          cd app && flutter test integration_test -d macos
+      - name: Mock server log
+        if: always()
+        run: cat "$RUNNER_TEMP/mock.log" || true
 
   windows:
     runs-on: windows-latest

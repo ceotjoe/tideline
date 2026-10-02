@@ -157,8 +157,9 @@ class MockWavelog {
     return Uri.parse('http://127.0.0.1:${server.port}');
   }
 
-  /// Starts listening on a free loopback port.
-  Future<void> start() async {
+  /// Starts listening on [port] of the loopback interface (0 = any free
+  /// port).
+  Future<void> start({int port = 0}) async {
     _server = await shelf_io.serve(
       (request) async {
         try {
@@ -170,7 +171,7 @@ class MockWavelog {
         }
       },
       InternetAddress.loopbackIPv4,
-      0,
+      port,
     );
   }
 
