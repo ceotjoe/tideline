@@ -7,7 +7,7 @@ The milestones from the Phase 0 plan. Each phase ends with a summary and the mai
 | 0 | Research and plan | done |
 | 1 | M1 Foundation | done |
 | 2 | M2 MVP (v0.1) | done |
-| 3 | M3 Contest mode (v0.2) | next |
+| 3 | M3 Contest mode (v0.2) | in progress |
 | 4 | M4 Activations and reference packs (v0.3) | planned |
 | 5 | M5 FLE, field modes, multi-account UI, store releases (v0.4 → v1.0) | planned |
 | — | Device-to-device sync, WSJT-X listener, desktop extras, iPad drag and drop, Android background sync | later |
@@ -33,3 +33,20 @@ The milestones from the Phase 0 plan. Each phase ends with a summary and the mai
   `1840` work, while `7`, `50` and `144` stay MHz.
 - Logic: `Frequency.parseUserInput` in `packages/tideline_domain/lib/src/values/frequency.dart`. UI: the frequency field
   in `app/lib/src/features/log/qso_entry_form.dart`. Contest entry should use the same field.
+
+## Phase 3 plan
+
+Design: [ADR 0018](adr/0018-contest-definitions-as-data.md) and [contest-definitions.md](architecture/contest-definitions.md).
+
+| Step | Work | Package(s) |
+|---|---|---|
+| 3.1 | Frequency entry: kHz/MHz heuristic, live interpretation, reusable field | domain, app |
+| 3.2 | Contest domain: definition parser, predicates, dupe check, points/multipliers, WPX prefix, rates | domain |
+| 3.3 | Cabrillo 3.0 writer | adif |
+| 3.4 | MASTER.SCP parser, super check partial and N+1 matching | domain |
+| 3.5 | Wavelog client: contest catalog, `/contest` CRUD, ADIF pull; mock server support | wavelog_client, wavelog_mock |
+| 3.6 | Bundled contest definitions | app assets |
+| 3.7 | Data: definition loader, contest sessions, atomic serial allocation, SCP store, worked-before index | data |
+| 3.8 | Sync: contest-session create/link with reconcile; worked-before pull | data |
+| 3.9 | Contest mode UI: session setup, dense fast entry, dupe/SCP/worked-before hints, rates and multipliers, inline edit, Cabrillo export, commands | app |
+| 3.10 | Goldens, accessibility checks, manual (EN/DE), CHANGELOG, threat model, PRIVACY.md | all |
