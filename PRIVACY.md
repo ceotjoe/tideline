@@ -1,6 +1,6 @@
 # Privacy Statement
 
-_Last updated: 2026-10-01. Applies to Tideline on all platforms._
+_Last updated: 2026-10-02. Applies to Tideline on all platforms._
 
 Tideline is an open-source logging app for licensed amateur radio operators.
 
@@ -16,7 +16,9 @@ reporting service and no third-party tracker. The developers never receive your 
 | Your QSO log (callsigns, times, frequencies, locations, notes) | The app's core function | Encrypted database (SQLite3MultipleCiphers); key held in the OS secure store |
 | Wavelog server address and API token(s) | Syncing to your own Wavelog | Token kept only in the OS secure store (Keychain, Android Keystore, Windows protected storage) |
 | Pinned server certificate fingerprints | Trusting your self-hosted server | Encrypted database |
-| Downloaded reference data (DXCC, SOTA, POTA, WWFF, call history) | Offline lookups | Encrypted database |
+| Downloaded reference data (DXCC, SOTA, POTA, WWFF, call history, MASTER.SCP) | Offline lookups | Encrypted database |
+| Worked-before index (calls, bands and modes from your log and your Wavelog server) | "Worked before" hints | Encrypted database; rebuildable from settings |
+| Contest definitions you import | Contest rules and scoring | Encrypted database |
 | Device location (only while you ask for it) | Computing your Maidenhead grid locator | Used on device, stored only as the grid in your QSO / activation |
 | Settings | Your preferences | Encrypted database |
 
@@ -27,12 +29,17 @@ where you save them.
 
 Tideline connects only to:
 
-1. **The Wavelog server(s) you configure.** It uploads your QSOs and downloads your station profiles and
-   log (for "worked before" hints), using the API token you provide.
+1. **The Wavelog server(s) you configure.** It uploads your QSOs, creates and updates contest sessions
+   (Wavelog 3.2+, if your token allows it), and downloads your station profiles and log (for "worked before"
+   hints), using the API token you provide.
 2. **Reference-data sources, and only when you start a download.**
    - The source URLs are shown before downloading and listed in the user manual.
    - These sites receive the usual technical data of a web request, such as your IP address.
    - Their own privacy policies apply.
+   - **MASTER.SCP (super check partial):** when you press "Download" in Settings → Super check partial, Tideline
+     fetches the address shown there (default `https://www.supercheckpartial.com/MASTER.SCP`, which you can
+     change). Only HTTPS is allowed. The request contains no information about you or your log; it sends only a
+     generic `Tideline/<version>` user agent. Tideline never contacts this address on its own.
 3. **Other Tideline devices on your local network**, only when you pair them (a later feature).
    - Traffic stays in the local network and is end-to-end encrypted.
 

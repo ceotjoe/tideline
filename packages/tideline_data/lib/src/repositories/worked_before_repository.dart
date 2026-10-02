@@ -98,14 +98,14 @@ class WorkedBeforeRepository {
   /// so index and log never disagree. Deleting a QSO never removes a row
   /// (only a rebuild does).
   Future<void> noteQso(Qso qso) {
-    final grid = qso.field('GRIDSQUARE')?.trim();
+    final grid = (qso.field('GRIDSQUARE') ?? '').trim().toUpperCase();
     return _db.customStatement(_upsert, [
       qso.accountId,
       qso.call.value.toUpperCase(),
       qso.band.name,
       qso.mode.mode,
       int.tryParse(qso.field('DXCC') ?? ''),
-      grid == null || grid.isEmpty ? null : grid.toUpperCase(),
+      if (grid.isEmpty) null else grid,
       qso.timeOn.millis,
       'local',
       false,
@@ -240,6 +240,15 @@ class WorkedBeforeRepository {
     )..where((w) => w.accountId.equals(accountId))).go();
     await setLastFetchedId(accountId, null);
     await _settings.write(_builtKey(accountId), null);
+  });
+
+  /// Throws the whole index of [accountId] away and builds the local part
+  /// again from its log, in one transaction (the old index stays if it
+  /// fails). The pull cursor is reset too, so the next sync refills the
+  /// server rows.
+  Future<void> rebuildAll(String accountId) => _db.transaction(() async {
+    await clear(accountId);
+    await rebuildLocal(accountId);
   });
 
   /// What was worked with exactly [call] (so `DL1ABC/P` and `DL1ABC` are

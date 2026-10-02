@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tideline/src/app.dart';
 import 'package:tideline/src/features/contest/contest_providers.dart';
@@ -123,6 +124,9 @@ Future<Pumped> pumpTideline(
   List<LoggedQso> log = const [],
   Map<String, String> settingsValues = const {},
   ContestBackend? contest,
+  ContestDefinitionRepository? definitions,
+  WorkedBeforeRepository? workedBefore,
+  List<Override> overrides = const [],
 }) async {
   tester.view
     ..physicalSize = size * tester.view.devicePixelRatio
@@ -170,14 +174,15 @@ Future<Pumped> pumpTideline(
           contest == null ? qsos : backend.qsoRepository,
         ),
         contestSeedProvider.overrideWith((ref) async => null),
+        workedBeforeIndexProvider.overrideWith((ref) async {}),
         contestDefinitionRepositoryProvider.overrideWithValue(
-          backend.definitionRepository,
+          definitions ?? backend.definitionRepository,
         ),
         contestSessionRepositoryProvider.overrideWithValue(
           backend.sessionRepository,
         ),
         workedBeforeRepositoryProvider.overrideWithValue(
-          backend.workedRepository,
+          workedBefore ?? backend.workedRepository,
         ),
         scpDatabaseProvider.overrideWith((ref) async => backend.scp),
         dxccProvider.overrideWith((ref) async => testDxcc),
@@ -185,6 +190,7 @@ Future<Pumped> pumpTideline(
         databaseProvider.overrideWith(noDb),
         shortcutBindingStoreProvider.overrideWith(noDb),
         settingsStoreProvider.overrideWith(noDb),
+        ...overrides,
       ],
       child: const TidelineApp(),
     ),

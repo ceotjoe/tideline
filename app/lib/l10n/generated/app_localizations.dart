@@ -1011,12 +1011,6 @@ abstract class AppLocalizations {
   /// **'{name} · {continent} · CQ {cq} · ITU {itu}'**
   String dxccSummary(String name, String continent, int cq, int itu);
 
-  /// Worked-before hint.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{worked once before} other{worked {count} times before}}'**
-  String workedBefore(int count);
-
   /// Sync explanation.
   ///
   /// In en, this message translates to:
@@ -2426,6 +2420,552 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{label}: {value}'**
   String contestLabelValue(String label, String value);
+
+  /// Hint under the callsign field: the call was never worked.
+  ///
+  /// In en, this message translates to:
+  /// **'New call: not in your log yet'**
+  String get workedHintNewCall;
+
+  /// Hint under the callsign field.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked before, but not on this band'**
+  String get workedHintNewBand;
+
+  /// Hint under the callsign field.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked before, but not in this mode'**
+  String get workedHintNewMode;
+
+  /// Hint under the callsign field.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked before, but not on this band and mode together'**
+  String get workedHintNewSlot;
+
+  /// Hint under the callsign field.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked before on this band and mode'**
+  String get workedHintWorked;
+
+  /// Details after a worked-before hint: date of the first contact and the bands worked.
+  ///
+  /// In en, this message translates to:
+  /// **'first contact {date}, bands {bands}'**
+  String workedHintDetails(String date, String bands);
+
+  /// Settings section header.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked-before index'**
+  String get settingsWorkedBefore;
+
+  /// Settings action.
+  ///
+  /// In en, this message translates to:
+  /// **'Rebuild worked-before index'**
+  String get actionRebuildWorkedBefore;
+
+  /// Explains the rebuild action.
+  ///
+  /// In en, this message translates to:
+  /// **'Builds the index from your log again. Contacts from your Wavelog server come back with the next sync.'**
+  String get rebuildWorkedBeforeHint;
+
+  /// Confirmation dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Rebuild the index?'**
+  String get rebuildWorkedBeforeConfirmTitle;
+
+  /// Confirmation dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'Your log is not changed. Hints for stations you only worked on other devices or in Wavelog are missing until the next sync has loaded them again.'**
+  String get rebuildWorkedBeforeConfirmBody;
+
+  /// Confirm button of the rebuild dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Rebuild'**
+  String get actionRebuild;
+
+  /// Progress text while the index is rebuilt.
+  ///
+  /// In en, this message translates to:
+  /// **'Rebuilding the index…'**
+  String get rebuildWorkedBeforeProgress;
+
+  /// Shown after a rebuild.
+  ///
+  /// In en, this message translates to:
+  /// **'Index rebuilt. The next sync adds the contacts from your Wavelog server.'**
+  String get rebuildWorkedBeforeDone;
+
+  /// Shown when the rebuild failed.
+  ///
+  /// In en, this message translates to:
+  /// **'The index could not be rebuilt.'**
+  String get rebuildWorkedBeforeFailed;
+
+  /// Settings section header (MASTER.SCP callsign list).
+  ///
+  /// In en, this message translates to:
+  /// **'Super check partial'**
+  String get settingsScp;
+
+  /// Explains the super check partial list.
+  ///
+  /// In en, this message translates to:
+  /// **'Callsign suggestions while you log a contest. The list is not part of Tideline: you download it yourself.'**
+  String get scpHint;
+
+  /// Shown when no MASTER.SCP is installed.
+  ///
+  /// In en, this message translates to:
+  /// **'No list installed'**
+  String get scpNone;
+
+  /// Summary of the installed list.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 callsign} other{{count} callsigns}} · installed {date}'**
+  String scpPackSummary(int count, String date);
+
+  /// Where the installed list came from.
+  ///
+  /// In en, this message translates to:
+  /// **'Source: {source}'**
+  String scpSource(String source);
+
+  /// Source of a list that was imported from a file.
+  ///
+  /// In en, this message translates to:
+  /// **'a file you imported'**
+  String get scpSourceFile;
+
+  /// Label of the URL field.
+  ///
+  /// In en, this message translates to:
+  /// **'Download address (https)'**
+  String get scpUrlLabel;
+
+  /// Helper text under the URL field.
+  ///
+  /// In en, this message translates to:
+  /// **'Tideline contacts this address only when you press Download, and sends nothing about you.'**
+  String get scpUrlHelper;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get actionDownload;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Import file'**
+  String get actionImportFile;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get actionRemove;
+
+  /// Progress text while MASTER.SCP downloads.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading the list…'**
+  String get scpDownloading;
+
+  /// Progress text with the size so far.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading the list… {kib} KiB'**
+  String scpDownloadingSize(int kib);
+
+  /// Shown after a list was installed.
+  ///
+  /// In en, this message translates to:
+  /// **'List installed: {count, plural, =1{1 callsign} other{{count} callsigns}}.'**
+  String scpInstalled(int count);
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the list?'**
+  String get scpRemoveTitle;
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'Callsign suggestions stop until you install a list again.'**
+  String get scpRemoveBody;
+
+  /// Shown after removal.
+  ///
+  /// In en, this message translates to:
+  /// **'List removed.'**
+  String get scpRemoved;
+
+  /// Download error.
+  ///
+  /// In en, this message translates to:
+  /// **'Only https addresses are allowed.'**
+  String get scpErrorInsecureUrl;
+
+  /// Download error.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a usable address. It must not contain a user name, a password, a query (?…) or a fragment (#…).'**
+  String get scpErrorInvalidUrl;
+
+  /// Download error.
+  ///
+  /// In en, this message translates to:
+  /// **'The server could not be reached. Check your connection and the address.'**
+  String get scpErrorNetwork;
+
+  /// Download error.
+  ///
+  /// In en, this message translates to:
+  /// **'The server took too long to answer.'**
+  String get scpErrorTimeout;
+
+  /// Download error.
+  ///
+  /// In en, this message translates to:
+  /// **'The certificate of the server is not trusted, so nothing was downloaded.'**
+  String get scpErrorCertificate;
+
+  /// Download error.
+  ///
+  /// In en, this message translates to:
+  /// **'The file is larger than 8 MiB. It was not stored.'**
+  String get scpErrorTooLarge;
+
+  /// Download error.
+  ///
+  /// In en, this message translates to:
+  /// **'The server answered with HTTP status {code}.'**
+  String scpErrorStatus(int code);
+
+  /// Download or import error.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a MASTER.SCP file (one callsign per line).'**
+  String get scpErrorInvalidFile;
+
+  /// Import error.
+  ///
+  /// In en, this message translates to:
+  /// **'The file could not be read.'**
+  String get scpErrorUnreadable;
+
+  /// Settings section header.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest definitions'**
+  String get settingsContestDefinitions;
+
+  /// Explains contest definitions.
+  ///
+  /// In en, this message translates to:
+  /// **'The rules of each contest are data files. Bundled definitions are always available; you can add your own.'**
+  String get contestDefsHint;
+
+  /// Origin of a contest definition.
+  ///
+  /// In en, this message translates to:
+  /// **'Bundled'**
+  String get contestDefBuiltin;
+
+  /// Origin of a contest definition.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported by you'**
+  String get contestDefUser;
+
+  /// Version of a definition.
+  ///
+  /// In en, this message translates to:
+  /// **'version {version}'**
+  String contestDefVersion(int version);
+
+  /// Settings action.
+  ///
+  /// In en, this message translates to:
+  /// **'Import definition'**
+  String get actionImportDefinition;
+
+  /// Explains the import action.
+  ///
+  /// In en, this message translates to:
+  /// **'A JSON file of up to 256 KiB.'**
+  String get importDefinitionHint;
+
+  /// Shown after an import.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported “{name}”.'**
+  String contestDefImported(String name);
+
+  /// Shown when an earlier import with the same id was replaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated “{name}”.'**
+  String contestDefReplaced(String name);
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Definition not imported'**
+  String get contestDefRejectedTitle;
+
+  /// Location of the problem in the file (a JSON path).
+  ///
+  /// In en, this message translates to:
+  /// **'Technical detail: {path}'**
+  String contestDefTechnical(String path);
+
+  /// Import error.
+  ///
+  /// In en, this message translates to:
+  /// **'The file is larger than 256 KiB.'**
+  String get contestDefFileTooLarge;
+
+  /// Import error.
+  ///
+  /// In en, this message translates to:
+  /// **'The file is not valid UTF-8 text.'**
+  String get contestDefNotText;
+
+  /// Import error.
+  ///
+  /// In en, this message translates to:
+  /// **'The file could not be read.'**
+  String get contestDefUnreadable;
+
+  /// Import error.
+  ///
+  /// In en, this message translates to:
+  /// **'This id belongs to a bundled contest. Choose a different id in the file.'**
+  String get contestDefIdClash;
+
+  /// Tooltip of the delete button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete definition {name}'**
+  String actionDeleteDefinition(String name);
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{name}”?'**
+  String contestDefDeleteTitle(String name);
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the definition is removed. Your QSOs are not affected.'**
+  String get contestDefDeleteBody;
+
+  /// Shown after deletion.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted “{name}”.'**
+  String contestDefDeleted(String name);
+
+  /// Delete result.
+  ///
+  /// In en, this message translates to:
+  /// **'A contest session in your log uses this definition, so it cannot be deleted.'**
+  String get contestDefInUse;
+
+  /// Delete result.
+  ///
+  /// In en, this message translates to:
+  /// **'Bundled definitions cannot be deleted.'**
+  String get contestDefBuiltinNoDelete;
+
+  /// Delete result.
+  ///
+  /// In en, this message translates to:
+  /// **'This definition no longer exists.'**
+  String get contestDefNotFound;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'The definition is larger than 256 KiB.'**
+  String get contestDefErrorTooLarge;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'The file is not valid JSON.'**
+  String get contestDefErrorMalformedJson;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A value has the wrong type.'**
+  String get contestDefErrorWrongType;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'The file contains a setting that Tideline does not know.'**
+  String get contestDefErrorUnknownKey;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A required setting is missing.'**
+  String get contestDefErrorMissingKey;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'This schema version is not supported (only version 1).'**
+  String get contestDefErrorUnsupportedSchema;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'The id must have 1 to 64 characters: lower-case letters, digits and hyphens.'**
+  String get contestDefErrorInvalidId;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A number or a text length is outside the allowed range.'**
+  String get contestDefErrorOutOfRange;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A text is too long.'**
+  String get contestDefErrorTooLong;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A text contains control characters.'**
+  String get contestDefErrorInvalidCharacters;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A list has too many entries.'**
+  String get contestDefErrorTooManyElements;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A list has too few entries.'**
+  String get contestDefErrorTooFewElements;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A band name is not a known ADIF band.'**
+  String get contestDefErrorUnknownBand;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A setting has a value that Tideline does not know.'**
+  String get contestDefErrorUnknownValue;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'The last points rule must apply to every contact, so it cannot have a condition.'**
+  String get contestDefErrorLastRuleHasWhen;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A variant of the exchange may depend only on your own station.'**
+  String get contestDefErrorVariantPredicateNotMine;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A received exchange element may depend only on the other station.'**
+  String get contestDefErrorElementPredicateNotTheirs;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A sent exchange element cannot have a condition.'**
+  String get contestDefErrorElementWhenNotAllowed;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'One side of the exchange may contain only one serial number.'**
+  String get contestDefErrorMultipleSerials;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Two exchange elements store into the same ADIF field.'**
+  String get contestDefErrorDuplicateField;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Two multipliers have the same id.'**
+  String get contestDefErrorDuplicateId;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A default value uses an unknown placeholder.'**
+  String get contestDefErrorInvalidPlaceholder;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A default value does not fit its exchange element.'**
+  String get contestDefErrorInvalidValue;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A default value is not allowed here (received side and serial numbers).'**
+  String get contestDefErrorDefaultNotAllowed;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A multiplier uses a source that does not exist or that no received exchange contains.'**
+  String get contestDefErrorInvalidMultiplierSource;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'A condition is empty.'**
+  String get contestDefErrorEmptyPredicate;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'The score type does not fit the multipliers.'**
+  String get contestDefErrorInvalidCombination;
+
+  /// Why a contest definition was rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'The same value is listed twice.'**
+  String get contestDefErrorDuplicateValue;
 }
 
 class _AppLocalizationsDelegate

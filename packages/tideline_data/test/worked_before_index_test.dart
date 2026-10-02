@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart' hide isNotNull, isNull;
 import 'package:test/test.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -126,6 +125,24 @@ void main() {
       await repo.rebuildLocal('acc');
       expect(await repo.isBuilt('acc'), isTrue);
     });
+
+    test(
+      'rebuildAll drops server rows and the cursor, keeps the log',
+      () async {
+        await h.qsos.log(testQso());
+        await repo.mergeServerAdif(
+          'acc',
+          '<ADIF_VER:5>3.1.4 <EOH>\n'
+              '<CALL:4>W1AW <BAND:3>20m <MODE:2>CW <QSO_DATE:8>20240101 <EOR>',
+        );
+        await repo.setLastFetchedId('acc', 500);
+        await repo.rebuildAll('acc');
+        expect((await repo.lookup('acc', 'W1AW')).worked, isFalse);
+        expect((await repo.lookup('acc', 'DL1ABC')).worked, isTrue);
+        expect(await repo.lastFetchedId('acc'), isNull);
+        expect(await repo.isBuilt('acc'), isTrue);
+      },
+    );
 
     test('clear + rebuildLocal resets the pull cursor', () async {
       await h.qsos.log(testQso());

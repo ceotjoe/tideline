@@ -155,7 +155,8 @@ WavelogClient clientForAccount(Account account, String token) {
   );
 }
 
-/// The sync engine.
+/// The sync engine, with the optional steps after the QSO pass: mirroring
+/// contest sessions on Wavelog 3.2+ and pulling the worked-before index.
 final syncEngineProvider = Provider<SyncEngine>(
   (ref) => SyncEngine(
     qsos: ref.watch(qsoRepositoryProvider),
@@ -163,8 +164,28 @@ final syncEngineProvider = Provider<SyncEngine>(
     journal: ref.watch(journalRepositoryProvider),
     machine: ref.watch(syncMachineProvider),
     clientFor: clientForAccount,
+    contestSessions: ContestSessionSync(
+      sessions: ref.watch(contestSessionRepositoryProvider),
+      definitions: ref.watch(contestDefinitionRepositoryProvider),
+      journal: ref.watch(journalRepositoryProvider),
+    ),
+    workedBefore: ref.watch(workedBeforeRepositoryProvider),
   ),
 );
+
+/// Builds the local worked-before index once per account, in the
+/// background, when it was never built (a log that predates the index, or a
+/// restored backup). Afterwards every QSO write keeps it current. Nothing
+/// waits for this and a failure only ends up in the log.
+final workedBeforeIndexProvider = FutureProvider<void>((ref) async {
+  final account = ref.watch(activeAccountProvider);
+  if (account == null) return;
+  try {
+    await ref.watch(workedBeforeRepositoryProvider).ensureBuilt(account.id);
+  } on Object catch (e) {
+    debugPrint('worked-before index build failed: ${e.runtimeType}');
+  }
+});
 
 /// What the sync controller is doing.
 sealed class SyncActivity {

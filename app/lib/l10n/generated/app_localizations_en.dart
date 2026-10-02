@@ -534,17 +534,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String workedBefore(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'worked $count times before',
-      one: 'worked once before',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get explainSynced => 'This QSO is safely in your Wavelog.';
 
   @override
@@ -1447,6 +1436,353 @@ class AppLocalizationsEn extends AppLocalizations {
   String contestLabelValue(String label, String value) {
     return '$label: $value';
   }
+
+  @override
+  String get workedHintNewCall => 'New call: not in your log yet';
+
+  @override
+  String get workedHintNewBand => 'Worked before, but not on this band';
+
+  @override
+  String get workedHintNewMode => 'Worked before, but not in this mode';
+
+  @override
+  String get workedHintNewSlot =>
+      'Worked before, but not on this band and mode together';
+
+  @override
+  String get workedHintWorked => 'Worked before on this band and mode';
+
+  @override
+  String workedHintDetails(String date, String bands) {
+    return 'first contact $date, bands $bands';
+  }
+
+  @override
+  String get settingsWorkedBefore => 'Worked-before index';
+
+  @override
+  String get actionRebuildWorkedBefore => 'Rebuild worked-before index';
+
+  @override
+  String get rebuildWorkedBeforeHint =>
+      'Builds the index from your log again. Contacts from your Wavelog server come back with the next sync.';
+
+  @override
+  String get rebuildWorkedBeforeConfirmTitle => 'Rebuild the index?';
+
+  @override
+  String get rebuildWorkedBeforeConfirmBody =>
+      'Your log is not changed. Hints for stations you only worked on other devices or in Wavelog are missing until the next sync has loaded them again.';
+
+  @override
+  String get actionRebuild => 'Rebuild';
+
+  @override
+  String get rebuildWorkedBeforeProgress => 'Rebuilding the index…';
+
+  @override
+  String get rebuildWorkedBeforeDone =>
+      'Index rebuilt. The next sync adds the contacts from your Wavelog server.';
+
+  @override
+  String get rebuildWorkedBeforeFailed => 'The index could not be rebuilt.';
+
+  @override
+  String get settingsScp => 'Super check partial';
+
+  @override
+  String get scpHint =>
+      'Callsign suggestions while you log a contest. The list is not part of Tideline: you download it yourself.';
+
+  @override
+  String get scpNone => 'No list installed';
+
+  @override
+  String scpPackSummary(int count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count callsigns',
+      one: '1 callsign',
+    );
+    return '$_temp0 · installed $date';
+  }
+
+  @override
+  String scpSource(String source) {
+    return 'Source: $source';
+  }
+
+  @override
+  String get scpSourceFile => 'a file you imported';
+
+  @override
+  String get scpUrlLabel => 'Download address (https)';
+
+  @override
+  String get scpUrlHelper =>
+      'Tideline contacts this address only when you press Download, and sends nothing about you.';
+
+  @override
+  String get actionDownload => 'Download';
+
+  @override
+  String get actionImportFile => 'Import file';
+
+  @override
+  String get actionRemove => 'Remove';
+
+  @override
+  String get scpDownloading => 'Downloading the list…';
+
+  @override
+  String scpDownloadingSize(int kib) {
+    return 'Downloading the list… $kib KiB';
+  }
+
+  @override
+  String scpInstalled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count callsigns',
+      one: '1 callsign',
+    );
+    return 'List installed: $_temp0.';
+  }
+
+  @override
+  String get scpRemoveTitle => 'Remove the list?';
+
+  @override
+  String get scpRemoveBody =>
+      'Callsign suggestions stop until you install a list again.';
+
+  @override
+  String get scpRemoved => 'List removed.';
+
+  @override
+  String get scpErrorInsecureUrl => 'Only https addresses are allowed.';
+
+  @override
+  String get scpErrorInvalidUrl =>
+      'This is not a usable address. It must not contain a user name, a password, a query (?…) or a fragment (#…).';
+
+  @override
+  String get scpErrorNetwork =>
+      'The server could not be reached. Check your connection and the address.';
+
+  @override
+  String get scpErrorTimeout => 'The server took too long to answer.';
+
+  @override
+  String get scpErrorCertificate =>
+      'The certificate of the server is not trusted, so nothing was downloaded.';
+
+  @override
+  String get scpErrorTooLarge =>
+      'The file is larger than 8 MiB. It was not stored.';
+
+  @override
+  String scpErrorStatus(int code) {
+    return 'The server answered with HTTP status $code.';
+  }
+
+  @override
+  String get scpErrorInvalidFile =>
+      'This is not a MASTER.SCP file (one callsign per line).';
+
+  @override
+  String get scpErrorUnreadable => 'The file could not be read.';
+
+  @override
+  String get settingsContestDefinitions => 'Contest definitions';
+
+  @override
+  String get contestDefsHint =>
+      'The rules of each contest are data files. Bundled definitions are always available; you can add your own.';
+
+  @override
+  String get contestDefBuiltin => 'Bundled';
+
+  @override
+  String get contestDefUser => 'Imported by you';
+
+  @override
+  String contestDefVersion(int version) {
+    return 'version $version';
+  }
+
+  @override
+  String get actionImportDefinition => 'Import definition';
+
+  @override
+  String get importDefinitionHint => 'A JSON file of up to 256 KiB.';
+
+  @override
+  String contestDefImported(String name) {
+    return 'Imported “$name”.';
+  }
+
+  @override
+  String contestDefReplaced(String name) {
+    return 'Updated “$name”.';
+  }
+
+  @override
+  String get contestDefRejectedTitle => 'Definition not imported';
+
+  @override
+  String contestDefTechnical(String path) {
+    return 'Technical detail: $path';
+  }
+
+  @override
+  String get contestDefFileTooLarge => 'The file is larger than 256 KiB.';
+
+  @override
+  String get contestDefNotText => 'The file is not valid UTF-8 text.';
+
+  @override
+  String get contestDefUnreadable => 'The file could not be read.';
+
+  @override
+  String get contestDefIdClash =>
+      'This id belongs to a bundled contest. Choose a different id in the file.';
+
+  @override
+  String actionDeleteDefinition(String name) {
+    return 'Delete definition $name';
+  }
+
+  @override
+  String contestDefDeleteTitle(String name) {
+    return 'Delete “$name”?';
+  }
+
+  @override
+  String get contestDefDeleteBody =>
+      'Only the definition is removed. Your QSOs are not affected.';
+
+  @override
+  String contestDefDeleted(String name) {
+    return 'Deleted “$name”.';
+  }
+
+  @override
+  String get contestDefInUse =>
+      'A contest session in your log uses this definition, so it cannot be deleted.';
+
+  @override
+  String get contestDefBuiltinNoDelete =>
+      'Bundled definitions cannot be deleted.';
+
+  @override
+  String get contestDefNotFound => 'This definition no longer exists.';
+
+  @override
+  String get contestDefErrorTooLarge =>
+      'The definition is larger than 256 KiB.';
+
+  @override
+  String get contestDefErrorMalformedJson => 'The file is not valid JSON.';
+
+  @override
+  String get contestDefErrorWrongType => 'A value has the wrong type.';
+
+  @override
+  String get contestDefErrorUnknownKey =>
+      'The file contains a setting that Tideline does not know.';
+
+  @override
+  String get contestDefErrorMissingKey => 'A required setting is missing.';
+
+  @override
+  String get contestDefErrorUnsupportedSchema =>
+      'This schema version is not supported (only version 1).';
+
+  @override
+  String get contestDefErrorInvalidId =>
+      'The id must have 1 to 64 characters: lower-case letters, digits and hyphens.';
+
+  @override
+  String get contestDefErrorOutOfRange =>
+      'A number or a text length is outside the allowed range.';
+
+  @override
+  String get contestDefErrorTooLong => 'A text is too long.';
+
+  @override
+  String get contestDefErrorInvalidCharacters =>
+      'A text contains control characters.';
+
+  @override
+  String get contestDefErrorTooManyElements => 'A list has too many entries.';
+
+  @override
+  String get contestDefErrorTooFewElements => 'A list has too few entries.';
+
+  @override
+  String get contestDefErrorUnknownBand =>
+      'A band name is not a known ADIF band.';
+
+  @override
+  String get contestDefErrorUnknownValue =>
+      'A setting has a value that Tideline does not know.';
+
+  @override
+  String get contestDefErrorLastRuleHasWhen =>
+      'The last points rule must apply to every contact, so it cannot have a condition.';
+
+  @override
+  String get contestDefErrorVariantPredicateNotMine =>
+      'A variant of the exchange may depend only on your own station.';
+
+  @override
+  String get contestDefErrorElementPredicateNotTheirs =>
+      'A received exchange element may depend only on the other station.';
+
+  @override
+  String get contestDefErrorElementWhenNotAllowed =>
+      'A sent exchange element cannot have a condition.';
+
+  @override
+  String get contestDefErrorMultipleSerials =>
+      'One side of the exchange may contain only one serial number.';
+
+  @override
+  String get contestDefErrorDuplicateField =>
+      'Two exchange elements store into the same ADIF field.';
+
+  @override
+  String get contestDefErrorDuplicateId => 'Two multipliers have the same id.';
+
+  @override
+  String get contestDefErrorInvalidPlaceholder =>
+      'A default value uses an unknown placeholder.';
+
+  @override
+  String get contestDefErrorInvalidValue =>
+      'A default value does not fit its exchange element.';
+
+  @override
+  String get contestDefErrorDefaultNotAllowed =>
+      'A default value is not allowed here (received side and serial numbers).';
+
+  @override
+  String get contestDefErrorInvalidMultiplierSource =>
+      'A multiplier uses a source that does not exist or that no received exchange contains.';
+
+  @override
+  String get contestDefErrorEmptyPredicate => 'A condition is empty.';
+
+  @override
+  String get contestDefErrorInvalidCombination =>
+      'The score type does not fit the multipliers.';
+
+  @override
+  String get contestDefErrorDuplicateValue => 'The same value is listed twice.';
 }
 
 /// The translations for English (`en_XA`).
@@ -1982,17 +2318,6 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String dxccSummary(String name, String continent, int cq, int itu) {
     return '$name[ · ··]$continent[ · ÇǪ ···]$cq[ · ÎŢÛ ···]$itu';
-  }
-
-  @override
-  String workedBefore(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '[ŵöŕķéð ···]$count[ ţîɱéš ƀéƒöŕé······]',
-      one: '[ŵöŕķéð öñçé ƀéƒöŕé········]',
-    );
-    return '$_temp0';
   }
 
   @override
@@ -2918,4 +3243,370 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   String contestLabelValue(String label, String value) {
     return '$label[: ·]$value';
   }
+
+  @override
+  String get workedHintNewCall => '[Ñéŵ çáļļ: ñöţ îñ ýöûŕ ļöĝ ýéţ············]';
+
+  @override
+  String get workedHintNewBand =>
+      '[Ŵöŕķéð ƀéƒöŕé, ƀûţ ñöţ öñ ţĥîš ƀáñð··············]';
+
+  @override
+  String get workedHintNewMode =>
+      '[Ŵöŕķéð ƀéƒöŕé, ƀûţ ñöţ îñ ţĥîš ɱöðé··············]';
+
+  @override
+  String get workedHintNewSlot =>
+      '[Ŵöŕķéð ƀéƒöŕé, ƀûţ ñöţ öñ ţĥîš ƀáñð áñð ɱöðé ţöĝéţĥéŕ······················]';
+
+  @override
+  String get workedHintWorked =>
+      '[Ŵöŕķéð ƀéƒöŕé öñ ţĥîš ƀáñð áñð ɱöðé··············]';
+
+  @override
+  String workedHintDetails(String date, String bands) {
+    return '[ƒîŕšţ çöñţáçţ ······]$date[, ƀáñðš ····]$bands';
+  }
+
+  @override
+  String get settingsWorkedBefore => '[Ŵöŕķéð-ƀéƒöŕé îñðéẋ········]';
+
+  @override
+  String get actionRebuildWorkedBefore =>
+      '[Ŕéƀûîļð ŵöŕķéð-ƀéƒöŕé îñðéẋ···········]';
+
+  @override
+  String get rebuildWorkedBeforeHint =>
+      '[Ɓûîļðš ţĥé îñðéẋ ƒŕöɱ ýöûŕ ļöĝ áĝáîñ. Çöñţáçţš ƒŕöɱ ýöûŕ Ŵáṽéļöĝ šéŕṽéŕ çöɱé ƀáçķ ŵîţĥ ţĥé ñéẋţ šýñç.·········································]';
+
+  @override
+  String get rebuildWorkedBeforeConfirmTitle => '[Ŕéƀûîļð ţĥé îñðéẋ?········]';
+
+  @override
+  String get rebuildWorkedBeforeConfirmBody =>
+      '[Ýöûŕ ļöĝ îš ñöţ çĥáñĝéð. Ĥîñţš ƒöŕ šţáţîöñš ýöû öñļý ŵöŕķéð öñ öţĥéŕ ðéṽîçéš öŕ îñ Ŵáṽéļöĝ áŕé ɱîššîñĝ ûñţîļ ţĥé ñéẋţ šýñç ĥáš ļöáðéð ţĥéɱ áĝáîñ.··························································]';
+
+  @override
+  String get actionRebuild => '[Ŕéƀûîļð···]';
+
+  @override
+  String get rebuildWorkedBeforeProgress => '[Ŕéƀûîļðîñĝ ţĥé îñðéẋ…·········]';
+
+  @override
+  String get rebuildWorkedBeforeDone =>
+      '[Îñðéẋ ŕéƀûîļţ. Ţĥé ñéẋţ šýñç áððš ţĥé çöñţáçţš ƒŕöɱ ýöûŕ Ŵáṽéļöĝ šéŕṽéŕ.·····························]';
+
+  @override
+  String get rebuildWorkedBeforeFailed =>
+      '[Ţĥé îñðéẋ çöûļð ñöţ ƀé ŕéƀûîļţ.·············]';
+
+  @override
+  String get settingsScp => '[Šûþéŕ çĥéçķ þáŕţîáļ········]';
+
+  @override
+  String get scpHint =>
+      '[Çáļļšîĝñ šûĝĝéšţîöñš ŵĥîļé ýöû ļöĝ á çöñţéšţ. Ţĥé ļîšţ îš ñöţ þáŕţ öƒ Ţîðéļîñé: ýöû ðöŵñļöáð îţ ýöûŕšéļƒ.··········································]';
+
+  @override
+  String get scpNone => '[Ñö ļîšţ îñšţáļļéð·······]';
+
+  @override
+  String scpPackSummary(int count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ çáļļšîĝñš····]',
+      one: '[1 çáļļšîĝñ····]',
+    );
+    return '$_temp0[ · îñšţáļļéð ······]$date';
+  }
+
+  @override
+  String scpSource(String source) {
+    return '[Šöûŕçé: ····]$source';
+  }
+
+  @override
+  String get scpSourceFile => '[á ƒîļé ýöû îɱþöŕţéð········]';
+
+  @override
+  String get scpUrlLabel => '[Ðöŵñļöáð áððŕéšš (ĥţţþš)··········]';
+
+  @override
+  String get scpUrlHelper =>
+      '[Ţîðéļîñé çöñţáçţš ţĥîš áððŕéšš öñļý ŵĥéñ ýöû þŕéšš Ðöŵñļöáð, áñð šéñðš ñöţĥîñĝ áƀöûţ ýöû.····································]';
+
+  @override
+  String get actionDownload => '[Ðöŵñļöáð····]';
+
+  @override
+  String get actionImportFile => '[Îɱþöŕţ ƒîļé·····]';
+
+  @override
+  String get actionRemove => '[Ŕéɱöṽé···]';
+
+  @override
+  String get scpDownloading => '[Ðöŵñļöáðîñĝ ţĥé ļîšţ…·········]';
+
+  @override
+  String scpDownloadingSize(int kib) {
+    return '[Ðöŵñļöáðîñĝ ţĥé ļîšţ… ·········]$kib[ ĶîƁ··]';
+  }
+
+  @override
+  String scpInstalled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ çáļļšîĝñš····]',
+      one: '[1 çáļļšîĝñ····]',
+    );
+    return '[Ļîšţ îñšţáļļéð: ·······]$_temp0[.·]';
+  }
+
+  @override
+  String get scpRemoveTitle => '[Ŕéɱöṽé ţĥé ļîšţ?·······]';
+
+  @override
+  String get scpRemoveBody =>
+      '[Çáļļšîĝñ šûĝĝéšţîöñš šţöþ ûñţîļ ýöû îñšţáļļ á ļîšţ áĝáîñ.·······················]';
+
+  @override
+  String get scpRemoved => '[Ļîšţ ŕéɱöṽéð.······]';
+
+  @override
+  String get scpErrorInsecureUrl =>
+      '[Öñļý ĥţţþš áððŕéššéš áŕé áļļöŵéð.··············]';
+
+  @override
+  String get scpErrorInvalidUrl =>
+      '[Ţĥîš îš ñöţ á ûšáƀļé áððŕéšš. Îţ ɱûšţ ñöţ çöñţáîñ á ûšéŕ ñáɱé, á þáššŵöŕð, á ǫûéŕý (?…) öŕ á ƒŕáĝɱéñţ (#…).···········································]';
+
+  @override
+  String get scpErrorNetwork =>
+      '[Ţĥé šéŕṽéŕ çöûļð ñöţ ƀé ŕéáçĥéð. Çĥéçķ ýöûŕ çöññéçţîöñ áñð ţĥé áððŕéšš.·····························]';
+
+  @override
+  String get scpErrorTimeout =>
+      '[Ţĥé šéŕṽéŕ ţööķ ţöö ļöñĝ ţö áñšŵéŕ.··············]';
+
+  @override
+  String get scpErrorCertificate =>
+      '[Ţĥé çéŕţîƒîçáţé öƒ ţĥé šéŕṽéŕ îš ñöţ ţŕûšţéð, šö ñöţĥîñĝ ŵáš ðöŵñļöáðéð.·····························]';
+
+  @override
+  String get scpErrorTooLarge =>
+      '[Ţĥé ƒîļé îš ļáŕĝéŕ ţĥáñ 8 ṀîƁ. Îţ ŵáš ñöţ šţöŕéð.····················]';
+
+  @override
+  String scpErrorStatus(int code) {
+    return '[Ţĥé šéŕṽéŕ áñšŵéŕéð ŵîţĥ ĤŢŢÞ šţáţûš ···············]$code[.·]';
+  }
+
+  @override
+  String get scpErrorInvalidFile =>
+      '[Ţĥîš îš ñöţ á ṀÅŠŢÉŔ.ŠÇÞ ƒîļé (öñé çáļļšîĝñ þéŕ ļîñé).······················]';
+
+  @override
+  String get scpErrorUnreadable => '[Ţĥé ƒîļé çöûļð ñöţ ƀé ŕéáð.···········]';
+
+  @override
+  String get settingsContestDefinitions => '[Çöñţéšţ ðéƒîñîţîöñš········]';
+
+  @override
+  String get contestDefsHint =>
+      '[Ţĥé ŕûļéš öƒ éáçĥ çöñţéšţ áŕé ðáţá ƒîļéš. Ɓûñðļéð ðéƒîñîţîöñš áŕé áļŵáýš áṽáîļáƀļé; ýöû çáñ áðð ýöûŕ öŵñ.··········································]';
+
+  @override
+  String get contestDefBuiltin => '[Ɓûñðļéð···]';
+
+  @override
+  String get contestDefUser => '[Îɱþöŕţéð ƀý ýöû······]';
+
+  @override
+  String contestDefVersion(int version) {
+    return '[ṽéŕšîöñ ····]$version';
+  }
+
+  @override
+  String get actionImportDefinition => '[Îɱþöŕţ ðéƒîñîţîöñ·······]';
+
+  @override
+  String get importDefinitionHint =>
+      '[Å ĴŠÖÑ ƒîļé öƒ ûþ ţö 256 ĶîƁ.············]';
+
+  @override
+  String contestDefImported(String name) {
+    return '[Îɱþöŕţéð “····]$name[”.·]';
+  }
+
+  @override
+  String contestDefReplaced(String name) {
+    return '[Ûþðáţéð “····]$name[”.·]';
+  }
+
+  @override
+  String get contestDefRejectedTitle => '[Ðéƒîñîţîöñ ñöţ îɱþöŕţéð··········]';
+
+  @override
+  String contestDefTechnical(String path) {
+    return '[Ţéçĥñîçáļ ðéţáîļ: ········]$path';
+  }
+
+  @override
+  String get contestDefFileTooLarge =>
+      '[Ţĥé ƒîļé îš ļáŕĝéŕ ţĥáñ 256 ĶîƁ.·············]';
+
+  @override
+  String get contestDefNotText =>
+      '[Ţĥé ƒîļé îš ñöţ ṽáļîð ÛŢƑ-8 ţéẋţ.··············]';
+
+  @override
+  String get contestDefUnreadable => '[Ţĥé ƒîļé çöûļð ñöţ ƀé ŕéáð.···········]';
+
+  @override
+  String get contestDefIdClash =>
+      '[Ţĥîš îð ƀéļöñĝš ţö á ƀûñðļéð çöñţéšţ. Çĥööšé á ðîƒƒéŕéñţ îð îñ ţĥé ƒîļé.·····························]';
+
+  @override
+  String actionDeleteDefinition(String name) {
+    return '[Ðéļéţé ðéƒîñîţîöñ ········]$name';
+  }
+
+  @override
+  String contestDefDeleteTitle(String name) {
+    return '[Ðéļéţé “····]$name[”?·]';
+  }
+
+  @override
+  String get contestDefDeleteBody =>
+      '[Öñļý ţĥé ðéƒîñîţîöñ îš ŕéɱöṽéð. Ýöûŕ ǪŠÖš áŕé ñöţ áƒƒéçţéð.························]';
+
+  @override
+  String contestDefDeleted(String name) {
+    return '[Ðéļéţéð “····]$name[”.·]';
+  }
+
+  @override
+  String get contestDefInUse =>
+      '[Å çöñţéšţ šéššîöñ îñ ýöûŕ ļöĝ ûšéš ţĥîš ðéƒîñîţîöñ, šö îţ çáññöţ ƀé ðéļéţéð.·······························]';
+
+  @override
+  String get contestDefBuiltinNoDelete =>
+      '[Ɓûñðļéð ðéƒîñîţîöñš çáññöţ ƀé ðéļéţéð.················]';
+
+  @override
+  String get contestDefNotFound =>
+      '[Ţĥîš ðéƒîñîţîöñ ñö ļöñĝéŕ éẋîšţš.··············]';
+
+  @override
+  String get contestDefErrorTooLarge =>
+      '[Ţĥé ðéƒîñîţîöñ îš ļáŕĝéŕ ţĥáñ 256 ĶîƁ.················]';
+
+  @override
+  String get contestDefErrorMalformedJson =>
+      '[Ţĥé ƒîļé îš ñöţ ṽáļîð ĴŠÖÑ.···········]';
+
+  @override
+  String get contestDefErrorWrongType =>
+      '[Å ṽáļûé ĥáš ţĥé ŵŕöñĝ ţýþé.···········]';
+
+  @override
+  String get contestDefErrorUnknownKey =>
+      '[Ţĥé ƒîļé çöñţáîñš á šéţţîñĝ ţĥáţ Ţîðéļîñé ðöéš ñöţ ķñöŵ.·······················]';
+
+  @override
+  String get contestDefErrorMissingKey =>
+      '[Å ŕéǫûîŕéð šéţţîñĝ îš ɱîššîñĝ.············]';
+
+  @override
+  String get contestDefErrorUnsupportedSchema =>
+      '[Ţĥîš šçĥéɱá ṽéŕšîöñ îš ñöţ šûþþöŕţéð (öñļý ṽéŕšîöñ 1).······················]';
+
+  @override
+  String get contestDefErrorInvalidId =>
+      '[Ţĥé îð ɱûšţ ĥáṽé 1 ţö 64 çĥáŕáçţéŕš: ļöŵéŕ-çášé ļéţţéŕš, ðîĝîţš áñð ĥýþĥéñš.·······························]';
+
+  @override
+  String get contestDefErrorOutOfRange =>
+      '[Å ñûɱƀéŕ öŕ á ţéẋţ ļéñĝţĥ îš öûţšîðé ţĥé áļļöŵéð ŕáñĝé.······················]';
+
+  @override
+  String get contestDefErrorTooLong => '[Å ţéẋţ îš ţöö ļöñĝ.········]';
+
+  @override
+  String get contestDefErrorInvalidCharacters =>
+      '[Å ţéẋţ çöñţáîñš çöñţŕöļ çĥáŕáçţéŕš.··············]';
+
+  @override
+  String get contestDefErrorTooManyElements =>
+      '[Å ļîšţ ĥáš ţöö ɱáñý éñţŕîéš.············]';
+
+  @override
+  String get contestDefErrorTooFewElements =>
+      '[Å ļîšţ ĥáš ţöö ƒéŵ éñţŕîéš.···········]';
+
+  @override
+  String get contestDefErrorUnknownBand =>
+      '[Å ƀáñð ñáɱé îš ñöţ á ķñöŵñ ÅÐÎƑ ƀáñð.···············]';
+
+  @override
+  String get contestDefErrorUnknownValue =>
+      '[Å šéţţîñĝ ĥáš á ṽáļûé ţĥáţ Ţîðéļîñé ðöéš ñöţ ķñöŵ.····················]';
+
+  @override
+  String get contestDefErrorLastRuleHasWhen =>
+      '[Ţĥé ļášţ þöîñţš ŕûļé ɱûšţ áþþļý ţö éṽéŕý çöñţáçţ, šö îţ çáññöţ ĥáṽé á çöñðîţîöñ.································]';
+
+  @override
+  String get contestDefErrorVariantPredicateNotMine =>
+      '[Å ṽáŕîáñţ öƒ ţĥé éẋçĥáñĝé ɱáý ðéþéñð öñļý öñ ýöûŕ öŵñ šţáţîöñ.·························]';
+
+  @override
+  String get contestDefErrorElementPredicateNotTheirs =>
+      '[Å ŕéçéîṽéð éẋçĥáñĝé éļéɱéñţ ɱáý ðéþéñð öñļý öñ ţĥé öţĥéŕ šţáţîöñ.··························]';
+
+  @override
+  String get contestDefErrorElementWhenNotAllowed =>
+      '[Å šéñţ éẋçĥáñĝé éļéɱéñţ çáññöţ ĥáṽé á çöñðîţîöñ.····················]';
+
+  @override
+  String get contestDefErrorMultipleSerials =>
+      '[Öñé šîðé öƒ ţĥé éẋçĥáñĝé ɱáý çöñţáîñ öñļý öñé šéŕîáļ ñûɱƀéŕ.························]';
+
+  @override
+  String get contestDefErrorDuplicateField =>
+      '[Ţŵö éẋçĥáñĝé éļéɱéñţš šţöŕé îñţö ţĥé šáɱé ÅÐÎƑ ƒîéļð.······················]';
+
+  @override
+  String get contestDefErrorDuplicateId =>
+      '[Ţŵö ɱûļţîþļîéŕš ĥáṽé ţĥé šáɱé îð.··············]';
+
+  @override
+  String get contestDefErrorInvalidPlaceholder =>
+      '[Å ðéƒáûļţ ṽáļûé ûšéš áñ ûñķñöŵñ þļáçéĥöļðéŕ.··················]';
+
+  @override
+  String get contestDefErrorInvalidValue =>
+      '[Å ðéƒáûļţ ṽáļûé ðöéš ñöţ ƒîţ îţš éẋçĥáñĝé éļéɱéñţ.····················]';
+
+  @override
+  String get contestDefErrorDefaultNotAllowed =>
+      '[Å ðéƒáûļţ ṽáļûé îš ñöţ áļļöŵéð ĥéŕé (ŕéçéîṽéð šîðé áñð šéŕîáļ ñûɱƀéŕš).·····························]';
+
+  @override
+  String get contestDefErrorInvalidMultiplierSource =>
+      '[Å ɱûļţîþļîéŕ ûšéš á šöûŕçé ţĥáţ ðöéš ñöţ éẋîšţ öŕ ţĥáţ ñö ŕéçéîṽéð éẋçĥáñĝé çöñţáîñš.··································]';
+
+  @override
+  String get contestDefErrorEmptyPredicate =>
+      '[Å çöñðîţîöñ îš éɱþţý.·········]';
+
+  @override
+  String get contestDefErrorInvalidCombination =>
+      '[Ţĥé šçöŕé ţýþé ðöéš ñöţ ƒîţ ţĥé ɱûļţîþļîéŕš.··················]';
+
+  @override
+  String get contestDefErrorDuplicateValue =>
+      '[Ţĥé šáɱé ṽáļûé îš ļîšţéð ţŵîçé.·············]';
 }

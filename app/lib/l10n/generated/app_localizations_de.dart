@@ -536,17 +536,6 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String workedBefore(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'schon $count-mal gearbeitet',
-      one: 'schon einmal gearbeitet',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get explainSynced => 'Dieses QSO ist sicher in deinem Wavelog.';
 
   @override
@@ -1452,4 +1441,361 @@ class AppLocalizationsDe extends AppLocalizations {
   String contestLabelValue(String label, String value) {
     return '$label: $value';
   }
+
+  @override
+  String get workedHintNewCall => 'Neues Rufzeichen: noch nicht im Log';
+
+  @override
+  String get workedHintNewBand =>
+      'Schon gearbeitet, aber noch nicht auf diesem Band';
+
+  @override
+  String get workedHintNewMode =>
+      'Schon gearbeitet, aber noch nicht in dieser Betriebsart';
+
+  @override
+  String get workedHintNewSlot =>
+      'Schon gearbeitet, aber nicht mit dieser Kombination aus Band und Betriebsart';
+
+  @override
+  String get workedHintWorked =>
+      'Schon auf diesem Band und in dieser Betriebsart gearbeitet';
+
+  @override
+  String workedHintDetails(String date, String bands) {
+    return 'erstes QSO $date, Bänder $bands';
+  }
+
+  @override
+  String get settingsWorkedBefore => 'Index „Schon gearbeitet“';
+
+  @override
+  String get actionRebuildWorkedBefore =>
+      'Index „Schon gearbeitet“ neu aufbauen';
+
+  @override
+  String get rebuildWorkedBeforeHint =>
+      'Baut den Index aus deinem Log neu auf. QSOs von deinem Wavelog-Server kommen bei der nächsten Synchronisierung wieder hinzu.';
+
+  @override
+  String get rebuildWorkedBeforeConfirmTitle => 'Index neu aufbauen?';
+
+  @override
+  String get rebuildWorkedBeforeConfirmBody =>
+      'Dein Log bleibt unverändert. Hinweise zu Stationen, die du nur auf anderen Geräten oder in Wavelog gearbeitet hast, fehlen, bis die nächste Synchronisierung sie wieder geladen hat.';
+
+  @override
+  String get actionRebuild => 'Neu aufbauen';
+
+  @override
+  String get rebuildWorkedBeforeProgress => 'Index wird neu aufgebaut …';
+
+  @override
+  String get rebuildWorkedBeforeDone =>
+      'Index neu aufgebaut. Die nächste Synchronisierung ergänzt die QSOs von deinem Wavelog-Server.';
+
+  @override
+  String get rebuildWorkedBeforeFailed =>
+      'Der Index konnte nicht neu aufgebaut werden.';
+
+  @override
+  String get settingsScp => 'Super Check Partial';
+
+  @override
+  String get scpHint =>
+      'Rufzeichen-Vorschläge beim Loggen eines Contests. Die Liste gehört nicht zu Tideline: Du lädst sie selbst herunter.';
+
+  @override
+  String get scpNone => 'Keine Liste installiert';
+
+  @override
+  String scpPackSummary(int count, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Rufzeichen',
+      one: '1 Rufzeichen',
+    );
+    return '$_temp0 · installiert am $date';
+  }
+
+  @override
+  String scpSource(String source) {
+    return 'Quelle: $source';
+  }
+
+  @override
+  String get scpSourceFile => 'eine von dir importierte Datei';
+
+  @override
+  String get scpUrlLabel => 'Download-Adresse (https)';
+
+  @override
+  String get scpUrlHelper =>
+      'Tideline ruft diese Adresse nur ab, wenn du auf Herunterladen tippst, und sendet nichts über dich.';
+
+  @override
+  String get actionDownload => 'Herunterladen';
+
+  @override
+  String get actionImportFile => 'Datei importieren';
+
+  @override
+  String get actionRemove => 'Entfernen';
+
+  @override
+  String get scpDownloading => 'Liste wird heruntergeladen …';
+
+  @override
+  String scpDownloadingSize(int kib) {
+    return 'Liste wird heruntergeladen … $kib KiB';
+  }
+
+  @override
+  String scpInstalled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Rufzeichen',
+      one: '1 Rufzeichen',
+    );
+    return 'Liste installiert: $_temp0.';
+  }
+
+  @override
+  String get scpRemoveTitle => 'Liste entfernen?';
+
+  @override
+  String get scpRemoveBody =>
+      'Rufzeichen-Vorschläge entfallen, bis du wieder eine Liste installierst.';
+
+  @override
+  String get scpRemoved => 'Liste entfernt.';
+
+  @override
+  String get scpErrorInsecureUrl => 'Es sind nur https-Adressen erlaubt.';
+
+  @override
+  String get scpErrorInvalidUrl =>
+      'Das ist keine brauchbare Adresse. Sie darf keinen Benutzernamen, kein Passwort, keine Abfrage (?…) und kein Fragment (#…) enthalten.';
+
+  @override
+  String get scpErrorNetwork =>
+      'Der Server ist nicht erreichbar. Prüfe deine Verbindung und die Adresse.';
+
+  @override
+  String get scpErrorTimeout => 'Der Server hat zu lange nicht geantwortet.';
+
+  @override
+  String get scpErrorCertificate =>
+      'Dem Zertifikat des Servers wird nicht vertraut. Es wurde nichts heruntergeladen.';
+
+  @override
+  String get scpErrorTooLarge =>
+      'Die Datei ist größer als 8 MiB. Sie wurde nicht gespeichert.';
+
+  @override
+  String scpErrorStatus(int code) {
+    return 'Der Server hat mit dem HTTP-Status $code geantwortet.';
+  }
+
+  @override
+  String get scpErrorInvalidFile =>
+      'Das ist keine MASTER.SCP-Datei (ein Rufzeichen pro Zeile).';
+
+  @override
+  String get scpErrorUnreadable => 'Die Datei konnte nicht gelesen werden.';
+
+  @override
+  String get settingsContestDefinitions => 'Contest-Definitionen';
+
+  @override
+  String get contestDefsHint =>
+      'Die Regeln jedes Contests sind Datendateien. Mitgelieferte Definitionen sind immer da; du kannst eigene hinzufügen.';
+
+  @override
+  String get contestDefBuiltin => 'Mitgeliefert';
+
+  @override
+  String get contestDefUser => 'Von dir importiert';
+
+  @override
+  String contestDefVersion(int version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get actionImportDefinition => 'Definition importieren';
+
+  @override
+  String get importDefinitionHint => 'Eine JSON-Datei mit bis zu 256 KiB.';
+
+  @override
+  String contestDefImported(String name) {
+    return '„$name“ importiert.';
+  }
+
+  @override
+  String contestDefReplaced(String name) {
+    return '„$name“ aktualisiert.';
+  }
+
+  @override
+  String get contestDefRejectedTitle => 'Definition nicht importiert';
+
+  @override
+  String contestDefTechnical(String path) {
+    return 'Technische Angabe: $path';
+  }
+
+  @override
+  String get contestDefFileTooLarge => 'Die Datei ist größer als 256 KiB.';
+
+  @override
+  String get contestDefNotText => 'Die Datei ist kein gültiger UTF-8-Text.';
+
+  @override
+  String get contestDefUnreadable => 'Die Datei konnte nicht gelesen werden.';
+
+  @override
+  String get contestDefIdClash =>
+      'Diese ID gehört zu einem mitgelieferten Contest. Wähle in der Datei eine andere ID.';
+
+  @override
+  String actionDeleteDefinition(String name) {
+    return 'Definition $name löschen';
+  }
+
+  @override
+  String contestDefDeleteTitle(String name) {
+    return '„$name“ löschen?';
+  }
+
+  @override
+  String get contestDefDeleteBody =>
+      'Es wird nur die Definition entfernt. Deine QSOs bleiben unberührt.';
+
+  @override
+  String contestDefDeleted(String name) {
+    return '„$name“ gelöscht.';
+  }
+
+  @override
+  String get contestDefInUse =>
+      'Eine Contest-Sitzung in deinem Log verwendet diese Definition, sie kann daher nicht gelöscht werden.';
+
+  @override
+  String get contestDefBuiltinNoDelete =>
+      'Mitgelieferte Definitionen können nicht gelöscht werden.';
+
+  @override
+  String get contestDefNotFound => 'Diese Definition gibt es nicht mehr.';
+
+  @override
+  String get contestDefErrorTooLarge =>
+      'Die Definition ist größer als 256 KiB.';
+
+  @override
+  String get contestDefErrorMalformedJson =>
+      'Die Datei ist kein gültiges JSON.';
+
+  @override
+  String get contestDefErrorWrongType => 'Ein Wert hat den falschen Typ.';
+
+  @override
+  String get contestDefErrorUnknownKey =>
+      'Die Datei enthält eine Einstellung, die Tideline nicht kennt.';
+
+  @override
+  String get contestDefErrorMissingKey => 'Eine erforderliche Angabe fehlt.';
+
+  @override
+  String get contestDefErrorUnsupportedSchema =>
+      'Diese Schema-Version wird nicht unterstützt (nur Version 1).';
+
+  @override
+  String get contestDefErrorInvalidId =>
+      'Die ID muss 1 bis 64 Zeichen lang sein: Kleinbuchstaben, Ziffern und Bindestriche.';
+
+  @override
+  String get contestDefErrorOutOfRange =>
+      'Eine Zahl oder eine Textlänge liegt außerhalb des erlaubten Bereichs.';
+
+  @override
+  String get contestDefErrorTooLong => 'Ein Text ist zu lang.';
+
+  @override
+  String get contestDefErrorInvalidCharacters =>
+      'Ein Text enthält Steuerzeichen.';
+
+  @override
+  String get contestDefErrorTooManyElements =>
+      'Eine Liste hat zu viele Einträge.';
+
+  @override
+  String get contestDefErrorTooFewElements =>
+      'Eine Liste hat zu wenige Einträge.';
+
+  @override
+  String get contestDefErrorUnknownBand =>
+      'Ein Bandname ist kein bekanntes ADIF-Band.';
+
+  @override
+  String get contestDefErrorUnknownValue =>
+      'Eine Einstellung hat einen Wert, den Tideline nicht kennt.';
+
+  @override
+  String get contestDefErrorLastRuleHasWhen =>
+      'Die letzte Punkteregel muss für jedes QSO gelten und darf deshalb keine Bedingung haben.';
+
+  @override
+  String get contestDefErrorVariantPredicateNotMine =>
+      'Eine Variante des Austauschs darf nur von deiner eigenen Station abhängen.';
+
+  @override
+  String get contestDefErrorElementPredicateNotTheirs =>
+      'Ein empfangenes Austauschelement darf nur von der Gegenstation abhängen.';
+
+  @override
+  String get contestDefErrorElementWhenNotAllowed =>
+      'Ein gesendetes Austauschelement darf keine Bedingung haben.';
+
+  @override
+  String get contestDefErrorMultipleSerials =>
+      'Eine Seite des Austauschs darf nur eine laufende Nummer enthalten.';
+
+  @override
+  String get contestDefErrorDuplicateField =>
+      'Zwei Austauschelemente schreiben in dasselbe ADIF-Feld.';
+
+  @override
+  String get contestDefErrorDuplicateId =>
+      'Zwei Multiplikatoren haben dieselbe ID.';
+
+  @override
+  String get contestDefErrorInvalidPlaceholder =>
+      'Ein Standardwert verwendet einen unbekannten Platzhalter.';
+
+  @override
+  String get contestDefErrorInvalidValue =>
+      'Ein Standardwert passt nicht zu seinem Austauschelement.';
+
+  @override
+  String get contestDefErrorDefaultNotAllowed =>
+      'Ein Standardwert ist hier nicht erlaubt (empfangene Seite und laufende Nummern).';
+
+  @override
+  String get contestDefErrorInvalidMultiplierSource =>
+      'Ein Multiplikator verwendet eine Quelle, die es nicht gibt oder die kein empfangener Austausch enthält.';
+
+  @override
+  String get contestDefErrorEmptyPredicate => 'Eine Bedingung ist leer.';
+
+  @override
+  String get contestDefErrorInvalidCombination =>
+      'Die Wertungsart passt nicht zu den Multiplikatoren.';
+
+  @override
+  String get contestDefErrorDuplicateValue =>
+      'Derselbe Wert ist doppelt aufgeführt.';
 }
