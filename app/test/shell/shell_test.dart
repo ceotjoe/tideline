@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline/src/widgets/tide_gauge.dart';
+import 'package:tideline_domain/tideline_domain.dart';
 
 import '../support/pump_app.dart';
 
@@ -130,10 +131,17 @@ void main() {
         pending: 7,
       );
       // Every visible label comes from the pseudo-locale (bracketed).
+      // Data is never translated: band and mode names, callsigns, station
+      // names from the server.
+      final data = {
+        for (final b in Band.all) b.name,
+        for (final m in Mode.common) m.label,
+      };
       final texts = tester
           .widgetList<Text>(find.byType(Text))
           .map((t) => t.data ?? t.textSpan?.toPlainText() ?? '')
-          .where((s) => RegExp('[A-Za-z]').hasMatch(s));
+          .where((s) => RegExp('[A-Za-z]').hasMatch(s))
+          .where((s) => !data.contains(s) && !s.contains(testStation.name));
       for (final text in texts) {
         expect(text, contains('['), reason: 'Not localised: "$text"');
       }

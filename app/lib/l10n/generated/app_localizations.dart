@@ -464,6 +464,864 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'or'**
   String get shortcutsOr;
+
+  /// Onboarding welcome title.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Tideline'**
+  String get onboardingWelcomeTitle;
+
+  /// Onboarding welcome explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Tideline saves your QSOs on this device first, with or without a connection, and syncs them to your own Wavelog server whenever it can reach it. Your log is never sent anywhere else.'**
+  String get onboardingWelcomeBody;
+
+  /// Button starting setup.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to Wavelog'**
+  String get onboardingStart;
+
+  /// Onboarding progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String onboardingStepOf(int current, int total);
+
+  /// Onboarding step title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Wavelog server'**
+  String get onboardingServerTitle;
+
+  /// Onboarding server explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the address you use to open Wavelog in your browser. Wavelog 3.1 or newer is needed.'**
+  String get onboardingServerBody;
+
+  /// Label of the server URL field.
+  ///
+  /// In en, this message translates to:
+  /// **'Server address'**
+  String get fieldServerUrl;
+
+  /// Example server URL. Keep as an example address.
+  ///
+  /// In en, this message translates to:
+  /// **'https://log.example.org'**
+  String get fieldServerUrlHint;
+
+  /// Label of the account name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Name for this account (optional)'**
+  String get fieldAccountLabel;
+
+  /// Hint for the account name field.
+  ///
+  /// In en, this message translates to:
+  /// **'For example Personal or Club station'**
+  String get fieldAccountLabelHint;
+
+  /// Opt-in for plain HTTP on the LAN.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow an unencrypted connection (local network only)'**
+  String get onboardingAllowHttp;
+
+  /// Warning for plain HTTP.
+  ///
+  /// In en, this message translates to:
+  /// **'Only for a server in your own network. Your token and QSOs travel without encryption. Never use this over the internet.'**
+  String get onboardingAllowHttpWarning;
+
+  /// Generic continue button.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get actionContinue;
+
+  /// Generic back button.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get actionBack;
+
+  /// Onboarding step title.
+  ///
+  /// In en, this message translates to:
+  /// **'API token'**
+  String get onboardingTokenTitle;
+
+  /// Onboarding token explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'In Wavelog, open your user menu, choose API and create a new v2 token. Paste it here. It starts with wl2_ and is kept only in this device\'s secure storage.'**
+  String get onboardingTokenBody;
+
+  /// Label of the token field.
+  ///
+  /// In en, this message translates to:
+  /// **'API token'**
+  String get fieldToken;
+
+  /// Heading for required token scopes.
+  ///
+  /// In en, this message translates to:
+  /// **'Required permissions'**
+  String get onboardingScopesRequired;
+
+  /// Heading for optional token scopes.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional permissions'**
+  String get onboardingScopesOptional;
+
+  /// Explanation of a token scope. Keep the scope name.
+  ///
+  /// In en, this message translates to:
+  /// **'qso:write – upload your QSOs and correct uploaded ones'**
+  String get scopeQsoWrite;
+
+  /// Explanation of a token scope. Keep the scope name.
+  ///
+  /// In en, this message translates to:
+  /// **'qso:read – check the server before sending again, so nothing is duplicated'**
+  String get scopeQsoRead;
+
+  /// Explanation of a token scope. Keep the scope name.
+  ///
+  /// In en, this message translates to:
+  /// **'station:read – list your station locations'**
+  String get scopeStationRead;
+
+  /// Explanation of a token scope. Keep the scope name.
+  ///
+  /// In en, this message translates to:
+  /// **'qso:delete – also delete in Wavelog what you delete in Tideline'**
+  String get scopeQsoDelete;
+
+  /// Explanation of token scopes. Keep the scope names.
+  ///
+  /// In en, this message translates to:
+  /// **'contest:read and contest:write – contest sessions in Wavelog (3.2 or newer)'**
+  String get scopeContest;
+
+  /// Explanation of a token scope. Keep the scope name.
+  ///
+  /// In en, this message translates to:
+  /// **'lookup:read – online callsign lookups while connected'**
+  String get scopeLookup;
+
+  /// Screen-reader label: the token has this permission.
+  ///
+  /// In en, this message translates to:
+  /// **'granted'**
+  String get scopeGranted;
+
+  /// Screen-reader label: the token lacks this permission.
+  ///
+  /// In en, this message translates to:
+  /// **'missing'**
+  String get scopeMissing;
+
+  /// Button that checks server and token.
+  ///
+  /// In en, this message translates to:
+  /// **'Check connection'**
+  String get actionCheckToken;
+
+  /// Progress label.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your server…'**
+  String get onboardingChecking;
+
+  /// Onboarding step title.
+  ///
+  /// In en, this message translates to:
+  /// **'Station location'**
+  String get onboardingStationTitle;
+
+  /// Station step explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'New QSOs are uploaded to this station location. You can choose another one for each QSO.'**
+  String get onboardingStationBody;
+
+  /// Result of the server check.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to Wavelog 3.1. Contest sessions need Wavelog 3.2 or newer.'**
+  String get onboardingServerVersion31;
+
+  /// Result of the server check.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to Wavelog 3.2 or newer.'**
+  String get onboardingServerVersion32;
+
+  /// Shown when the account has no stations.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Wavelog account has no station locations yet. Create one in Wavelog under Station Setup, then check again.'**
+  String get onboardingNoStations;
+
+  /// Button finishing setup.
+  ///
+  /// In en, this message translates to:
+  /// **'Start logging'**
+  String get onboardingFinish;
+
+  /// Onboarding problem.
+  ///
+  /// In en, this message translates to:
+  /// **'That doesn\'t look like a web address. Use the address you open Wavelog with, for example https://log.example.org.'**
+  String get problemInvalidUrl;
+
+  /// Onboarding problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Unencrypted http:// is only possible for servers in your own network. Use https:// for servers on the internet.'**
+  String get problemInsecurePublicHttp;
+
+  /// Onboarding problem.
+  ///
+  /// In en, this message translates to:
+  /// **'This address uses unencrypted http://. Switch on “Allow an unencrypted connection” if the server is in your own network.'**
+  String get problemHttpNeedsOptIn;
+
+  /// Onboarding problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The server didn\'t answer. Check the address and your connection. You can also set Tideline up later.'**
+  String get problemUnreachable;
+
+  /// Onboarding problem.
+  ///
+  /// In en, this message translates to:
+  /// **'This server answers, but not like Wavelog 3.1 or newer. Check the address, or update Wavelog.'**
+  String get problemNoApiV2;
+
+  /// Onboarding problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog doesn\'t accept this token. Copy it again (it starts with wl2_) or create a new one.'**
+  String get problemTokenInvalid;
+
+  /// Onboarding problem.
+  ///
+  /// In en, this message translates to:
+  /// **'This token has expired. Create a new one in Wavelog.'**
+  String get problemTokenExpired;
+
+  /// Onboarding problem.
+  ///
+  /// In en, this message translates to:
+  /// **'This token is missing permissions Tideline needs: {scopes}. Create a token that includes them.'**
+  String problemMissingScopes(Object scopes);
+
+  /// Onboarding problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The server reported a problem. Please try again in a moment.'**
+  String get problemServerError;
+
+  /// Onboarding problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The connection isn\'t trusted, so nothing was sent. If this is your own server, check its certificate and try again.'**
+  String get problemCertificateRejected;
+
+  /// Trust-on-first-use dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown certificate'**
+  String get certTitle;
+
+  /// Trust-on-first-use explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your device doesn\'t trust this server\'s certificate. That is common for self-hosted servers. Only continue if the fingerprint below matches the one of your server. If it ever changes, Tideline will stop and ask you again.'**
+  String get certBody;
+
+  /// Label.
+  ///
+  /// In en, this message translates to:
+  /// **'SHA-256 fingerprint'**
+  String get certFingerprint;
+
+  /// Certificate validity.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid from {from} to {until}'**
+  String certValidity(String from, String until);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Trust this certificate'**
+  String get certTrust;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get certCancel;
+
+  /// Sync state chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get statusSynced;
+
+  /// Sync state chip: saved locally, not ready to upload.
+  ///
+  /// In en, this message translates to:
+  /// **'On device'**
+  String get statusLocal;
+
+  /// Sync state chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get statusQueued;
+
+  /// Sync state chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading'**
+  String get statusUploading;
+
+  /// Sync state chip: checking the server before retrying.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking'**
+  String get statusVerifying;
+
+  /// Sync state chip: conflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs decision'**
+  String get statusConflict;
+
+  /// Sync state chip: account token not working.
+  ///
+  /// In en, this message translates to:
+  /// **'Token problem'**
+  String get statusBlocked;
+
+  /// Sync state chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get statusRejected;
+
+  /// Unit.
+  ///
+  /// In en, this message translates to:
+  /// **'MHz'**
+  String get unitMhz;
+
+  /// Time zone label. Keep UTC.
+  ///
+  /// In en, this message translates to:
+  /// **'UTC'**
+  String get unitUtc;
+
+  /// Field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Callsign'**
+  String get fieldCallsign;
+
+  /// Field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Band'**
+  String get fieldBand;
+
+  /// Field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Mode'**
+  String get fieldMode;
+
+  /// Field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get fieldFrequency;
+
+  /// Field label. Keep RST.
+  ///
+  /// In en, this message translates to:
+  /// **'RST sent'**
+  String get fieldRstSent;
+
+  /// Field label. Keep RST.
+  ///
+  /// In en, this message translates to:
+  /// **'RST received'**
+  String get fieldRstRcvd;
+
+  /// Field label: operator name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get fieldName;
+
+  /// Field label: Maidenhead grid locator.
+  ///
+  /// In en, this message translates to:
+  /// **'Locator'**
+  String get fieldGrid;
+
+  /// Field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get fieldComment;
+
+  /// Field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Station location'**
+  String get fieldStation;
+
+  /// Field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Date and time'**
+  String get fieldDateUtc;
+
+  /// Field label.
+  ///
+  /// In en, this message translates to:
+  /// **'DXCC entity'**
+  String get fieldCountry;
+
+  /// Entry validation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a callsign, for example DL1ABC or EA8/DL1ABC/P.'**
+  String get issueInvalidCall;
+
+  /// Entry validation.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a band or enter a frequency.'**
+  String get issueMissingBand;
+
+  /// Entry validation.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a mode.'**
+  String get issueMissingMode;
+
+  /// Entry validation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the frequency in MHz (14.205) or kHz (14205).'**
+  String get issueInvalidFrequency;
+
+  /// Entry validation.
+  ///
+  /// In en, this message translates to:
+  /// **'This frequency is outside the selected band.'**
+  String get issueFrequencyOutsideBand;
+
+  /// Entry validation.
+  ///
+  /// In en, this message translates to:
+  /// **'A locator has 4, 6 or 8 characters, like JO40 or JO40hd.'**
+  String get issueInvalidGrid;
+
+  /// Warning after logging.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved. Choose a station location so this QSO can be uploaded.'**
+  String get issueNoStation;
+
+  /// Warning after logging.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved, but the time is in the future. Check your device clock.'**
+  String get issueTimeInFuture;
+
+  /// Screen-reader announcement after logging.
+  ///
+  /// In en, this message translates to:
+  /// **'QSO with {call} logged.'**
+  String qsoLoggedAnnouncement(String call);
+
+  /// Current QSO time shown in the form.
+  ///
+  /// In en, this message translates to:
+  /// **'Now: {time}'**
+  String timeNow(String time);
+
+  /// Manually chosen QSO time.
+  ///
+  /// In en, this message translates to:
+  /// **'Set: {time}'**
+  String timeManual(String time);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Change time'**
+  String get actionChangeTime;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Use current time'**
+  String get actionUseNow;
+
+  /// Offline DXCC information for a callsign.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · {continent} · CQ {cq} · ITU {itu}'**
+  String dxccSummary(String name, String continent, int cq, int itu);
+
+  /// Worked-before hint.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{worked once before} other{worked {count} times before}}'**
+  String workedBefore(int count);
+
+  /// Sync explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'This QSO is safely in your Wavelog.'**
+  String get explainSynced;
+
+  /// Sync explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this device only. Choose a station location so it can be uploaded.'**
+  String get explainLocal;
+
+  /// Sync explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this device and waiting for the next sync.'**
+  String get explainQueued;
+
+  /// Sync explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Being sent to Wavelog right now.'**
+  String get explainUploading;
+
+  /// Sync explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'The last attempt didn\'t finish cleanly. Tideline checks your Wavelog before trying again, so the QSO is never duplicated.'**
+  String get explainVerifying;
+
+  /// Sync explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'This QSO needs your decision.'**
+  String get explainConflict;
+
+  /// Sync explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog didn\'t accept this QSO. Correct it and it will be sent again.'**
+  String get explainRejected;
+
+  /// Sync explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting until the account\'s token works again. Nothing is lost.'**
+  String get explainBlocked;
+
+  /// Sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Wavelog wasn\'t reachable; Tideline will try again.'**
+  String get problemSyncNetwork;
+
+  /// Sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Wavelog asked Tideline to slow down; it will continue automatically.'**
+  String get problemSyncRateLimited;
+
+  /// Sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Wavelog reported an internal error.'**
+  String get problemSyncServerError;
+
+  /// Sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog found a problem with the QSO\'s data.'**
+  String get problemSyncInvalidData;
+
+  /// Sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The station location doesn\'t exist in Wavelog anymore, or the token can\'t use it. Choose another one.'**
+  String get problemSyncStationNotAllowed;
+
+  /// Sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The token lacks a permission for this. Create a token with the permissions listed in the manual.'**
+  String get problemSyncMissingPermission;
+
+  /// Sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog no longer accepts the token. Enter a new one in Settings.'**
+  String get problemSyncTokenInvalid;
+
+  /// Sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The token has expired. Enter a new one in Settings.'**
+  String get problemSyncTokenExpired;
+
+  /// Sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'You changed the time, mode, frequency or station. Wavelog can\'t change these on an uploaded QSO.'**
+  String get problemSyncReadOnlyFields;
+
+  /// Sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Another QSO with the same callsign, band and mode in the same minute is already in Wavelog, which can store only one of them. Correct the time if this is a separate contact, or delete one.'**
+  String get problemSyncSameMinuteTwin;
+
+  /// Detail view placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'This QSO no longer exists.'**
+  String get qsoNotFound;
+
+  /// Screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'QSO details'**
+  String get qsoDetails;
+
+  /// Prefix for the server's original message.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog said: {message}'**
+  String serverSaid(String message);
+
+  /// Conflict action: delete and re-create on the server.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace in Wavelog'**
+  String get conflictReplace;
+
+  /// Conflict action: keep the server version.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ll fix it in Wavelog'**
+  String get conflictKeepServer;
+
+  /// Hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Replacing needs a token with the qso:delete permission.'**
+  String get conflictReplaceNeedsDelete;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete QSO'**
+  String get actionDeleteQso;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this QSO?'**
+  String get deleteQsoTitle;
+
+  /// Dialog body.
+  ///
+  /// In en, this message translates to:
+  /// **'It will be removed from this device and, if it was uploaded, from your Wavelog.'**
+  String get deleteQsoBody;
+
+  /// Dialog body.
+  ///
+  /// In en, this message translates to:
+  /// **'It will be removed from this device. The copy in Wavelog stays, because the token has no delete permission.'**
+  String get deleteQsoLocalOnly;
+
+  /// Heading of the journal.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync history'**
+  String get syncHistory;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Logged on this device'**
+  String get journalLogged;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported from a file'**
+  String get journalImported;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Change waiting for upload'**
+  String get journalEditQueued;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending to Wavelog'**
+  String get journalRequestStarted;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Stored in Wavelog'**
+  String get journalUploaded;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Change applied in Wavelog'**
+  String get journalPatched;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted in Wavelog'**
+  String get journalDeletedOnServer;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted here; the Wavelog copy stays (no delete permission)'**
+  String get journalDeletedLocallyOnly;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Found in Wavelog, no duplicate created'**
+  String get journalVerified;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in Wavelog yet, will be sent'**
+  String get journalNotOnServer;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Will try again later'**
+  String get journalRetry;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected by Wavelog'**
+  String get journalRejected;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs your decision'**
+  String get journalConflict;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Decision made'**
+  String get journalConflictResolved;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Token stopped working'**
+  String get journalAccountBlocked;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync started'**
+  String get journalRunStarted;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync finished'**
+  String get journalRunFinished;
+
+  /// Empty log hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Log your first QSO above. It is saved on this device right away, with or without a connection.'**
+  String get logEmptyBodyReady;
+
+  /// Heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent QSOs'**
+  String get recentQsos;
+
+  /// Context panel hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a callsign to see its DXCC entity, zones and whether you worked it before. This works offline.'**
+  String get contextHint;
+
+  /// WAE-only entity line.
+  ///
+  /// In en, this message translates to:
+  /// **'WAE: {name}'**
+  String contextWae(String name);
+
+  /// ADIF DXCC code.
+  ///
+  /// In en, this message translates to:
+  /// **'DXCC entity {number}'**
+  String contextDxccNumber(int number);
+
+  /// Heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked before'**
+  String get contextWorkedBefore;
+
+  /// No previous QSOs with this station.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in your log yet – a new one!'**
+  String get contextNewOne;
+
+  /// Certificate subject line.
+  ///
+  /// In en, this message translates to:
+  /// **'Issued to: {value}'**
+  String certSubjectLine(String value);
+
+  /// Certificate issuer line.
+  ///
+  /// In en, this message translates to:
+  /// **'Issued by: {value}'**
+  String certIssuerLine(String value);
 }
 
 class _AppLocalizationsDelegate

@@ -14,7 +14,16 @@ import 'package:tideline/src/design/tokens/metrics.dart';
 /// asks for reduced motion.
 class TideGauge extends StatelessWidget {
   /// Creates a gauge for [pendingCount] unsynced QSOs.
-  const new({required this.pendingCount, this.height = 56, super.key});
+  const new({
+    required this.pendingCount,
+    this.height = 56,
+    this.showLabel = true,
+    super.key,
+  });
+
+  /// Whether to show the count as text inside the band. When false the
+  /// gauge is purely decorative and hidden from screen readers.
+  final bool showLabel;
 
   /// QSOs not yet synced.
   final int pendingCount;
@@ -36,6 +45,19 @@ class TideGauge extends StatelessWidget {
     final colors = context.colors;
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
 
+    if (!showLabel) {
+      return ExcludeSemantics(
+        child: SizedBox(
+          height: height,
+          child: _AnimatedWave(
+            level: levelFor(pendingCount),
+            water: colors.tideWater,
+            line: colors.tideLine,
+            animate: false,
+          ),
+        ),
+      );
+    }
     return Semantics(
       container: true,
       liveRegion: true,

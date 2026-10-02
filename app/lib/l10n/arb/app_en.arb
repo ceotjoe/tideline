@@ -249,5 +249,657 @@
   "shortcutsOr": "or",
   "@shortcutsOr": {
     "description": "Separator between two alternative shortcuts for the same command."
+  },
+  "onboardingWelcomeTitle": "Welcome to Tideline",
+  "@onboardingWelcomeTitle": {
+    "description": "Onboarding welcome title."
+  },
+  "onboardingWelcomeBody": "Tideline saves your QSOs on this device first, with or without a connection, and syncs them to your own Wavelog server whenever it can reach it. Your log is never sent anywhere else.",
+  "@onboardingWelcomeBody": {
+    "description": "Onboarding welcome explanation."
+  },
+  "onboardingStart": "Connect to Wavelog",
+  "@onboardingStart": {
+    "description": "Button starting setup."
+  },
+  "onboardingStepOf": "Step {current} of {total}",
+  "@onboardingStepOf": {
+    "description": "Onboarding progress.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingServerTitle": "Your Wavelog server",
+  "@onboardingServerTitle": {
+    "description": "Onboarding step title."
+  },
+  "onboardingServerBody": "Enter the address you use to open Wavelog in your browser. Wavelog 3.1 or newer is needed.",
+  "@onboardingServerBody": {
+    "description": "Onboarding server explanation."
+  },
+  "fieldServerUrl": "Server address",
+  "@fieldServerUrl": {
+    "description": "Label of the server URL field."
+  },
+  "fieldServerUrlHint": "https://log.example.org",
+  "@fieldServerUrlHint": {
+    "description": "Example server URL. Keep as an example address."
+  },
+  "fieldAccountLabel": "Name for this account (optional)",
+  "@fieldAccountLabel": {
+    "description": "Label of the account name field."
+  },
+  "fieldAccountLabelHint": "For example Personal or Club station",
+  "@fieldAccountLabelHint": {
+    "description": "Hint for the account name field."
+  },
+  "onboardingAllowHttp": "Allow an unencrypted connection (local network only)",
+  "@onboardingAllowHttp": {
+    "description": "Opt-in for plain HTTP on the LAN."
+  },
+  "onboardingAllowHttpWarning": "Only for a server in your own network. Your token and QSOs travel without encryption. Never use this over the internet.",
+  "@onboardingAllowHttpWarning": {
+    "description": "Warning for plain HTTP."
+  },
+  "actionContinue": "Continue",
+  "@actionContinue": {
+    "description": "Generic continue button."
+  },
+  "actionBack": "Back",
+  "@actionBack": {
+    "description": "Generic back button."
+  },
+  "onboardingTokenTitle": "API token",
+  "@onboardingTokenTitle": {
+    "description": "Onboarding step title."
+  },
+  "onboardingTokenBody": "In Wavelog, open your user menu, choose API and create a new v2 token. Paste it here. It starts with wl2_ and is kept only in this device's secure storage.",
+  "@onboardingTokenBody": {
+    "description": "Onboarding token explanation."
+  },
+  "fieldToken": "API token",
+  "@fieldToken": {
+    "description": "Label of the token field."
+  },
+  "onboardingScopesRequired": "Required permissions",
+  "@onboardingScopesRequired": {
+    "description": "Heading for required token scopes."
+  },
+  "onboardingScopesOptional": "Optional permissions",
+  "@onboardingScopesOptional": {
+    "description": "Heading for optional token scopes."
+  },
+  "scopeQsoWrite": "qso:write – upload your QSOs and correct uploaded ones",
+  "@scopeQsoWrite": {
+    "description": "Explanation of a token scope. Keep the scope name."
+  },
+  "scopeQsoRead": "qso:read – check the server before sending again, so nothing is duplicated",
+  "@scopeQsoRead": {
+    "description": "Explanation of a token scope. Keep the scope name."
+  },
+  "scopeStationRead": "station:read – list your station locations",
+  "@scopeStationRead": {
+    "description": "Explanation of a token scope. Keep the scope name."
+  },
+  "scopeQsoDelete": "qso:delete – also delete in Wavelog what you delete in Tideline",
+  "@scopeQsoDelete": {
+    "description": "Explanation of a token scope. Keep the scope name."
+  },
+  "scopeContest": "contest:read and contest:write – contest sessions in Wavelog (3.2 or newer)",
+  "@scopeContest": {
+    "description": "Explanation of token scopes. Keep the scope names."
+  },
+  "scopeLookup": "lookup:read – online callsign lookups while connected",
+  "@scopeLookup": {
+    "description": "Explanation of a token scope. Keep the scope name."
+  },
+  "scopeGranted": "granted",
+  "@scopeGranted": {
+    "description": "Screen-reader label: the token has this permission."
+  },
+  "scopeMissing": "missing",
+  "@scopeMissing": {
+    "description": "Screen-reader label: the token lacks this permission."
+  },
+  "actionCheckToken": "Check connection",
+  "@actionCheckToken": {
+    "description": "Button that checks server and token."
+  },
+  "onboardingChecking": "Checking your server…",
+  "@onboardingChecking": {
+    "description": "Progress label."
+  },
+  "onboardingStationTitle": "Station location",
+  "@onboardingStationTitle": {
+    "description": "Onboarding step title."
+  },
+  "onboardingStationBody": "New QSOs are uploaded to this station location. You can choose another one for each QSO.",
+  "@onboardingStationBody": {
+    "description": "Station step explanation."
+  },
+  "onboardingServerVersion31": "Connected to Wavelog 3.1. Contest sessions need Wavelog 3.2 or newer.",
+  "@onboardingServerVersion31": {
+    "description": "Result of the server check."
+  },
+  "onboardingServerVersion32": "Connected to Wavelog 3.2 or newer.",
+  "@onboardingServerVersion32": {
+    "description": "Result of the server check."
+  },
+  "onboardingNoStations": "Your Wavelog account has no station locations yet. Create one in Wavelog under Station Setup, then check again.",
+  "@onboardingNoStations": {
+    "description": "Shown when the account has no stations."
+  },
+  "onboardingFinish": "Start logging",
+  "@onboardingFinish": {
+    "description": "Button finishing setup."
+  },
+  "problemInvalidUrl": "That doesn't look like a web address. Use the address you open Wavelog with, for example https://log.example.org.",
+  "@problemInvalidUrl": {
+    "description": "Onboarding problem."
+  },
+  "problemInsecurePublicHttp": "Unencrypted http:// is only possible for servers in your own network. Use https:// for servers on the internet.",
+  "@problemInsecurePublicHttp": {
+    "description": "Onboarding problem."
+  },
+  "problemHttpNeedsOptIn": "This address uses unencrypted http://. Switch on “Allow an unencrypted connection” if the server is in your own network.",
+  "@problemHttpNeedsOptIn": {
+    "description": "Onboarding problem."
+  },
+  "problemUnreachable": "The server didn't answer. Check the address and your connection. You can also set Tideline up later.",
+  "@problemUnreachable": {
+    "description": "Onboarding problem."
+  },
+  "problemNoApiV2": "This server answers, but not like Wavelog 3.1 or newer. Check the address, or update Wavelog.",
+  "@problemNoApiV2": {
+    "description": "Onboarding problem."
+  },
+  "problemTokenInvalid": "Wavelog doesn't accept this token. Copy it again (it starts with wl2_) or create a new one.",
+  "@problemTokenInvalid": {
+    "description": "Onboarding problem."
+  },
+  "problemTokenExpired": "This token has expired. Create a new one in Wavelog.",
+  "@problemTokenExpired": {
+    "description": "Onboarding problem."
+  },
+  "problemMissingScopes": "This token is missing permissions Tideline needs: {scopes}. Create a token that includes them.",
+  "@problemMissingScopes": {
+    "description": "Onboarding problem.",
+    "placeholders": {
+      "scopes": {
+        "type": "Object"
+      }
+    }
+  },
+  "problemServerError": "The server reported a problem. Please try again in a moment.",
+  "@problemServerError": {
+    "description": "Onboarding problem."
+  },
+  "problemCertificateRejected": "The connection isn't trusted, so nothing was sent. If this is your own server, check its certificate and try again.",
+  "@problemCertificateRejected": {
+    "description": "Onboarding problem."
+  },
+  "certTitle": "Unknown certificate",
+  "@certTitle": {
+    "description": "Trust-on-first-use dialog title."
+  },
+  "certBody": "Your device doesn't trust this server's certificate. That is common for self-hosted servers. Only continue if the fingerprint below matches the one of your server. If it ever changes, Tideline will stop and ask you again.",
+  "@certBody": {
+    "description": "Trust-on-first-use explanation."
+  },
+  "certFingerprint": "SHA-256 fingerprint",
+  "@certFingerprint": {
+    "description": "Label."
+  },
+  "certValidity": "Valid from {from} to {until}",
+  "@certValidity": {
+    "description": "Certificate validity.",
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "until": {
+        "type": "String"
+      }
+    }
+  },
+  "certTrust": "Trust this certificate",
+  "@certTrust": {
+    "description": "Button."
+  },
+  "certCancel": "Cancel",
+  "@certCancel": {
+    "description": "Button."
+  },
+  "statusSynced": "Synced",
+  "@statusSynced": {
+    "description": "Sync state chip."
+  },
+  "statusLocal": "On device",
+  "@statusLocal": {
+    "description": "Sync state chip: saved locally, not ready to upload."
+  },
+  "statusQueued": "Waiting",
+  "@statusQueued": {
+    "description": "Sync state chip."
+  },
+  "statusUploading": "Uploading",
+  "@statusUploading": {
+    "description": "Sync state chip."
+  },
+  "statusVerifying": "Checking",
+  "@statusVerifying": {
+    "description": "Sync state chip: checking the server before retrying."
+  },
+  "statusConflict": "Needs decision",
+  "@statusConflict": {
+    "description": "Sync state chip: conflict."
+  },
+  "statusBlocked": "Token problem",
+  "@statusBlocked": {
+    "description": "Sync state chip: account token not working."
+  },
+  "statusRejected": "Rejected",
+  "@statusRejected": {
+    "description": "Sync state chip."
+  },
+  "unitMhz": "MHz",
+  "@unitMhz": {
+    "description": "Unit."
+  },
+  "unitUtc": "UTC",
+  "@unitUtc": {
+    "description": "Time zone label. Keep UTC."
+  },
+  "fieldCallsign": "Callsign",
+  "@fieldCallsign": {
+    "description": "Field label."
+  },
+  "fieldBand": "Band",
+  "@fieldBand": {
+    "description": "Field label."
+  },
+  "fieldMode": "Mode",
+  "@fieldMode": {
+    "description": "Field label."
+  },
+  "fieldFrequency": "Frequency",
+  "@fieldFrequency": {
+    "description": "Field label."
+  },
+  "fieldRstSent": "RST sent",
+  "@fieldRstSent": {
+    "description": "Field label. Keep RST."
+  },
+  "fieldRstRcvd": "RST received",
+  "@fieldRstRcvd": {
+    "description": "Field label. Keep RST."
+  },
+  "fieldName": "Name",
+  "@fieldName": {
+    "description": "Field label: operator name."
+  },
+  "fieldGrid": "Locator",
+  "@fieldGrid": {
+    "description": "Field label: Maidenhead grid locator."
+  },
+  "fieldComment": "Comment",
+  "@fieldComment": {
+    "description": "Field label."
+  },
+  "fieldStation": "Station location",
+  "@fieldStation": {
+    "description": "Field label."
+  },
+  "fieldDateUtc": "Date and time",
+  "@fieldDateUtc": {
+    "description": "Field label."
+  },
+  "fieldCountry": "DXCC entity",
+  "@fieldCountry": {
+    "description": "Field label."
+  },
+  "issueInvalidCall": "Enter a callsign, for example DL1ABC or EA8/DL1ABC/P.",
+  "@issueInvalidCall": {
+    "description": "Entry validation."
+  },
+  "issueMissingBand": "Choose a band or enter a frequency.",
+  "@issueMissingBand": {
+    "description": "Entry validation."
+  },
+  "issueMissingMode": "Choose a mode.",
+  "@issueMissingMode": {
+    "description": "Entry validation."
+  },
+  "issueInvalidFrequency": "Enter the frequency in MHz (14.205) or kHz (14205).",
+  "@issueInvalidFrequency": {
+    "description": "Entry validation."
+  },
+  "issueFrequencyOutsideBand": "This frequency is outside the selected band.",
+  "@issueFrequencyOutsideBand": {
+    "description": "Entry validation."
+  },
+  "issueInvalidGrid": "A locator has 4, 6 or 8 characters, like JO40 or JO40hd.",
+  "@issueInvalidGrid": {
+    "description": "Entry validation."
+  },
+  "issueNoStation": "Saved. Choose a station location so this QSO can be uploaded.",
+  "@issueNoStation": {
+    "description": "Warning after logging."
+  },
+  "issueTimeInFuture": "Saved, but the time is in the future. Check your device clock.",
+  "@issueTimeInFuture": {
+    "description": "Warning after logging."
+  },
+  "qsoLoggedAnnouncement": "QSO with {call} logged.",
+  "@qsoLoggedAnnouncement": {
+    "description": "Screen-reader announcement after logging.",
+    "placeholders": {
+      "call": {
+        "type": "String"
+      }
+    }
+  },
+  "timeNow": "Now: {time}",
+  "@timeNow": {
+    "description": "Current QSO time shown in the form.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "timeManual": "Set: {time}",
+  "@timeManual": {
+    "description": "Manually chosen QSO time.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "actionChangeTime": "Change time",
+  "@actionChangeTime": {
+    "description": "Button."
+  },
+  "actionUseNow": "Use current time",
+  "@actionUseNow": {
+    "description": "Button."
+  },
+  "dxccSummary": "{name} · {continent} · CQ {cq} · ITU {itu}",
+  "@dxccSummary": {
+    "description": "Offline DXCC information for a callsign.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "continent": {
+        "type": "String"
+      },
+      "cq": {
+        "type": "int"
+      },
+      "itu": {
+        "type": "int"
+      }
+    }
+  },
+  "workedBefore": "{count, plural, =1{worked once before} other{worked {count} times before}}",
+  "@workedBefore": {
+    "description": "Worked-before hint.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "explainSynced": "This QSO is safely in your Wavelog.",
+  "@explainSynced": {
+    "description": "Sync explanation."
+  },
+  "explainLocal": "Saved on this device only. Choose a station location so it can be uploaded.",
+  "@explainLocal": {
+    "description": "Sync explanation."
+  },
+  "explainQueued": "Saved on this device and waiting for the next sync.",
+  "@explainQueued": {
+    "description": "Sync explanation."
+  },
+  "explainUploading": "Being sent to Wavelog right now.",
+  "@explainUploading": {
+    "description": "Sync explanation."
+  },
+  "explainVerifying": "The last attempt didn't finish cleanly. Tideline checks your Wavelog before trying again, so the QSO is never duplicated.",
+  "@explainVerifying": {
+    "description": "Sync explanation."
+  },
+  "explainConflict": "This QSO needs your decision.",
+  "@explainConflict": {
+    "description": "Sync explanation."
+  },
+  "explainRejected": "Wavelog didn't accept this QSO. Correct it and it will be sent again.",
+  "@explainRejected": {
+    "description": "Sync explanation."
+  },
+  "explainBlocked": "Waiting until the account's token works again. Nothing is lost.",
+  "@explainBlocked": {
+    "description": "Sync explanation."
+  },
+  "problemSyncNetwork": "Your Wavelog wasn't reachable; Tideline will try again.",
+  "@problemSyncNetwork": {
+    "description": "Sync problem."
+  },
+  "problemSyncRateLimited": "Your Wavelog asked Tideline to slow down; it will continue automatically.",
+  "@problemSyncRateLimited": {
+    "description": "Sync problem."
+  },
+  "problemSyncServerError": "Your Wavelog reported an internal error.",
+  "@problemSyncServerError": {
+    "description": "Sync problem."
+  },
+  "problemSyncInvalidData": "Wavelog found a problem with the QSO's data.",
+  "@problemSyncInvalidData": {
+    "description": "Sync problem."
+  },
+  "problemSyncStationNotAllowed": "The station location doesn't exist in Wavelog anymore, or the token can't use it. Choose another one.",
+  "@problemSyncStationNotAllowed": {
+    "description": "Sync problem."
+  },
+  "problemSyncMissingPermission": "The token lacks a permission for this. Create a token with the permissions listed in the manual.",
+  "@problemSyncMissingPermission": {
+    "description": "Sync problem."
+  },
+  "problemSyncTokenInvalid": "Wavelog no longer accepts the token. Enter a new one in Settings.",
+  "@problemSyncTokenInvalid": {
+    "description": "Sync problem."
+  },
+  "problemSyncTokenExpired": "The token has expired. Enter a new one in Settings.",
+  "@problemSyncTokenExpired": {
+    "description": "Sync problem."
+  },
+  "problemSyncReadOnlyFields": "You changed the time, mode, frequency or station. Wavelog can't change these on an uploaded QSO.",
+  "@problemSyncReadOnlyFields": {
+    "description": "Sync problem."
+  },
+  "problemSyncSameMinuteTwin": "Another QSO with the same callsign, band and mode in the same minute is already in Wavelog, which can store only one of them. Correct the time if this is a separate contact, or delete one.",
+  "@problemSyncSameMinuteTwin": {
+    "description": "Sync problem."
+  },
+  "qsoNotFound": "This QSO no longer exists.",
+  "@qsoNotFound": {
+    "description": "Detail view placeholder."
+  },
+  "qsoDetails": "QSO details",
+  "@qsoDetails": {
+    "description": "Screen title."
+  },
+  "serverSaid": "Wavelog said: {message}",
+  "@serverSaid": {
+    "description": "Prefix for the server's original message.",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "conflictReplace": "Replace in Wavelog",
+  "@conflictReplace": {
+    "description": "Conflict action: delete and re-create on the server."
+  },
+  "conflictKeepServer": "I'll fix it in Wavelog",
+  "@conflictKeepServer": {
+    "description": "Conflict action: keep the server version."
+  },
+  "conflictReplaceNeedsDelete": "Replacing needs a token with the qso:delete permission.",
+  "@conflictReplaceNeedsDelete": {
+    "description": "Hint."
+  },
+  "actionDeleteQso": "Delete QSO",
+  "@actionDeleteQso": {
+    "description": "Button."
+  },
+  "deleteQsoTitle": "Delete this QSO?",
+  "@deleteQsoTitle": {
+    "description": "Dialog title."
+  },
+  "deleteQsoBody": "It will be removed from this device and, if it was uploaded, from your Wavelog.",
+  "@deleteQsoBody": {
+    "description": "Dialog body."
+  },
+  "deleteQsoLocalOnly": "It will be removed from this device. The copy in Wavelog stays, because the token has no delete permission.",
+  "@deleteQsoLocalOnly": {
+    "description": "Dialog body."
+  },
+  "syncHistory": "Sync history",
+  "@syncHistory": {
+    "description": "Heading of the journal."
+  },
+  "journalLogged": "Logged on this device",
+  "@journalLogged": {
+    "description": "Journal entry."
+  },
+  "journalImported": "Imported from a file",
+  "@journalImported": {
+    "description": "Journal entry."
+  },
+  "journalEditQueued": "Change waiting for upload",
+  "@journalEditQueued": {
+    "description": "Journal entry."
+  },
+  "journalRequestStarted": "Sending to Wavelog",
+  "@journalRequestStarted": {
+    "description": "Journal entry."
+  },
+  "journalUploaded": "Stored in Wavelog",
+  "@journalUploaded": {
+    "description": "Journal entry."
+  },
+  "journalPatched": "Change applied in Wavelog",
+  "@journalPatched": {
+    "description": "Journal entry."
+  },
+  "journalDeletedOnServer": "Deleted in Wavelog",
+  "@journalDeletedOnServer": {
+    "description": "Journal entry."
+  },
+  "journalDeletedLocallyOnly": "Deleted here; the Wavelog copy stays (no delete permission)",
+  "@journalDeletedLocallyOnly": {
+    "description": "Journal entry."
+  },
+  "journalVerified": "Found in Wavelog, no duplicate created",
+  "@journalVerified": {
+    "description": "Journal entry."
+  },
+  "journalNotOnServer": "Not in Wavelog yet, will be sent",
+  "@journalNotOnServer": {
+    "description": "Journal entry."
+  },
+  "journalRetry": "Will try again later",
+  "@journalRetry": {
+    "description": "Journal entry."
+  },
+  "journalRejected": "Rejected by Wavelog",
+  "@journalRejected": {
+    "description": "Journal entry."
+  },
+  "journalConflict": "Needs your decision",
+  "@journalConflict": {
+    "description": "Journal entry."
+  },
+  "journalConflictResolved": "Decision made",
+  "@journalConflictResolved": {
+    "description": "Journal entry."
+  },
+  "journalAccountBlocked": "Token stopped working",
+  "@journalAccountBlocked": {
+    "description": "Journal entry."
+  },
+  "journalRunStarted": "Sync started",
+  "@journalRunStarted": {
+    "description": "Journal entry."
+  },
+  "journalRunFinished": "Sync finished",
+  "@journalRunFinished": {
+    "description": "Journal entry."
+  },
+  "logEmptyBodyReady": "Log your first QSO above. It is saved on this device right away, with or without a connection.",
+  "@logEmptyBodyReady": {
+    "description": "Empty log hint."
+  },
+  "recentQsos": "Recent QSOs",
+  "@recentQsos": {
+    "description": "Heading."
+  },
+  "contextHint": "Type a callsign to see its DXCC entity, zones and whether you worked it before. This works offline.",
+  "@contextHint": {
+    "description": "Context panel hint."
+  },
+  "contextWae": "WAE: {name}",
+  "@contextWae": {
+    "description": "WAE-only entity line.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contextDxccNumber": "DXCC entity {number}",
+  "@contextDxccNumber": {
+    "description": "ADIF DXCC code.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "contextWorkedBefore": "Worked before",
+  "@contextWorkedBefore": {
+    "description": "Heading."
+  },
+  "contextNewOne": "Not in your log yet – a new one!",
+  "@contextNewOne": {
+    "description": "No previous QSOs with this station."
+  },
+  "certSubjectLine": "Issued to: {value}",
+  "@certSubjectLine": {
+    "description": "Certificate subject line.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "certIssuerLine": "Issued by: {value}",
+  "@certIssuerLine": {
+    "description": "Certificate issuer line.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
   }
 }

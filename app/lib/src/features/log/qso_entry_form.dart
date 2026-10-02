@@ -1,0 +1,457 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tideline/l10n/generated/app_localizations.dart';
+import 'package:tideline/src/design/theme.dart';
+import 'package:tideline/src/design/tokens/metrics.dart';
+import 'package:tideline/src/features/log/qso_entry_controller.dart';
+import 'package:tideline/src/features/log/qso_tile.dart';
+import 'package:tideline/src/services/app_services.dart';
+import 'package:tideline/src/widgets/upper_case_formatter.dart';
+import 'package:tideline_domain/tideline_domain.dart';
+
+/// Focus of the callsign field, shared with the log screen's commands.
+final callsignFocusProvider = Provider<FocusNode>((ref) {
+  final node = FocusNode(debugLabel: 'callsign');
+  ref.onDispose(node.dispose);
+  return node;
+});
+
+/// The QSO entry form. Logging is local and instant: it never waits for the
+/// network.
+class QsoEntryForm extends ConsumerStatefulWidget {
+  /// Creates the form.
+  const new({super.key});
+
+  @override
+  ConsumerState<QsoEntryForm> createState() => QsoEntryFormState();
+}
+
+/// State of [QsoEntryForm]; [submit] is called by the log command.
+class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
+  final _call = TextEditingController();
+  final _freq = TextEditingController();
+  final _rstSent = TextEditingController();
+  final _rstRcvd = TextEditingController();
+  final _name = TextEditingController();
+  final _grid = TextEditingController();
+  final _comment = TextEditingController();
+  int _revision = -1;
+  Timer? _clock;
+
+  @override
+  void initState() {
+    super.initState();
+    // Keep the displayed UTC time current.
+    _clock = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted && ref.read(qsoEntryProvider).manualTime == null) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _clock?.cancel();
+    for (final c in [
+      _call,
+      _freq,
+      _rstSent,
+      _rstRcvd,
+      _name,
+      _grid,
+      _comment,
+    ]) {
+      c.dispose();
+    }
+    super.dispose();
+  }
+
+  void _syncControllers(QsoEntry e) {
+    if (e.revision == _revision) return;
+    _revision = e.revision;
+    _call.text = e.call;
+    _freq.text = e.frequency;
+    _rstSent.text = e.rstSent;
+    _rstRcvd.text = e.rstRcvd;
+    _name.text = e.name;
+    _grid.text = e.grid;
+    _comment.text = e.comment;
+  }
+
+  /// Logs the entry. Announces the result for screen readers.
+  Future<void> submit() async {
+    final account = ref.read(activeAccountProvider);
+    if (account == null) return;
+    final l10n = AppLocalizations.of(context);
+    final direction = Directionality.of(context);
+    final view = View.of(context);
+    final result = await ref
+        .read(qsoEntryProvider.notifier)
+        .log(accountId: account.id);
+    final logged = result.logged;
+    if (logged != null) {
+      unawaited(
+        SemanticsService.sendAnnouncement(
+          view,
+          l10n.qsoLoggedAnnouncement(logged.call.spelledOut),
+          direction,
+        ),
+      );
+      ref.read(callsignFocusProvider).requestFocus();
+      // Opportunistic: upload right away if a connection exists.
+      unawaited(ref.read(syncControllerProvider.notifier).syncNow());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final entry = ref.watch(qsoEntryProvider);
+    final controller = ref.read(qsoEntryProvider.notifier);
+    final stations = ref.watch(stationsProvider).value ?? const [];
+    final account = ref.watch(activeAccountProvider);
+    final defaultRemote = int.tryParse(
+      ref
+              .watch(settingsValuesProvider)
+              .value?['account.${account?.id}.defaultStation'] ??
+          '',
+    );
+    if (entry.stationProfileId == null && stations.isNotEmpty) {
+      final initial =
+          stations.where((s) => s.remoteId == defaultRemote).firstOrNull ??
+          stations.where((s) => s.active).firstOrNull ??
+          stations.first;
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => controller.edit((e) => e.copyWith(stationProfileId: initial.id)),
+      );
+    }
+    _syncControllers(entry);
+    final metrics = context.metrics;
+    final issues = entry.issues;
+    String? errorFor(EntryIssue issue, String text) =>
+        issues.contains(issue) ? text : null;
+
+    final mode = entry.mode;
+    final time = entry.manualTime ?? UtcDateTime.now();
+    final gap = SizedBox(height: metrics.md, width: metrics.md);
+
+    Widget row(List<Widget> children) => LayoutBuilder(
+      builder: (context, c) => c.maxWidth < 360
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final (i, w) in children.indexed) ...[if (i > 0) gap, w],
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (final (i, w) in children.indexed) ...[
+                  if (i > 0) gap,
+                  Expanded(child: w),
+                ],
+              ],
+            ),
+    );
+
+    return FocusTraversalGroup(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextField(
+            controller: _call,
+            focusNode: ref.watch(callsignFocusProvider),
+            autofocus: true,
+            style: TidelineType.callsign.copyWith(
+              fontSize: 28,
+              color: context.colors.text,
+            ),
+            textCapitalization: TextCapitalization.characters,
+            autocorrect: false,
+            enableSuggestions: false,
+            // Apple Pencil handwriting (Scribble) stays enabled (the
+            // default); see docs/design/accessibility.md for known issues.
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9/]')),
+              UpperCaseFormatter(),
+            ],
+            decoration: InputDecoration(
+              labelText: l10n.fieldCallsign,
+              errorText: errorFor(
+                EntryIssue.invalidCall,
+                l10n.issueInvalidCall,
+              ),
+            ),
+            onChanged: (v) => controller.edit((e) => e.copyWith(call: v)),
+          ),
+          _DxccHint(call: entry.call),
+          gap,
+          row([
+            DropdownButtonFormField<Band>(
+              initialValue: entry.band,
+              isExpanded: true,
+              decoration: InputDecoration(
+                labelText: l10n.fieldBand,
+                errorText: errorFor(
+                  EntryIssue.missingBand,
+                  l10n.issueMissingBand,
+                ),
+              ),
+              items: [
+                for (final b in Band.all)
+                  DropdownMenuItem(value: b, child: Text(b.name)),
+              ],
+              onChanged: (b) => controller.edit((e) => e.copyWith(band: b)),
+            ),
+            DropdownButtonFormField<Mode>(
+              initialValue: entry.mode,
+              isExpanded: true,
+              decoration: InputDecoration(
+                labelText: l10n.fieldMode,
+                errorText: errorFor(
+                  EntryIssue.missingMode,
+                  l10n.issueMissingMode,
+                ),
+              ),
+              items: [
+                for (final m in {...Mode.common, ?entry.mode})
+                  DropdownMenuItem(value: m, child: Text(m.label)),
+              ],
+              onChanged: (m) => controller.edit((e) => e.copyWith(mode: m)),
+            ),
+            TextField(
+              controller: _freq,
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+              decoration: InputDecoration(
+                labelText: l10n.fieldFrequency,
+                suffixText: l10n.unitMhz,
+                errorText:
+                    errorFor(
+                      EntryIssue.invalidFrequency,
+                      l10n.issueInvalidFrequency,
+                    ) ??
+                    errorFor(
+                      EntryIssue.frequencyOutsideBand,
+                      l10n.issueFrequencyOutsideBand,
+                    ),
+              ),
+              onChanged: controller.setFrequency,
+            ),
+          ]),
+          gap,
+          row([
+            TextField(
+              controller: _rstSent,
+              decoration: InputDecoration(
+                labelText: l10n.fieldRstSent,
+                hintText: mode?.defaultReport,
+              ),
+              onChanged: (v) => controller.edit((e) => e.copyWith(rstSent: v)),
+            ),
+            TextField(
+              controller: _rstRcvd,
+              decoration: InputDecoration(
+                labelText: l10n.fieldRstRcvd,
+                hintText: mode?.defaultReport,
+              ),
+              onChanged: (v) => controller.edit((e) => e.copyWith(rstRcvd: v)),
+            ),
+          ]),
+          gap,
+          row([
+            TextField(
+              controller: _name,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(labelText: l10n.fieldName),
+              onChanged: (v) => controller.edit((e) => e.copyWith(name: v)),
+            ),
+            TextField(
+              controller: _grid,
+              autocorrect: false,
+              inputFormatters: [UpperCaseFormatter()],
+              decoration: InputDecoration(
+                labelText: l10n.fieldGrid,
+                errorText: errorFor(
+                  EntryIssue.invalidGrid,
+                  l10n.issueInvalidGrid,
+                ),
+              ),
+              onChanged: (v) => controller.edit((e) => e.copyWith(grid: v)),
+            ),
+          ]),
+          gap,
+          TextField(
+            controller: _comment,
+            decoration: InputDecoration(labelText: l10n.fieldComment),
+            onChanged: (v) => controller.edit((e) => e.copyWith(comment: v)),
+          ),
+          gap,
+          if (stations.isNotEmpty)
+            DropdownButtonFormField<String>(
+              initialValue: entry.stationProfileId,
+              isExpanded: true,
+              decoration: InputDecoration(labelText: l10n.fieldStation),
+              items: [
+                for (final s in stations)
+                  DropdownMenuItem(
+                    value: s.id,
+                    child: Text(
+                      '${s.name} (${s.callsign})',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+              ],
+              onChanged: (id) =>
+                  controller.edit((e) => e.copyWith(stationProfileId: id)),
+            ),
+          gap,
+          _TimeRow(
+            time: time,
+            manual: entry.manualTime != null,
+            onPick: (t) => controller.edit((e) => e.copyWith(manualTime: t)),
+            onNow: () =>
+                controller.edit((e) => e.copyWith(clearManualTime: true)),
+          ),
+          if (issues.contains(EntryIssue.timeInFuture) ||
+              issues.contains(EntryIssue.noStation))
+            Padding(
+              padding: EdgeInsets.only(top: metrics.sm),
+              child: Semantics(
+                liveRegion: true,
+                child: Text(
+                  issues.contains(EntryIssue.noStation)
+                      ? l10n.issueNoStation
+                      : l10n.issueTimeInFuture,
+                  style: TextStyle(color: context.colors.conflict.foreground),
+                ),
+              ),
+            ),
+          gap,
+          Wrap(
+            alignment: WrapAlignment.end,
+            spacing: metrics.sm,
+            runSpacing: metrics.sm,
+            children: [
+              OutlinedButton(
+                onPressed: controller.clear,
+                child: Text(l10n.commandClearEntry),
+              ),
+              FilledButton.icon(
+                onPressed: submit,
+                icon: const Icon(Icons.check),
+                label: Text(l10n.commandLogQso),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TimeRow extends StatelessWidget {
+  const new({
+    required this.time,
+    required this.manual,
+    required this.onPick,
+    required this.onNow,
+  });
+
+  final UtcDateTime time;
+  final bool manual;
+  final ValueChanged<UtcDateTime> onPick;
+  final VoidCallback onNow;
+
+  Future<void> _pick(BuildContext context) async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: time.value,
+      firstDate: DateTime.utc(1930),
+      lastDate: DateTime.now().toUtc().add(const Duration(days: 1)),
+    );
+    if (date == null || !context.mounted) return;
+    final clock = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: time.value.hour, minute: time.value.minute),
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+        child: child!,
+      ),
+    );
+    if (clock == null) return;
+    onPick(
+      UtcDateTime(
+        DateTime.utc(date.year, date.month, date.day, clock.hour, clock.minute),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final t = time.value;
+    final text =
+        '${t.year}-${t.month.toString().padLeft(2, '0')}-'
+        '${t.day.toString().padLeft(2, '0')} ${utcClock(time)} ${l10n.unitUtc}';
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: context.metrics.sm,
+      children: [
+        Icon(Icons.schedule, color: context.colors.textSecondary),
+        Text(
+          manual ? l10n.timeManual(text) : l10n.timeNow(text),
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        TextButton(
+          onPressed: () => _pick(context),
+          child: Text(l10n.actionChangeTime),
+        ),
+        if (manual)
+          TextButton(onPressed: onNow, child: Text(l10n.actionUseNow)),
+      ],
+    );
+  }
+}
+
+class _DxccHint extends ConsumerWidget {
+  const new({required this.call});
+
+  final String call;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final db = ref.watch(dxccProvider).value;
+    final match = call.length >= 2 ? db?.resolve(call) : null;
+    if (match == null) return const SizedBox(height: 24);
+    final log = ref.watch(logProvider).value ?? const [];
+    final base = Callsign.tryParse(call)?.baseCall;
+    final before = base == null
+        ? 0
+        : log.where((q) => q.qso.call.baseCall == base).length;
+    return Padding(
+      padding: EdgeInsets.only(top: context.metrics.xs),
+      child: Semantics(
+        liveRegion: true,
+        child: Text(
+          [
+            l10n.dxccSummary(
+              match.entity.name,
+              match.continent,
+              match.cqz,
+              match.ituz,
+            ),
+            if (before > 0) l10n.workedBefore(before),
+          ].join(' · '),
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ),
+    );
+  }
+}

@@ -10,6 +10,7 @@ import 'package:tideline/src/design/tokens/color_tokens.dart';
 import 'package:tideline/src/features/settings/settings_screen.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/routing/router.dart';
+import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 
 /// The Tideline app.
@@ -25,13 +26,25 @@ class TidelineApp extends ConsumerStatefulWidget {
 }
 
 class _TidelineAppState extends ConsumerState<TidelineApp> {
-  late final GoRouter _router = widget.router ?? createRouter();
+  final _hasAccount = ValueNotifier<bool?>(null);
+  late final GoRouter _router =
+      widget.router ?? createRouter(hasAccount: _hasAccount);
+
+  @override
+  void dispose() {
+    _hasAccount.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final settings =
         ref.watch(appSettingsProvider).value ?? const AppSettings();
     final registry = ref.watch(commandRegistryProvider);
+    final accounts = ref.watch(accountsProvider);
+    if (accounts.hasValue) _hasAccount.value = accounts.value!.isNotEmpty;
+    // Keep the sync triggers (foreground, connectivity) alive.
+    ref.watch(syncControllerProvider);
 
     ThemeData themeFor(TidelineThemeVariant v) => buildTidelineTheme(
       variant: v,
