@@ -1,0 +1,302 @@
+import 'package:drift/drift.dart';
+import 'package:meta/meta.dart';
+import 'package:tideline_data/src/database/tideline_database.dart';
+import 'package:tideline_data/src/repositories/qso_row_mapping.dart';
+import 'package:tideline_data/src/repositories/sync_journal_repository.dart';
+import 'package:tideline_domain/tideline_domain.dart';
+
+/// A QSO with its sync status (null when it needs no sync anymore).
+@immutable
+class LoggedQso {
+  /// Creates the pair.
+  const new(this.qso, this.status);
+
+  /// The QSO.
+  final Qso qso;
+
+  /// Its sync status for its account.
+  final SyncStatus? status;
+}
+
+/// Writes and reads QSOs. Every write is one local transaction that also
+/// updates the sync status (via [SyncMachine]) and the journal, so logging
+/// never waits for the network and never loses track of a QSO.
+class QsoRepository {
+  /// Creates the repository.
+  new(this._db, this._clock, this._machine, {int Function()? nowMillis})
+    : _now = nowMillis ?? (() => DateTime.now().toUtc().millisecondsSinceEpoch),
+      _journal = SyncJournalRepository(_db);
+
+  final TidelineDatabase _db;
+  final HlcClock _clock;
+  final SyncMachine _machine;
+  final int Function() _now;
+  final SyncJournalRepository _journal;
+
+  /// Logs a new QSO.
+  Future<void> log(Qso qso) => _insert(qso, JournalEvent.logged);
+
+  /// Imports QSOs in one transaction. Returns how many were added.
+  Future<int> importAll(List<Qso> qsos) => _db.transaction(() async {
+    for (final q in qsos) {
+      await _insert(q, JournalEvent.imported);
+    }
+    return qsos.length;
+  });
+
+  Future<void> _insert(Qso qso, JournalEvent event) =>
+      _db.transaction(() async {
+        final hlc = _clock.now().toString();
+        await _db
+            .into(_db.qsos)
+            .insert(
+              qsoToCompanion(qso).copyWith(
+                originDeviceId: Value(_clock.deviceId),
+                hlcCreated: Value(hlc),
+                hlcModified: Value(hlc),
+                rev: const Value(1),
+              ),
+            );
+        final status = SyncMachine.initial(
+          complete: qso.stationProfileId != null,
+        );
+        await writeStatus(qso.id, qso.accountId, status);
+        await _journal.append(
+          accountId: qso.accountId,
+          qsoId: qso.id,
+          event: event,
+          at: _now(),
+          detail: {'call': qso.call.value, 'state': status.state.name},
+        );
+      });
+
+  /// Saves an edited QSO.
+  Future<void> update(Qso qso) => _db.transaction(() async {
+    final before = await find(qso.id);
+    if (before == null) throw StateError('QSO ${qso.id} not found');
+    final changesReadOnly = Qso.changesServerReadOnlyFields(before.qso, qso);
+    final row = await _row(qso.id);
+    await (_db.update(_db.qsos)..where((q) => q.id.equals(qso.id))).write(
+      qsoToCompanion(qso).copyWith(
+        hlcModified: Value(_clock.now().toString()),
+        rev: Value(row.rev + 1),
+      ),
+    );
+    var status = before.status;
+    if (status == null) return;
+    if (status.state == SyncState.local && qso.stationProfileId != null) {
+      status = _machine.apply(status, const QsoCompleted(), _now())!;
+    }
+    final next = _machine.apply(
+      status,
+      LocalEdit(changesReadOnlyFields: changesReadOnly),
+      _now(),
+    );
+    if (next != null) await writeStatus(qso.id, qso.accountId, next);
+    if (next?.state != before.status?.state ||
+        next?.operation == SyncOperation.patch) {
+      await _journal.append(
+        accountId: qso.accountId,
+        qsoId: qso.id,
+        event: next?.state == SyncState.conflict
+            ? JournalEvent.conflict
+            : JournalEvent.editQueued,
+        at: _now(),
+        detail: {'state': next?.state.name, 'problem': next?.problem?.name},
+      );
+    }
+  });
+
+  /// Deletes a QSO locally (soft delete) and, if it reached the server and
+  /// [canDeleteOnServer], queues the server delete.
+  Future<void> delete(String id, {required bool canDeleteOnServer}) =>
+      _db.transaction(() async {
+        final current = await find(id);
+        if (current == null) return;
+        final row = await _row(id);
+        await (_db.update(_db.qsos)..where((q) => q.id.equals(id))).write(
+          QsosCompanion(
+            deletedAt: Value(_now()),
+            hlcModified: Value(_clock.now().toString()),
+            rev: Value(row.rev + 1),
+          ),
+        );
+        final status = current.status;
+        if (status == null) return;
+        final next = _machine.apply(
+          status,
+          LocalDelete(canDeleteOnServer: canDeleteOnServer),
+          _now(),
+        );
+        final accountId = current.qso.accountId;
+        if (next == null) {
+          await _deleteStatus(id, accountId);
+          if (status.remoteQsoId != null) {
+            await _journal.append(
+              accountId: accountId,
+              qsoId: id,
+              event: JournalEvent.deletedLocallyOnly,
+              at: _now(),
+              detail: {'remoteId': status.remoteQsoId},
+            );
+          }
+        } else {
+          await writeStatus(id, accountId, next);
+        }
+      });
+
+  /// The user's decision on a conflict (ADR 0016).
+  Future<void> resolveConflict(String id, {required bool replaceOnServer}) =>
+      _db.transaction(() async {
+        final current = await find(id);
+        final status = current?.status;
+        if (current == null || status == null) return;
+        final next = _machine.apply(
+          status,
+          ConflictResolved(replaceOnServer: replaceOnServer),
+          _now(),
+        )!;
+        await writeStatus(id, current.qso.accountId, next);
+        await _journal.append(
+          accountId: current.qso.accountId,
+          qsoId: id,
+          event: JournalEvent.conflictResolved,
+          at: _now(),
+          detail: {'replaceOnServer': replaceOnServer},
+        );
+      });
+
+  /// One QSO (including soft-deleted ones) with its status.
+  Future<LoggedQso?> find(String id) async {
+    final row = await (_db.select(
+      _db.qsos,
+    )..where((q) => q.id.equals(id))).getSingleOrNull();
+    if (row == null) return null;
+    return LoggedQso(qsoFromRow(row), await readStatus(id, row.accountId));
+  }
+
+  /// The log of [accountId], newest first, without deleted QSOs.
+  Stream<List<LoggedQso>> watchLog(String accountId, {int limit = 500}) {
+    final query =
+        _db.select(_db.qsos).join([
+            leftOuterJoin(
+              _db.qsoSync,
+              _db.qsoSync.qsoId.equalsExp(_db.qsos.id) &
+                  _db.qsoSync.accountId.equalsExp(_db.qsos.accountId),
+            ),
+          ])
+          ..where(
+            _db.qsos.accountId.equals(accountId) & _db.qsos.deletedAt.isNull(),
+          )
+          ..orderBy([OrderingTerm.desc(_db.qsos.timeOn)])
+          ..limit(limit);
+    return query.watch().map(
+      (rows) => [
+        for (final r in rows)
+          LoggedQso(
+            qsoFromRow(r.readTable(_db.qsos)),
+            _statusFromRow(r.readTableOrNull(_db.qsoSync)),
+          ),
+      ],
+    );
+  }
+
+  /// QSOs of [accountId] the engine may work on now, oldest first.
+  Future<List<LoggedQso>> due(String accountId, int nowMillis) async {
+    final rows =
+        await (_db.select(_db.qsoSync)..where(
+              (s) =>
+                  s.accountId.equals(accountId) &
+                  s.state.isIn([
+                    SyncState.queued.name,
+                    SyncState.verifying.name,
+                  ]),
+            ))
+            .get();
+    final out = <LoggedQso>[];
+    for (final r in rows) {
+      final status = _statusFromRow(r)!;
+      if (!status.isDue(nowMillis)) continue;
+      final qso = await (_db.select(
+        _db.qsos,
+      )..where((q) => q.id.equals(r.qsoId))).getSingle();
+      out.add(LoggedQso(qsoFromRow(qso), status));
+    }
+    out.sort((a, b) => a.qso.timeOn.compareTo(b.qso.timeOn));
+    return out;
+  }
+
+  /// All sync rows of [accountId] (engine use: restart recovery, blocking).
+  Future<List<(String, SyncStatus)>> statuses(String accountId) async {
+    final rows = await (_db.select(
+      _db.qsoSync,
+    )..where((s) => s.accountId.equals(accountId))).get();
+    return [for (final r in rows) (r.qsoId, _statusFromRow(r)!)];
+  }
+
+  /// Local QSO id that already owns [remoteQsoId], if any.
+  Future<String?> ownerOfRemote(String accountId, int remoteQsoId) async {
+    final row =
+        await (_db.select(_db.qsoSync)..where(
+              (s) =>
+                  s.accountId.equals(accountId) &
+                  s.remoteQsoId.equals(remoteQsoId),
+            ))
+            .getSingleOrNull();
+    return row?.qsoId;
+  }
+
+  /// Persists [status] (engine and repository use).
+  Future<void> writeStatus(String qsoId, String accountId, SyncStatus status) =>
+      _db
+          .into(_db.qsoSync)
+          .insertOnConflictUpdate(
+            QsoSyncCompanion.insert(
+              qsoId: qsoId,
+              accountId: accountId,
+              state: status.state.name,
+              operation: Value(status.operation.name),
+              remoteQsoId: Value(status.remoteQsoId),
+              attempts: Value(status.attempts),
+              nextAttemptAt: Value(status.nextAttemptAt),
+              lastErrorCode: Value(status.problem?.name),
+              serverMessage: Value(status.serverMessage),
+            ),
+          );
+
+  /// Reads the status of [qsoId] for [accountId].
+  Future<SyncStatus?> readStatus(String qsoId, String accountId) async {
+    final row =
+        await (_db.select(_db.qsoSync)..where(
+              (s) => s.qsoId.equals(qsoId) & s.accountId.equals(accountId),
+            ))
+            .getSingleOrNull();
+    return _statusFromRow(row);
+  }
+
+  Future<void> _deleteStatus(String qsoId, String accountId) => (_db.delete(
+    _db.qsoSync,
+  )..where((s) => s.qsoId.equals(qsoId) & s.accountId.equals(accountId))).go();
+
+  /// Removes the sync row after the engine finished a server delete.
+  Future<void> clearStatus(String qsoId, String accountId) =>
+      _deleteStatus(qsoId, accountId);
+
+  Future<QsoRow> _row(String id) =>
+      (_db.select(_db.qsos)..where((q) => q.id.equals(id))).getSingle();
+
+  SyncStatus? _statusFromRow(QsoSyncRow? r) {
+    if (r == null) return null;
+    return SyncStatus(
+      state: SyncState.values.byName(r.state),
+      operation: SyncOperation.values.byName(r.operation),
+      remoteQsoId: r.remoteQsoId,
+      attempts: r.attempts,
+      nextAttemptAt: r.nextAttemptAt,
+      problem: r.lastErrorCode == null
+          ? null
+          : SyncProblem.values.asNameMap()[r.lastErrorCode],
+      serverMessage: r.serverMessage,
+    );
+  }
+}

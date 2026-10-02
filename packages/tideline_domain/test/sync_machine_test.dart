@@ -62,13 +62,22 @@ void main() {
       expect(s.problem, isNull);
     });
 
-    test('not found after verification → queued with backoff', () {
+    test('confirmed absent → queued and due immediately', () {
       final s = apply(
         st(SyncState.verifying, attempts: 2),
         const ReconcileNotFound(),
       )!;
       expect(s.state, SyncState.queued);
       expect(s.attempts, 3);
+      expect(s.isDue(now), isTrue);
+    });
+
+    test('a failed verification stays a verification (no blind upload)', () {
+      final s = apply(
+        st(SyncState.verifying),
+        const TransientFailure(SyncProblem.network),
+      )!;
+      expect(s.state, SyncState.verifying);
       expect(s.isDue(now), isFalse);
       expect(s.isDue(s.nextAttemptAt!), isTrue);
     });
@@ -84,6 +93,15 @@ void main() {
         expect(apply(st(other), const AppRestarted())!.state, other);
       }
     });
+  });
+
+  test('a same-minute twin becomes a conflict, fixed by editing', () {
+    var s = apply(st(SyncState.verifying), const TwinDetected())!;
+    expect(s.state, SyncState.conflict);
+    expect(s.problem, SyncProblem.sameMinuteTwin);
+    expect(s.remoteQsoId, isNull);
+    s = apply(s, const LocalEdit(changesReadOnlyFields: true))!;
+    expect(s.state, SyncState.queued);
   });
 
   group('retries', () {

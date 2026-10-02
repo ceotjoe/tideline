@@ -74,9 +74,10 @@ class SyncStatus {
   /// The server's message for the last problem (redacted), if any.
   final String? serverMessage;
 
-  /// Whether the worker may pick this QSO at [nowMillis].
+  /// Whether the worker may pick this QSO at [nowMillis]: queued uploads
+  /// and pending verifications whose backoff has elapsed.
   bool isDue(int nowMillis) =>
-      state == SyncState.queued &&
+      (state == SyncState.queued || state == SyncState.verifying) &&
       (nextAttemptAt == null || nextAttemptAt! <= nowMillis);
 
   SyncStatus _to(
@@ -172,6 +173,13 @@ final class ReconcileFound extends SyncEvent {
 
   /// The matching server QSO.
   final int remoteQsoId;
+}
+
+/// The server QSO matching this one already belongs to another local QSO
+/// (same call, minute, band, mode and station): Wavelog can store only one.
+final class TwinDetected extends SyncEvent {
+  /// Creates the event.
+  const new();
 }
 
 /// A reconcile query showed the QSO is not on the server.
@@ -337,18 +345,36 @@ class SyncMachine {
           attempts: 0,
         );
 
+      case TwinDetected():
+        if (s != SyncState.verifying && s != SyncState.uploading) invalid();
+        return status._to(
+          SyncState.conflict,
+          clearRemote: true,
+          problem: SyncProblem.sameMinuteTwin,
+        );
+
       case ReconcileNotFound():
         if (s != SyncState.verifying) invalid();
-        return _retryLater(
-          status,
-          status.problem ?? SyncProblem.network,
-          null,
-          nowMillis,
+        // Confirmed absent: safe to upload again, right away.
+        return status._to(
+          SyncState.queued,
+          attempts: status.attempts + 1,
+          problem: status.problem,
         );
 
       case TransientFailure(:final problem, :final retryAfter):
         if (s != SyncState.uploading && s != SyncState.verifying) invalid();
-        return _retryLater(status, problem, retryAfter, nowMillis);
+        // A failed verification stays a verification: never re-upload
+        // before the server was checked (ADR 0008).
+        return _retryLater(
+          status,
+          problem,
+          retryAfter,
+          nowMillis,
+          state: s == SyncState.verifying
+              ? SyncState.verifying
+              : SyncState.queued,
+        );
 
       case Rejected(:final problem, :final serverMessage):
         if (s != SyncState.uploading) invalid();
@@ -394,7 +420,11 @@ class SyncMachine {
                   )
                 : status._to(SyncState.queued, operation: SyncOperation.patch);
           case SyncState.conflict:
-            return status;
+            // A same-minute twin is resolved by editing (e.g. the time);
+            // the edited QSO is a new create.
+            return status.problem == SyncProblem.sameMinuteTwin
+                ? status._to(SyncState.queued, attempts: 0)
+                : status;
           case SyncState.uploading || SyncState.verifying || SyncState.blocked:
             // The engine re-reads the QSO after the current step; an edit
             // during a create is uploaded as a patch afterwards.
@@ -406,7 +436,8 @@ class SyncMachine {
         if (!onServer &&
             (s == SyncState.local ||
                 s == SyncState.queued ||
-                s == SyncState.rejected)) {
+                s == SyncState.rejected ||
+                s == SyncState.conflict)) {
           return null; // never reached the server
         }
         if (s == SyncState.uploading || s == SyncState.verifying) {
@@ -447,11 +478,12 @@ class SyncMachine {
     SyncStatus status,
     SyncProblem problem,
     Duration? retryAfter,
-    int nowMillis,
-  ) {
+    int nowMillis, {
+    SyncState state = SyncState.queued,
+  }) {
     final attempts = status.attempts + 1;
     return status._to(
-      SyncState.queued,
+      state,
       attempts: attempts,
       nextAttemptAt:
           nowMillis + (retryAfter ?? backoff(attempts)).inMilliseconds,
