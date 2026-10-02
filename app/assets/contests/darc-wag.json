@@ -53,11 +53,15 @@
           },
           {
             "kind": "serial",
-            "optional": true
+            "when": {
+              "theirDxccNot": 230
+            }
           },
           {
             "kind": "dok",
-            "optional": true
+            "when": {
+              "theirDxcc": 230
+            }
           }
         ]
       }
@@ -79,12 +83,21 @@
     },
     {
       "when": {
-        "myDxcc": 230
+        "myDxcc": 230,
+        "theirContinent": "EU"
       },
       "points": 3
     },
     {
       "when": {
+        "myDxcc": 230,
+        "theirDxccNot": 230
+      },
+      "points": 5
+    },
+    {
+      "when": {
+        "myDxccNot": 230,
         "theirDxcc": 230
       },
       "points": 3
@@ -97,19 +110,19 @@
     {
       "id": "dxcc",
       "source": "dxcc",
-      "per": "band",
+      "per": "bandMode",
       "when": {
         "myDxcc": 230,
-        "sameDxcc": false
+        "theirDxccNot": 230
       }
     },
     {
-      "id": "dok",
-      "source": "rcvd:dok",
-      "per": "band",
+      "id": "dok-district",
+      "source": "dokDistrict",
+      "per": "bandMode",
       "when": {
-        "theirDxcc": 230,
-        "sameDxcc": false
+        "myDxccNot": 230,
+        "theirDxcc": 230
       }
     }
   ],

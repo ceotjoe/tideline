@@ -29,6 +29,19 @@ final class ContestStation {
     ituz: match?.ituz,
   );
 
+  /// A copy with the given zones replacing the current ones (null keeps the
+  /// current value).
+  ContestStation withZones({int? cqz, int? ituz}) => ContestStation(
+    call: call,
+    dxcc: dxcc,
+    continent: continent,
+    cqz: cqz ?? this.cqz,
+    ituz: ituz ?? this.ituz,
+    grid: grid,
+    state: state,
+    dok: dok,
+  );
+
   /// Upper-case callsign.
   final String call;
 

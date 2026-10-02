@@ -15,10 +15,16 @@ final class ContestPredicate {
   const new({
     this.sameDxcc,
     this.sameContinent,
+    this.sameCqZone,
+    this.sameItuZone,
     this.myContinent,
     this.theirContinent,
+    this.myContinentNot,
+    this.theirContinentNot,
     this.myDxcc,
     this.theirDxcc,
+    this.myDxccNot,
+    this.theirDxccNot,
     this.modeCategory,
     this.band,
   });
@@ -40,10 +46,16 @@ final class ContestPredicate {
     return ContestPredicate(
       sameDxcc: flag('sameDxcc'),
       sameContinent: flag('sameContinent'),
+      sameCqZone: flag('sameCqZone'),
+      sameItuZone: flag('sameItuZone'),
       myContinent: many('myContinent', _continent),
       theirContinent: many('theirContinent', _continent),
+      myContinentNot: many('myContinentNot', _continent),
+      theirContinentNot: many('theirContinentNot', _continent),
       myDxcc: many('myDxcc', _dxcc),
       theirDxcc: many('theirDxcc', _dxcc),
+      myDxccNot: many('myDxccNot', _dxcc),
+      theirDxccNot: many('theirDxccNot', _dxcc),
       modeCategory: many(
         'modeCategory',
         (v, p) =>
@@ -56,10 +68,16 @@ final class ContestPredicate {
   static const Set<String> _keys = {
     'sameDxcc',
     'sameContinent',
+    'sameCqZone',
+    'sameItuZone',
     'myContinent',
     'theirContinent',
+    'myContinentNot',
+    'theirContinentNot',
     'myDxcc',
     'theirDxcc',
+    'myDxccNot',
+    'theirDxccNot',
     'modeCategory',
     'band',
   };
@@ -98,17 +116,37 @@ final class ContestPredicate {
   /// My and their continent are (true) or are not (false) equal.
   final bool? sameContinent;
 
+  /// My and their CQ zone are (true) or are not (false) equal. Their zone is
+  /// the received exchange value when there is one (see `ContestQso`).
+  final bool? sameCqZone;
+
+  /// My and their ITU zone are (true) or are not (false) equal. Their zone is
+  /// the received exchange value when there is one (see `ContestQso`).
+  final bool? sameItuZone;
+
   /// My continent is one of these.
   final List<String>? myContinent;
 
   /// Their continent is one of these.
   final List<String>? theirContinent;
 
+  /// My continent is known and none of these.
+  final List<String>? myContinentNot;
+
+  /// Their continent is known and none of these.
+  final List<String>? theirContinentNot;
+
   /// My DXCC entity is one of these.
   final List<int>? myDxcc;
 
   /// Their DXCC entity is one of these.
   final List<int>? theirDxcc;
+
+  /// My DXCC entity is known and none of these.
+  final List<int>? myDxccNot;
+
+  /// Their DXCC entity is known and none of these.
+  final List<int>? theirDxccNot;
 
   /// The QSO's mode category is one of these.
   final List<ModeCategory>? modeCategory;
@@ -120,10 +158,53 @@ final class ContestPredicate {
   bool get onlyMine =>
       sameDxcc == null &&
       sameContinent == null &&
+      sameCqZone == null &&
+      sameItuZone == null &&
       theirContinent == null &&
+      theirContinentNot == null &&
       theirDxcc == null &&
+      theirDxccNot == null &&
       modeCategory == null &&
       band == null;
+
+  /// Whether only `their*` conditions are set (the rule for received
+  /// exchange elements that depend on the other station).
+  bool get onlyTheirs =>
+      sameDxcc == null &&
+      sameContinent == null &&
+      sameCqZone == null &&
+      sameItuZone == null &&
+      myContinent == null &&
+      myContinentNot == null &&
+      myDxcc == null &&
+      myDxccNot == null &&
+      modeCategory == null &&
+      band == null;
+
+  /// Three-valued evaluation of the `their*` conditions against [them]:
+  /// true if they all hold, false if one definitely does not hold, null if
+  /// none fails but a needed value is unknown. Other conditions are ignored,
+  /// so use it with [onlyTheirs] predicates.
+  bool? matchesTheirs(ContestStation? them) {
+    var unknown = false;
+    bool? one<T>(List<T>? list, T? value, {required bool negate}) {
+      if (list == null) return true;
+      if (value == null) {
+        unknown = true;
+        return true;
+      }
+      return list.contains(value) != negate;
+    }
+
+    final results = [
+      one(theirContinent, them?.continent, negate: false),
+      one(theirContinentNot, them?.continent, negate: true),
+      one(theirDxcc, them?.dxcc, negate: false),
+      one(theirDxccNot, them?.dxcc, negate: true),
+    ];
+    if (results.any((r) => r == false)) return false;
+    return unknown ? null : true;
+  }
 
   /// Whether every set condition holds.
   bool matches({
@@ -147,6 +228,20 @@ final class ContestPredicate {
       if (myCont == null || theirCont == null) return false;
       if ((myCont == theirCont) != sameContCond) return false;
     }
+    final sameCqCond = sameCqZone;
+    if (sameCqCond != null) {
+      final mine = me?.cqz;
+      final theirs = them?.cqz;
+      if (mine == null || theirs == null) return false;
+      if ((mine == theirs) != sameCqCond) return false;
+    }
+    final sameItuCond = sameItuZone;
+    if (sameItuCond != null) {
+      final mine = me?.ituz;
+      final theirs = them?.ituz;
+      if (mine == null || theirs == null) return false;
+      if ((mine == theirs) != sameItuCond) return false;
+    }
     final myContCond = myContinent;
     if (myContCond != null &&
         (myCont == null || !myContCond.contains(myCont))) {
@@ -155,6 +250,25 @@ final class ContestPredicate {
     final theirContCond = theirContinent;
     if (theirContCond != null &&
         (theirCont == null || !theirContCond.contains(theirCont))) {
+      return false;
+    }
+    final myContNot = myContinentNot;
+    if (myContNot != null && (myCont == null || myContNot.contains(myCont))) {
+      return false;
+    }
+    final theirContNot = theirContinentNot;
+    if (theirContNot != null &&
+        (theirCont == null || theirContNot.contains(theirCont))) {
+      return false;
+    }
+    final myDxccNotCond = myDxccNot;
+    if (myDxccNotCond != null &&
+        (myDx == null || myDxccNotCond.contains(myDx))) {
+      return false;
+    }
+    final theirDxccNotCond = theirDxccNot;
+    if (theirDxccNotCond != null &&
+        (theirDx == null || theirDxccNotCond.contains(theirDx))) {
       return false;
     }
     final myDxccCond = myDxcc;
@@ -182,13 +296,23 @@ final class ContestPredicate {
   Map<String, Object?> toJson() => {
     if (sameDxcc != null) 'sameDxcc': sameDxcc,
     if (sameContinent != null) 'sameContinent': sameContinent,
+    if (sameCqZone != null) 'sameCqZone': sameCqZone,
+    if (sameItuZone != null) 'sameItuZone': sameItuZone,
     if (myContinent != null)
       'myContinent': ContestJson.compact(myContinent!, (v) => v),
     if (theirContinent != null)
       'theirContinent': ContestJson.compact(theirContinent!, (v) => v),
+    if (myContinentNot != null)
+      'myContinentNot': ContestJson.compact(myContinentNot!, (v) => v),
+    if (theirContinentNot != null)
+      'theirContinentNot': ContestJson.compact(theirContinentNot!, (v) => v),
     if (myDxcc != null) 'myDxcc': ContestJson.compact(myDxcc!, (v) => v),
     if (theirDxcc != null)
       'theirDxcc': ContestJson.compact(theirDxcc!, (v) => v),
+    if (myDxccNot != null)
+      'myDxccNot': ContestJson.compact(myDxccNot!, (v) => v),
+    if (theirDxccNot != null)
+      'theirDxccNot': ContestJson.compact(theirDxccNot!, (v) => v),
     if (modeCategory != null)
       'modeCategory': ContestJson.compact(modeCategory!, (v) => v.jsonName),
     if (band != null) 'band': ContestJson.compact(band!, (v) => v.name),

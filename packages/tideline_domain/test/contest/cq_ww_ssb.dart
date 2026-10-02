@@ -65,3 +65,41 @@ const String variantJson = '''
   "score": "pointsTimesMultipliers"
 }
 ''';
+
+/// A WAG-like definition using the extended rule language: received
+/// elements keyed on the other station, negated lists, zone predicates and
+/// the DOK district multiplier.
+const String elementWhenJson = '''
+{
+  "schema": 1,
+  "id": "alt-test",
+  "version": 1,
+  "name": "Alternatives (test)",
+  "modes": ["CW", "PHONE"],
+  "bands": ["80m", "40m", "20m"],
+  "exchange": {
+    "sent": [{ "kind": "rst" }, { "kind": "dok", "default": "{MY_DOK}" }],
+    "rcvd": [{ "kind": "rst" }],
+    "variants": [
+      {
+        "when": { "myDxcc": 230, "myContinentNot": "AF" },
+        "rcvd": [
+          { "kind": "rst" },
+          { "kind": "serial", "when": { "theirDxccNot": 230 } },
+          { "kind": "dok", "when": { "theirDxcc": 230 } }
+        ]
+      }
+    ]
+  },
+  "dupe": { "per": ["band", "mode"] },
+  "points": [
+    { "when": { "sameCqZone": true, "myDxccNot": [1, 291] }, "points": 1 },
+    { "when": { "sameItuZone": false, "theirContinentNot": ["AF"] }, "points": 2 },
+    { "points": 3 }
+  ],
+  "multipliers": [
+    { "id": "district", "source": "dokDistrict", "per": "bandMode" }
+  ],
+  "score": "pointsTimesMultipliers"
+}
+''';

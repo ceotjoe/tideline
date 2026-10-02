@@ -18,11 +18,22 @@ ContestDefinition load(String id) => ContestDefinition.parse(
   File('assets/contests/$id.json').readAsStringSync(),
 );
 
-ContestStation st(String call, int dxcc, String continent) =>
-    ContestStation(call: call, dxcc: dxcc, continent: continent);
+ContestStation st(
+  String call,
+  int dxcc,
+  String continent, {
+  int? cqz,
+  int? ituz,
+}) => ContestStation(
+  call: call,
+  dxcc: dxcc,
+  continent: continent,
+  cqz: cqz,
+  ituz: ituz,
+);
 
-final ContestStation de = st('DO1HOZ', 230, 'EU');
-final ContestStation us = st('W1AW', 291, 'NA');
+final ContestStation de = st('DO1HOZ', 230, 'EU', cqz: 14, ituz: 28);
+final ContestStation us = st('W1AW', 291, 'NA', cqz: 5, ituz: 8);
 final ContestStation fi = st('OH2AA', 224, 'EU');
 
 final UtcDateTime t0 = UtcDateTime(DateTime.utc(2026, 10, 24, 10));
@@ -268,76 +279,137 @@ void main() {
       expect(d.exchangeFor(de).sent[1].kind, ExchangeKind.power);
       expect(d.exchangeFor(de).rcvd[1].kind, ExchangeKind.state);
     });
+
+    // Alaska (6) and Hawaii (110) take part as DX stations (rules 2.3,
+    // 5.2.3.1).
+    // Me W1AW. KL7AA and KH6AA: 3 pts each, DXCC multipliers 6 and 110.
+    // Me KL7AA (DX): sends power, receives a state; W1AW 3 pts, state CT.
+    test('Alaska and Hawaii are DX', () {
+      final d = load('arrl-dx-cw');
+      final kl7 = st('KL7AA', 6, 'NA');
+      final s = score(d, [
+        qso(0, us, kl7, '20m', 'CW'),
+        qso(1, us, st('KH6AA', 110, 'OC'), '20m', 'CW'),
+        qso(2, us, st('VE3AA', 1, 'NA'), '20m', 'CW'),
+      ]);
+      expect((s.points, s.multipliers, s.total), (6, 2, 12));
+      expect(d.exchangeFor(kl7).sent[1].kind, ExchangeKind.power);
+      expect(d.exchangeFor(kl7).rcvd[1].kind, ExchangeKind.state);
+      final s2 = score(d, [
+        qso(0, kl7, us, '20m', 'CW', rcvd: {ExchangeKind.state: 'CT'}),
+        qso(
+          1,
+          kl7,
+          st('VE3AA', 1, 'NA'),
+          '20m',
+          'CW',
+          rcvd: {ExchangeKind.state: 'ON'},
+        ),
+        qso(2, kl7, st('KH6AA', 110, 'OC'), '20m', 'CW'),
+      ]);
+      expect((s2.points, s2.multipliers, s2.total), (6, 2, 12));
+    });
   });
 
   group('IARU HF', () {
-    // Me DO1HOZ (230 EU), mixed CW/phone, 20m. Same entity counts as the
-    // "same zone" case (approximation, see README).
-    //  1 K1ABC  SSB  zone 8  other continent  5 pts; zone 8/20m/PHONE
-    //  2 K1ABC  CW   zone 8  not a dupe       5 pts; zone 8/20m/CW
-    //  3 DL2XYZ SSB  zone 28 same entity      1 pt;  zone 28/20m/PHONE
-    //  4 OH2AA  SSB  zone 18 same continent   3 pts; zone 18/20m/PHONE
-    //  5 K1DEF  SSB  zone 8  other continent  5 pts; zone 8/20m/PHONE already
-    // Points 19, multipliers 4, score 76.
-    test('mixed mode from Europe', () {
+    // Me DO1HOZ (230 EU, ITU zone 28), mixed CW/phone, 20m.
+    //  1 K1ABC  SSB  zone 8  other continent         5 pts; zone 8
+    //  2 K1ABC  CW   zone 8  other mode, no dupe     5 pts; zone 8 already
+    //                        (zones count per band, not per mode)
+    //  3 DL2XYZ SSB  zone 28 same zone               1 pt;  zone 28
+    //  4 OH2AA  SSB  zone 18 same continent          3 pts; zone 18
+    //  5 K1DEF  SSB  zone 8  other continent         5 pts; zone 8 already
+    //  6 9A1AA  SSB  zone 28 other country, same zone 1 pt; zone 28 already
+    // Points 20, zones 3, score 60.
+    test('mixed mode from Europe; zones count per band, not per mode', () {
+      final d = load('iaru-hf');
+      ContestQso q(
+        int m,
+        String call,
+        int dxcc,
+        String cont,
+        String mode,
+        int zone,
+      ) => qso(
+        m,
+        de,
+        st(call, dxcc, cont),
+        '20m',
+        mode,
+        rcvd: {ExchangeKind.ituZone: '$zone'},
+      );
+      final s = score(d, [
+        q(0, 'K1ABC', 291, 'NA', 'USB', 8),
+        q(1, 'K1ABC', 291, 'NA', 'CW', 8),
+        q(2, 'DL2XYZ', 230, 'EU', 'USB', 28),
+        q(3, 'OH2AA', 224, 'EU', 'USB', 18),
+        q(4, 'K1DEF', 291, 'NA', 'USB', 8),
+        q(5, '9A1AA', 497, 'EU', 'USB', 28),
+      ]);
+      expect(
+        (s.qsos, s.dupes, s.points, s.multipliers, s.total),
+        (6, 0, 20, 3, 60),
+      );
+    });
+
+    // Me W1AW (USA, zone 8). The received zone decides, not the country:
+    // W6AA in zone 6 (same country, other zone, same continent) 3 pts;
+    // W2AA in zone 8 (same zone) 1 pt. The resolver's zone for the other
+    // station is overridden by the exchange.
+    test('same zone is decided by the received exchange', () {
       final d = load('iaru-hf');
       final s = score(d, [
         qso(
           0,
-          de,
-          st('K1ABC', 291, 'NA'),
+          us,
+          st('W6AA', 291, 'NA', ituz: 8),
           '20m',
-          'USB',
-          rcvd: {ExchangeKind.ituZone: '8'},
+          'CW',
+          rcvd: {ExchangeKind.ituZone: '6'},
         ),
         qso(
           1,
-          de,
-          st('K1ABC', 291, 'NA'),
+          us,
+          st('W2AA', 291, 'NA', ituz: 6),
           '20m',
           'CW',
           rcvd: {ExchangeKind.ituZone: '8'},
         ),
+      ]);
+      expect((s.points, s.multipliers, s.total), (4, 2, 8));
+    });
+
+    // Without a zone of my own the zone rule cannot apply: continent rules.
+    test('unknown zones fall through to the continent rules', () {
+      final d = load('iaru-hf');
+      final s = score(d, [
         qso(
-          2,
-          de,
+          0,
+          st('DO1HOZ', 230, 'EU'),
           st('DL2XYZ', 230, 'EU'),
           '20m',
-          'USB',
+          'CW',
           rcvd: {ExchangeKind.ituZone: '28'},
         ),
-        qso(3, de, fi, '20m', 'USB', rcvd: {ExchangeKind.ituZone: '18'}),
-        qso(
-          4,
-          de,
-          st('K1DEF', 291, 'NA'),
-          '20m',
-          'USB',
-          rcvd: {ExchangeKind.ituZone: '8'},
-        ),
       ]);
-      expect(
-        (s.qsos, s.dupes, s.points, s.multipliers, s.total),
-        (5, 0, 19, 4, 76),
-      );
+      expect(s.points, 3);
     });
   });
 
   group('WAG', () {
-    // Me DO1HOZ (DL). DL-DL 1 pt, DL-DX 3 pts; multiplier is the DXCC entity
-    // per band, and only for non-DL contacts.
-    //  1 20m SSB W1AW   291   3 pts; dxcc 291/20m
-    //  2 20m SSB DL2XYZ 230   1 pt;  no multiplier
-    //  3 20m SSB OH2AA  224   3 pts; dxcc 224/20m
-    //  4 40m SSB W1AW         3 pts; dxcc 291/40m
-    //  5 20m CW  OH2AA        not a dupe (other mode category), 3 pts;
-    //                         dxcc 224/20m already counted
-    //  6 20m SSB OH2AA        dupe of #3, 0 pts
-    // Points 13, multipliers 3, score 39.
+    // Me DO1HOZ (DL). DL-DL 1 pt, DL-Europe 3, DL-DX 5. The multiplier is
+    // the DXCC entity per band and mode category (not DL itself).
+    //  1 20m SSB W1AW   291 NA  5 pts; dxcc 291/20m/phone
+    //  2 20m SSB DL2XYZ 230     1 pt;  no multiplier
+    //  3 20m SSB OH2AA  224 EU  3 pts; dxcc 224/20m/phone
+    //  4 40m SSB W1AW           5 pts; dxcc 291/40m/phone
+    //  5 20m CW  OH2AA          not a dupe, 3 pts; dxcc 224/20m/cw (new)
+    //  6 20m SSB OH2AA          dupe of #3, 0 pts
+    // Points 17, multipliers 4, score 68.
     test('from Germany', () {
       final d = load('darc-wag');
       final s = score(d, [
-        qso(0, de, us, '20m', 'USB'),
+        qso(0, de, us, '20m', 'USB', rcvd: {ExchangeKind.serial: '12'}),
         qso(
           1,
           de,
@@ -353,47 +425,42 @@ void main() {
       ]);
       expect(
         (s.qsos, s.dupes, s.points, s.multipliers, s.total),
-        (5, 1, 13, 3, 39),
+        (5, 1, 17, 4, 68),
       );
     });
 
-    // Me OH2AA (224, non-DL). Only DL stations count, 3 pts; multiplier is
-    // the DOK per band.
-    //  1 20m DL1AA A01   3 pts; DOK A01/20m
-    //  2 20m DL2BB A02   3 pts; DOK A02/20m
-    //  3 20m DL3CC A01   3 pts; DOK A01/20m already counted
-    //  4 20m W1AW        0 pts (DX-DX), no multiplier
-    // Points 9, multipliers 2, score 18.
+    // Me OH2AA (224, non-DL). Only DL stations count, 3 pts; the multiplier
+    // is the first letter of the DOK per band and mode category; NM is no
+    // multiplier.
+    //  1 20m SSB DL1AA A01  3 pts; district A/20m/phone
+    //  2 20m SSB DL2BB B02  3 pts; district B/20m/phone
+    //  3 20m SSB DL3CC A15  3 pts; district A already counted
+    //  4 20m SSB DL4DD NM   3 pts; no multiplier
+    //  5 40m SSB DL1AA A01  3 pts; district A/40m/phone
+    //  6 20m CW  DL1AA A01  3 pts; district A/20m/cw
+    //  7 20m SSB W1AW       0 pts (DX-DX), no multiplier
+    // Points 18, multipliers 4, score 72.
     test('from outside Germany', () {
       final d = load('darc-wag');
+      ContestQso q(int m, String call, String band, String mode, String dok) =>
+          qso(
+            m,
+            fi,
+            st(call, 230, 'EU'),
+            band,
+            mode,
+            rcvd: {ExchangeKind.dok: dok},
+          );
       final s = score(d, [
-        qso(
-          0,
-          fi,
-          st('DL1AA', 230, 'EU'),
-          '20m',
-          'USB',
-          rcvd: {ExchangeKind.dok: 'A01'},
-        ),
-        qso(
-          1,
-          fi,
-          st('DL2BB', 230, 'EU'),
-          '20m',
-          'USB',
-          rcvd: {ExchangeKind.dok: 'A02'},
-        ),
-        qso(
-          2,
-          fi,
-          st('DL3CC', 230, 'EU'),
-          '20m',
-          'USB',
-          rcvd: {ExchangeKind.dok: 'A01'},
-        ),
-        qso(3, fi, us, '20m', 'USB'),
+        q(0, 'DL1AA', '20m', 'USB', 'A01'),
+        q(1, 'DL2BB', '20m', 'USB', 'B02'),
+        q(2, 'DL3CC', '20m', 'USB', 'A15'),
+        q(3, 'DL4DD', '20m', 'USB', 'NM'),
+        q(4, 'DL1AA', '40m', 'USB', 'A01'),
+        q(5, 'DL1AA', '20m', 'CW', 'A01'),
+        qso(6, fi, us, '20m', 'USB'),
       ]);
-      expect((s.points, s.multipliers, s.total), (9, 2, 18));
+      expect((s.points, s.multipliers, s.total), (18, 4, 72));
     });
 
     test('DL stations send a DOK, others a serial', () {
@@ -401,6 +468,28 @@ void main() {
       expect(d.exchangeFor(de).sent[1].kind, ExchangeKind.dok);
       expect(d.exchangeFor(fi).sent[1].kind, ExchangeKind.serial);
       expect(d.exchangeFor(fi).rcvd[1].kind, ExchangeKind.dok);
+    });
+
+    test('a DL station receives a serial from DX and a DOK from DL', () {
+      final rcvd = load('darc-wag').exchangeFor(de).rcvd;
+      List<ExchangePresence> presence(ContestStation? them) => [
+        for (final e in rcvd) e.presenceFor(them),
+      ];
+      expect(presence(us), [
+        ExchangePresence.required,
+        ExchangePresence.required,
+        ExchangePresence.absent,
+      ]);
+      expect(presence(st('DL1AA', 230, 'EU')), [
+        ExchangePresence.required,
+        ExchangePresence.absent,
+        ExchangePresence.required,
+      ]);
+      expect(presence(null), [
+        ExchangePresence.required,
+        ExchangePresence.optional,
+        ExchangePresence.optional,
+      ]);
     });
   });
 

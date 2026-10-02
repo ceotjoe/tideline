@@ -48,6 +48,20 @@ final class ContestQso {
 
   /// The received exchange values by element kind (normalised).
   final Map<ExchangeKind, String> rcvd;
+
+  /// Their station as the rules see it: [them], with the CQ and ITU zone
+  /// replaced by the received exchange value where the exchange carries one
+  /// (the received exchange takes precedence over the DXCC resolver).
+  ContestStation get themForRules => them.withZones(
+    cqz: _zone(ExchangeKind.cqZone),
+    ituz: _zone(ExchangeKind.ituZone),
+  );
+
+  int? _zone(ExchangeKind kind) {
+    final raw = rcvd[kind];
+    final value = raw == null ? null : kind.parse(raw).value;
+    return value == null ? null : int.tryParse(value);
+  }
 }
 
 /// Whether a QSO counts.
@@ -289,6 +303,7 @@ final class ContestScorer {
       return QsoScore(id: qso.id, status: QsoScoreStatus.dupe, points: 0);
     }
 
+    final them = qso.themForRules;
     var points = 0;
     if (definition.score == ScoreKind.qsos) {
       points = 1;
@@ -297,7 +312,7 @@ final class ContestScorer {
         if (rule.when == null ||
             rule.when!.matches(
               me: qso.me,
-              them: qso.them,
+              them: them,
               qsoBand: qso.band,
               category: category,
             )) {
@@ -315,7 +330,7 @@ final class ContestScorer {
       if (when != null &&
           !when.matches(
             me: qso.me,
-            them: qso.them,
+            them: them,
             qsoBand: qso.band,
             category: category,
           )) {
@@ -369,6 +384,13 @@ final class ContestScorer {
       case MultiplierSourceKind.grid4:
         final grid = qso.rcvd[ExchangeKind.grid]?.trim().toUpperCase();
         return grid != null && grid.length >= 4 ? grid.substring(0, 4) : null;
+      case MultiplierSourceKind.dokDistrict:
+        final raw = qso.rcvd[ExchangeKind.dok];
+        final dok = raw == null ? null : ExchangeKind.dok.parse(raw).value;
+        // "NM" (non-member) is explicitly no multiplier.
+        if (dok == null || dok == 'NM') return null;
+        final first = dok.codeUnitAt(0);
+        return first >= 0x41 && first <= 0x5a ? dok[0] : null;
       case MultiplierSourceKind.rcvd:
         final kind = source.element!;
         final raw = qso.rcvd[kind];

@@ -1,9 +1,10 @@
 # Contest definitions
 
 Contests are **data, not code** ([ADR 0018](../adr/0018-contest-definitions-as-data.md)). A definition is a JSON file.
-The bundled set lives in `app/assets/contests/` (next to `assets/reference/cty.csv`) and is loaded into `contest_definitions` (with
-`builtin = true`). Users can import their own files, which are validated with the same strict parser. Definitions are
-untrusted input: unknown keys are rejected, sizes are bounded, and every field is validated.
+The bundled set lives in `app/assets/contests/` (next to `assets/reference/cty.csv`) and is loaded into
+`contest_definitions` (with `builtin = true`). Users can import their own files, which are validated with the same
+strict parser. Definitions are untrusted input: unknown keys are rejected, sizes are bounded, and every field is
+validated.
 
 The domain type is `ContestDefinition` (`packages/tideline_domain/lib/src/contest/`). The parser rejects a file it
 does not fully understand rather than guessing.
@@ -47,7 +48,9 @@ does not fully understand rather than guessing.
 
 ## Fields
 
-Required keys: `schema`, `id`, `version`, `name`, `modes`, `bands`, `exchange`, `dupe`, `score`. The `points` field is required unless `score` is `qsos`. The `multipliers` field is optional (default empty). Both `modes` and `bands` must not be empty.
+Required keys: `schema`, `id`, `version`, `name`, `modes`, `bands`, `exchange`, `dupe`, `score`. The `points` field is
+required unless `score` is `qsos`. The `multipliers` field is optional (default empty). Both `modes` and `bands` must
+not be empty.
 
 | Key | Type | Meaning |
 |---|---|---|
@@ -84,44 +87,92 @@ Each element maps to one ADIF field, which is how it is stored on the QSO (ADIF 
 | `name` | `STX_STRING` | `NAME` | letters, ≤ 20 |
 | `text` | `STX_STRING` | `SRX_STRING` | `[A-Z0-9/]{1,12}` |
 
-An element may set `"label"` (an l10n key suffix matching `[a-z][a-zA-Z0-9]{0,31}`, e.g. `"label": "age"`), `"default"` (sent side only; never on `serial`; may use the
-placeholders `{MY_CQ_ZONE}`, `{MY_ITU_ZONE}`, `{MY_GRID4}`, `{MY_STATE}`, `{MY_DOK}`, which come from the station
-profile and session settings; a default without placeholders must itself be valid for its kind) and `"optional": true`.
+An element may set `"label"` (an l10n key suffix matching `[a-z][a-zA-Z0-9]{0,31}`, e.g. `"label": "age"`),
+`"default"` (sent side only; never on `serial`; may use the placeholders `{MY_CQ_ZONE}`, `{MY_ITU_ZONE}`, `{MY_GRID4}`,
+`{MY_STATE}`, `{MY_DOK}`, which come from the station profile and session settings; a default without placeholders must
+itself be valid for its kind), `"optional": true` and, on the received side only, `"when"` (see below).
+
+**Alternatives keyed on the other station:** a received element may declare `"when"` with `their*` predicates only
+(`theirDxcc`, `theirDxccNot`, `theirContinent`, `theirContinentNot`). The element is **required** when the predicate
+holds for the other station (or optional, if the element is also `optional`) and **absent** when it definitely does not
+hold. If the other station's data is unknown (for example, no DXCC yet because the callsign is incomplete), the element
+is **optional**. An absent element is not entered, not stored in ADIF, not exported to Cabrillo (no token) and takes no
+token from a shared `STX_STRING`/`SRX_STRING`; a value typed into it earlier is dropped without an error. WAG, for a DL
+station:
+
+```json
+"rcvd": [
+  { "kind": "rst" },
+  { "kind": "serial", "when": { "theirDxccNot": 230 } },
+  { "kind": "dok", "when": { "theirDxcc": 230 } }
+]
+```
+
+`ExchangeElement.presenceFor(them)` gives the `ExchangePresence` (`required`, `optional`, `absent`),
+`ResolvedExchange.checkRcvd(values, them: …)` validates a whole side and returns one `ExchangeCheck` per element
+(presence, normalised value, error), and `ExchangeMapping.toAdif`, `fromAdif` and `cabrilloTokens` take the same
+optional `them` argument. Without `them`, such elements are optional, which is the old behaviour.
 
 **Exception:** when one exchange has two elements that store into `STX_STRING` (or `SRX_STRING`), they are joined with
-a single space and split again on Cabrillo export. Each exchange may contain at most one `serial` per side. Two elements writing the same ADIF field on one side are rejected, except STX_STRING/SRX_STRING, which are joined.
+a single space and split again on Cabrillo export. Each exchange may contain at most one `serial` per side. Two elements
+writing the same ADIF field on one side are rejected, except STX_STRING/SRX_STRING, which are joined. This also holds
+for alternatives: two `serial` elements with disjoint `when`s are rejected.
 
 A variant must set `sent` or `rcvd` or both.
 
-**Normalization:** values are upper-cased and numbers lose leading zeros (`05` → `5`). Grids are normalised and must have 4 or 6 characters. The `name` kind accepts Unicode letters. The `power` kind accepts 1–99999, `KW`, `K` or `QRP`.
+**Normalization:** values are upper-cased and numbers lose leading zeros (`05` → `5`). Grids are normalised and must
+have 4 or 6 characters. The `name` kind accepts Unicode letters. The `power` kind accepts 1–99999, `KW`, `K` or `QRP`.
 
-**Complete exchange copy:** if no element of a side uses `STX_STRING`/`SRX_STRING`, that field receives all given values of the side in order, space-separated (including report and serial). If any element uses it, no copy is made.
+**Complete exchange copy:** if no element of a side uses `STX_STRING`/`SRX_STRING`, that field receives all given values
+of the side in order, space-separated (including report and serial). If any element uses it, no copy is made.
 
-**Reading back from ADIF:** a shared string field (STX_STRING/SRX_STRING) is split on whitespace and assigned in order. A single element takes the whole string. Missing tokens become empty.
+**Reading back from ADIF:** a shared string field (STX_STRING/SRX_STRING) is split on whitespace and assigned in order.
+A single element takes the whole string. Missing tokens become empty.
 
 ### Predicates (`when`)
 
-An empty `when {}` is rejected. All listed keys must hold (AND). Unknown keys are a parse error. Predicate values may be a single value or a list.
+An empty `when {}` is rejected. All listed keys must hold (AND). Unknown keys are a parse error. Predicate values may be
+a single value or a list.
 
 | Key | Value | Holds when |
 |---|---|---|
 | `sameDxcc` | bool | My and their DXCC entity are (not) equal. |
 | `sameContinent` | bool | My and their continent are (not) equal. |
+| `sameCqZone` | bool | My and their CQ zone are (not) equal. |
+| `sameItuZone` | bool | My and their ITU zone are (not) equal. |
 | `myContinent` / `theirContinent` | `AF` `AN` `AS` `EU` `NA` `OC` `SA` or list | Continent is one of these. |
+| `myContinentNot` / `theirContinentNot` | same | Continent is known and **not** one of these. |
 | `myDxcc` / `theirDxcc` | int (1–999) or list | DXCC entity number is one of these. |
+| `myDxccNot` / `theirDxccNot` | int (1–999) or list | DXCC entity number is known and **not** one of these. |
 | `modeCategory` | `CW` `PHONE` `DIGI` or list | The QSO's mode category. |
 | `band` | band or list | The QSO's band. |
 
-Their DXCC entity and continent come from the offline DXCC resolver (`Dxcc`), with the received exchange taking
-precedence when it carries a zone or DXCC. If a predicate needs data that is unknown, the rule does not match.
+Where each kind of predicate may be used:
+
+| Place | Allowed predicates |
+|---|---|
+| `points[].when`, `multipliers[].when` | all |
+| `exchange.variants[].when` | `my*` only (`myDxcc`, `myDxccNot`, `myContinent`, `myContinentNot`) |
+| `exchange.rcvd[].when` (and in variants) | `their*` only (`theirDxcc`, `theirDxccNot`, `theirContinent`, `theirContinentNot`) |
+| `exchange.sent[].when` | not allowed |
+
+Their DXCC entity and continent come from the offline DXCC resolver (`Dxcc`). Their CQ and ITU zone are the **received
+exchange value** when the exchange carries one (`cqZone`, `ituZone`; `ContestQso.themForRules`), and the resolver's zone
+otherwise; an invalid received value does not replace the resolver's. If a predicate needs data that is unknown, the
+rule does not match. That includes the negated forms and `sameCqZone: false` / `sameItuZone: false`: "not in the list"
+needs a known value, so a station with an unknown DXCC matches neither `theirDxcc: 291` nor `theirDxccNot: 291`.
 
 ### Dupe checks
 
-Calls are compared as typed (upper-cased), so DL1ABC and DL1ABC/P are different calls. The `mode` key in `dupe.per` refers to the ADIF main mode, where USB and LSB are both treated as SSB.
+Calls are compared as typed (upper-cased), so DL1ABC and DL1ABC/P are different calls. The `mode` key in `dupe.per`
+refers to the ADIF main mode, where USB and LSB are both treated as SSB.
 
 ### Multiplier sources
 
-The multiplier source must be `dxcc`, `wpxPrefix`, `grid4`, `continent` or `rcvd:<kind>`. The kinds `rcvd:rst` and `rcvd:serial` are rejected. Both `rcvd:<kind>` and `grid4` must refer to an element present in some received exchange (base or a variant). Multiplier ids match `[a-z0-9_-]{1,32}` and are unique. The `per` field means `band`, `bandMode` (band + mode category), or `contest`.
+The multiplier source must be `dxcc`, `wpxPrefix`, `grid4`, `continent`, `dokDistrict` or `rcvd:<kind>`. The kinds
+`rcvd:rst` and `rcvd:serial` are rejected. `rcvd:<kind>`, `grid4` and `dokDistrict` must refer to an element present in
+some received exchange (base or a variant). Multiplier ids match `[a-z0-9_-]{1,32}` and are unique. The `per` field
+means `band`, `bandMode` (band + mode category), or `contest`.
 
 | `source` | Value counted |
 |---|---|
@@ -130,9 +181,10 @@ The multiplier source must be `dxcc`, `wpxPrefix`, `grid4`, `continent` or `rcvd
 | `rcvd:<kind>` | The received value of that exchange element, upper-cased (`rcvd:cqZone`, `rcvd:state`, `rcvd:dok`, …) |
 | `grid4` | First four characters of the received grid |
 | `continent` | Their continent |
+| `dokDistrict` | The first letter of the received DOK (the DARC district). `NM` (non-member) and DOKs that do not start with a letter A–Z give no value |
 
 A multiplier counts once per `per` scope. With `when`, it only counts for QSOs matching the predicate (for example,
-ARRL DX: DX stations count `rcvd:state` only from W/VE).
+ARRL DX: DX stations count `rcvd:state` only from W/VE, written `myDxccNot: [291, 1]` and `theirDxcc: [291, 1]`).
 
 ## Validation rules
 
@@ -144,7 +196,12 @@ The parser enforces strict limits:
 - Name: 1–120 characters without control characters (Unicode letters allowed).
 - `cabrillo` and `adif` fields: match `[A-Za-z0-9._+-]{1,40}`.
 
-For `pointsTimesMultipliers`, at least one multiplier is required. For `points` and `qsos` scoring modes, no multipliers must be present.
+For `pointsTimesMultipliers`, at least one multiplier is required. For `points` and `qsos` scoring modes, no
+multipliers must be present.
+
+Exchange element rules: a `when` on a sent element is rejected (`elementWhenNotAllowed`); a received element `when` that
+uses anything but `their*` predicates is rejected (`elementPredicateNotTheirs`); a variant `when` that uses anything but
+`my*` predicates is rejected (`variantPredicateNotMine`).
 
 ## Scoring is an estimate
 
@@ -153,7 +210,10 @@ authoritative. The UI says so, and the manual repeats it.
 
 ## Scoring details
 
-Dupes score 0 points and credit no multipliers. Multiplier credit is independent of points: a 0-point same-country QSO still counts its zone and country. QSOs outside the contest's bands or mode categories are "out of contest": they score 0 points and do not take part in dupe checks. Contest-wide multipliers are attributed to the band of their first QSO in the per-band breakdown.
+Dupes score 0 points and credit no multipliers. Multiplier credit is independent of points: a 0-point same-country QSO
+still counts its zone and country. QSOs outside the contest's bands or mode categories are "out of contest": they score
+0 points and do not take part in dupe checks. Contest-wide multipliers are attributed to the band of their first QSO in
+the per-band breakdown.
 
 ## Rates
 
@@ -162,7 +222,8 @@ Dupes score 0 points and credit no multipliers. Multiplier credit is independent
 - the time span of the last 10 and 100 QSOs, as QSOs/hour;
 - the best 60-minute window so far.
 
-The rate over the last n QSOs uses the n−1 intervals between the n-th last and the newest QSO. It is unknown with fewer than n QSOs or a zero time span. Counting windows are (now − w, now]. QSO times after `now` are ignored.
+The rate over the last n QSOs uses the n−1 intervals between the n-th last and the newest QSO. It is unknown with fewer
+than n QSOs or a zero time span. Counting windows are (now − w, now]. QSO times after `now` are ignored.
 
 All functions are pure and take a `UtcDateTime now`, so they are tested without a clock.
 

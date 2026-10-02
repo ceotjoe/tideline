@@ -96,6 +96,10 @@ enum MultiplierSourceKind {
 
   /// Their continent.
   continent,
+
+  /// The first letter of the received DOK (the DARC district); `NM` and
+  /// DOKs not starting with a letter give no value.
+  dokDistrict,
 }
 
 /// Where a multiplier value comes from.
@@ -173,6 +177,15 @@ final class ExchangeVariant {
 final class ResolvedExchange {
   /// Creates the result.
   const new({required this.sent, required this.rcvd});
+
+  /// Validates the values I send (parallel to [sent]).
+  List<ExchangeCheck> checkSent(List<String> values) =>
+      ExchangeElement.checkAll(sent, values);
+
+  /// Validates the received values (parallel to [rcvd]) for a contact with
+  /// [them]. Elements whose `when` rules them out for [them] are absent.
+  List<ExchangeCheck> checkRcvd(List<String> values, {ContestStation? them}) =>
+      ExchangeElement.checkAll(rcvd, values, them: them);
 
   /// What I send, in entry order.
   final List<ExchangeElement> sent;
@@ -383,6 +396,7 @@ final class ContestDefinition {
       final needs = switch (source.kind) {
         MultiplierSourceKind.rcvd => source.element,
         MultiplierSourceKind.grid4 => ExchangeKind.grid,
+        MultiplierSourceKind.dokDistrict => ExchangeKind.dok,
         _ => null,
       };
       if (needs != null && !rcvdKinds.contains(needs)) {

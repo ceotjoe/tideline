@@ -45,7 +45,7 @@
   "points": [
     {
       "when": {
-        "sameDxcc": true
+        "sameItuZone": true
       },
       "points": 1
     },
@@ -63,7 +63,7 @@
     {
       "id": "itu-zone",
       "source": "rcvd:ituZone",
-      "per": "bandMode"
+      "per": "band"
     }
   ],
   "score": "pointsTimesMultipliers"

@@ -667,7 +667,7 @@ void main() {
       var parsed = 0;
       var rejected = 0;
       for (var i = 0; i < 3000; i++) {
-        final source = i.isEven ? cqWwSsbJson : variantJson;
+        final source = [cqWwSsbJson, variantJson, elementWhenJson][i % 3];
         var root = jsonDecode(source);
         for (var k = 0; k <= random.nextInt(3); k++) {
           root = mutate(root);
@@ -687,7 +687,11 @@ void main() {
       final random = Random(7);
       const chars = ['{', '}', '[', ']', '"', ',', ':', '0', 'a', ' ', r'\'];
       for (var i = 0; i < 2000; i++) {
-        final codes = (i.isEven ? cqWwSsbJson : variantJson).codeUnits.toList();
+        final codes = [
+          cqWwSsbJson,
+          variantJson,
+          elementWhenJson,
+        ][i % 3].codeUnits.toList();
         for (var k = 0; k <= random.nextInt(4); k++) {
           final pos = random.nextInt(codes.length);
           switch (random.nextInt(3)) {

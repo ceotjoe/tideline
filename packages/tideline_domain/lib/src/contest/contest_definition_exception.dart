@@ -50,6 +50,13 @@ enum ContestDefinitionError {
   /// An exchange variant `when` uses a predicate that is not `my*`.
   variantPredicateNotMine,
 
+  /// A received exchange element `when` uses a predicate that is not
+  /// `their*`.
+  elementPredicateNotTheirs,
+
+  /// A `when` is set on a sent exchange element.
+  elementWhenNotAllowed,
+
   /// An exchange side contains more than one `serial` element.
   multipleSerials,
 

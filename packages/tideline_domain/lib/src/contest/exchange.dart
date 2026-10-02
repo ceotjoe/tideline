@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
 import 'package:tideline_domain/src/contest/contest_definition_exception.dart';
 import 'package:tideline_domain/src/contest/contest_json.dart';
+import 'package:tideline_domain/src/contest/contest_predicate.dart';
 import 'package:tideline_domain/src/contest/contest_station.dart';
 import 'package:tideline_domain/src/contest/mode_category.dart';
 import 'package:tideline_domain/src/values/maidenhead.dart';
@@ -28,6 +29,38 @@ enum ExchangeError {
 
 /// A parsed element value: the normalised value, or the error.
 typedef ExchangeValueResult = ({String? value, ExchangeError? error});
+
+/// Whether an exchange element is expected in a given contact.
+enum ExchangePresence {
+  /// The element must be given.
+  required,
+
+  /// The element may be left empty.
+  optional,
+
+  /// The other station does not send this element; it is not entered, not
+  /// stored and not exported.
+  absent,
+}
+
+/// The result of validating one exchange element.
+@immutable
+final class ExchangeCheck {
+  /// Creates a result.
+  const new({required this.presence, this.value, this.error});
+
+  /// Whether the element was expected.
+  final ExchangePresence presence;
+
+  /// The normalised value; null if empty, absent or invalid.
+  final String? value;
+
+  /// Why the value was rejected, or null.
+  final ExchangeError? error;
+
+  /// Whether the value is acceptable.
+  bool get isValid => error == null;
+}
 
 /// The kinds of exchange element and how each is stored in ADIF.
 enum ExchangeKind {
@@ -149,6 +182,7 @@ final class ExchangeElement {
     this.label,
     this.defaultValue,
     this.optional = false,
+    this.when,
   });
 
   /// Parses an element at [path]. [side] decides whether `default` is legal.
@@ -157,7 +191,7 @@ final class ExchangeElement {
       json,
       path,
       required: {'kind'},
-      optional: {'label', 'default', 'optional'},
+      optional: {'label', 'default', 'optional', 'when'},
     );
     final kind = ContestJson.enumValue(
       map['kind'],
@@ -188,11 +222,23 @@ final class ExchangeElement {
           map['optional'],
           ContestJson.child(path, 'optional'),
         );
+    ContestPredicate? when;
+    if (map.containsKey('when')) {
+      final p = ContestJson.child(path, 'when');
+      if (side != ExchangeSide.rcvd) {
+        ContestJson.fail(ContestDefinitionError.elementWhenNotAllowed, p);
+      }
+      when = ContestPredicate.fromJson(map['when'], p);
+      if (!when.onlyTheirs) {
+        ContestJson.fail(ContestDefinitionError.elementPredicateNotTheirs, p);
+      }
+    }
     return ExchangeElement(
       kind: kind,
       label: label,
       defaultValue: def,
       optional: optional,
+      when: when,
     );
   }
 
@@ -235,6 +281,63 @@ final class ExchangeElement {
 
   /// Whether an empty value is acceptable.
   final bool optional;
+
+  /// Received side only, `their*` predicates only: the element is expected
+  /// only when this holds for the other station. When it definitely does not
+  /// hold, the element is absent; when the other station's data is unknown,
+  /// the element is optional.
+  final ContestPredicate? when;
+
+  /// Whether this element is expected in a contact with [them].
+  ExchangePresence presenceFor(ContestStation? them) {
+    final condition = when;
+    if (condition == null) {
+      return optional ? ExchangePresence.optional : ExchangePresence.required;
+    }
+    return switch (condition.matchesTheirs(them)) {
+      true => optional ? ExchangePresence.optional : ExchangePresence.required,
+      false => ExchangePresence.absent,
+      null => ExchangePresence.optional,
+    };
+  }
+
+  /// Validates [values] (parallel to [elements]) for a contact with [them].
+  ///
+  /// An absent element yields no value and no error, whatever was typed (a
+  /// stale value from before the callsign changed is dropped). An empty
+  /// required value is `missing`.
+  static List<ExchangeCheck> checkAll(
+    List<ExchangeElement> elements,
+    List<String> values, {
+    ContestStation? them,
+  }) {
+    if (elements.length != values.length) {
+      throw ArgumentError.value(values, 'values', 'length differs');
+    }
+    return [
+      for (var i = 0; i < elements.length; i++)
+        () {
+          final presence = elements[i].presenceFor(them);
+          if (presence == ExchangePresence.absent) {
+            return const ExchangeCheck(presence: ExchangePresence.absent);
+          }
+          if (values[i].trim().isEmpty) {
+            return ExchangeCheck(
+              presence: presence,
+              error: presence == ExchangePresence.required
+                  ? ExchangeError.missing
+                  : null,
+            );
+          }
+          final r = elements[i].kind.parse(values[i]);
+          return ExchangeCheck(
+            presence: presence,
+            value: r.value,
+            error: r.error,
+          );
+        }(),
+    ];
+  }
 
   /// Validates [raw]. An empty optional value is valid and yields a null
   /// value without error.
@@ -284,6 +387,7 @@ final class ExchangeElement {
     if (label != null) 'label': label,
     if (defaultValue != null) 'default': defaultValue,
     if (optional) 'optional': true,
+    if (when != null) 'when': when!.toJson(),
   };
 }
 
@@ -312,11 +416,14 @@ abstract final class ExchangeMapping {
   /// - If no element uses that string field, it receives a copy of the whole
   ///   exchange (all given values in order, including the report and serial)
   ///   so Wavelog shows what was typed.
+  ///
+  /// With [them], elements that are absent for that station are skipped.
   static ExchangeAdif toAdif(
     ExchangeSide side,
     List<ExchangeElement> elements,
-    List<String> values,
-  ) {
+    List<String> values, {
+    ContestStation? them,
+  }) {
     if (elements.length != values.length) {
       throw ArgumentError.value(values, 'values', 'length differs');
     }
@@ -329,7 +436,10 @@ abstract final class ExchangeMapping {
     final all = <String>[];
     for (var i = 0; i < elements.length; i++) {
       final value = values[i].trim();
-      if (value.isEmpty) continue;
+      if (value.isEmpty ||
+          elements[i].presenceFor(them) == ExchangePresence.absent) {
+        continue;
+      }
       all.add(value);
       final field = elements[i].kind.fieldFor(side);
       if (elements[i].kind == ExchangeKind.rst) {
@@ -353,18 +463,24 @@ abstract final class ExchangeMapping {
   ///
   /// When several elements share the string field, its space-separated
   /// tokens are assigned in order; missing tokens give empty values.
+  /// Elements that are absent for [them] get an empty value and take no
+  /// token.
   static List<String> fromAdif(
     ExchangeSide side,
     List<ExchangeElement> elements, {
     String? rst,
     Map<String, String> fields = const {},
+    ContestStation? them,
   }) {
+    bool absent(int i) =>
+        elements[i].presenceFor(them) == ExchangePresence.absent;
     final stringField = side == ExchangeSide.sent
         ? ExchangeKind.stxString
         : ExchangeKind.srxString;
     final sharing = [
       for (var i = 0; i < elements.length; i++)
-        if (elements[i].kind != ExchangeKind.rst &&
+        if (!absent(i) &&
+            elements[i].kind != ExchangeKind.rst &&
             elements[i].kind.fieldFor(side) == stringField)
           i,
     ];
@@ -375,6 +491,7 @@ abstract final class ExchangeMapping {
         .toList();
     final out = List<String>.filled(elements.length, '');
     for (var i = 0; i < elements.length; i++) {
+      if (absent(i)) continue;
       final kind = elements[i].kind;
       if (kind == ExchangeKind.rst) {
         out[i] = rst ?? '';
@@ -390,5 +507,24 @@ abstract final class ExchangeMapping {
       }
     }
     return out;
+  }
+
+  /// The Cabrillo exchange tokens, in exchange order. Elements that are
+  /// absent for [them] produce no token; an empty value of a present
+  /// element gives an empty token (the Cabrillo writer needs the same
+  /// token count in every line).
+  static List<String> cabrilloTokens(
+    List<ExchangeElement> elements,
+    List<String> values, {
+    ContestStation? them,
+  }) {
+    if (elements.length != values.length) {
+      throw ArgumentError.value(values, 'values', 'length differs');
+    }
+    return [
+      for (var i = 0; i < elements.length; i++)
+        if (elements[i].presenceFor(them) != ExchangePresence.absent)
+          values[i].trim().toUpperCase(),
+    ];
   }
 }

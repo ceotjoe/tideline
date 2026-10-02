@@ -8,41 +8,86 @@ parses every file, checks names and ids, and scores hand-checked logs.
 
 The live score is a claimed-score estimate. The sponsor's log check is authoritative.
 
-## Files, rule year and known approximations
+## Files, sources and verification
 
-Rules followed: the published rules as of the 2025/2026 contest seasons, from the author's knowledge, not re-verified
-against the sponsors' sites at the time of writing. Check each sponsor's current rules before a contest and bump
-`version` when they change.
+Each file was checked against the sponsor's current published rules on **2026-10-02**. Check the rules again before a
+contest and bump `version` when they change.
 
-| File | Contest | Notes |
-|---|---|---|
-| `cq-ww-ssb`, `cq-ww-cw` | CQ World Wide DX | RST + CQ zone. 0 points same country (multipliers still count), 1 same continent, 2 NA to NA other country, 3 other continents. Multipliers: zone and country per band. Exact. |
-| `cq-wpx-ssb`, `cq-wpx-cw` | CQ WPX | RST + serial. Other continent 3 (6 on 160/80/40 m), same continent other country 1 (2 on low bands), NA to NA other country 2 (4 on low bands), same country 1 on any band. Prefix multiplier once per contest. Same-country QSOs have scored 1 point in the WPX rules for years; I believe this is unchanged for 2023 and later but did not re-verify it. |
-| `arrl-dx-cw`, `arrl-dx-ssb` | ARRL International DX | W/VE (DXCC 291, 1) send RST + state/province and receive RST + power. Everyone else sends RST + power and receives RST + state. 3 points per QSO. Alaska and Hawaii are DX. |
-| `iaru-hf` | IARU HF World Championship | RST + ITU zone, CW and phone, ITU zone multiplier per band and mode category. See approximations. |
-| `darc-wag` | Worked All Germany | DL stations send RST + DOK, others RST + serial. See approximations. |
-| `generic-serial` | Generic | RST + serial, 14 bands from 160 m to 70 cm, CW/PHONE/DIGI, dupe per band and mode category, score = QSO count. No ADIF contest id, no Cabrillo. |
-| `generic-exchange` | Generic | Same with RST + free text exchange. |
+| File | Contest | Source (checked 2026-10-02) | Rules |
+|---|---|---|---|
+| `cq-ww-ssb`, `cq-ww-cw` | CQ World Wide DX | <http://www.cqww.com/rules/> | 2026 |
+| `cq-wpx-ssb`, `cq-wpx-cw` | CQ WPX | <http://cqwpx.com/rules/> | 2026 |
+| `arrl-dx-cw`, `arrl-dx-ssb` | ARRL International DX | <https://contests.arrl.org/ContestRules/DX-Rules.pdf> | Version 2.0, 04 Jan 2024 |
+| `iaru-hf` | IARU HF World Championship | <https://contests.arrl.org/ContestRules/IARU-HF-Rules.pdf> | Version 1.21 |
+| `darc-wag` | Worked All Germany | <https://www.darc.de/der-club/referate/conteste/wag-contest/en/rules/> and <https://www.darc.de/der-club/referate/conteste/wag-contest/regeln/> | 2026 page (multiplier change "new from 2024") |
+| `generic-serial` | Generic | none | RST + serial, 14 bands from 160 m to 70 cm, CW/PHONE/DIGI, dupe per band and mode category, score = QSO count. No ADIF contest id, no Cabrillo. |
+| `generic-exchange` | Generic | none | Same with RST + free text exchange. |
 
-### Approximations (parser limits)
+How the sources were read: the ARRL PDFs were converted to text and read in full. The CQ and DARC pages were read
+through a page summariser, which quotes the relevant rule text but is not the page itself; the values below (points,
+exchange, multiplier scope) were cross-checked between two separate fetches of each page.
 
-- **ARRL DX, W/VE to W/VE and DX to DX:** these contacts do not count in the real contest. The definition cannot exclude
-  a QSO, so they score 0 points. Multipliers are guarded by predicates so they do not count either. "Not W/VE" cannot be
-  written, so the DX side is expressed as "continent is not NA" plus an explicit list of North American DXCC entities
-  other than 291 and 1. A new NA entity would need adding to that list (`dxcc-na`, `state-na` in the files).
-  A DX station whose DXCC is unknown scores 3 points against a W/VE station.
-- **IARU HF, "same ITU zone":** there is no zone predicate, so "same DXCC entity" stands in for "same ITU zone" (1
-  point). Same-country QSOs across ITU zones (USA, Canada, Russia, Brazil, Australia, China) are under-scored (1
-  instead of 3), and different-country QSOs inside one zone are over-scored (3 instead of 1). HQ stations send a society
-  abbreviation instead of a zone and cannot be entered (the `ituZone` element rejects it), and the HQ multiplier is
-  missing. Use the generic exchange or an imported definition for HQ stations.
-- **WAG:** points are 3 for DL to DX and DX to DL, 1 for DL to DL, 0 for DX to DX (the brief this file was written
-  from; the official DARC rules should be compared before the next WAG, since I am not certain whether DL to European
-  DX is scored differently). DL stations receive a serial from foreign stations and a DOK from DL stations, but an
-  exchange cannot vary with the other station, so a DL station gets both elements as optional. DL stations count DXCC
-  entities per band; DARC's WAE entities (which differ from DXCC) are not distinguished. Non-DL stations count DOKs per
-  band.
-- **Dupes:** "per band and mode" is `band` + `modeCategory` where a contest counts CW and phone separately.
+### What each file encodes
+
+- **CQ WW (SSB and CW):** bands 160-10 m; RS(T) + CQ zone. Points: 0 same country (the QSO still counts for zone and
+  country), 1 same continent other country, 2 North America to North America other country, 3 other continents.
+  Multipliers: CQ zone and country, each per band. Dupe: once per band. SSB and CW are separate contests.
+- **CQ WPX (SSB and CW):** bands 160-10 m; RS(T) + serial. Points: other continent 3 (6 on 160/80/40 m), same continent
+  other country 1 (2 on low bands), North America to North America other country 2 (4 on low bands), same country 1 on
+  any band. Multiplier: each prefix once per contest. Dupe: once per band.
+- **ARRL DX (CW and Phone):** bands 160-10 m. W/VE (DXCC 291 and 1) send RST + state/province and receive RST + power;
+  everyone else sends RST + power and receives RST + state/province. Only W/VE to DX counts, 3 points per QSO. **Alaska
+  (6) and Hawaii (110) take part as DX stations** (rules 2.3 and 5.2.3.1), so they send power, and a W/VE station counts
+  them as DXCC entities. W/VE multiplier: DXCC entities other than USA and Canada, per band. DX multiplier: state, DC,
+  province or territory, per band. This is written with `myDxcc` / `theirDxccNot: [291, 1]`.
+- **IARU HF:** bands 160-10 m, CW and phone in one contest. RS(T) + ITU zone. Points: 1 for the same ITU zone
+  (`sameItuZone`, which includes the same zone on another continent), 3 same continent other zone, 5 other continent and
+  zone. Multiplier: ITU zone **per band, not per mode** (rule 5.2.1). Dupe: once per band and mode.
+- **WAG:** bands 80-10 m, CW and SSB in one contest. Non-DL stations send RST + serial, DL stations RST + DOK. Points:
+  DL to DL 1, DL to Europe 3, DL to DX 5, non-DL to DL 3. DL multiplier: DXCC/WAE entity per band and mode; non-DL
+  multiplier: DARC district (the first letter of the DOK) per band and mode; `NM` is no multiplier. A DL station
+  receives a serial from non-DL stations and a DOK from DL stations (`when` on the received elements).
+
+### Discrepancies fixed in this check
+
+| File | Was | Now | Rule |
+|---|---|---|---|
+| `arrl-dx-*` | list of 48 North American DXCC entities, two "overseas" and two "NA" multiplier pairs | `theirDxccNot` / `myDxccNot: [291, 1]`, one DXCC and one state multiplier; Hawaii (110) now counts as a DX multiplier like Alaska | ARRL DX 2.3, 5.2.2, 5.2.3.1 |
+| `iaru-hf` | "same DXCC entity" stood in for "same ITU zone" | `sameItuZone` | IARU 5.1.1, 5.1.3 |
+| `iaru-hf` | zone multiplier per band and mode | per band | IARU 5.2.1 |
+| `darc-wag` | DL to Europe and DL to DX both 3 points | 3 and 5 | WAG points |
+| `darc-wag` | multiplier per band, the whole DOK as non-DL multiplier | per band and mode; DARC district (first DOK letter), `NM` excluded | WAG multipliers |
+| `darc-wag` | DL stations had serial and DOK both optional | serial required for non-DL, DOK for DL, per `when` | WAG exchange |
+
+CQ WW and CQ WPX needed no change.
+
+### What could not be verified or is approximated
+
+- **CQ WW countries:** the rules use the DXCC list *plus the WAE list and IG9/IH9* for the country multiplier (and for
+  "same country"). The definitions use DXCC entities only, so WAE-only countries (for example Sicily or the Balearics)
+  are not separate multipliers and QSOs with them are scored as the DXCC entity. Maritime mobile stations count only for
+  the zone multiplier; this is not modelled.
+- **CQ WPX prefixes:** the rules say that /A, /E, /J, /P, maritime mobile and other licence-class identifiers do not
+  count as prefixes. `WpxPrefix` ignores /P, /M, /MM, /AM, /QRP, /A and /LH, but not /E or /J. I did not change the
+  prefix parser.
+- **ARRL DX:** W/VE to W/VE and DX to DX contacts are not valid in the real contest. The definition cannot exclude a
+  QSO, so they score 0 points and credit no multiplier. A station whose DXCC is unknown scores 0 points and credits no
+  multiplier (a negated list needs a known value). Labrador is not distinguished from the rest of Newfoundland
+  (`rcvd:state` counts the exchange value, so a logged `LB` counts correctly).
+- **IARU HF:** IARU member society HQ stations (and AC, R1, R2, R3) send an abbreviation instead of a zone. The
+  `ituZone` element rejects it, so these stations cannot be logged with the full exchange and their 1 point, and the HQ
+  and official multipliers, are missing. Use the generic exchange or an imported definition for HQ stations.
+  `sameItuZone` needs my ITU zone in the station profile, otherwise the zone rule is skipped and the continent rules
+  apply.
+- **WAG:** the DL multiplier uses DXCC entities. DARC uses the DXCC/WAE list plus IG9/IH9; WAE-only entities are not
+  distinguished. Whether Germany itself counts as a multiplier for DL stations is not stated in the rules text I read;
+  the definition does not count it. "Europe" for the 3-point rule is the continent EU of the DXCC resolver. DOKs that do
+  not start with a letter (special DOKs) give no district multiplier. Foreign stations that did not receive a number
+  send "000", which the `serial` element rejects (range 1 to 99999); log those QSOs with serial 1 or leave the field
+  optional in an imported definition. The contest-free JOTA segments are not modelled. Non-DL to non-DL contacts are not
+  valid and the definition requires a DOK for them.
+- **Dupes:** "per band and mode" is `band` + `modeCategory` where a contest counts CW and phone separately. The DARC and
+  IARU rules say "per band and mode"; this treats USB and LSB as the same mode, which they are.
 
 ## Writing your own
 
