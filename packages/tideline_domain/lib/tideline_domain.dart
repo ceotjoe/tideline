@@ -4,6 +4,16 @@
 library;
 
 export 'src/adif/adif_enums.g.dart' show adifSpecVersion;
+export 'src/contest/contest_definition.dart';
+export 'src/contest/contest_definition_exception.dart';
+export 'src/contest/contest_dupe.dart';
+export 'src/contest/contest_predicate.dart';
+export 'src/contest/contest_rates.dart';
+export 'src/contest/contest_scorer.dart';
+export 'src/contest/contest_station.dart';
+export 'src/contest/exchange.dart';
+export 'src/contest/mode_category.dart';
+export 'src/contest/wpx_prefix.dart';
 export 'src/dxcc/dxcc.dart';
 export 'src/ids/hlc.dart';
 export 'src/ids/uuid.dart';
