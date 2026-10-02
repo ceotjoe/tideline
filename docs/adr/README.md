@@ -15,5 +15,6 @@
 - [0013](0013-reference-data-licensing.md) Reference data: bundle only what we may redistribute
 - [0014](0014-design-direction-low-tide.md) Design direction: "Low Tide"
 - [0015](0015-platforms-and-identifiers.md) Platforms, minimum versions and identifiers
+- [0016](0016-phase-2-product-decisions.md) Product decisions for the MVP
 
 New ADRs start from [0000-template.md](0000-template.md).
