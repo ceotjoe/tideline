@@ -2559,6 +2559,12 @@ abstract class AppLocalizations {
   /// **'An exchange value contains a space; it is written with a hyphen.'**
   String get cabrilloIssueTokenContainsWhitespace;
 
+  /// Cabrillo export problem.
+  ///
+  /// In en, this message translates to:
+  /// **'An exchange value is empty; a hyphen is written in its place.'**
+  String get cabrilloIssueEmptyExchangeToken;
+
   /// Cabrillo problem.
   ///
   /// In en, this message translates to:

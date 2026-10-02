@@ -1537,6 +1537,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Ein Austauschwert enthält ein Leerzeichen; er wird mit Bindestrich geschrieben.';
 
   @override
+  String get cabrilloIssueEmptyExchangeToken =>
+      'Ein Exchange-Wert ist leer; an seiner Stelle wird ein Bindestrich geschrieben.';
+
+  @override
   String get cabrilloIssueTooManyAddressLines =>
       'Es gibt mehr als 6 Adresszeilen; die übrigen entfallen.';
 

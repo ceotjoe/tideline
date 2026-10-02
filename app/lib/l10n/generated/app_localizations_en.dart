@@ -1531,6 +1531,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'An exchange value contains a space; it is written with a hyphen.';
 
   @override
+  String get cabrilloIssueEmptyExchangeToken =>
+      'An exchange value is empty; a hyphen is written in its place.';
+
+  @override
   String get cabrilloIssueTooManyAddressLines =>
       'There are more than 6 address lines; the extra lines are dropped.';
 
@@ -3506,6 +3510,10 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String get cabrilloIssueTokenContainsWhitespace =>
       '[Åñ éẋçĥáñĝé ṽáļûé çöñţáîñš á šþáçé; îţ îš ŵŕîţţéñ ŵîţĥ á ĥýþĥéñ.··························]';
+
+  @override
+  String get cabrilloIssueEmptyExchangeToken =>
+      '[Åñ éẋçĥáñĝé ṽáļûé îš éɱþţý; á ĥýþĥéñ îš ŵŕîţţéñ îñ îţš þļáçé.·························]';
 
   @override
   String get cabrilloIssueTooManyAddressLines =>

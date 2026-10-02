@@ -140,7 +140,10 @@ CabrilloExport? buildCabrilloExport({
   final lines = [
     for (final q in qsos)
       CabrilloQso(
-        frequencyHz: q.freqHz ?? 0,
+        // Without a recorded frequency, the band's lower edge stands in
+        // (`14000` for 20 m), as contest loggers commonly write it; from
+        // 50 MHz up the writer uses the band designator anyway.
+        frequencyHz: q.freqHz ?? q.band.lowerHz,
         band: q.band.name,
         mode: cabrilloModeOf(q.mode),
         time: q.timeOn,

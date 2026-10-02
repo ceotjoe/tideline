@@ -82,6 +82,7 @@ void seedSessionQsos(
   int count, {
   int minutesAgo = 1,
   String band = '20m',
+  bool receivedSerial = true,
 }) {
   final session = backend.active!;
   final now = DateTime.now().toUtc();
@@ -102,9 +103,9 @@ void seedSessionQsos(
         rstRcvd: '59',
         fields: {
           'STX': '${i + 1}',
-          'SRX': '${10 + i}',
+          if (receivedSerial) 'SRX': '${10 + i}',
           'STX_STRING': '59 ${i + 1}',
-          'SRX_STRING': '59 ${10 + i}',
+          'SRX_STRING': receivedSerial ? '59 ${10 + i}' : '59',
         },
         contestSessionId: session.id,
       ),

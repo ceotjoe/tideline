@@ -107,8 +107,8 @@ void main() {
     final transfer = FakeTransfer();
     final backend = ContestBackend()
       ..startSession('cq-wpx-ssb', usesSerial: true);
-    // Seeded without frequency: an HF line cannot be written.
-    seedSessionQsos(backend, 2);
+    // Seeded without the received serial: an exchange column is empty.
+    seedSessionQsos(backend, 2, receivedSerial: false);
     await pumpContest(
       tester,
       backend: backend,
@@ -118,10 +118,7 @@ void main() {
     await openMenu(tester);
     await tester.tap(find.text('Export Cabrillo log'));
     await settleExport(tester);
-    expect(
-      find.textContaining('The frequency or band cannot be determined.'),
-      findsOneWidget,
-    );
+    expect(find.textContaining('An exchange value is empty'), findsOneWidget);
     expect(find.textContaining('2 QSOs, the first is no. 1'), findsOneWidget);
     expect(find.byIcon(Icons.error_outline), findsWidgets);
 

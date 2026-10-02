@@ -13,8 +13,8 @@
 
 ## Decision
 - **Alternatives share a column.** Consecutive received elements that have a `when` form one logical column. The line
-  holds whichever of them has a value (the others are empty by construction), and an empty column if none has. Every
-  other element is a column of its own. Tokens come from `ExchangeMapping.cabrilloTokens`.
+  holds whichever of them has a value (the others are empty by construction). Every other element is a column of its
+  own. Tokens come from `ExchangeMapping.cabrilloTokens`.
 - **The session is the unit.** The export uses the stored session (categories, exchange, station), not the screen state,
   so it works for past sessions too. The claimed score comes from the same `ContestEngine` the screen uses.
 - **Check first, then ask.** `CabrilloWriter.validate` runs before the file dialog. Problems are listed, localised,
@@ -24,6 +24,10 @@
   session list show a warning. Guessing a `CONTEST:` value would produce logs that robots reject silently.
 - **Saved through the ADIF export's mechanism** (`DataTransfer.saveFile`, a file picker save dialog). No new plugin, no
   network.
+- **No blank columns.** Cabrillo columns are separated by whitespace, so an empty token would shift every later column.
+  The writer writes `-` for an empty exchange token and `validate` reports it (`emptyExchangeToken`).
+- **A missing frequency becomes the band edge.** A QSO logged without a frequency is written with the lower edge of its
+  band in kHz (`14000` for 20 m), as contest loggers commonly do. From 50 MHz up the band designator is used anyway.
 - **`CREATED-BY` uses a constant** (`appVersion`, kept in step with `pubspec.yaml` by a test) rather than a package-info
   plugin. The ADIF export uses the same constant.
 

@@ -410,6 +410,7 @@
   "cabrilloIssueMissingFrequency": "[Ţĥé ƒŕéǫûéñçý öŕ ƀáñð çáññöţ ƀé ðéţéŕɱîñéð.··················]",
   "cabrilloIssueMissingQsoCall": "[Å çáļļšîĝñ îš éɱþţý.········]",
   "cabrilloIssueTokenContainsWhitespace": "[Åñ éẋçĥáñĝé ṽáļûé çöñţáîñš á šþáçé; îţ îš ŵŕîţţéñ ŵîţĥ á ĥýþĥéñ.··························]",
+  "cabrilloIssueEmptyExchangeToken": "[Åñ éẋçĥáñĝé ṽáļûé îš éɱþţý; á ĥýþĥéñ îš ŵŕîţţéñ îñ îţš þļáçé.·························]",
   "cabrilloIssueTooManyAddressLines": "[Ţĥéŕé áŕé ɱöŕé ţĥáñ 6 áððŕéšš ļîñéš; ţĥé éẋţŕá ļîñéš áŕé ðŕöþþéð.··························]",
   "cabrilloIssueAddressLineTooLong": "[Åñ áððŕéšš ļîñé îš ļöñĝéŕ ţĥáñ 45 çĥáŕáçţéŕš; îţ îš çûţ öƒƒ.························]",
   "cabrilloIssueInvalidTransmitterId": "[Ţĥé ţŕáñšɱîţţéŕ ñûɱƀéŕ ɱûšţ ƀé 0 öŕ 1.················]",

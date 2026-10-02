@@ -219,6 +219,10 @@ enum CabrilloIssueKind {
   /// An exchange token contained whitespace; it is replaced with `-`.
   tokenContainsWhitespace,
 
+  /// An exchange token is empty; `-` is written so later columns stay in
+  /// place (a blank would shift them for whitespace-splitting log robots).
+  emptyExchangeToken,
+
   /// More than 6 address lines; the extras are dropped.
   tooManyAddressLines,
 
@@ -307,6 +311,14 @@ class CabrilloWriter {
           CabrilloIssue(CabrilloIssueKind.invalidTransmitterId, qsoIndex: i),
         );
       }
+      if ([
+        ...q.sentExchange,
+        ...q.receivedExchange,
+      ].any((t) => _token(t).isEmpty)) {
+        issues.add(
+          CabrilloIssue(CabrilloIssueKind.emptyExchangeToken, qsoIndex: i),
+        );
+      }
       if ([...q.sentExchange, ...q.receivedExchange].any(_hasSpace)) {
         issues.add(
           CabrilloIssue(CabrilloIssueKind.tokenContainsWhitespace, qsoIndex: i),
@@ -385,9 +397,9 @@ class CabrilloWriter {
           _date(q.time),
           _time(q.time),
           _token(q.myCall),
-          ...q.sentExchange.map(_token),
+          ...q.sentExchange.map(_exchangeToken),
           _token(q.theirCall),
-          ...q.receivedExchange.map(_token),
+          ...q.receivedExchange.map(_exchangeToken),
           if (q.transmitterId != null) q.transmitterId.toString(),
         ],
     ];
@@ -494,6 +506,12 @@ class CabrilloWriter {
   /// A single exchange token or callsign: upper case, ASCII, no spaces.
   static String _token(String s) =>
       _clean(s).toUpperCase().replaceAll(RegExp(r'\s+'), '-');
+
+  /// An exchange token; `-` when empty, so every line keeps its columns.
+  static String _exchangeToken(String s) {
+    final token = _token(s);
+    return token.isEmpty ? '-' : token;
+  }
 
   /// ASCII-only, control characters turned into spaces, trimmed, with
   /// whitespace runs collapsed.

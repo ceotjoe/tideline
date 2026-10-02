@@ -161,19 +161,18 @@ void main() {
       ]);
     });
 
-    test('a QSO without frequency on an HF band is reported', () {
-      final broken = wagQso(spec, 'DL9XX', 5, ['59', '', 'B1'], freqHz: null);
+    test('a QSO without frequency gets its band edge in kHz', () {
+      final noFreq = wagQso(spec, 'DL9XX', 5, ['59', '', 'B1'], freqHz: null);
       final export = buildCabrilloExport(
         spec: spec,
-        qsos: [broken],
+        qsos: [noFreq],
         claimedScore: 0,
         callsign: 'DO1HOZ',
       )!;
-      // HF lines need a frequency in kHz; the band alone is not enough.
-      expect(export.issues.map((i) => i.kind), [
-        CabrilloIssueKind.missingFrequency,
-      ]);
-      expect(export.issues.single.qsoIndex, 0);
+      expect(export.issues, isEmpty);
+      expect(export.qsos.single.frequencyHz, noFreq.band.lowerHz);
+      final kHz = noFreq.band.lowerHz ~/ 1000;
+      expect(export.text, contains('QSO: $kHz '));
     });
   });
 

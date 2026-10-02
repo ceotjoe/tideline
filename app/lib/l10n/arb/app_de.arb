@@ -410,6 +410,7 @@
   "cabrilloIssueMissingFrequency": "Frequenz oder Band lassen sich nicht bestimmen.",
   "cabrilloIssueMissingQsoCall": "Ein Rufzeichen ist leer.",
   "cabrilloIssueTokenContainsWhitespace": "Ein Austauschwert enthält ein Leerzeichen; er wird mit Bindestrich geschrieben.",
+  "cabrilloIssueEmptyExchangeToken": "Ein Exchange-Wert ist leer; an seiner Stelle wird ein Bindestrich geschrieben.",
   "cabrilloIssueTooManyAddressLines": "Es gibt mehr als 6 Adresszeilen; die übrigen entfallen.",
   "cabrilloIssueAddressLineTooLong": "Eine Adresszeile ist länger als 45 Zeichen und wird gekürzt.",
   "cabrilloIssueInvalidTransmitterId": "Die Sendernummer muss 0 oder 1 sein.",

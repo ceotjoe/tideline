@@ -15,24 +15,26 @@ import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
 /// The localised text of a Cabrillo validation problem.
-String cabrilloIssueText(AppLocalizations l10n, CabrilloIssueKind kind) =>
-    switch (kind) {
-      CabrilloIssueKind.missingContest => l10n.cabrilloIssueMissingContest,
-      CabrilloIssueKind.missingCallsign => l10n.cabrilloIssueMissingCallsign,
-      CabrilloIssueKind.emptyLog => l10n.cabrilloIssueEmptyLog,
-      CabrilloIssueKind.exchangeCountMismatch =>
-        l10n.cabrilloIssueExchangeCountMismatch,
-      CabrilloIssueKind.missingFrequency => l10n.cabrilloIssueMissingFrequency,
-      CabrilloIssueKind.missingQsoCall => l10n.cabrilloIssueMissingQsoCall,
-      CabrilloIssueKind.tokenContainsWhitespace =>
-        l10n.cabrilloIssueTokenContainsWhitespace,
-      CabrilloIssueKind.tooManyAddressLines =>
-        l10n.cabrilloIssueTooManyAddressLines,
-      CabrilloIssueKind.addressLineTooLong =>
-        l10n.cabrilloIssueAddressLineTooLong,
-      CabrilloIssueKind.invalidTransmitterId =>
-        l10n.cabrilloIssueInvalidTransmitterId,
-    };
+String cabrilloIssueText(
+  AppLocalizations l10n,
+  CabrilloIssueKind kind,
+) => switch (kind) {
+  CabrilloIssueKind.missingContest => l10n.cabrilloIssueMissingContest,
+  CabrilloIssueKind.missingCallsign => l10n.cabrilloIssueMissingCallsign,
+  CabrilloIssueKind.emptyLog => l10n.cabrilloIssueEmptyLog,
+  CabrilloIssueKind.exchangeCountMismatch =>
+    l10n.cabrilloIssueExchangeCountMismatch,
+  CabrilloIssueKind.missingFrequency => l10n.cabrilloIssueMissingFrequency,
+  CabrilloIssueKind.missingQsoCall => l10n.cabrilloIssueMissingQsoCall,
+  CabrilloIssueKind.emptyExchangeToken => l10n.cabrilloIssueEmptyExchangeToken,
+  CabrilloIssueKind.tokenContainsWhitespace =>
+    l10n.cabrilloIssueTokenContainsWhitespace,
+  CabrilloIssueKind.tooManyAddressLines =>
+    l10n.cabrilloIssueTooManyAddressLines,
+  CabrilloIssueKind.addressLineTooLong => l10n.cabrilloIssueAddressLineTooLong,
+  CabrilloIssueKind.invalidTransmitterId =>
+    l10n.cabrilloIssueInvalidTransmitterId,
+};
 
 /// Exports the Cabrillo log of [session], running or past.
 ///

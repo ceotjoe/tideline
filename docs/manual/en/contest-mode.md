@@ -114,7 +114,8 @@ or use the button on a card in the list of past sessions. Tideline then:
 
 1. Builds the log from the session: your callsign and locator from the station, the categories from the session setup,
    the claimed score from the contest engine, and one `QSO:` line per contact.
-2. Checks it and lists any problems (for example a contact without a frequency). You can cancel, or export anyway.
+2. Checks it and lists any problems (for example an empty exchange value, which is written as `-`). You can cancel,
+   or export anyway.
 3. Asks where to save it. The suggested name is `CALL-CONTEST-YEAR.log`, for example `DO1HOZ-DARC-WAG-2026.log`.
 
 Notes:
@@ -123,6 +124,8 @@ Notes:
   export in Settings instead, or add a `cabrillo` name to the definition.
 - When the exchange differs by station (WAG: serial number from abroad, DOK from Germany), both share one column in the
   log.
+- A contact logged without a frequency gets the lower edge of its band (`14000` for 20 m), as contest loggers commonly
+  write it.
 - Dupes are included, as contest sponsors expect. Their log check removes them.
 - The claimed score is an estimate. Check it against the contest rules before you send the log.
 - Free text is written as plain ASCII: `ä` becomes `ae`, and so on.

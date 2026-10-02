@@ -1995,6 +1995,10 @@
   "@cabrilloIssueTokenContainsWhitespace": {
     "description": "Cabrillo problem."
   },
+  "cabrilloIssueEmptyExchangeToken": "An exchange value is empty; a hyphen is written in its place.",
+  "@cabrilloIssueEmptyExchangeToken": {
+    "description": "Cabrillo export problem."
+  },
   "cabrilloIssueTooManyAddressLines": "There are more than 6 address lines; the extra lines are dropped.",
   "@cabrilloIssueTooManyAddressLines": {
     "description": "Cabrillo problem."

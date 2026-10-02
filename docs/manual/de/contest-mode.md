@@ -117,7 +117,8 @@ Wähle im Contest-Bildschirm im Menü (die drei Punkte) **Cabrillo-Log exportier
 
 1. Baut das Log aus der Sitzung: dein Rufzeichen und Locator von der Station, die Kategorien aus der Einrichtung der
    Sitzung, die beanspruchte Punktzahl aus der Wertung und eine `QSO:`-Zeile je Verbindung.
-2. Prüft es und listet Probleme auf (zum Beispiel ein QSO ohne Frequenz). Du kannst abbrechen oder trotzdem exportieren.
+2. Prüft es und listet Probleme auf (zum Beispiel einen leeren Exchange-Wert, der als `-` geschrieben wird). Du kannst
+   abbrechen oder trotzdem exportieren.
 3. Fragt, wo es gespeichert werden soll. Der vorgeschlagene Name ist `RUFZEICHEN-CONTEST-JAHR.log`, zum Beispiel
    `DO1HOZ-DARC-WAG-2026.log`.
 
@@ -127,6 +128,8 @@ Hinweise:
   Hinweis. Nutze dann den ADIF-Export in den Einstellungen oder ergänze einen `cabrillo`-Namen in der Definition.
 - Wenn der Exchange von der Station abhängt (WAG: laufende Nummer aus dem Ausland, DOK aus Deutschland), teilen sich
   beide eine Spalte im Log.
+- Ein QSO ohne Frequenz bekommt die untere Bandgrenze seines Bandes (`14000` für 20 m), wie Contest-Logger es üblicherweise
+  schreiben.
 - Dupes werden mit exportiert, wie die Veranstalter es erwarten. Ihre Logprüfung entfernt sie.
 - Die beanspruchte Punktzahl ist eine Schätzung. Prüfe sie anhand der Contest-Regeln, bevor du das Log einschickst.
 - Freitext wird als reines ASCII geschrieben: aus `ä` wird `ae` und so weiter.

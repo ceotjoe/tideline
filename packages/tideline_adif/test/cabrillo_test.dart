@@ -116,6 +116,24 @@ void main() {
     expect(text, contains('K1ABC A-B 1'));
   });
 
+  test('an empty exchange token is reported and written as a dash', () {
+    final qsos = [
+      _qso(14000000, 'K1ABC', ['59', '']),
+      _qso(14001000, 'G4XYZ', ['59', '14'], minute: 1),
+    ];
+    expect(_w.validate(_header(), qsos).map((i) => (i.kind, i.qsoIndex)), [
+      (CabrilloIssueKind.emptyExchangeToken, 0),
+    ]);
+    final line = _w
+        .write(_header(), qsos)
+        .split('\r\n')
+        .firstWhere((l) => l.contains('K1ABC'));
+    expect(line.trim().split(RegExp(r'\s+')), [
+      'QSO:', '14000', 'PH', '2026-10-25', '1400', 'DO1HOZ', '59', '14', //
+      'K1ABC', '59', '-',
+    ]);
+  });
+
   test('address limits', () {
     final h = CabrilloHeader(
       contest: 'X',
