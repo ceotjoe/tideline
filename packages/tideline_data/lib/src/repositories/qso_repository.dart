@@ -44,6 +44,12 @@ class QsoRepository {
     return qsos.length;
   });
 
+  /// Inserts [qso] with its sync row and journal entry in one transaction
+  /// (joining an enclosing one). Shared with the contest logging service so
+  /// that a contest QSO is stored exactly like any other.
+  @internal
+  Future<void> insertQso(Qso qso, JournalEvent event) => _insert(qso, event);
+
   Future<void> _insert(Qso qso, JournalEvent event) =>
       _db.transaction(() async {
         final hlc = _clock.now().toString();
@@ -118,11 +124,25 @@ class QsoRepository {
   }
 
   /// Saves an edited QSO.
-  Future<void> update(Qso qso) => _db.transaction(() async {
+  Future<void> update(Qso edited) => _db.transaction(() async {
+    var qso = edited;
     final before = await find(qso.id);
     if (before == null) throw StateError('QSO ${qso.id} not found');
     final changesReadOnly = Qso.changesServerReadOnlyFields(before.qso, qso);
     final row = await _row(qso.id);
+    // A contest QSO keeps the serial it was allocated, whatever the edit says.
+    final allocation =
+        await (_db.select(_db.serialAllocations)..where(
+              (a) =>
+                  a.qsoId.equals(qso.id) &
+                  a.sessionId.equals(row.contestSessionId ?? ''),
+            ))
+            .getSingleOrNull();
+    if (allocation != null && qso.field('STX') != '${allocation.serial}') {
+      qso = qso.copyWith(
+        fields: {...qso.fields, 'STX': '${allocation.serial}'},
+      );
+    }
     await (_db.update(_db.qsos)..where((q) => q.id.equals(qso.id))).write(
       qsoToCompanion(qso).copyWith(
         hlcModified: Value(_clock.now().toString()),
@@ -168,6 +188,10 @@ class QsoRepository {
             rev: Value(row.rev + 1),
           ),
         );
+        // The serial stays allocated; it is never handed out again.
+        await (_db.update(_db.serialAllocations)
+              ..where((a) => a.qsoId.equals(id)))
+            .write(const SerialAllocationsCompanion(qsoId: Value(null)));
         final status = current.status;
         if (status == null) return;
         final next = _machine.apply(

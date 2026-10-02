@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:tideline_data/src/database/tables.dart';
+import 'package:tideline_data/src/database/tideline_database.steps.dart';
 
 part 'tideline_database.g.dart';
 
@@ -16,6 +17,7 @@ part 'tideline_database.g.dart';
     SyncJournal,
     ContestDefinitions,
     ContestSessions,
+    ContestLinks,
     SerialAllocations,
     Activations,
     ProgramRules,
@@ -38,11 +40,29 @@ class TidelineDatabase extends _$TidelineDatabase {
   /// Current schema version. Every change bumps it, adds a schema dump
   /// (`tool/dump_schema.sh`) and a tested migration step.
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
+    onUpgrade: stepByStep(
+      from1To2: (m, schema) async {
+        // Contest sessions: Wavelog sync state, and the QSO link table.
+        await m.addColumn(
+          schema.contestSessions,
+          schema.contestSessions.remoteState,
+        );
+        await m.addColumn(
+          schema.contestSessions,
+          schema.contestSessions.remoteEndSynced,
+        );
+        await m.addColumn(
+          schema.contestSessions,
+          schema.contestSessions.remoteErrorKey,
+        );
+        await m.createTable(schema.contestLinks);
+      },
+    ),
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
     },

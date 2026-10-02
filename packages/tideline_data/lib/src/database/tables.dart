@@ -276,8 +276,33 @@ class ContestSessions extends Table with SyncedRow {
   IntColumn get serialRangeStart => integer().nullable()();
   IntColumn get serialRangeEnd => integer().nullable()();
 
+  /// Whether and how the session exists on Wavelog: `local` (never synced),
+  /// `pending` (to be created), `verifying` (a create request was in flight;
+  /// reconcile first) or `created`.
+  TextColumn get remoteState => text().withDefault(const Constant('local'))();
+
+  /// The end time last sent to Wavelog (UTC millis), null if none was.
+  IntColumn get remoteEndSynced => integer().nullable()();
+
+  /// Localisation key of the last session-sync error.
+  TextColumn get remoteErrorKey => text().nullable()();
+
   @override
   Set<Column<Object>> get primaryKey => {id};
+}
+
+/// QSOs that have been linked to a contest session on the Wavelog server.
+@DataClassName('ContestLinkRow')
+class ContestLinks extends Table {
+  TextColumn get sessionId => text().references(ContestSessions, #id)();
+  TextColumn get qsoId => text().references(Qsos, #id)();
+
+  /// Wavelog QSO id that was linked.
+  IntColumn get remoteQsoId => integer()();
+  IntColumn get linkedAt => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {sessionId, qsoId};
 }
 
 /// Sent serial numbers. Monotonic per session and never reused, even after

@@ -2255,6 +2255,40 @@ class $ContestSessionsTable extends ContestSessions
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _remoteStateMeta = const VerificationMeta(
+    'remoteState',
+  );
+  @override
+  late final GeneratedColumn<String> remoteState = GeneratedColumn<String>(
+    'remote_state',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('local'),
+  );
+  static const VerificationMeta _remoteEndSyncedMeta = const VerificationMeta(
+    'remoteEndSynced',
+  );
+  @override
+  late final GeneratedColumn<int> remoteEndSynced = GeneratedColumn<int>(
+    'remote_end_synced',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _remoteErrorKeyMeta = const VerificationMeta(
+    'remoteErrorKey',
+  );
+  @override
+  late final GeneratedColumn<String> remoteErrorKey = GeneratedColumn<String>(
+    'remote_error_key',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     originDeviceId,
@@ -2273,6 +2307,9 @@ class $ContestSessionsTable extends ContestSessions
     serialStrategy,
     serialRangeStart,
     serialRangeEnd,
+    remoteState,
+    remoteEndSynced,
+    remoteErrorKey,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2417,6 +2454,33 @@ class $ContestSessionsTable extends ContestSessions
         ),
       );
     }
+    if (data.containsKey('remote_state')) {
+      context.handle(
+        _remoteStateMeta,
+        remoteState.isAcceptableOrUnknown(
+          data['remote_state']!,
+          _remoteStateMeta,
+        ),
+      );
+    }
+    if (data.containsKey('remote_end_synced')) {
+      context.handle(
+        _remoteEndSyncedMeta,
+        remoteEndSynced.isAcceptableOrUnknown(
+          data['remote_end_synced']!,
+          _remoteEndSyncedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('remote_error_key')) {
+      context.handle(
+        _remoteErrorKeyMeta,
+        remoteErrorKey.isAcceptableOrUnknown(
+          data['remote_error_key']!,
+          _remoteErrorKeyMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -2490,6 +2554,18 @@ class $ContestSessionsTable extends ContestSessions
         DriftSqlType.int,
         data['${effectivePrefix}serial_range_end'],
       ),
+      remoteState: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}remote_state'],
+      )!,
+      remoteEndSynced: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}remote_end_synced'],
+      ),
+      remoteErrorKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}remote_error_key'],
+      ),
     );
   }
 
@@ -2532,6 +2608,17 @@ class ContestSessionRow extends DataClass
   final String serialStrategy;
   final int? serialRangeStart;
   final int? serialRangeEnd;
+
+  /// Whether and how the session exists on Wavelog: `local` (never synced),
+  /// `pending` (to be created), `verifying` (a create request was in flight;
+  /// reconcile first) or `created`.
+  final String remoteState;
+
+  /// The end time last sent to Wavelog (UTC millis), null if none was.
+  final int? remoteEndSynced;
+
+  /// Localisation key of the last session-sync error.
+  final String? remoteErrorKey;
   const ContestSessionRow({
     required this.originDeviceId,
     required this.hlcCreated,
@@ -2549,6 +2636,9 @@ class ContestSessionRow extends DataClass
     required this.serialStrategy,
     this.serialRangeStart,
     this.serialRangeEnd,
+    required this.remoteState,
+    this.remoteEndSynced,
+    this.remoteErrorKey,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2580,6 +2670,13 @@ class ContestSessionRow extends DataClass
     }
     if (!nullToAbsent || serialRangeEnd != null) {
       map['serial_range_end'] = Variable<int>(serialRangeEnd);
+    }
+    map['remote_state'] = Variable<String>(remoteState);
+    if (!nullToAbsent || remoteEndSynced != null) {
+      map['remote_end_synced'] = Variable<int>(remoteEndSynced);
+    }
+    if (!nullToAbsent || remoteErrorKey != null) {
+      map['remote_error_key'] = Variable<String>(remoteErrorKey);
     }
     return map;
   }
@@ -2614,6 +2711,13 @@ class ContestSessionRow extends DataClass
       serialRangeEnd: serialRangeEnd == null && nullToAbsent
           ? const Value.absent()
           : Value(serialRangeEnd),
+      remoteState: Value(remoteState),
+      remoteEndSynced: remoteEndSynced == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteEndSynced),
+      remoteErrorKey: remoteErrorKey == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteErrorKey),
     );
   }
 
@@ -2639,6 +2743,9 @@ class ContestSessionRow extends DataClass
       serialStrategy: serializer.fromJson<String>(json['serialStrategy']),
       serialRangeStart: serializer.fromJson<int?>(json['serialRangeStart']),
       serialRangeEnd: serializer.fromJson<int?>(json['serialRangeEnd']),
+      remoteState: serializer.fromJson<String>(json['remoteState']),
+      remoteEndSynced: serializer.fromJson<int?>(json['remoteEndSynced']),
+      remoteErrorKey: serializer.fromJson<String?>(json['remoteErrorKey']),
     );
   }
   @override
@@ -2661,6 +2768,9 @@ class ContestSessionRow extends DataClass
       'serialStrategy': serializer.toJson<String>(serialStrategy),
       'serialRangeStart': serializer.toJson<int?>(serialRangeStart),
       'serialRangeEnd': serializer.toJson<int?>(serialRangeEnd),
+      'remoteState': serializer.toJson<String>(remoteState),
+      'remoteEndSynced': serializer.toJson<int?>(remoteEndSynced),
+      'remoteErrorKey': serializer.toJson<String?>(remoteErrorKey),
     };
   }
 
@@ -2681,6 +2791,9 @@ class ContestSessionRow extends DataClass
     String? serialStrategy,
     Value<int?> serialRangeStart = const Value.absent(),
     Value<int?> serialRangeEnd = const Value.absent(),
+    String? remoteState,
+    Value<int?> remoteEndSynced = const Value.absent(),
+    Value<String?> remoteErrorKey = const Value.absent(),
   }) => ContestSessionRow(
     originDeviceId: originDeviceId ?? this.originDeviceId,
     hlcCreated: hlcCreated ?? this.hlcCreated,
@@ -2706,6 +2819,13 @@ class ContestSessionRow extends DataClass
     serialRangeEnd: serialRangeEnd.present
         ? serialRangeEnd.value
         : this.serialRangeEnd,
+    remoteState: remoteState ?? this.remoteState,
+    remoteEndSynced: remoteEndSynced.present
+        ? remoteEndSynced.value
+        : this.remoteEndSynced,
+    remoteErrorKey: remoteErrorKey.present
+        ? remoteErrorKey.value
+        : this.remoteErrorKey,
   );
   ContestSessionRow copyWithCompanion(ContestSessionsCompanion data) {
     return ContestSessionRow(
@@ -2743,6 +2863,15 @@ class ContestSessionRow extends DataClass
       serialRangeEnd: data.serialRangeEnd.present
           ? data.serialRangeEnd.value
           : this.serialRangeEnd,
+      remoteState: data.remoteState.present
+          ? data.remoteState.value
+          : this.remoteState,
+      remoteEndSynced: data.remoteEndSynced.present
+          ? data.remoteEndSynced.value
+          : this.remoteEndSynced,
+      remoteErrorKey: data.remoteErrorKey.present
+          ? data.remoteErrorKey.value
+          : this.remoteErrorKey,
     );
   }
 
@@ -2764,7 +2893,10 @@ class ContestSessionRow extends DataClass
           ..write('remoteSessionId: $remoteSessionId, ')
           ..write('serialStrategy: $serialStrategy, ')
           ..write('serialRangeStart: $serialRangeStart, ')
-          ..write('serialRangeEnd: $serialRangeEnd')
+          ..write('serialRangeEnd: $serialRangeEnd, ')
+          ..write('remoteState: $remoteState, ')
+          ..write('remoteEndSynced: $remoteEndSynced, ')
+          ..write('remoteErrorKey: $remoteErrorKey')
           ..write(')'))
         .toString();
   }
@@ -2787,6 +2919,9 @@ class ContestSessionRow extends DataClass
     serialStrategy,
     serialRangeStart,
     serialRangeEnd,
+    remoteState,
+    remoteEndSynced,
+    remoteErrorKey,
   );
   @override
   bool operator ==(Object other) =>
@@ -2807,7 +2942,10 @@ class ContestSessionRow extends DataClass
           other.remoteSessionId == this.remoteSessionId &&
           other.serialStrategy == this.serialStrategy &&
           other.serialRangeStart == this.serialRangeStart &&
-          other.serialRangeEnd == this.serialRangeEnd);
+          other.serialRangeEnd == this.serialRangeEnd &&
+          other.remoteState == this.remoteState &&
+          other.remoteEndSynced == this.remoteEndSynced &&
+          other.remoteErrorKey == this.remoteErrorKey);
 }
 
 class ContestSessionsCompanion extends UpdateCompanion<ContestSessionRow> {
@@ -2827,6 +2965,9 @@ class ContestSessionsCompanion extends UpdateCompanion<ContestSessionRow> {
   final Value<String> serialStrategy;
   final Value<int?> serialRangeStart;
   final Value<int?> serialRangeEnd;
+  final Value<String> remoteState;
+  final Value<int?> remoteEndSynced;
+  final Value<String?> remoteErrorKey;
   final Value<int> rowid;
   const ContestSessionsCompanion({
     this.originDeviceId = const Value.absent(),
@@ -2845,6 +2986,9 @@ class ContestSessionsCompanion extends UpdateCompanion<ContestSessionRow> {
     this.serialStrategy = const Value.absent(),
     this.serialRangeStart = const Value.absent(),
     this.serialRangeEnd = const Value.absent(),
+    this.remoteState = const Value.absent(),
+    this.remoteEndSynced = const Value.absent(),
+    this.remoteErrorKey = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ContestSessionsCompanion.insert({
@@ -2864,6 +3008,9 @@ class ContestSessionsCompanion extends UpdateCompanion<ContestSessionRow> {
     this.serialStrategy = const Value.absent(),
     this.serialRangeStart = const Value.absent(),
     this.serialRangeEnd = const Value.absent(),
+    this.remoteState = const Value.absent(),
+    this.remoteEndSynced = const Value.absent(),
+    this.remoteErrorKey = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : originDeviceId = Value(originDeviceId),
        hlcCreated = Value(hlcCreated),
@@ -2889,6 +3036,9 @@ class ContestSessionsCompanion extends UpdateCompanion<ContestSessionRow> {
     Expression<String>? serialStrategy,
     Expression<int>? serialRangeStart,
     Expression<int>? serialRangeEnd,
+    Expression<String>? remoteState,
+    Expression<int>? remoteEndSynced,
+    Expression<String>? remoteErrorKey,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -2908,6 +3058,9 @@ class ContestSessionsCompanion extends UpdateCompanion<ContestSessionRow> {
       if (serialStrategy != null) 'serial_strategy': serialStrategy,
       if (serialRangeStart != null) 'serial_range_start': serialRangeStart,
       if (serialRangeEnd != null) 'serial_range_end': serialRangeEnd,
+      if (remoteState != null) 'remote_state': remoteState,
+      if (remoteEndSynced != null) 'remote_end_synced': remoteEndSynced,
+      if (remoteErrorKey != null) 'remote_error_key': remoteErrorKey,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -2929,6 +3082,9 @@ class ContestSessionsCompanion extends UpdateCompanion<ContestSessionRow> {
     Value<String>? serialStrategy,
     Value<int?>? serialRangeStart,
     Value<int?>? serialRangeEnd,
+    Value<String>? remoteState,
+    Value<int?>? remoteEndSynced,
+    Value<String?>? remoteErrorKey,
     Value<int>? rowid,
   }) {
     return ContestSessionsCompanion(
@@ -2948,6 +3104,9 @@ class ContestSessionsCompanion extends UpdateCompanion<ContestSessionRow> {
       serialStrategy: serialStrategy ?? this.serialStrategy,
       serialRangeStart: serialRangeStart ?? this.serialRangeStart,
       serialRangeEnd: serialRangeEnd ?? this.serialRangeEnd,
+      remoteState: remoteState ?? this.remoteState,
+      remoteEndSynced: remoteEndSynced ?? this.remoteEndSynced,
+      remoteErrorKey: remoteErrorKey ?? this.remoteErrorKey,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -3003,6 +3162,15 @@ class ContestSessionsCompanion extends UpdateCompanion<ContestSessionRow> {
     if (serialRangeEnd.present) {
       map['serial_range_end'] = Variable<int>(serialRangeEnd.value);
     }
+    if (remoteState.present) {
+      map['remote_state'] = Variable<String>(remoteState.value);
+    }
+    if (remoteEndSynced.present) {
+      map['remote_end_synced'] = Variable<int>(remoteEndSynced.value);
+    }
+    if (remoteErrorKey.present) {
+      map['remote_error_key'] = Variable<String>(remoteErrorKey.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -3028,6 +3196,9 @@ class ContestSessionsCompanion extends UpdateCompanion<ContestSessionRow> {
           ..write('serialStrategy: $serialStrategy, ')
           ..write('serialRangeStart: $serialRangeStart, ')
           ..write('serialRangeEnd: $serialRangeEnd, ')
+          ..write('remoteState: $remoteState, ')
+          ..write('remoteEndSynced: $remoteEndSynced, ')
+          ..write('remoteErrorKey: $remoteErrorKey, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -8231,6 +8402,337 @@ class SyncJournalCompanion extends UpdateCompanion<SyncJournalRow> {
   }
 }
 
+class $ContestLinksTable extends ContestLinks
+    with TableInfo<$ContestLinksTable, ContestLinkRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ContestLinksTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _sessionIdMeta = const VerificationMeta(
+    'sessionId',
+  );
+  @override
+  late final GeneratedColumn<String> sessionId = GeneratedColumn<String>(
+    'session_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES contest_sessions (id)',
+    ),
+  );
+  static const VerificationMeta _qsoIdMeta = const VerificationMeta('qsoId');
+  @override
+  late final GeneratedColumn<String> qsoId = GeneratedColumn<String>(
+    'qso_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES qsos (id)',
+    ),
+  );
+  static const VerificationMeta _remoteQsoIdMeta = const VerificationMeta(
+    'remoteQsoId',
+  );
+  @override
+  late final GeneratedColumn<int> remoteQsoId = GeneratedColumn<int>(
+    'remote_qso_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _linkedAtMeta = const VerificationMeta(
+    'linkedAt',
+  );
+  @override
+  late final GeneratedColumn<int> linkedAt = GeneratedColumn<int>(
+    'linked_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    sessionId,
+    qsoId,
+    remoteQsoId,
+    linkedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'contest_links';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ContestLinkRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('session_id')) {
+      context.handle(
+        _sessionIdMeta,
+        sessionId.isAcceptableOrUnknown(data['session_id']!, _sessionIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sessionIdMeta);
+    }
+    if (data.containsKey('qso_id')) {
+      context.handle(
+        _qsoIdMeta,
+        qsoId.isAcceptableOrUnknown(data['qso_id']!, _qsoIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_qsoIdMeta);
+    }
+    if (data.containsKey('remote_qso_id')) {
+      context.handle(
+        _remoteQsoIdMeta,
+        remoteQsoId.isAcceptableOrUnknown(
+          data['remote_qso_id']!,
+          _remoteQsoIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_remoteQsoIdMeta);
+    }
+    if (data.containsKey('linked_at')) {
+      context.handle(
+        _linkedAtMeta,
+        linkedAt.isAcceptableOrUnknown(data['linked_at']!, _linkedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_linkedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {sessionId, qsoId};
+  @override
+  ContestLinkRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ContestLinkRow(
+      sessionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}session_id'],
+      )!,
+      qsoId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}qso_id'],
+      )!,
+      remoteQsoId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}remote_qso_id'],
+      )!,
+      linkedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}linked_at'],
+      )!,
+    );
+  }
+
+  @override
+  $ContestLinksTable createAlias(String alias) {
+    return $ContestLinksTable(attachedDatabase, alias);
+  }
+}
+
+class ContestLinkRow extends DataClass implements Insertable<ContestLinkRow> {
+  final String sessionId;
+  final String qsoId;
+
+  /// Wavelog QSO id that was linked.
+  final int remoteQsoId;
+  final int linkedAt;
+  const ContestLinkRow({
+    required this.sessionId,
+    required this.qsoId,
+    required this.remoteQsoId,
+    required this.linkedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['session_id'] = Variable<String>(sessionId);
+    map['qso_id'] = Variable<String>(qsoId);
+    map['remote_qso_id'] = Variable<int>(remoteQsoId);
+    map['linked_at'] = Variable<int>(linkedAt);
+    return map;
+  }
+
+  ContestLinksCompanion toCompanion(bool nullToAbsent) {
+    return ContestLinksCompanion(
+      sessionId: Value(sessionId),
+      qsoId: Value(qsoId),
+      remoteQsoId: Value(remoteQsoId),
+      linkedAt: Value(linkedAt),
+    );
+  }
+
+  factory ContestLinkRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ContestLinkRow(
+      sessionId: serializer.fromJson<String>(json['sessionId']),
+      qsoId: serializer.fromJson<String>(json['qsoId']),
+      remoteQsoId: serializer.fromJson<int>(json['remoteQsoId']),
+      linkedAt: serializer.fromJson<int>(json['linkedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'sessionId': serializer.toJson<String>(sessionId),
+      'qsoId': serializer.toJson<String>(qsoId),
+      'remoteQsoId': serializer.toJson<int>(remoteQsoId),
+      'linkedAt': serializer.toJson<int>(linkedAt),
+    };
+  }
+
+  ContestLinkRow copyWith({
+    String? sessionId,
+    String? qsoId,
+    int? remoteQsoId,
+    int? linkedAt,
+  }) => ContestLinkRow(
+    sessionId: sessionId ?? this.sessionId,
+    qsoId: qsoId ?? this.qsoId,
+    remoteQsoId: remoteQsoId ?? this.remoteQsoId,
+    linkedAt: linkedAt ?? this.linkedAt,
+  );
+  ContestLinkRow copyWithCompanion(ContestLinksCompanion data) {
+    return ContestLinkRow(
+      sessionId: data.sessionId.present ? data.sessionId.value : this.sessionId,
+      qsoId: data.qsoId.present ? data.qsoId.value : this.qsoId,
+      remoteQsoId: data.remoteQsoId.present
+          ? data.remoteQsoId.value
+          : this.remoteQsoId,
+      linkedAt: data.linkedAt.present ? data.linkedAt.value : this.linkedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ContestLinkRow(')
+          ..write('sessionId: $sessionId, ')
+          ..write('qsoId: $qsoId, ')
+          ..write('remoteQsoId: $remoteQsoId, ')
+          ..write('linkedAt: $linkedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(sessionId, qsoId, remoteQsoId, linkedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ContestLinkRow &&
+          other.sessionId == this.sessionId &&
+          other.qsoId == this.qsoId &&
+          other.remoteQsoId == this.remoteQsoId &&
+          other.linkedAt == this.linkedAt);
+}
+
+class ContestLinksCompanion extends UpdateCompanion<ContestLinkRow> {
+  final Value<String> sessionId;
+  final Value<String> qsoId;
+  final Value<int> remoteQsoId;
+  final Value<int> linkedAt;
+  final Value<int> rowid;
+  const ContestLinksCompanion({
+    this.sessionId = const Value.absent(),
+    this.qsoId = const Value.absent(),
+    this.remoteQsoId = const Value.absent(),
+    this.linkedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ContestLinksCompanion.insert({
+    required String sessionId,
+    required String qsoId,
+    required int remoteQsoId,
+    required int linkedAt,
+    this.rowid = const Value.absent(),
+  }) : sessionId = Value(sessionId),
+       qsoId = Value(qsoId),
+       remoteQsoId = Value(remoteQsoId),
+       linkedAt = Value(linkedAt);
+  static Insertable<ContestLinkRow> custom({
+    Expression<String>? sessionId,
+    Expression<String>? qsoId,
+    Expression<int>? remoteQsoId,
+    Expression<int>? linkedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (sessionId != null) 'session_id': sessionId,
+      if (qsoId != null) 'qso_id': qsoId,
+      if (remoteQsoId != null) 'remote_qso_id': remoteQsoId,
+      if (linkedAt != null) 'linked_at': linkedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ContestLinksCompanion copyWith({
+    Value<String>? sessionId,
+    Value<String>? qsoId,
+    Value<int>? remoteQsoId,
+    Value<int>? linkedAt,
+    Value<int>? rowid,
+  }) {
+    return ContestLinksCompanion(
+      sessionId: sessionId ?? this.sessionId,
+      qsoId: qsoId ?? this.qsoId,
+      remoteQsoId: remoteQsoId ?? this.remoteQsoId,
+      linkedAt: linkedAt ?? this.linkedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (sessionId.present) {
+      map['session_id'] = Variable<String>(sessionId.value);
+    }
+    if (qsoId.present) {
+      map['qso_id'] = Variable<String>(qsoId.value);
+    }
+    if (remoteQsoId.present) {
+      map['remote_qso_id'] = Variable<int>(remoteQsoId.value);
+    }
+    if (linkedAt.present) {
+      map['linked_at'] = Variable<int>(linkedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ContestLinksCompanion(')
+          ..write('sessionId: $sessionId, ')
+          ..write('qsoId: $qsoId, ')
+          ..write('remoteQsoId: $remoteQsoId, ')
+          ..write('linkedAt: $linkedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SerialAllocationsTable extends SerialAllocations
     with TableInfo<$SerialAllocationsTable, SerialAllocationRow> {
   @override
@@ -12509,6 +13011,7 @@ abstract class _$TidelineDatabase extends GeneratedDatabase {
   late final $QsosTable qsos = $QsosTable(this);
   late final $QsoSyncTable qsoSync = $QsoSyncTable(this);
   late final $SyncJournalTable syncJournal = $SyncJournalTable(this);
+  late final $ContestLinksTable contestLinks = $ContestLinksTable(this);
   late final $SerialAllocationsTable serialAllocations =
       $SerialAllocationsTable(this);
   late final $ProgramRulesTable programRules = $ProgramRulesTable(this);
@@ -12558,6 +13061,7 @@ abstract class _$TidelineDatabase extends GeneratedDatabase {
     qsos,
     qsoSync,
     syncJournal,
+    contestLinks,
     serialAllocations,
     programRules,
     referencePacks,
@@ -14789,6 +15293,9 @@ typedef $$ContestSessionsTableCreateCompanionBuilder =
       Value<String> serialStrategy,
       Value<int?> serialRangeStart,
       Value<int?> serialRangeEnd,
+      Value<String> remoteState,
+      Value<int?> remoteEndSynced,
+      Value<String?> remoteErrorKey,
       Value<int> rowid,
     });
 typedef $$ContestSessionsTableUpdateCompanionBuilder =
@@ -14809,6 +15316,9 @@ typedef $$ContestSessionsTableUpdateCompanionBuilder =
       Value<String> serialStrategy,
       Value<int?> serialRangeStart,
       Value<int?> serialRangeEnd,
+      Value<String> remoteState,
+      Value<int?> remoteEndSynced,
+      Value<String?> remoteErrorKey,
       Value<int> rowid,
     });
 
@@ -14893,6 +15403,25 @@ final class $$ContestSessionsTableReferences
     );
 
     final cache = $_typedResult.readTableOrNull(_qsosRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$ContestLinksTable, List<ContestLinkRow>>
+  _contestLinksRefsTable(_$TidelineDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.contestLinks,
+        aliasName: 'contest_sessions__id__contest_links__session_id',
+      );
+
+  $$ContestLinksTableProcessedTableManager get contestLinksRefs {
+    final manager = $$ContestLinksTableTableManager(
+      $_db,
+      $_db.contestLinks,
+    ).filter((f) => f.sessionId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_contestLinksRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -14994,6 +15523,21 @@ class $$ContestSessionsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get remoteState => $composableBuilder(
+    column: $table.remoteState,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get remoteEndSynced => $composableBuilder(
+    column: $table.remoteEndSynced,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get remoteErrorKey => $composableBuilder(
+    column: $table.remoteErrorKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
   $$ContestDefinitionsTableFilterComposer get definitionId {
     final $$ContestDefinitionsTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -15079,6 +15623,31 @@ class $$ContestSessionsTableFilterComposer
           }) => $$QsosTableFilterComposer(
             $db: $db,
             $table: $db.qsos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> contestLinksRefs(
+    Expression<bool> Function($$ContestLinksTableFilterComposer f) f,
+  ) {
+    final $$ContestLinksTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.contestLinks,
+      getReferencedColumn: (t) => t.sessionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ContestLinksTableFilterComposer(
+            $db: $db,
+            $table: $db.contestLinks,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -15185,6 +15754,21 @@ class $$ContestSessionsTableOrderingComposer
 
   ColumnOrderings<int> get serialRangeEnd => $composableBuilder(
     column: $table.serialRangeEnd,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get remoteState => $composableBuilder(
+    column: $table.remoteState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get remoteEndSynced => $composableBuilder(
+    column: $table.remoteEndSynced,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get remoteErrorKey => $composableBuilder(
+    column: $table.remoteErrorKey,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -15320,6 +15904,21 @@ class $$ContestSessionsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get remoteState => $composableBuilder(
+    column: $table.remoteState,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get remoteEndSynced => $composableBuilder(
+    column: $table.remoteEndSynced,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get remoteErrorKey => $composableBuilder(
+    column: $table.remoteErrorKey,
+    builder: (column) => column,
+  );
+
   $$ContestDefinitionsTableAnnotationComposer get definitionId {
     final $$ContestDefinitionsTableAnnotationComposer composer =
         $composerBuilder(
@@ -15415,6 +16014,31 @@ class $$ContestSessionsTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> contestLinksRefs<T extends Object>(
+    Expression<T> Function($$ContestLinksTableAnnotationComposer a) f,
+  ) {
+    final $$ContestLinksTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.contestLinks,
+      getReferencedColumn: (t) => t.sessionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ContestLinksTableAnnotationComposer(
+            $db: $db,
+            $table: $db.contestLinks,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> serialAllocationsRefs<T extends Object>(
     Expression<T> Function($$SerialAllocationsTableAnnotationComposer a) f,
   ) {
@@ -15460,6 +16084,7 @@ class $$ContestSessionsTableTableManager
             bool accountId,
             bool stationProfileId,
             bool qsosRefs,
+            bool contestLinksRefs,
             bool serialAllocationsRefs,
           })
         > {
@@ -15494,6 +16119,9 @@ class $$ContestSessionsTableTableManager
                 Value<String> serialStrategy = const Value.absent(),
                 Value<int?> serialRangeStart = const Value.absent(),
                 Value<int?> serialRangeEnd = const Value.absent(),
+                Value<String> remoteState = const Value.absent(),
+                Value<int?> remoteEndSynced = const Value.absent(),
+                Value<String?> remoteErrorKey = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ContestSessionsCompanion(
                 originDeviceId: originDeviceId,
@@ -15512,6 +16140,9 @@ class $$ContestSessionsTableTableManager
                 serialStrategy: serialStrategy,
                 serialRangeStart: serialRangeStart,
                 serialRangeEnd: serialRangeEnd,
+                remoteState: remoteState,
+                remoteEndSynced: remoteEndSynced,
+                remoteErrorKey: remoteErrorKey,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -15532,6 +16163,9 @@ class $$ContestSessionsTableTableManager
                 Value<String> serialStrategy = const Value.absent(),
                 Value<int?> serialRangeStart = const Value.absent(),
                 Value<int?> serialRangeEnd = const Value.absent(),
+                Value<String> remoteState = const Value.absent(),
+                Value<int?> remoteEndSynced = const Value.absent(),
+                Value<String?> remoteErrorKey = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ContestSessionsCompanion.insert(
                 originDeviceId: originDeviceId,
@@ -15550,6 +16184,9 @@ class $$ContestSessionsTableTableManager
                 serialStrategy: serialStrategy,
                 serialRangeStart: serialRangeStart,
                 serialRangeEnd: serialRangeEnd,
+                remoteState: remoteState,
+                remoteEndSynced: remoteEndSynced,
+                remoteErrorKey: remoteErrorKey,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -15566,12 +16203,14 @@ class $$ContestSessionsTableTableManager
                 accountId = false,
                 stationProfileId = false,
                 qsosRefs = false,
+                contestLinksRefs = false,
                 serialAllocationsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (qsosRefs) db.qsos,
+                    if (contestLinksRefs) db.contestLinks,
                     if (serialAllocationsRefs) db.serialAllocations,
                   ],
                   addJoins:
@@ -15649,6 +16288,27 @@ class $$ContestSessionsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (contestLinksRefs)
+                        await $_getPrefetchedData<
+                          ContestSessionRow,
+                          $ContestSessionsTable,
+                          ContestLinkRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ContestSessionsTableReferences
+                              ._contestLinksRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ContestSessionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).contestLinksRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.sessionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                       if (serialAllocationsRefs)
                         await $_getPrefetchedData<
                           ContestSessionRow,
@@ -15695,6 +16355,7 @@ typedef $$ContestSessionsTableProcessedTableManager =
         bool accountId,
         bool stationProfileId,
         bool qsosRefs,
+        bool contestLinksRefs,
         bool serialAllocationsRefs,
       })
     >;
@@ -16593,6 +17254,25 @@ final class $$QsosTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$ContestLinksTable, List<ContestLinkRow>>
+  _contestLinksRefsTable(_$TidelineDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.contestLinks,
+        aliasName: 'qsos__id__contest_links__qso_id',
+      );
+
+  $$ContestLinksTableProcessedTableManager get contestLinksRefs {
+    final manager = $$ContestLinksTableTableManager(
+      $_db,
+      $_db.contestLinks,
+    ).filter((f) => f.qsoId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_contestLinksRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$QsosTableFilterComposer
@@ -17012,6 +17692,31 @@ class $$QsosTableFilterComposer
           }) => $$QsoSyncTableFilterComposer(
             $db: $db,
             $table: $db.qsoSync,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> contestLinksRefs(
+    Expression<bool> Function($$ContestLinksTableFilterComposer f) f,
+  ) {
+    final $$ContestLinksTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.contestLinks,
+      getReferencedColumn: (t) => t.qsoId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ContestLinksTableFilterComposer(
+            $db: $db,
+            $table: $db.contestLinks,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -17743,6 +18448,31 @@ class $$QsosTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> contestLinksRefs<T extends Object>(
+    Expression<T> Function($$ContestLinksTableAnnotationComposer a) f,
+  ) {
+    final $$ContestLinksTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.contestLinks,
+      getReferencedColumn: (t) => t.qsoId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ContestLinksTableAnnotationComposer(
+            $db: $db,
+            $table: $db.contestLinks,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$QsosTableTableManager
@@ -17764,6 +18494,7 @@ class $$QsosTableTableManager
             bool contestSessionId,
             bool activationId,
             bool qsoSyncRefs,
+            bool contestLinksRefs,
           })
         > {
   $$QsosTableTableManager(_$TidelineDatabase db, $QsosTable table)
@@ -18060,10 +18791,14 @@ class $$QsosTableTableManager
                 contestSessionId = false,
                 activationId = false,
                 qsoSyncRefs = false,
+                contestLinksRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
-                  explicitlyWatchedTables: [if (qsoSyncRefs) db.qsoSync],
+                  explicitlyWatchedTables: [
+                    if (qsoSyncRefs) db.qsoSync,
+                    if (contestLinksRefs) db.contestLinks,
+                  ],
                   addJoins:
                       <
                         T extends TableManagerState<
@@ -18146,6 +18881,26 @@ class $$QsosTableTableManager
                           ) => referencedItems.where((e) => e.qsoId == item.id),
                           typedResults: items,
                         ),
+                      if (contestLinksRefs)
+                        await $_getPrefetchedData<
+                          QsoRow,
+                          $QsosTable,
+                          ContestLinkRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$QsosTableReferences
+                              ._contestLinksRefsTable(db),
+                          managerFromTypedResult: (p0) => $$QsosTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).contestLinksRefs,
+                          referencedItemsForCurrentItem: (
+                            item,
+                            referencedItems,
+                          ) => referencedItems.where((e) => e.qsoId == item.id),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -18172,6 +18927,7 @@ typedef $$QsosTableProcessedTableManager =
         bool contestSessionId,
         bool activationId,
         bool qsoSyncRefs,
+        bool contestLinksRefs,
       })
     >;
 typedef $$QsoSyncTableCreateCompanionBuilder = QsoSyncCompanion Function({
@@ -19045,6 +19801,392 @@ typedef $$SyncJournalTableProcessedTableManager =
       (SyncJournalRow, $$SyncJournalTableReferences),
       SyncJournalRow,
       PrefetchHooks Function({bool accountId})
+    >;
+typedef $$ContestLinksTableCreateCompanionBuilder =
+    ContestLinksCompanion Function({
+      required String sessionId,
+      required String qsoId,
+      required int remoteQsoId,
+      required int linkedAt,
+      Value<int> rowid,
+    });
+typedef $$ContestLinksTableUpdateCompanionBuilder =
+    ContestLinksCompanion Function({
+      Value<String> sessionId,
+      Value<String> qsoId,
+      Value<int> remoteQsoId,
+      Value<int> linkedAt,
+      Value<int> rowid,
+    });
+
+final class $$ContestLinksTableReferences
+    extends
+        BaseReferences<_$TidelineDatabase, $ContestLinksTable, ContestLinkRow> {
+  $$ContestLinksTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ContestSessionsTable _sessionIdTable(_$TidelineDatabase db) => db
+      .contestSessions
+      .createAlias('contest_links__session_id__contest_sessions__id');
+
+  $$ContestSessionsTableProcessedTableManager get sessionId {
+    final $_column = $_itemColumn<String>('session_id')!;
+
+    final manager = $$ContestSessionsTableTableManager(
+      $_db,
+      $_db.contestSessions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_sessionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $QsosTable _qsoIdTable(_$TidelineDatabase db) =>
+      db.qsos.createAlias('contest_links__qso_id__qsos__id');
+
+  $$QsosTableProcessedTableManager get qsoId {
+    final $_column = $_itemColumn<String>('qso_id')!;
+
+    final manager = $$QsosTableTableManager(
+      $_db,
+      $_db.qsos,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_qsoIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$ContestLinksTableFilterComposer
+    extends Composer<_$TidelineDatabase, $ContestLinksTable> {
+  $$ContestLinksTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get remoteQsoId => $composableBuilder(
+    column: $table.remoteQsoId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get linkedAt => $composableBuilder(
+    column: $table.linkedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ContestSessionsTableFilterComposer get sessionId {
+    final $$ContestSessionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sessionId,
+      referencedTable: $db.contestSessions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ContestSessionsTableFilterComposer(
+            $db: $db,
+            $table: $db.contestSessions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$QsosTableFilterComposer get qsoId {
+    final $$QsosTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.qsoId,
+      referencedTable: $db.qsos,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$QsosTableFilterComposer(
+            $db: $db,
+            $table: $db.qsos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ContestLinksTableOrderingComposer
+    extends Composer<_$TidelineDatabase, $ContestLinksTable> {
+  $$ContestLinksTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get remoteQsoId => $composableBuilder(
+    column: $table.remoteQsoId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get linkedAt => $composableBuilder(
+    column: $table.linkedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ContestSessionsTableOrderingComposer get sessionId {
+    final $$ContestSessionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sessionId,
+      referencedTable: $db.contestSessions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ContestSessionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.contestSessions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$QsosTableOrderingComposer get qsoId {
+    final $$QsosTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.qsoId,
+      referencedTable: $db.qsos,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$QsosTableOrderingComposer(
+            $db: $db,
+            $table: $db.qsos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ContestLinksTableAnnotationComposer
+    extends Composer<_$TidelineDatabase, $ContestLinksTable> {
+  $$ContestLinksTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get remoteQsoId => $composableBuilder(
+    column: $table.remoteQsoId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get linkedAt =>
+      $composableBuilder(column: $table.linkedAt, builder: (column) => column);
+
+  $$ContestSessionsTableAnnotationComposer get sessionId {
+    final $$ContestSessionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sessionId,
+      referencedTable: $db.contestSessions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ContestSessionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.contestSessions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$QsosTableAnnotationComposer get qsoId {
+    final $$QsosTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.qsoId,
+      referencedTable: $db.qsos,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$QsosTableAnnotationComposer(
+            $db: $db,
+            $table: $db.qsos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ContestLinksTableTableManager
+    extends
+        RootTableManager<
+          _$TidelineDatabase,
+          $ContestLinksTable,
+          ContestLinkRow,
+          $$ContestLinksTableFilterComposer,
+          $$ContestLinksTableOrderingComposer,
+          $$ContestLinksTableAnnotationComposer,
+          $$ContestLinksTableCreateCompanionBuilder,
+          $$ContestLinksTableUpdateCompanionBuilder,
+          (ContestLinkRow, $$ContestLinksTableReferences),
+          ContestLinkRow,
+          PrefetchHooks Function({bool sessionId, bool qsoId})
+        > {
+  $$ContestLinksTableTableManager(
+    _$TidelineDatabase db,
+    $ContestLinksTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ContestLinksTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ContestLinksTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ContestLinksTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> sessionId = const Value.absent(),
+                Value<String> qsoId = const Value.absent(),
+                Value<int> remoteQsoId = const Value.absent(),
+                Value<int> linkedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ContestLinksCompanion(
+                sessionId: sessionId,
+                qsoId: qsoId,
+                remoteQsoId: remoteQsoId,
+                linkedAt: linkedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String sessionId,
+                required String qsoId,
+                required int remoteQsoId,
+                required int linkedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => ContestLinksCompanion.insert(
+                sessionId: sessionId,
+                qsoId: qsoId,
+                remoteQsoId: remoteQsoId,
+                linkedAt: linkedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ContestLinksTable, ContestLinkRow>(table),
+                  $$ContestLinksTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({sessionId = false, qsoId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (sessionId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.sessionId,
+                        referencedTable: $$ContestLinksTableReferences
+                            ._sessionIdTable(db),
+                        referencedColumn: $$ContestLinksTableReferences
+                            ._sessionIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+                    if (qsoId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.qsoId,
+                        referencedTable: $$ContestLinksTableReferences
+                            ._qsoIdTable(db),
+                        referencedColumn: $$ContestLinksTableReferences
+                            ._qsoIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$ContestLinksTableProcessedTableManager =
+    ProcessedTableManager<
+      _$TidelineDatabase,
+      $ContestLinksTable,
+      ContestLinkRow,
+      $$ContestLinksTableFilterComposer,
+      $$ContestLinksTableOrderingComposer,
+      $$ContestLinksTableAnnotationComposer,
+      $$ContestLinksTableCreateCompanionBuilder,
+      $$ContestLinksTableUpdateCompanionBuilder,
+      (ContestLinkRow, $$ContestLinksTableReferences),
+      ContestLinkRow,
+      PrefetchHooks Function({bool sessionId, bool qsoId})
     >;
 typedef $$SerialAllocationsTableCreateCompanionBuilder =
     SerialAllocationsCompanion Function({
@@ -22201,6 +23343,8 @@ class $TidelineDatabaseManager {
       $$QsoSyncTableTableManager(_db, _db.qsoSync);
   $$SyncJournalTableTableManager get syncJournal =>
       $$SyncJournalTableTableManager(_db, _db.syncJournal);
+  $$ContestLinksTableTableManager get contestLinks =>
+      $$ContestLinksTableTableManager(_db, _db.contestLinks);
   $$SerialAllocationsTableTableManager get serialAllocations =>
       $$SerialAllocationsTableTableManager(_db, _db.serialAllocations);
   $$ProgramRulesTableTableManager get programRules =>

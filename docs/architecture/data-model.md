@@ -68,8 +68,11 @@ User-visible ("Sync history"). Pruned by age or count, never by state.
 | Table | Columns |
 |---|---|
 | `contest_definitions` | `id`, `name`, `cabrillo_name`, `wavelog_adif_name`, `version`, `definition` (JSON: exchange fields, dupe rule, multipliers, scoring), `builtin` |
-| `contest_sessions` | `id` (uuid), `definition_id`, `account_id`, `station_profile_id`, `started_at`, `ended_at`, `settings` (JSON), `remote_session_id`, `serial_strategy` (`single`/`prefix`/`range`), `serial_range_start`, `serial_range_end` |
+| `contest_sessions` | `id` (uuid), `definition_id`, `account_id`, `station_profile_id`, `started_at`, `ended_at`, `settings` (JSON), `remote_session_id`, `serial_strategy` (`single`/`prefix`/`range`), `serial_range_start`, `serial_range_end`, `remote_state` (`local`/`pending`/`verifying`/`created`, default `local`; schema v2), `remote_end_synced` (UTC ms, nullable; the end time last sent to Wavelog), `remote_error_key` (nullable; l10n key of the last error) |
+| `contest_links` | `session_id`, `qso_id`, `remote_qso_id`, `linked_at` (UTC ms); primary key (`session_id`, `qso_id`). Which QSOs are linked to the session on the server (schema v2). |
 | `serial_allocations` | `session_id`, `serial` (unique within session), `qso_id` (nullable once deleted), `allocated_at` |
+
+The definition version a session started with, whether its sent exchange has a serial, the own exchange values and the Cabrillo header values live in `contest_sessions.settings` (`definitionVersion`, `usesSerial`, `ownExchange`, `cabrillo`).
 
 Serials are **monotonic and never reused**. A deleted QSO keeps its allocation row with `qso_id = null`.
 
