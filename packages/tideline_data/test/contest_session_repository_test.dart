@@ -100,11 +100,13 @@ void main() {
         remoteSessionId: const Value(42),
         remoteEndSynced: const Value(null),
       );
-      expect(await h.sessions.needingRemoteSync('acc'), isEmpty);
-      await h.sessions.end(s.id, 9000);
+      // Created sessions stay in the list: they may have QSOs to link.
       expect(await h.sessions.needingRemoteSync('acc'), hasLength(1));
-      await h.sessions.setRemote(s.id, remoteEndSynced: const Value(9000));
+      await h.sessions.setRemote(s.id, state: ContestRemoteState.local);
       expect(await h.sessions.needingRemoteSync('acc'), isEmpty);
+      await h.sessions.setRemote(s.id, state: ContestRemoteState.created);
+      await h.sessions.end(s.id, 9000);
+      await h.sessions.setRemote(s.id, remoteEndSynced: const Value(9000));
       final after = (await h.sessions.find(s.id))!;
       expect(after.remoteSessionId, 42);
       expect(after.remoteState, ContestRemoteState.created);

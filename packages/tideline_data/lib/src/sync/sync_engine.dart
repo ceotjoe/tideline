@@ -2,6 +2,8 @@ import 'package:meta/meta.dart';
 import 'package:tideline_data/src/repositories/account_repository.dart';
 import 'package:tideline_data/src/repositories/qso_repository.dart';
 import 'package:tideline_data/src/repositories/sync_journal_repository.dart';
+import 'package:tideline_data/src/repositories/worked_before_repository.dart';
+import 'package:tideline_data/src/sync/contest_session_sync.dart';
 import 'package:tideline_data/src/sync/wavelog_mapping.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 import 'package:wavelog_client/wavelog_client.dart';
@@ -87,6 +89,8 @@ class SyncEngine {
     required this.journal,
     required this.machine,
     required this.clientFor,
+    this.contestSessions,
+    this.workedBefore,
     int Function()? nowMillis,
   }) : _now =
            nowMillis ?? (() => DateTime.now().toUtc().millisecondsSinceEpoch);
@@ -105,6 +109,15 @@ class SyncEngine {
 
   /// Client factory.
   final WavelogClientFactory clientFor;
+
+  /// Mirrors contest sessions on Wavelog 3.2+ (skipped when null).
+  final ContestSessionSync? contestSessions;
+
+  /// The worked-before index filled from the server (skipped when null).
+  final WorkedBeforeRepository? workedBefore;
+
+  /// Pages of 5,000 QSOs the worked-before pull reads per run at most.
+  static const workedBeforePagesPerRun = 10;
 
   final int Function() _now;
   final Set<String> _running = {};
@@ -222,6 +235,10 @@ class SyncEngine {
         await _process(account, client, item, stations);
         processed++;
       }
+      // Scopes and capabilities may have changed in _refreshAccount.
+      final refreshed = await accounts.find(accountId) ?? account;
+      await _syncContestSessions(refreshed, client, stations);
+      await _pullWorkedBefore(refreshed, client);
       return SyncRunResult(SyncRunOutcome.completed, processed: processed);
     } on _StopRun catch (stop) {
       return SyncRunResult(stop.outcome, processed: processed);
@@ -269,6 +286,50 @@ class SyncEngine {
     } on WavelogException {
       // Server trouble (5xx, malformed): try again next run.
       throw const _StopRun(SyncRunOutcome.offline);
+    }
+  }
+
+  Future<void> _syncContestSessions(
+    Account account,
+    WavelogClient client,
+    Map<String, int> stations,
+  ) async {
+    final step = contestSessions;
+    if (step == null || !account.scopes.contains('contest:write')) return;
+    try {
+      await step.run(account, client, stations);
+    } on WavelogUnauthorized catch (e) {
+      await _blockAccount(
+        account.id,
+        e.isExpired ? SyncProblem.tokenExpired : SyncProblem.tokenInvalid,
+      );
+      throw const _StopRun(SyncRunOutcome.blocked);
+    } on WavelogNetworkError {
+      throw const _StopRun(SyncRunOutcome.offline);
+    } on WavelogRateLimited {
+      throw const _StopRun(SyncRunOutcome.rateLimited);
+    }
+  }
+
+  /// Pulls new server QSOs into the worked-before index. Best effort: any
+  /// failure just ends the pull until the next run.
+  Future<void> _pullWorkedBefore(Account account, WavelogClient client) async {
+    final index = workedBefore;
+    if (index == null || !account.scopes.contains('qso:read')) return;
+    try {
+      var cursor = await index.lastFetchedId(account.id);
+      for (var page = 0; page < workedBeforePagesPerRun; page++) {
+        final result = await client.fetchQsosAdif(sinceId: cursor);
+        if (result.adif.isNotEmpty) {
+          await index.mergeServerAdif(account.id, result.adif);
+        }
+        if (result.lastFetchedId == cursor) break;
+        cursor = result.lastFetchedId;
+        await index.setLastFetchedId(account.id, cursor);
+        if (!result.hasMore) break;
+      }
+    } on WavelogException {
+      return;
     }
   }
 
