@@ -9,6 +9,9 @@ updates:
       dart-minor-and-patch:
         update-types: [minor, patch]
   - package-ecosystem: github-actions
-    directory: "/"
+    # Workflows plus the local composite action (its pinned SHAs too).
+    directories:
+      - "/"
+      - "/.github/actions/*"
     schedule:
       interval: weekly

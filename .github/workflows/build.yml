@@ -24,10 +24,9 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+      - uses: ./.github/actions/setup-flutter
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          cache: true
       - run: flutter pub get --enforce-lockfile
       - name: Build APK (debug, unsigned)
         working-directory: app
@@ -38,10 +37,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+      - uses: ./.github/actions/setup-flutter
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          cache: true
       - run: flutter pub get --enforce-lockfile
       - name: Golden tests (rendered on macOS)
         working-directory: app
@@ -68,10 +66,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+      - uses: ./.github/actions/setup-flutter
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          cache: true
       - run: flutter pub get --enforce-lockfile
       - name: Data-layer tests on Windows (encryption, DPAPI-independent)
         working-directory: packages/tideline_data
@@ -89,10 +86,9 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+      - uses: ./.github/actions/setup-flutter
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          cache: true
       - name: Install Linux build dependencies
         run: sudo apt-get update && sudo apt-get install -y ninja-build libgtk-3-dev libsecret-1-dev
       - run: flutter pub get --enforce-lockfile
