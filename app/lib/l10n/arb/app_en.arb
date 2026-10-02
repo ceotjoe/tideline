@@ -527,30 +527,42 @@
   "@freqReadoutInBand": {
     "description": "Live interpretation under the frequency field. {mhz} is the frequency in MHz, {band} the amateur band such as '20 m'. Keep the middle dot.",
     "placeholders": {
-      "mhz": {"type": "String"},
-      "band": {"type": "String"}
+      "mhz": {
+        "type": "String"
+      },
+      "band": {
+        "type": "String"
+      }
     }
   },
   "freqReadoutOutsideBands": "{mhz} MHz · outside amateur bands",
   "@freqReadoutOutsideBands": {
     "description": "Live interpretation under the frequency field when the frequency is in no amateur band. {mhz} is the frequency in MHz.",
     "placeholders": {
-      "mhz": {"type": "String"}
+      "mhz": {
+        "type": "String"
+      }
     }
   },
   "freqReadoutInBandKhz": "{khz} kHz · {band}",
   "@freqReadoutInBandKhz": {
     "description": "Live interpretation under the frequency field for frequencies below 1 MHz. {khz} is the frequency in kHz, {band} the amateur band such as '630 m'. Keep the middle dot.",
     "placeholders": {
-      "khz": {"type": "String"},
-      "band": {"type": "String"}
+      "khz": {
+        "type": "String"
+      },
+      "band": {
+        "type": "String"
+      }
     }
   },
   "freqReadoutOutsideBandsKhz": "{khz} kHz · outside amateur bands",
   "@freqReadoutOutsideBandsKhz": {
     "description": "Live interpretation under the frequency field when a frequency below 1 MHz is in no amateur band. {khz} is the frequency in kHz.",
     "placeholders": {
-      "khz": {"type": "String"}
+      "khz": {
+        "type": "String"
+      }
     }
   },
   "freqReadoutUnreadable": "Not a frequency. Type MHz (14.205) or kHz (14205).",
@@ -565,30 +577,42 @@
   "@freqReadoutSemanticsInBand": {
     "description": "Screen reader text for the frequency interpretation. {band} is spoken, e.g. '20 metres'.",
     "placeholders": {
-      "mhz": {"type": "String"},
-      "band": {"type": "String"}
+      "mhz": {
+        "type": "String"
+      },
+      "band": {
+        "type": "String"
+      }
     }
   },
   "freqReadoutSemanticsOutsideBands": "{mhz} megahertz, outside amateur bands",
   "@freqReadoutSemanticsOutsideBands": {
     "description": "Screen reader text for the frequency interpretation outside amateur bands.",
     "placeholders": {
-      "mhz": {"type": "String"}
+      "mhz": {
+        "type": "String"
+      }
     }
   },
   "freqReadoutSemanticsInBandKhz": "{khz} kilohertz, {band}",
   "@freqReadoutSemanticsInBandKhz": {
     "description": "Screen reader text for the frequency interpretation below 1 MHz. {band} is spoken, e.g. '630 metres'.",
     "placeholders": {
-      "khz": {"type": "String"},
-      "band": {"type": "String"}
+      "khz": {
+        "type": "String"
+      },
+      "band": {
+        "type": "String"
+      }
     }
   },
   "freqReadoutSemanticsOutsideBandsKhz": "{khz} kilohertz, outside amateur bands",
   "@freqReadoutSemanticsOutsideBandsKhz": {
     "description": "Screen reader text for the frequency interpretation below 1 MHz, outside amateur bands.",
     "placeholders": {
-      "khz": {"type": "String"}
+      "khz": {
+        "type": "String"
+      }
     }
   },
   "fieldRstSent": "RST sent",
@@ -2063,5 +2087,440 @@
   "contestSyncProblemUnknown": "Wavelog reported a problem.",
   "@contestSyncProblemUnknown": {
     "description": "Fallback reason for an unknown contest sync problem."
+  },
+  "workedHintNewCall": "New call: not in your log yet",
+  "@workedHintNewCall": {
+    "description": "Hint under the callsign field: the call was never worked."
+  },
+  "workedHintNewBand": "Worked before, but not on this band",
+  "@workedHintNewBand": {
+    "description": "Hint under the callsign field."
+  },
+  "workedHintNewMode": "Worked before, but not in this mode",
+  "@workedHintNewMode": {
+    "description": "Hint under the callsign field."
+  },
+  "workedHintNewSlot": "Worked before, but not on this band and mode together",
+  "@workedHintNewSlot": {
+    "description": "Hint under the callsign field."
+  },
+  "workedHintWorked": "Worked before on this band and mode",
+  "@workedHintWorked": {
+    "description": "Hint under the callsign field."
+  },
+  "workedHintDetails": "first contact {date}, bands {bands}",
+  "@workedHintDetails": {
+    "description": "Details after a worked-before hint: date of the first contact and the bands worked.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "bands": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsWorkedBefore": "Worked-before index",
+  "@settingsWorkedBefore": {
+    "description": "Settings section header."
+  },
+  "actionRebuildWorkedBefore": "Rebuild worked-before index",
+  "@actionRebuildWorkedBefore": {
+    "description": "Settings action."
+  },
+  "rebuildWorkedBeforeHint": "Builds the index from your log again. Contacts from your Wavelog server come back with the next sync.",
+  "@rebuildWorkedBeforeHint": {
+    "description": "Explains the rebuild action."
+  },
+  "rebuildWorkedBeforeConfirmTitle": "Rebuild the index?",
+  "@rebuildWorkedBeforeConfirmTitle": {
+    "description": "Confirmation dialog title."
+  },
+  "rebuildWorkedBeforeConfirmBody": "Your log is not changed. Hints for stations you only worked on other devices or in Wavelog are missing until the next sync has loaded them again.",
+  "@rebuildWorkedBeforeConfirmBody": {
+    "description": "Confirmation dialog text."
+  },
+  "actionRebuild": "Rebuild",
+  "@actionRebuild": {
+    "description": "Confirm button of the rebuild dialog."
+  },
+  "rebuildWorkedBeforeProgress": "Rebuilding the index…",
+  "@rebuildWorkedBeforeProgress": {
+    "description": "Progress text while the index is rebuilt."
+  },
+  "rebuildWorkedBeforeDone": "Index rebuilt. The next sync adds the contacts from your Wavelog server.",
+  "@rebuildWorkedBeforeDone": {
+    "description": "Shown after a rebuild."
+  },
+  "rebuildWorkedBeforeFailed": "The index could not be rebuilt.",
+  "@rebuildWorkedBeforeFailed": {
+    "description": "Shown when the rebuild failed."
+  },
+  "settingsScp": "Super check partial",
+  "@settingsScp": {
+    "description": "Settings section header (MASTER.SCP callsign list)."
+  },
+  "scpHint": "Callsign suggestions while you log a contest. The list is not part of Tideline: you download it yourself.",
+  "@scpHint": {
+    "description": "Explains the super check partial list."
+  },
+  "scpNone": "No list installed",
+  "@scpNone": {
+    "description": "Shown when no MASTER.SCP is installed."
+  },
+  "scpPackSummary": "{count, plural, =1{1 callsign} other{{count} callsigns}} · installed {date}",
+  "@scpPackSummary": {
+    "description": "Summary of the installed list.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "scpSource": "Source: {source}",
+  "@scpSource": {
+    "description": "Where the installed list came from.",
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "scpSourceFile": "a file you imported",
+  "@scpSourceFile": {
+    "description": "Source of a list that was imported from a file."
+  },
+  "scpUrlLabel": "Download address (https)",
+  "@scpUrlLabel": {
+    "description": "Label of the URL field."
+  },
+  "scpUrlHelper": "Tideline contacts this address only when you press Download, and sends nothing about you.",
+  "@scpUrlHelper": {
+    "description": "Helper text under the URL field."
+  },
+  "actionDownload": "Download",
+  "@actionDownload": {
+    "description": "Button."
+  },
+  "actionImportFile": "Import file",
+  "@actionImportFile": {
+    "description": "Button."
+  },
+  "actionRemove": "Remove",
+  "@actionRemove": {
+    "description": "Button."
+  },
+  "scpDownloading": "Downloading the list…",
+  "@scpDownloading": {
+    "description": "Progress text while MASTER.SCP downloads."
+  },
+  "scpDownloadingSize": "Downloading the list… {kib} KiB",
+  "@scpDownloadingSize": {
+    "description": "Progress text with the size so far.",
+    "placeholders": {
+      "kib": {
+        "type": "int"
+      }
+    }
+  },
+  "scpInstalled": "List installed: {count, plural, =1{1 callsign} other{{count} callsigns}}.",
+  "@scpInstalled": {
+    "description": "Shown after a list was installed.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scpRemoveTitle": "Remove the list?",
+  "@scpRemoveTitle": {
+    "description": "Dialog title."
+  },
+  "scpRemoveBody": "Callsign suggestions stop until you install a list again.",
+  "@scpRemoveBody": {
+    "description": "Dialog text."
+  },
+  "scpRemoved": "List removed.",
+  "@scpRemoved": {
+    "description": "Shown after removal."
+  },
+  "scpErrorInsecureUrl": "Only https addresses are allowed.",
+  "@scpErrorInsecureUrl": {
+    "description": "Download error."
+  },
+  "scpErrorInvalidUrl": "This is not a usable address. It must not contain a user name, a password, a query (?…) or a fragment (#…).",
+  "@scpErrorInvalidUrl": {
+    "description": "Download error."
+  },
+  "scpErrorNetwork": "The server could not be reached. Check your connection and the address.",
+  "@scpErrorNetwork": {
+    "description": "Download error."
+  },
+  "scpErrorTimeout": "The server took too long to answer.",
+  "@scpErrorTimeout": {
+    "description": "Download error."
+  },
+  "scpErrorCertificate": "The certificate of the server is not trusted, so nothing was downloaded.",
+  "@scpErrorCertificate": {
+    "description": "Download error."
+  },
+  "scpErrorTooLarge": "The file is larger than 8 MiB. It was not stored.",
+  "@scpErrorTooLarge": {
+    "description": "Download error."
+  },
+  "scpErrorStatus": "The server answered with HTTP status {code}.",
+  "@scpErrorStatus": {
+    "description": "Download error.",
+    "placeholders": {
+      "code": {
+        "type": "int"
+      }
+    }
+  },
+  "scpErrorInvalidFile": "This is not a MASTER.SCP file (one callsign per line).",
+  "@scpErrorInvalidFile": {
+    "description": "Download or import error."
+  },
+  "scpErrorUnreadable": "The file could not be read.",
+  "@scpErrorUnreadable": {
+    "description": "Import error."
+  },
+  "settingsContestDefinitions": "Contest definitions",
+  "@settingsContestDefinitions": {
+    "description": "Settings section header."
+  },
+  "contestDefsHint": "The rules of each contest are data files. Bundled definitions are always available; you can add your own.",
+  "@contestDefsHint": {
+    "description": "Explains contest definitions."
+  },
+  "contestDefBuiltin": "Bundled",
+  "@contestDefBuiltin": {
+    "description": "Origin of a contest definition."
+  },
+  "contestDefUser": "Imported by you",
+  "@contestDefUser": {
+    "description": "Origin of a contest definition."
+  },
+  "contestDefVersion": "version {version}",
+  "@contestDefVersion": {
+    "description": "Version of a definition.",
+    "placeholders": {
+      "version": {
+        "type": "int"
+      }
+    }
+  },
+  "actionImportDefinition": "Import definition",
+  "@actionImportDefinition": {
+    "description": "Settings action."
+  },
+  "importDefinitionHint": "A JSON file of up to 256 KiB.",
+  "@importDefinitionHint": {
+    "description": "Explains the import action."
+  },
+  "contestDefImported": "Imported “{name}”.",
+  "@contestDefImported": {
+    "description": "Shown after an import.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contestDefReplaced": "Updated “{name}”.",
+  "@contestDefReplaced": {
+    "description": "Shown when an earlier import with the same id was replaced.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contestDefRejectedTitle": "Definition not imported",
+  "@contestDefRejectedTitle": {
+    "description": "Dialog title."
+  },
+  "contestDefTechnical": "Technical detail: {path}",
+  "@contestDefTechnical": {
+    "description": "Location of the problem in the file (a JSON path).",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "contestDefFileTooLarge": "The file is larger than 256 KiB.",
+  "@contestDefFileTooLarge": {
+    "description": "Import error."
+  },
+  "contestDefNotText": "The file is not valid UTF-8 text.",
+  "@contestDefNotText": {
+    "description": "Import error."
+  },
+  "contestDefUnreadable": "The file could not be read.",
+  "@contestDefUnreadable": {
+    "description": "Import error."
+  },
+  "contestDefIdClash": "This id belongs to a bundled contest. Choose a different id in the file.",
+  "@contestDefIdClash": {
+    "description": "Import error."
+  },
+  "actionDeleteDefinition": "Delete definition {name}",
+  "@actionDeleteDefinition": {
+    "description": "Tooltip of the delete button.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contestDefDeleteTitle": "Delete “{name}”?",
+  "@contestDefDeleteTitle": {
+    "description": "Dialog title.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contestDefDeleteBody": "Only the definition is removed. Your QSOs are not affected.",
+  "@contestDefDeleteBody": {
+    "description": "Dialog text."
+  },
+  "contestDefDeleted": "Deleted “{name}”.",
+  "@contestDefDeleted": {
+    "description": "Shown after deletion.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contestDefInUse": "A contest session in your log uses this definition, so it cannot be deleted.",
+  "@contestDefInUse": {
+    "description": "Delete result."
+  },
+  "contestDefBuiltinNoDelete": "Bundled definitions cannot be deleted.",
+  "@contestDefBuiltinNoDelete": {
+    "description": "Delete result."
+  },
+  "contestDefNotFound": "This definition no longer exists.",
+  "@contestDefNotFound": {
+    "description": "Delete result."
+  },
+  "contestDefErrorTooLarge": "The definition is larger than 256 KiB.",
+  "@contestDefErrorTooLarge": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorMalformedJson": "The file is not valid JSON.",
+  "@contestDefErrorMalformedJson": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorWrongType": "A value has the wrong type.",
+  "@contestDefErrorWrongType": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorUnknownKey": "The file contains a setting that Tideline does not know.",
+  "@contestDefErrorUnknownKey": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorMissingKey": "A required setting is missing.",
+  "@contestDefErrorMissingKey": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorUnsupportedSchema": "This schema version is not supported (only version 1).",
+  "@contestDefErrorUnsupportedSchema": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorInvalidId": "The id must have 1 to 64 characters: lower-case letters, digits and hyphens.",
+  "@contestDefErrorInvalidId": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorOutOfRange": "A number or a text length is outside the allowed range.",
+  "@contestDefErrorOutOfRange": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorTooLong": "A text is too long.",
+  "@contestDefErrorTooLong": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorInvalidCharacters": "A text contains control characters.",
+  "@contestDefErrorInvalidCharacters": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorTooManyElements": "A list has too many entries.",
+  "@contestDefErrorTooManyElements": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorTooFewElements": "A list has too few entries.",
+  "@contestDefErrorTooFewElements": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorUnknownBand": "A band name is not a known ADIF band.",
+  "@contestDefErrorUnknownBand": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorUnknownValue": "A setting has a value that Tideline does not know.",
+  "@contestDefErrorUnknownValue": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorLastRuleHasWhen": "The last points rule must apply to every contact, so it cannot have a condition.",
+  "@contestDefErrorLastRuleHasWhen": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorVariantPredicateNotMine": "A variant of the exchange may depend only on your own station.",
+  "@contestDefErrorVariantPredicateNotMine": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorElementPredicateNotTheirs": "A received exchange element may depend only on the other station.",
+  "@contestDefErrorElementPredicateNotTheirs": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorElementWhenNotAllowed": "A sent exchange element cannot have a condition.",
+  "@contestDefErrorElementWhenNotAllowed": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorMultipleSerials": "One side of the exchange may contain only one serial number.",
+  "@contestDefErrorMultipleSerials": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorDuplicateField": "Two exchange elements store into the same ADIF field.",
+  "@contestDefErrorDuplicateField": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorDuplicateId": "Two multipliers have the same id.",
+  "@contestDefErrorDuplicateId": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorInvalidPlaceholder": "A default value uses an unknown placeholder.",
+  "@contestDefErrorInvalidPlaceholder": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorInvalidValue": "A default value does not fit its exchange element.",
+  "@contestDefErrorInvalidValue": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorDefaultNotAllowed": "A default value is not allowed here (received side and serial numbers).",
+  "@contestDefErrorDefaultNotAllowed": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorInvalidMultiplierSource": "A multiplier uses a source that does not exist or that no received exchange contains.",
+  "@contestDefErrorInvalidMultiplierSource": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorEmptyPredicate": "A condition is empty.",
+  "@contestDefErrorEmptyPredicate": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorInvalidCombination": "The score type does not fit the multipliers.",
+  "@contestDefErrorInvalidCombination": {
+    "description": "Why a contest definition was rejected."
+  },
+  "contestDefErrorDuplicateValue": "The same value is listed twice.",
+  "@contestDefErrorDuplicateValue": {
+    "description": "Why a contest definition was rejected."
   }
 }

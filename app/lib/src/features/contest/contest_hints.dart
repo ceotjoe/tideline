@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tideline/src/features/contest/contest_entry_controller.dart';
 import 'package:tideline/src/features/contest/contest_providers.dart';
+import 'package:tideline/src/features/log/worked_hint.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -197,11 +198,16 @@ class ContestHintsNotifier extends Notifier<ContestHints> {
       return;
     }
     try {
-      final summary = await ref
-          .read(workedBeforeRepositoryProvider)
-          .lookupBase(account.id, call);
+      // The same lookup as the hint in the normal log.
+      final info = await lookupWorkedInfo(
+        ref.read(workedBeforeRepositoryProvider),
+        account.id,
+        call: call,
+        band: band,
+        mode: mode,
+      );
       if (seq != _sequence) return;
-      state = hints.withWorked(summary.slotStatus(band.name, mode.mode));
+      state = hints.withWorked(info?.status);
     } on Object {
       // The main-log hint is a nicety; contest logging must not depend on it.
     }

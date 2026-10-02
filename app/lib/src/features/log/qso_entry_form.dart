@@ -9,6 +9,7 @@ import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 import 'package:tideline/src/features/log/qso_entry_controller.dart';
 import 'package:tideline/src/features/log/qso_tile.dart';
+import 'package:tideline/src/features/log/worked_hint.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/frequency_field.dart';
 import 'package:tideline/src/widgets/upper_case_formatter.dart';
@@ -193,6 +194,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
             onChanged: (v) => controller.edit((e) => e.copyWith(call: v)),
           ),
           _DxccHint(call: entry.call),
+          WorkedHintLine(call: entry.call, band: entry.band, mode: entry.mode),
           gap,
           row([
             DropdownButtonFormField<Band>(
@@ -427,25 +429,17 @@ class _DxccHint extends ConsumerWidget {
     final db = ref.watch(dxccProvider).value;
     final match = call.length >= 2 ? db?.resolve(call) : null;
     if (match == null) return const SizedBox(height: 24);
-    final log = ref.watch(logProvider).value ?? const [];
-    final base = Callsign.tryParse(call)?.baseCall;
-    final before = base == null
-        ? 0
-        : log.where((q) => q.qso.call.baseCall == base).length;
     return Padding(
       padding: EdgeInsets.only(top: context.metrics.xs),
       child: Semantics(
         liveRegion: true,
         child: Text(
-          [
-            l10n.dxccSummary(
-              match.entity.name,
-              match.continent,
-              match.cqz,
-              match.ituz,
-            ),
-            if (before > 0) l10n.workedBefore(before),
-          ].join(' · '),
+          l10n.dxccSummary(
+            match.entity.name,
+            match.continent,
+            match.cqz,
+            match.ituz,
+          ),
           style: Theme.of(context).textTheme.bodySmall,
         ),
       ),

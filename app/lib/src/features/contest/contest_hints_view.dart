@@ -6,6 +6,7 @@ import 'package:tideline/src/design/tokens/color_tokens.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 import 'package:tideline/src/features/contest/contest_hints.dart';
 import 'package:tideline/src/features/contest/contest_labels.dart';
+import 'package:tideline/src/features/log/worked_hint.dart';
 import 'package:tideline/src/widgets/frequency_field.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -42,7 +43,7 @@ class ContestHintsView extends ConsumerWidget {
       if (hints.worked case final worked?
           when worked != WorkedSlotStatus.newCall)
         _Hint(
-          icon: Icons.menu_book_outlined,
+          icon: workedStatusIcon(worked),
           text: switch (worked) {
             WorkedSlotStatus.newCall => '',
             WorkedSlotStatus.newBand => l10n.contestHintLogNewBand,

@@ -56,7 +56,10 @@ class _TidelineAppState extends ConsumerState<TidelineApp> {
     final accounts = ref.watch(accountsProvider);
     if (accounts.hasValue) _hasAccount.value = accounts.value!.isNotEmpty;
     // Keep the sync triggers (foreground, connectivity) alive.
-    ref.watch(syncControllerProvider);
+    ref
+      ..watch(syncControllerProvider)
+      // Build the worked-before index in the background if it is missing.
+      ..watch(workedBeforeIndexProvider);
 
     ThemeData themeFor(TidelineThemeVariant v) => buildTidelineTheme(
       variant: v,

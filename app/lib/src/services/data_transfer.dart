@@ -129,13 +129,25 @@ class DataTransfer {
       );
 
   /// Lets the user pick a file; returns its bytes, or null if cancelled.
-  Future<Uint8List?> pickFile(List<String> extensions) async {
+  ///
+  /// With [maxBytes], a larger file is refused before it is read
+  /// ([ImportTooLargeException]), so a hostile or wrong file cannot fill the
+  /// memory.
+  Future<Uint8List?> pickFile(List<String> extensions, {int? maxBytes}) async {
     final file = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions: extensions,
     );
     if (file == null) return null;
-    return await file.xFile.readAsBytes();
+    if (maxBytes != null && await file.xFile.length() > maxBytes) {
+      throw const ImportTooLargeException();
+    }
+    final bytes = await file.xFile.readAsBytes();
+    // The reported length may be wrong; check what was really read.
+    if (maxBytes != null && bytes.length > maxBytes) {
+      throw const ImportTooLargeException();
+    }
+    return bytes;
   }
 
   /// Lets the user choose where to save [bytes]; false if cancelled.

@@ -6,7 +6,10 @@ import 'package:tideline/src/commands/command_handlers.dart';
 import 'package:tideline/src/commands/command_registry.dart';
 import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
+import 'package:tideline/src/features/settings/contest_definitions_section.dart';
+import 'package:tideline/src/features/settings/scp_section.dart';
 import 'package:tideline/src/features/settings/settings_sections.dart';
+import 'package:tideline/src/features/settings/worked_before_section.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline/src/settings/language_names.dart';
@@ -98,6 +101,12 @@ class SettingsScreen extends ConsumerWidget {
           ),
           _SectionHeader(l10n.settingsData),
           const DataSection(),
+          _SectionHeader(l10n.settingsContestDefinitions),
+          const ContestDefinitionsSection(),
+          _SectionHeader(l10n.settingsScp),
+          const ScpSection(),
+          _SectionHeader(l10n.settingsWorkedBefore),
+          const WorkedBeforeSection(),
           _SectionHeader(l10n.settingsSecurity),
           const SecuritySection(),
           _SectionHeader(l10n.settingsKeyboard),

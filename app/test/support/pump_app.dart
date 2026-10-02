@@ -124,6 +124,8 @@ Future<Pumped> pumpTideline(
   List<LoggedQso> log = const [],
   Map<String, String> settingsValues = const {},
   ContestBackend? contest,
+  ContestDefinitionRepository? definitions,
+  WorkedBeforeRepository? workedBefore,
   List<Override> overrides = const [],
 }) async {
   tester.view
@@ -172,14 +174,15 @@ Future<Pumped> pumpTideline(
           contest == null ? qsos : backend.qsoRepository,
         ),
         contestSeedProvider.overrideWith((ref) async => null),
+        workedBeforeIndexProvider.overrideWith((ref) async {}),
         contestDefinitionRepositoryProvider.overrideWithValue(
-          backend.definitionRepository,
+          definitions ?? backend.definitionRepository,
         ),
         contestSessionRepositoryProvider.overrideWithValue(
           backend.sessionRepository,
         ),
         workedBeforeRepositoryProvider.overrideWithValue(
-          backend.workedRepository,
+          workedBefore ?? backend.workedRepository,
         ),
         scpDatabaseProvider.overrideWith((ref) async => backend.scp),
         dxccProvider.overrideWith((ref) async => testDxcc),

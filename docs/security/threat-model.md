@@ -1,6 +1,6 @@
 # Threat model (STRIDE)
 
-_Version 2, 2026-10-02 (MVP implementation). Covers the foundation and the MVP scope. Update this page whenever the attack surface changes,
+_Version 3, 2026-10-02 (contest mode). Covers the foundation, the MVP and contest mode. Update this page whenever the attack surface changes,
 for example new network flows, new input formats, peer sync or the WSJT-X listener._
 
 ## Assets
@@ -31,7 +31,7 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 | T7 | Server silently changes or drops uploaded QSOs | T, R | A2 | The local copy is kept and never overwritten automatically from the server. The sync journal records the server id and response for each QSO. | Designed |
 | T8 | Token with excessive privileges | E | A2 (compromised app) | Least-privilege scopes. Required scopes are explained, optional ones are opt-in. The app warns when a token has scopes it doesn't need. | Designed |
 | T9 | Pinned certificate silently replaced | S | A1 | A pin mismatch blocks the connection and requires re-confirmation that shows both fingerprints. | Designed |
-| T10 | Malicious reference pack (wrong data, oversized, parser exploit) | T, D | A1, A3 | Downloads only from built-in official URLs over TLS. Size limits. Strict parsers. Pack hash and source recorded. Packs never contain executable content. | Planned (v0.3) |
+| T10 | Malicious reference pack (wrong data, oversized, parser exploit) | T, D | A1, A3 | Downloads only from built-in official URLs over TLS. Size limits. Strict parsers. Pack hash and source recorded. Packs never contain executable content. MASTER.SCP: see T19. | Planned (v0.3) |
 | T11 | DoS on the server through aggressive sync | D | — | Single worker. Exponential backoff with jitter. `Retry-After` honoured. | Designed |
 | T12 | Clock skew corrupting QSO times | T | — | Times are taken from the device's UTC clock. A warning is shown when the server's `Date` header differs by more than 2 minutes. The time is always editable before sync. | Planned (MVP) |
 | T13 | Other apps reading exported files | I | A5 | Exports go only where the user saves them, through the system file pickers. A warning that ADIF exports are unencrypted. | Planned (MVP) |
@@ -39,6 +39,11 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 | T15 | Supply-chain compromise of a dependency | T, E | — | Minimal dependencies, lockfile, Dependabot, actions pinned to SHAs, SBOM per release, review of native-asset hooks. | In place (CI) / planned (SBOM) |
 | T16 | (Later) Rogue peer injecting or exfiltrating QSOs | S, T, I | A6 | QR pairing with public-key exchange. Mutual authentication. AEAD channel. Peer data validated like an import. Revocable pairings. A threat-model update is required before implementation. | Later |
 | T17 | (Later) Spoofed WSJT-X UDP packets | S, T | A1 | Bind to loopback by default. Packets are validated. QSOs land in the queue for review. | Later |
+| T18 | Crafted user contest definition (huge, deeply nested, unknown keys, rules that never terminate) | D, T | A3 | Strict parser: 256 KiB limit (checked before the file is fully read), every list ≤ 64 elements, unknown keys rejected, typed errors. The rule language is declarative (no expressions, loops or code), so evaluation is linear in the number of rules. User definitions cannot replace bundled ones. Fuzz tests. | Implemented (ADR 0018) |
+| T19 | Malicious MASTER.SCP download (MITM, redirect to plain HTTP, oversized or binary body) | T, D | A1, A3 | Downloads only when the user presses Download, from a URL shown and editable in settings. HTTPS only, also after redirects (≤ 3); no credentials in URLs; platform TLS validation, never disabled. 8 MiB cap enforced on `Content-Length` and while streaming; connect, idle and total timeouts. Strict line parser (`[A-Z0-9/]{3,15}`, ≤ 200,000 calls). The request carries no query and only a neutral `Tideline/<version>` User-Agent. Pack hash and source are recorded. | Implemented |
+| T20 | Server data injected into the worked-before index (crafted ADIF in `GET /qso?format=adif`) | T, D | A2 | Parsed with the same strict, fuzz-tested ADIF parser and the 16 MiB response limit. At most 10 pages per run. The index is derived data: it only drives hints, never changes QSOs, and can be rebuilt from settings. | Implemented |
+| T21 | Duplicate or orphaned contest sessions on Wavelog after lost answers | T | — | The session is marked `verifying` before `POST /contest`; a retry first looks for a server session with the same contest, station and start minute. Linking is idempotent. A session deleted on the server is never recreated automatically. Every step is journaled. | Implemented |
+| T22 | Cabrillo export used for header injection (CR/LF in soapbox, name or address) | T | A3 | The writer replaces control characters and line separators with spaces and writes pure ASCII; tested with injection attempts. | Implemented |
 
 ## Residual risks
 - **Compromised OS (jailbreak/root):** an attacker who controls the OS can read the secure store. This is out of scope,
@@ -53,3 +58,10 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 - **New residual risk:** while the app lock is shown, the database stays open so sync can continue. The lock protects
   the screen, not the data at rest; the data at rest is protected by the encrypted DB and the OS. Gating the key is
   planned for v1.0.
+
+## Changes in version 3
+- **New inputs (contest mode):** user contest definitions (T18), the MASTER.SCP download and file import (T19), and the
+  server ADIF pull into the worked-before index (T20).
+- **New flows:** Wavelog contest-session sync (`/contest`, needs `contest:write`; T21) and Cabrillo export (T22).
+- **New residual risk:** the default MASTER.SCP URL points at a third-party site. Its operator sees the user's IP
+  address when the user downloads the list. PRIVACY.md says so.
