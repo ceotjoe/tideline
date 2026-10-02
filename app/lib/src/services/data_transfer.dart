@@ -5,6 +5,7 @@ import 'dart:isolate';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tideline/src/app_version.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline_adif/tideline_adif.dart';
@@ -104,7 +105,7 @@ class DataTransfer {
     final records = [
       for (final q in log.reversed) AdifQsoMapping.toRecord(q.qso),
     ];
-    const writer = AdiWriter(programVersion: '0.1.0');
+    const writer = AdiWriter(programVersion: appVersion);
     return Uint8List.fromList(
       utf8.encode(writer.document(records, createdUtc: DateTime.now().toUtc())),
     );

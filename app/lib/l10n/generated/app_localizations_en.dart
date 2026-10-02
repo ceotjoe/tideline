@@ -437,6 +437,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String freqReadoutInBandKhz(String khz, String band) {
+    return '$khz kHz · $band';
+  }
+
+  @override
+  String freqReadoutOutsideBandsKhz(String khz) {
+    return '$khz kHz · outside amateur bands';
+  }
+
+  @override
   String get freqReadoutUnreadable =>
       'Not a frequency. Type MHz (14.205) or kHz (14205).';
 
@@ -451,6 +461,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String freqReadoutSemanticsOutsideBands(String mhz) {
     return '$mhz megahertz, outside amateur bands';
+  }
+
+  @override
+  String freqReadoutSemanticsInBandKhz(String khz, String band) {
+    return '$khz kilohertz, $band';
+  }
+
+  @override
+  String freqReadoutSemanticsOutsideBandsKhz(String khz) {
+    return '$khz kilohertz, outside amateur bands';
   }
 
   @override
@@ -1023,6 +1043,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionCancel => 'Cancel';
 
   @override
+  String get actionClose => 'Close';
+
+  @override
   String get actionSave => 'Save';
 
   @override
@@ -1447,6 +1470,140 @@ class AppLocalizationsEn extends AppLocalizations {
   String contestLabelValue(String label, String value) {
     return '$label: $value';
   }
+
+  @override
+  String get commandExportCabrillo => 'Export Cabrillo log';
+
+  @override
+  String get contestMoreActions => 'More actions';
+
+  @override
+  String get contestCatTime => 'Time category';
+
+  @override
+  String get cabrilloExportTitle => 'Export Cabrillo log';
+
+  @override
+  String get cabrilloIssuesIntro =>
+      'The log has problems that contest checkers may reject:';
+
+  @override
+  String get cabrilloExportAnyway => 'Export anyway';
+
+  @override
+  String get cabrilloExportDone => 'Cabrillo log saved.';
+
+  @override
+  String get cabrilloExportFailed =>
+      'The Cabrillo log could not be created or saved.';
+
+  @override
+  String get cabrilloUnavailableBanner =>
+      'Cabrillo export is not available: this contest has no Cabrillo name.';
+
+  @override
+  String cabrilloUnavailableBody(String contest) {
+    return '$contest has no Cabrillo contest name in its definition, so no log that a contest robot would accept can be written. Add a cabrillo name to the definition, or use the ADIF export in Settings.';
+  }
+
+  @override
+  String get cabrilloIssueMissingContest => 'The contest has no Cabrillo name.';
+
+  @override
+  String get cabrilloIssueMissingCallsign => 'The station has no callsign.';
+
+  @override
+  String get cabrilloIssueEmptyLog => 'The session has no QSOs.';
+
+  @override
+  String get cabrilloIssueExchangeCountMismatch =>
+      'The exchange has a different number of items than the first QSO.';
+
+  @override
+  String get cabrilloIssueMissingFrequency =>
+      'The frequency or band cannot be determined.';
+
+  @override
+  String get cabrilloIssueMissingQsoCall => 'A callsign is empty.';
+
+  @override
+  String get cabrilloIssueTokenContainsWhitespace =>
+      'An exchange value contains a space; it is written with a hyphen.';
+
+  @override
+  String get cabrilloIssueTooManyAddressLines =>
+      'There are more than 6 address lines; the extra lines are dropped.';
+
+  @override
+  String get cabrilloIssueAddressLineTooLong =>
+      'An address line is longer than 45 characters; it is cut off.';
+
+  @override
+  String get cabrilloIssueInvalidTransmitterId =>
+      'The transmitter number must be 0 or 1.';
+
+  @override
+  String cabrilloIssueQsos(int count, int first) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs, the first is no. $first',
+      one: 'QSO no. $first',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get contestSyncLocal => 'Only on this device';
+
+  @override
+  String get contestSyncPending => 'Waiting for upload to Wavelog';
+
+  @override
+  String get contestSyncVerifying => 'Being checked on Wavelog';
+
+  @override
+  String get contestSyncCreated => 'On Wavelog';
+
+  @override
+  String contestSyncWithReason(String state, String reason) {
+    return '$state: $reason';
+  }
+
+  @override
+  String contestSyncStatusLabel(String status) {
+    return 'Wavelog: $status';
+  }
+
+  @override
+  String get contestSyncProblemNotActive =>
+      'The contest is not activated on your Wavelog server.';
+
+  @override
+  String get contestSyncProblemMissingPermission =>
+      'The API token lacks the contest:write permission.';
+
+  @override
+  String get contestSyncProblemServerTooOld =>
+      'Your Wavelog server is older than version 3.2 and has no contest sessions.';
+
+  @override
+  String get contestSyncProblemDeletedOnServer =>
+      'The session was deleted in Wavelog.';
+
+  @override
+  String get contestSyncProblemNoAdifName =>
+      'This contest has no ADIF contest name.';
+
+  @override
+  String get contestSyncProblemStationUnknown =>
+      'The station location is not on the Wavelog server.';
+
+  @override
+  String get contestSyncProblemRejected => 'Wavelog rejected the session.';
+
+  @override
+  String get contestSyncProblemUnknown => 'Wavelog reported a problem.';
 }
 
 /// The translations for English (`en_XA`).
@@ -1886,6 +2043,16 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   }
 
   @override
+  String freqReadoutInBandKhz(String khz, String band) {
+    return '$khz[ ķĤž · ···]$band';
+  }
+
+  @override
+  String freqReadoutOutsideBandsKhz(String khz) {
+    return '$khz[ ķĤž · öûţšîðé áɱáţéûŕ ƀáñðš············]';
+  }
+
+  @override
   String get freqReadoutUnreadable =>
       '[Ñöţ á ƒŕéǫûéñçý. Ţýþé ṀĤž (14.205) öŕ ķĤž (14205).····················]';
 
@@ -1901,6 +2068,16 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String freqReadoutSemanticsOutsideBands(String mhz) {
     return '$mhz[ ɱéĝáĥéŕţž, öûţšîðé áɱáţéûŕ ƀáñðš··············]';
+  }
+
+  @override
+  String freqReadoutSemanticsInBandKhz(String khz, String band) {
+    return '$khz[ ķîļöĥéŕţž, ·····]$band';
+  }
+
+  @override
+  String freqReadoutSemanticsOutsideBandsKhz(String khz) {
+    return '$khz[ ķîļöĥéŕţž, öûţšîðé áɱáţéûŕ ƀáñðš··············]';
   }
 
   @override
@@ -2483,6 +2660,9 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   String get actionCancel => '[Çáñçéļ···]';
 
   @override
+  String get actionClose => '[Çļöšé··]';
+
+  @override
   String get actionSave => '[Šáṽé··]';
 
   @override
@@ -2918,4 +3098,143 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   String contestLabelValue(String label, String value) {
     return '$label[: ·]$value';
   }
+
+  @override
+  String get commandExportCabrillo => '[Éẋþöŕţ Çáƀŕîļļö ļöĝ········]';
+
+  @override
+  String get contestMoreActions => '[Ṁöŕé áçţîöñš·····]';
+
+  @override
+  String get contestCatTime => '[Ţîɱé çáţéĝöŕý······]';
+
+  @override
+  String get cabrilloExportTitle => '[Éẋþöŕţ Çáƀŕîļļö ļöĝ········]';
+
+  @override
+  String get cabrilloIssuesIntro =>
+      '[Ţĥé ļöĝ ĥáš þŕöƀļéɱš ţĥáţ çöñţéšţ çĥéçķéŕš ɱáý ŕéĵéçţ:······················]';
+
+  @override
+  String get cabrilloExportAnyway => '[Éẋþöŕţ áñýŵáý······]';
+
+  @override
+  String get cabrilloExportDone => '[Çáƀŕîļļö ļöĝ šáṽéð.········]';
+
+  @override
+  String get cabrilloExportFailed =>
+      '[Ţĥé Çáƀŕîļļö ļöĝ çöûļð ñöţ ƀé çŕéáţéð öŕ šáṽéð.···················]';
+
+  @override
+  String get cabrilloUnavailableBanner =>
+      '[Çáƀŕîļļö éẋþöŕţ îš ñöţ áṽáîļáƀļé: ţĥîš çöñţéšţ ĥáš ñö Çáƀŕîļļö ñáɱé.····························]';
+
+  @override
+  String cabrilloUnavailableBody(String contest) {
+    return '$contest[ ĥáš ñö Çáƀŕîļļö çöñţéšţ ñáɱé îñ îţš ðéƒîñîţîöñ, šö ñö ļöĝ ţĥáţ á çöñţéšţ ŕöƀöţ ŵöûļð áççéþţ çáñ ƀé ŵŕîţţéñ. Åðð á çáƀŕîļļö ñáɱé ţö ţĥé ðéƒîñîţîöñ, öŕ ûšé ţĥé ÅÐÎƑ éẋþöŕţ îñ Šéţţîñĝš.··········································································]';
+  }
+
+  @override
+  String get cabrilloIssueMissingContest =>
+      '[Ţĥé çöñţéšţ ĥáš ñö Çáƀŕîļļö ñáɱé.··············]';
+
+  @override
+  String get cabrilloIssueMissingCallsign =>
+      '[Ţĥé šţáţîöñ ĥáš ñö çáļļšîĝñ.············]';
+
+  @override
+  String get cabrilloIssueEmptyLog => '[Ţĥé šéššîöñ ĥáš ñö ǪŠÖš.··········]';
+
+  @override
+  String get cabrilloIssueExchangeCountMismatch =>
+      '[Ţĥé éẋçĥáñĝé ĥáš á ðîƒƒéŕéñţ ñûɱƀéŕ öƒ îţéɱš ţĥáñ ţĥé ƒîŕšţ ǪŠÖ.··························]';
+
+  @override
+  String get cabrilloIssueMissingFrequency =>
+      '[Ţĥé ƒŕéǫûéñçý öŕ ƀáñð çáññöţ ƀé ðéţéŕɱîñéð.··················]';
+
+  @override
+  String get cabrilloIssueMissingQsoCall => '[Å çáļļšîĝñ îš éɱþţý.········]';
+
+  @override
+  String get cabrilloIssueTokenContainsWhitespace =>
+      '[Åñ éẋçĥáñĝé ṽáļûé çöñţáîñš á šþáçé; îţ îš ŵŕîţţéñ ŵîţĥ á ĥýþĥéñ.··························]';
+
+  @override
+  String get cabrilloIssueTooManyAddressLines =>
+      '[Ţĥéŕé áŕé ɱöŕé ţĥáñ 6 áððŕéšš ļîñéš; ţĥé éẋţŕá ļîñéš áŕé ðŕöþþéð.··························]';
+
+  @override
+  String get cabrilloIssueAddressLineTooLong =>
+      '[Åñ áððŕéšš ļîñé îš ļöñĝéŕ ţĥáñ 45 çĥáŕáçţéŕš; îţ îš çûţ öƒƒ.························]';
+
+  @override
+  String get cabrilloIssueInvalidTransmitterId =>
+      '[Ţĥé ţŕáñšɱîţţéŕ ñûɱƀéŕ ɱûšţ ƀé 0 öŕ 1.················]';
+
+  @override
+  String cabrilloIssueQsos(int count, int first) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš, ţĥé ƒîŕšţ îš ñö. ··········]$first',
+      one: '[ǪŠÖ ñö. ····]$first',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get contestSyncLocal => '[Öñļý öñ ţĥîš ðéṽîçé········]';
+
+  @override
+  String get contestSyncPending =>
+      '[Ŵáîţîñĝ ƒöŕ ûþļöáð ţö Ŵáṽéļöĝ············]';
+
+  @override
+  String get contestSyncVerifying => '[Ɓéîñĝ çĥéçķéð öñ Ŵáṽéļöĝ··········]';
+
+  @override
+  String get contestSyncCreated => '[Öñ Ŵáṽéļöĝ····]';
+
+  @override
+  String contestSyncWithReason(String state, String reason) {
+    return '$state[: ·]$reason';
+  }
+
+  @override
+  String contestSyncStatusLabel(String status) {
+    return '[Ŵáṽéļöĝ: ····]$status';
+  }
+
+  @override
+  String get contestSyncProblemNotActive =>
+      '[Ţĥé çöñţéšţ îš ñöţ áçţîṽáţéð öñ ýöûŕ Ŵáṽéļöĝ šéŕṽéŕ.·····················]';
+
+  @override
+  String get contestSyncProblemMissingPermission =>
+      '[Ţĥé ÅÞÎ ţöķéñ ļáçķš ţĥé çöñţéšţ:ŵŕîţé þéŕɱîššîöñ.····················]';
+
+  @override
+  String get contestSyncProblemServerTooOld =>
+      '[Ýöûŕ Ŵáṽéļöĝ šéŕṽéŕ îš öļðéŕ ţĥáñ ṽéŕšîöñ 3.2 áñð ĥáš ñö çöñţéšţ šéššîöñš.······························]';
+
+  @override
+  String get contestSyncProblemDeletedOnServer =>
+      '[Ţĥé šéššîöñ ŵáš ðéļéţéð îñ Ŵáṽéļöĝ.··············]';
+
+  @override
+  String get contestSyncProblemNoAdifName =>
+      '[Ţĥîš çöñţéšţ ĥáš ñö ÅÐÎƑ çöñţéšţ ñáɱé.················]';
+
+  @override
+  String get contestSyncProblemStationUnknown =>
+      '[Ţĥé šţáţîöñ ļöçáţîöñ îš ñöţ öñ ţĥé Ŵáṽéļöĝ šéŕṽéŕ.····················]';
+
+  @override
+  String get contestSyncProblemRejected =>
+      '[Ŵáṽéļöĝ ŕéĵéçţéð ţĥé šéššîöñ.············]';
+
+  @override
+  String get contestSyncProblemUnknown =>
+      '[Ŵáṽéļöĝ ŕéþöŕţéð á þŕöƀļéɱ.···········]';
 }

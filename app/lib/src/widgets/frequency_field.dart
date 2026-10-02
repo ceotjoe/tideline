@@ -67,6 +67,19 @@ class FrequencyField extends StatelessWidget {
   }
 }
 
+const _oneMhz = 1000000;
+
+/// [hz] in kHz without trailing zeros (`472`, `136.5`). Digits only, so it
+/// needs no locale formatting.
+String _khz(int hz) {
+  final whole = hz ~/ 1000;
+  final rest = (hz % 1000)
+      .toString()
+      .padLeft(3, '0')
+      .replaceFirst(RegExp(r'0+$'), '');
+  return rest.isEmpty ? '$whole' : '$whole.$rest';
+}
+
 class _Readout extends StatelessWidget {
   const new({required this.text, required this.suppressUnreadable});
 
@@ -97,6 +110,12 @@ class _Readout extends StatelessWidget {
         l10n.freqReadoutUnreadable,
         l10n.freqReadoutUnreadable,
       ),
+      (:final hz, band: final band?) when hz < _oneMhz => (
+        Icons.waves,
+        c.textSecondary,
+        l10n.freqReadoutInBandKhz(_khz(hz), bandDisplayName(band)),
+        l10n.freqReadoutSemanticsInBandKhz(_khz(hz), bandDisplayName(band)),
+      ),
       (:final hz, band: final band?) => (
         Icons.waves,
         c.textSecondary,
@@ -105,6 +124,12 @@ class _Readout extends StatelessWidget {
           Frequency.toAdifMhz(hz),
           bandDisplayName(band),
         ),
+      ),
+      (:final hz, band: null) when hz < _oneMhz => (
+        Icons.warning_amber_rounded,
+        c.text,
+        l10n.freqReadoutOutsideBandsKhz(_khz(hz)),
+        l10n.freqReadoutSemanticsOutsideBandsKhz(_khz(hz)),
       ),
       (:final hz, band: null) => (
         Icons.warning_amber_rounded,

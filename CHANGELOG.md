@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Cabrillo export.**
+  - Export a contest session as a Cabrillo 3.0 log, running or past, from the contest menu, the shortcut
+    (⇧⌘X / Ctrl+Shift+X) and the list of past sessions (ADR 0019).
+  - Problems are checked and listed first; the user may export anyway.
+  - Contests without a Cabrillo name show a warning instead.
+- **Contest session status.** The Wavelog state of a session (local, waiting, being checked, on Wavelog) and the reason
+  it stays local, as icon and text in the contest screen and the session list.
+- **Cabrillo categories.** Added `CATEGORY-TIME` and the `YL` overlay (Cabrillo 3.0 specification).
 - **Wavelog onboarding.**
   - Server address check, with plain HTTP allowed on the LAN only after an opt-in.
   - Every token permission is explained and checked live.
@@ -63,3 +71,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and a mock server for tests.
 - **Documentation.** README, manual skeleton (EN/DE), architecture, verified Wavelog API notes, ADRs 0001–0015, STRIDE
   threat model, MASVS mapping, privacy statement and security policy.
+
+### Fixed
+- The contest entry's Log button is no longer cut off in tablet-landscape and desktop windows; the action row stays
+  pinned below the scrolling fields.
+- Frequencies below 1 MHz are read out in kHz (`472 kHz · 630 m`).

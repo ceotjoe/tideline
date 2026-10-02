@@ -3,6 +3,9 @@ import 'package:tideline_domain/tideline_domain.dart';
 
 /// The Cabrillo 3.0 category fields a session records for the log header.
 ///
+/// Tokens follow the WWROF specification (wwrof.org/cabrillo/cabrillo-v3-header),
+/// including its mixed case for `Light`.
+///
 /// The values are protocol tokens and are never translated; only the field
 /// names shown next to them are.
 enum CabrilloCategory {
@@ -80,7 +83,11 @@ enum CabrilloCategory {
     'TB-WIRES',
     'YOUTH',
     'NOVICE-TECH',
-  ]);
+    'YL',
+  ]),
+
+  /// `CATEGORY-TIME`.
+  time('CATEGORY-TIME', ['6-HOURS', '8-HOURS', '12-HOURS', '24-HOURS']);
 
   new(this.tag, this.tokens);
 
@@ -100,6 +107,7 @@ enum CabrilloCategory {
     station => l10n.contestCatStation,
     transmitter => l10n.contestCatTransmitter,
     overlay => l10n.contestCatOverlay,
+    time => l10n.contestCatTime,
   };
 }
 

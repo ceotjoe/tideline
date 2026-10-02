@@ -538,6 +538,21 @@
       "mhz": {"type": "String"}
     }
   },
+  "freqReadoutInBandKhz": "{khz} kHz · {band}",
+  "@freqReadoutInBandKhz": {
+    "description": "Live interpretation under the frequency field for frequencies below 1 MHz. {khz} is the frequency in kHz, {band} the amateur band such as '630 m'. Keep the middle dot.",
+    "placeholders": {
+      "khz": {"type": "String"},
+      "band": {"type": "String"}
+    }
+  },
+  "freqReadoutOutsideBandsKhz": "{khz} kHz · outside amateur bands",
+  "@freqReadoutOutsideBandsKhz": {
+    "description": "Live interpretation under the frequency field when a frequency below 1 MHz is in no amateur band. {khz} is the frequency in kHz.",
+    "placeholders": {
+      "khz": {"type": "String"}
+    }
+  },
   "freqReadoutUnreadable": "Not a frequency. Type MHz (14.205) or kHz (14205).",
   "@freqReadoutUnreadable": {
     "description": "Live hint under the frequency field when the input cannot be read."
@@ -559,6 +574,21 @@
     "description": "Screen reader text for the frequency interpretation outside amateur bands.",
     "placeholders": {
       "mhz": {"type": "String"}
+    }
+  },
+  "freqReadoutSemanticsInBandKhz": "{khz} kilohertz, {band}",
+  "@freqReadoutSemanticsInBandKhz": {
+    "description": "Screen reader text for the frequency interpretation below 1 MHz. {band} is spoken, e.g. '630 metres'.",
+    "placeholders": {
+      "khz": {"type": "String"},
+      "band": {"type": "String"}
+    }
+  },
+  "freqReadoutSemanticsOutsideBandsKhz": "{khz} kilohertz, outside amateur bands",
+  "@freqReadoutSemanticsOutsideBandsKhz": {
+    "description": "Screen reader text for the frequency interpretation below 1 MHz, outside amateur bands.",
+    "placeholders": {
+      "khz": {"type": "String"}
     }
   },
   "fieldRstSent": "RST sent",
@@ -1251,6 +1281,10 @@
   "@actionCancel": {
     "description": "Button: close a dialog or editor without saving."
   },
+  "actionClose": "Close",
+  "@actionClose": {
+    "description": "Button: close an information dialog."
+  },
   "actionSave": "Save",
   "@actionSave": {
     "description": "Button: save changes."
@@ -1863,5 +1897,171 @@
         "type": "String"
       }
     }
+  },
+  "commandExportCabrillo": "Export Cabrillo log",
+  "@commandExportCabrillo": {
+    "description": "Command and menu entry: save the contest session as a Cabrillo log file."
+  },
+  "contestMoreActions": "More actions",
+  "@contestMoreActions": {
+    "description": "Tooltip of the overflow menu button in the contest screen."
+  },
+  "contestCatTime": "Time category",
+  "@contestCatTime": {
+    "description": "Field label for the Cabrillo CATEGORY-TIME header (6, 8, 12 or 24 hours)."
+  },
+  "cabrilloExportTitle": "Export Cabrillo log",
+  "@cabrilloExportTitle": {
+    "description": "Title of the Cabrillo export dialogs."
+  },
+  "cabrilloIssuesIntro": "The log has problems that contest checkers may reject:",
+  "@cabrilloIssuesIntro": {
+    "description": "Intro above the list of problems found before a Cabrillo export."
+  },
+  "cabrilloExportAnyway": "Export anyway",
+  "@cabrilloExportAnyway": {
+    "description": "Button: save the Cabrillo log although problems were found."
+  },
+  "cabrilloExportDone": "Cabrillo log saved.",
+  "@cabrilloExportDone": {
+    "description": "Snackbar after the Cabrillo file was saved."
+  },
+  "cabrilloExportFailed": "The Cabrillo log could not be created or saved.",
+  "@cabrilloExportFailed": {
+    "description": "Snackbar when the Cabrillo export failed."
+  },
+  "cabrilloUnavailableBanner": "Cabrillo export is not available: this contest has no Cabrillo name.",
+  "@cabrilloUnavailableBanner": {
+    "description": "Warning shown in the contest screen and the session list when the definition has no Cabrillo contest name."
+  },
+  "cabrilloUnavailableBody": "{contest} has no Cabrillo contest name in its definition, so no log that a contest robot would accept can be written. Add a cabrillo name to the definition, or use the ADIF export in Settings.",
+  "@cabrilloUnavailableBody": {
+    "description": "Body of the dialog explaining that Cabrillo export is not offered. {contest} is the contest name.",
+    "placeholders": {
+      "contest": {
+        "type": "String"
+      }
+    }
+  },
+  "cabrilloIssueMissingContest": "The contest has no Cabrillo name.",
+  "@cabrilloIssueMissingContest": {
+    "description": "Cabrillo problem."
+  },
+  "cabrilloIssueMissingCallsign": "The station has no callsign.",
+  "@cabrilloIssueMissingCallsign": {
+    "description": "Cabrillo problem."
+  },
+  "cabrilloIssueEmptyLog": "The session has no QSOs.",
+  "@cabrilloIssueEmptyLog": {
+    "description": "Cabrillo problem."
+  },
+  "cabrilloIssueExchangeCountMismatch": "The exchange has a different number of items than the first QSO.",
+  "@cabrilloIssueExchangeCountMismatch": {
+    "description": "Cabrillo problem."
+  },
+  "cabrilloIssueMissingFrequency": "The frequency or band cannot be determined.",
+  "@cabrilloIssueMissingFrequency": {
+    "description": "Cabrillo problem."
+  },
+  "cabrilloIssueMissingQsoCall": "A callsign is empty.",
+  "@cabrilloIssueMissingQsoCall": {
+    "description": "Cabrillo problem."
+  },
+  "cabrilloIssueTokenContainsWhitespace": "An exchange value contains a space; it is written with a hyphen.",
+  "@cabrilloIssueTokenContainsWhitespace": {
+    "description": "Cabrillo problem."
+  },
+  "cabrilloIssueTooManyAddressLines": "There are more than 6 address lines; the extra lines are dropped.",
+  "@cabrilloIssueTooManyAddressLines": {
+    "description": "Cabrillo problem."
+  },
+  "cabrilloIssueAddressLineTooLong": "An address line is longer than 45 characters; it is cut off.",
+  "@cabrilloIssueAddressLineTooLong": {
+    "description": "Cabrillo problem."
+  },
+  "cabrilloIssueInvalidTransmitterId": "The transmitter number must be 0 or 1.",
+  "@cabrilloIssueInvalidTransmitterId": {
+    "description": "Cabrillo problem."
+  },
+  "cabrilloIssueQsos": "{count, plural, =1{QSO no. {first}} other{{count} QSOs, the first is no. {first}}}",
+  "@cabrilloIssueQsos": {
+    "description": "Which QSOs a Cabrillo problem concerns. {first} is the 1-based position of the first affected QSO.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "first": {
+        "type": "int"
+      }
+    }
+  },
+  "contestSyncLocal": "Only on this device",
+  "@contestSyncLocal": {
+    "description": "Wavelog state of a contest session: it is not mirrored on Wavelog."
+  },
+  "contestSyncPending": "Waiting for upload to Wavelog",
+  "@contestSyncPending": {
+    "description": "Wavelog state of a contest session: it will be created on Wavelog at the next sync."
+  },
+  "contestSyncVerifying": "Being checked on Wavelog",
+  "@contestSyncVerifying": {
+    "description": "Wavelog state of a contest session: Tideline is checking whether a lost create request went through."
+  },
+  "contestSyncCreated": "On Wavelog",
+  "@contestSyncCreated": {
+    "description": "Wavelog state of a contest session: it exists on Wavelog."
+  },
+  "contestSyncWithReason": "{state}: {reason}",
+  "@contestSyncWithReason": {
+    "description": "Wavelog state of a contest session followed by the reason it is not synced. Keep the colon.",
+    "placeholders": {
+      "state": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "contestSyncStatusLabel": "Wavelog: {status}",
+  "@contestSyncStatusLabel": {
+    "description": "Screen reader label of the session sync status. {status} is the state text.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "contestSyncProblemNotActive": "The contest is not activated on your Wavelog server.",
+  "@contestSyncProblemNotActive": {
+    "description": "Reason a contest session stays local."
+  },
+  "contestSyncProblemMissingPermission": "The API token lacks the contest:write permission.",
+  "@contestSyncProblemMissingPermission": {
+    "description": "Reason a contest session is not synced. Keep contest:write as is."
+  },
+  "contestSyncProblemServerTooOld": "Your Wavelog server is older than version 3.2 and has no contest sessions.",
+  "@contestSyncProblemServerTooOld": {
+    "description": "Reason a contest session stays local."
+  },
+  "contestSyncProblemDeletedOnServer": "The session was deleted in Wavelog.",
+  "@contestSyncProblemDeletedOnServer": {
+    "description": "Reason a contest session is not synced."
+  },
+  "contestSyncProblemNoAdifName": "This contest has no ADIF contest name.",
+  "@contestSyncProblemNoAdifName": {
+    "description": "Reason a contest session stays local."
+  },
+  "contestSyncProblemStationUnknown": "The station location is not on the Wavelog server.",
+  "@contestSyncProblemStationUnknown": {
+    "description": "Reason a contest session is not synced."
+  },
+  "contestSyncProblemRejected": "Wavelog rejected the session.",
+  "@contestSyncProblemRejected": {
+    "description": "Reason a contest session is not synced."
+  },
+  "contestSyncProblemUnknown": "Wavelog reported a problem.",
+  "@contestSyncProblemUnknown": {
+    "description": "Fallback reason for an unknown contest sync problem."
   }
 }

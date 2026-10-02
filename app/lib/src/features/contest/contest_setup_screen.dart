@@ -5,10 +5,12 @@ import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/design/contest_density.dart';
 import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/features/contest/cabrillo_categories.dart';
+import 'package:tideline/src/features/contest/cabrillo_export_flow.dart';
 import 'package:tideline/src/features/contest/contest_labels.dart';
 import 'package:tideline/src/features/contest/contest_providers.dart';
 import 'package:tideline/src/features/contest/contest_setup_controller.dart';
 import 'package:tideline/src/features/contest/contest_spec.dart';
+import 'package:tideline/src/features/contest/contest_sync_status.dart';
 import 'package:tideline/src/features/contest/exchange_field.dart';
 import 'package:tideline/src/features/log/qso_tile.dart';
 import 'package:tideline/src/layout/size_class.dart';
@@ -444,6 +446,14 @@ class _PastSessions extends ConsumerWidget {
             .name ??
         s.definitionId;
 
+    bool hasCabrillo(ContestSession s) =>
+        definitions
+            .where((d) => d.definition.id == s.definitionId)
+            .firstOrNull
+            ?.definition
+            .cabrillo !=
+        null;
+
     String when(int millis) {
       final t = UtcDateTime.fromMillis(millis);
       final d = t.value;
@@ -468,42 +478,76 @@ class _PastSessions extends ConsumerWidget {
               margin: EdgeInsets.only(bottom: metrics.sm),
               child: Padding(
                 padding: EdgeInsets.all(metrics.sm),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(nameOf(s), style: text.titleMedium),
-                          Text(when(s.startedAt), style: text.bodySmall),
-                          SizedBox(height: metrics.xs),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                s.isActive
-                                    ? Icons.play_circle_outline
-                                    : Icons.check_circle_outline,
-                                size: 16,
-                                color: context.colors.textSecondary,
-                              ),
-                              SizedBox(width: metrics.xs),
-                              Text(
-                                s.isActive
-                                    ? l10n.contestStateActive
-                                    : l10n.contestStateEnded,
-                                style: text.labelLarge,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    Text(nameOf(s), style: text.titleMedium),
+                    Text(when(s.startedAt), style: text.bodySmall),
+                    SizedBox(height: metrics.xs),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          s.isActive
+                              ? Icons.play_circle_outline
+                              : Icons.check_circle_outline,
+                          size: 16,
+                          color: context.colors.textSecondary,
+                        ),
+                        SizedBox(width: metrics.xs),
+                        Text(
+                          s.isActive
+                              ? l10n.contestStateActive
+                              : l10n.contestStateEnded,
+                          style: text.labelLarge,
+                        ),
+                      ],
                     ),
-                    if (!s.isActive && !hasActive)
-                      OutlinedButton(
-                        onPressed: () => onReopen(s),
-                        child: Text(l10n.contestReopen),
+                    SizedBox(height: metrics.xs),
+                    ContestSyncStatus(session: s),
+                    if (!hasCabrillo(s))
+                      Padding(
+                        padding: EdgeInsets.only(top: metrics.xs),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ExcludeSemantics(
+                              child: Icon(
+                                Icons.warning_amber_rounded,
+                                size: 18,
+                                color: context.colors.error,
+                              ),
+                            ),
+                            SizedBox(width: metrics.xs),
+                            Expanded(
+                              child: Text(
+                                l10n.cabrilloUnavailableBanner,
+                                style: text.bodySmall?.copyWith(
+                                  color: context.colors.text,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                    SizedBox(height: metrics.xs),
+                    Wrap(
+                      spacing: metrics.sm,
+                      runSpacing: metrics.xs,
+                      children: [
+                        if (!s.isActive && !hasActive)
+                          OutlinedButton(
+                            onPressed: () => onReopen(s),
+                            child: Text(l10n.contestReopen),
+                          ),
+                        OutlinedButton.icon(
+                          onPressed: () => exportCabrillo(context, ref, s),
+                          icon: const Icon(Icons.file_upload_outlined),
+                          label: Text(l10n.commandExportCabrillo),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

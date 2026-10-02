@@ -187,151 +187,171 @@ class ContestEntryPanelState extends ConsumerState<ContestEntryPanel> {
     final modeIssue = entry.issueOf(ContestIssueField.mode);
     final gap = SizedBox(height: metrics.sm);
 
-    return FocusTraversalGroup(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextField(
-            controller: _call,
-            focusNode: _callFocus,
-            autofocus: true,
-            style: TidelineType.callsignLarge.copyWith(
-              color: context.colors.text,
-            ),
-            textCapitalization: TextCapitalization.characters,
-            textInputAction: TextInputAction.done,
-            autocorrect: false,
-            enableSuggestions: false,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9/]')),
-              UpperCaseFormatter(),
-            ],
-            decoration: InputDecoration(
-              labelText: l10n.fieldCallsign,
-              errorText: entry.issueOf(ContestIssueField.call) == null
-                  ? null
-                  : l10n.issueInvalidCall,
-            ),
-            onChanged: controller.setCall,
-            onEditingComplete: submit,
+    final fields = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TextField(
+          controller: _call,
+          focusNode: _callFocus,
+          autofocus: true,
+          style: TidelineType.callsignLarge.copyWith(
+            color: context.colors.text,
           ),
-          ContestHintsView(
-            onPickCall: (call) {
-              controller.fillCall(call);
-              _focusElement(0);
-            },
+          textCapitalization: TextCapitalization.characters,
+          textInputAction: TextInputAction.done,
+          autocorrect: false,
+          enableSuggestions: false,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9/]')),
+            UpperCaseFormatter(),
+          ],
+          decoration: InputDecoration(
+            labelText: l10n.fieldCallsign,
+            errorText: entry.issueOf(ContestIssueField.call) == null
+                ? null
+                : l10n.issueInvalidCall,
           ),
-          Wrap(
-            spacing: metrics.sm,
-            runSpacing: metrics.sm,
-            children: [
-              for (final (i, element) in spec.exchange.rcvd.indexed)
-                SizedBox(
-                  width: scaled(metrics.contestFieldWidth),
-                  child: ExchangeField(
-                    element: element,
-                    controller: _rcvd[i],
-                    focusNode: _rcvdFocus[i],
-                    errorText: exchangeError(i),
-                    hintText: element.kind == ExchangeKind.rst
-                        ? element.defaultFor(spec.me, category: category)
-                        : null,
-                    onChanged: (v) => controller.setRcvd(i, v),
-                    onSubmitted: submit,
-                  ),
-                ),
-            ],
-          ),
-          gap,
-          _SentExchange(spec: spec, category: category),
-          gap,
-          Wrap(
-            spacing: metrics.sm,
-            runSpacing: metrics.sm,
-            children: [
+          onChanged: controller.setCall,
+          onEditingComplete: submit,
+        ),
+        ContestHintsView(
+          onPickCall: (call) {
+            controller.fillCall(call);
+            _focusElement(0);
+          },
+        ),
+        Wrap(
+          spacing: metrics.sm,
+          runSpacing: metrics.sm,
+          children: [
+            for (final (i, element) in spec.exchange.rcvd.indexed)
               SizedBox(
                 width: scaled(metrics.contestFieldWidth),
-                child: DropdownButtonFormField<Band>(
-                  key: ValueKey('band-${entry.band?.name}'),
-                  focusNode: _bandFocus,
-                  initialValue: entry.band,
-                  isExpanded: true,
-                  decoration: InputDecoration(
-                    labelText: l10n.fieldBand,
-                    errorText: bandIssue == null ? null : l10n.issueMissingBand,
-                  ),
-                  items: [
-                    for (final b in {...bands, ?entry.band})
-                      DropdownMenuItem(
-                        value: b,
-                        child: Text(bandDisplayName(b)),
-                      ),
-                  ],
-                  onChanged: (b) {
-                    if (b != null) controller.setBand(b);
-                  },
+                child: ExchangeField(
+                  element: element,
+                  controller: _rcvd[i],
+                  focusNode: _rcvdFocus[i],
+                  errorText: exchangeError(i),
+                  hintText: element.kind == ExchangeKind.rst
+                      ? element.defaultFor(spec.me, category: category)
+                      : null,
+                  onChanged: (v) => controller.setRcvd(i, v),
+                  onSubmitted: submit,
                 ),
               ),
-              SizedBox(
-                width: scaled(metrics.contestFieldWidth),
-                child: DropdownButtonFormField<Mode>(
-                  key: ValueKey('mode-${entry.mode?.label}'),
-                  focusNode: _modeFocus,
-                  initialValue: entry.mode,
-                  isExpanded: true,
-                  decoration: InputDecoration(
-                    labelText: l10n.fieldMode,
-                    errorText: modeIssue == null ? null : l10n.issueMissingMode,
-                  ),
-                  items: [
-                    for (final m in {...modes, ?entry.mode})
-                      DropdownMenuItem(value: m, child: Text(m.label)),
-                  ],
-                  onChanged: (m) {
-                    if (m != null) controller.setMode(m);
-                  },
+          ],
+        ),
+        gap,
+        _SentExchange(spec: spec, category: category),
+        gap,
+        Wrap(
+          spacing: metrics.sm,
+          runSpacing: metrics.sm,
+          children: [
+            SizedBox(
+              width: scaled(metrics.contestFieldWidth),
+              child: DropdownButtonFormField<Band>(
+                key: ValueKey('band-${entry.band?.name}'),
+                focusNode: _bandFocus,
+                initialValue: entry.band,
+                isExpanded: true,
+                decoration: InputDecoration(
+                  labelText: l10n.fieldBand,
+                  errorText: bandIssue == null ? null : l10n.issueMissingBand,
                 ),
-              ),
-              SizedBox(
-                width: scaled(metrics.contestFieldWidth * 1.7),
-                child: FrequencyField(
-                  controller: _freq,
-                  errorText: freqIssue == null
-                      ? null
-                      : (freqIssue.outsideBand
-                            ? l10n.issueFrequencyOutsideBand
-                            : l10n.issueInvalidFrequency),
-                  onChanged: controller.setFrequency,
-                ),
-              ),
-            ],
-          ),
-          gap,
-          Wrap(
-            spacing: metrics.sm,
-            runSpacing: metrics.sm,
-            alignment: WrapAlignment.end,
-            children: [
-              TextButton.icon(
-                onPressed: widget.onEditLast,
-                icon: const Icon(Icons.edit_outlined),
-                label: Text(l10n.commandEditLastQso),
-              ),
-              OutlinedButton(
-                onPressed: () {
-                  controller.wipe();
-                  _callFocus.requestFocus();
+                items: [
+                  for (final b in {...bands, ?entry.band})
+                    DropdownMenuItem(value: b, child: Text(bandDisplayName(b))),
+                ],
+                onChanged: (b) {
+                  if (b != null) controller.setBand(b);
                 },
-                child: Text(l10n.commandWipeEntry),
               ),
-              FilledButton.icon(
-                onPressed: submit,
-                icon: const Icon(Icons.check),
-                label: Text(l10n.commandLogQso),
+            ),
+            SizedBox(
+              width: scaled(metrics.contestFieldWidth),
+              child: DropdownButtonFormField<Mode>(
+                key: ValueKey('mode-${entry.mode?.label}'),
+                focusNode: _modeFocus,
+                initialValue: entry.mode,
+                isExpanded: true,
+                decoration: InputDecoration(
+                  labelText: l10n.fieldMode,
+                  errorText: modeIssue == null ? null : l10n.issueMissingMode,
+                ),
+                items: [
+                  for (final m in {...modes, ?entry.mode})
+                    DropdownMenuItem(value: m, child: Text(m.label)),
+                ],
+                onChanged: (m) {
+                  if (m != null) controller.setMode(m);
+                },
               ),
+            ),
+            SizedBox(
+              width: scaled(metrics.contestFieldWidth * 1.7),
+              child: FrequencyField(
+                controller: _freq,
+                errorText: freqIssue == null
+                    ? null
+                    : (freqIssue.outsideBand
+                          ? l10n.issueFrequencyOutsideBand
+                          : l10n.issueInvalidFrequency),
+                onChanged: controller.setFrequency,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+
+    final actions = Wrap(
+      spacing: metrics.sm,
+      runSpacing: metrics.sm,
+      alignment: WrapAlignment.end,
+      children: [
+        TextButton.icon(
+          onPressed: widget.onEditLast,
+          icon: const Icon(Icons.edit_outlined),
+          label: Text(l10n.commandEditLastQso),
+        ),
+        OutlinedButton(
+          onPressed: () {
+            controller.wipe();
+            _callFocus.requestFocus();
+          },
+          child: Text(l10n.commandWipeEntry),
+        ),
+        FilledButton.icon(
+          onPressed: submit,
+          icon: const Icon(Icons.check),
+          label: Text(l10n.commandLogQso),
+        ),
+      ],
+    );
+
+    // With a bounded height (tablet landscape, desktop) the fields scroll
+    // and the actions stay pinned below them, so Log is never hidden. In a
+    // scrolling page (phone, tablet portrait) everything just flows.
+    return FocusTraversalGroup(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (!constraints.hasBoundedHeight) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [fields, gap, actions],
+            );
+          }
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Flexible(child: SingleChildScrollView(child: fields)),
+              gap,
+              actions,
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }

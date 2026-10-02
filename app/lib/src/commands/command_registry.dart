@@ -23,6 +23,7 @@ abstract final class CommandIds {
   static const contestFocusCall = 'contest.focusCall';
   static const contestToggleRates = 'contest.toggleRates';
   static const contestEnd = 'contest.end';
+  static const contestExportCabrillo = 'contest.exportCabrillo';
 }
 
 /// Every command Tideline knows, with its default shortcuts.
@@ -151,6 +152,14 @@ final List<TidelineCommand> tidelineCommands = [
     label: (l) => l.commandEndContest,
     defaults: const [
       KeyChord(LogicalKeyboardKey.keyE, primary: true, shift: true),
+    ],
+  ),
+  TidelineCommand(
+    id: CommandIds.contestExportCabrillo,
+    scope: CommandScope.contest,
+    label: (l) => l.commandExportCabrillo,
+    defaults: const [
+      KeyChord(LogicalKeyboardKey.keyX, primary: true, shift: true),
     ],
   ),
 ];

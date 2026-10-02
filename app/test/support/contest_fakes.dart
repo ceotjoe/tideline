@@ -89,6 +89,9 @@ class ContestBackend {
     bool usesSerial = false,
     String accountId = 'acc-1',
     String stationProfileId = 'st-1',
+    ContestRemoteState remoteState = ContestRemoteState.local,
+    String? remoteErrorKey,
+    Map<String, String> cabrillo = const {},
   }) {
     final session = ContestSession(
       id: 's${_sessions.length + 1}',
@@ -98,9 +101,10 @@ class ContestBackend {
       stationProfileId: stationProfileId,
       startedAt: DateTime.now().toUtc().millisecondsSinceEpoch,
       ownExchange: ownExchange,
-      cabrillo: const {},
+      cabrillo: cabrillo,
       usesSerial: usesSerial,
-      remoteState: ContestRemoteState.local,
+      remoteState: remoteState,
+      remoteErrorKey: remoteErrorKey,
     );
     _sessions.add(session);
     _publish();
@@ -222,6 +226,7 @@ class FakeContestSessions implements ContestSessionRepository {
         cabrillo: s.cabrillo,
         usesSerial: s.usesSerial,
         remoteState: s.remoteState,
+        remoteErrorKey: s.remoteErrorKey,
       ),
     );
   }
@@ -241,6 +246,7 @@ class FakeContestSessions implements ContestSessionRepository {
         cabrillo: s.cabrillo,
         usesSerial: s.usesSerial,
         remoteState: s.remoteState,
+        remoteErrorKey: s.remoteErrorKey,
       ),
     );
   }

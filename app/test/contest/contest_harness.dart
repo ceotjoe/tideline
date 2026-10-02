@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -23,6 +24,7 @@ Future<Pumped> pumpContest(
   ContestBackend? backend,
   Map<String, String> ownExchange = const {},
   bool open = true,
+  List<Override> overrides = const [],
 }) async {
   final contest = backend ?? ContestBackend();
   if (contest.active == null) {
@@ -43,6 +45,7 @@ Future<Pumped> pumpContest(
     settings: settings,
     textScale: textScale,
     contest: contest,
+    overrides: overrides,
   );
   if (open) {
     await tester.tap(find.byIcon(Icons.emoji_events_outlined));

@@ -855,6 +855,18 @@ abstract class AppLocalizations {
   /// **'{mhz} MHz · outside amateur bands'**
   String freqReadoutOutsideBands(String mhz);
 
+  /// Live interpretation under the frequency field for frequencies below 1 MHz. {khz} is the frequency in kHz, {band} the amateur band such as '630 m'. Keep the middle dot.
+  ///
+  /// In en, this message translates to:
+  /// **'{khz} kHz · {band}'**
+  String freqReadoutInBandKhz(String khz, String band);
+
+  /// Live interpretation under the frequency field when a frequency below 1 MHz is in no amateur band. {khz} is the frequency in kHz.
+  ///
+  /// In en, this message translates to:
+  /// **'{khz} kHz · outside amateur bands'**
+  String freqReadoutOutsideBandsKhz(String khz);
+
   /// Live hint under the frequency field when the input cannot be read.
   ///
   /// In en, this message translates to:
@@ -878,6 +890,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{mhz} megahertz, outside amateur bands'**
   String freqReadoutSemanticsOutsideBands(String mhz);
+
+  /// Screen reader text for the frequency interpretation below 1 MHz. {band} is spoken, e.g. '630 metres'.
+  ///
+  /// In en, this message translates to:
+  /// **'{khz} kilohertz, {band}'**
+  String freqReadoutSemanticsInBandKhz(String khz, String band);
+
+  /// Screen reader text for the frequency interpretation below 1 MHz, outside amateur bands.
+  ///
+  /// In en, this message translates to:
+  /// **'{khz} kilohertz, outside amateur bands'**
+  String freqReadoutSemanticsOutsideBandsKhz(String khz);
 
   /// Field label. Keep RST.
   ///
@@ -1719,6 +1743,12 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get actionCancel;
 
+  /// Button: close an information dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get actionClose;
+
   /// Button: save changes.
   ///
   /// In en, this message translates to:
@@ -2426,6 +2456,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{label}: {value}'**
   String contestLabelValue(String label, String value);
+
+  /// Command and menu entry: save the contest session as a Cabrillo log file.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Cabrillo log'**
+  String get commandExportCabrillo;
+
+  /// Tooltip of the overflow menu button in the contest screen.
+  ///
+  /// In en, this message translates to:
+  /// **'More actions'**
+  String get contestMoreActions;
+
+  /// Field label for the Cabrillo CATEGORY-TIME header (6, 8, 12 or 24 hours).
+  ///
+  /// In en, this message translates to:
+  /// **'Time category'**
+  String get contestCatTime;
+
+  /// Title of the Cabrillo export dialogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Cabrillo log'**
+  String get cabrilloExportTitle;
+
+  /// Intro above the list of problems found before a Cabrillo export.
+  ///
+  /// In en, this message translates to:
+  /// **'The log has problems that contest checkers may reject:'**
+  String get cabrilloIssuesIntro;
+
+  /// Button: save the Cabrillo log although problems were found.
+  ///
+  /// In en, this message translates to:
+  /// **'Export anyway'**
+  String get cabrilloExportAnyway;
+
+  /// Snackbar after the Cabrillo file was saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Cabrillo log saved.'**
+  String get cabrilloExportDone;
+
+  /// Snackbar when the Cabrillo export failed.
+  ///
+  /// In en, this message translates to:
+  /// **'The Cabrillo log could not be created or saved.'**
+  String get cabrilloExportFailed;
+
+  /// Warning shown in the contest screen and the session list when the definition has no Cabrillo contest name.
+  ///
+  /// In en, this message translates to:
+  /// **'Cabrillo export is not available: this contest has no Cabrillo name.'**
+  String get cabrilloUnavailableBanner;
+
+  /// Body of the dialog explaining that Cabrillo export is not offered. {contest} is the contest name.
+  ///
+  /// In en, this message translates to:
+  /// **'{contest} has no Cabrillo contest name in its definition, so no log that a contest robot would accept can be written. Add a cabrillo name to the definition, or use the ADIF export in Settings.'**
+  String cabrilloUnavailableBody(String contest);
+
+  /// Cabrillo problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The contest has no Cabrillo name.'**
+  String get cabrilloIssueMissingContest;
+
+  /// Cabrillo problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The station has no callsign.'**
+  String get cabrilloIssueMissingCallsign;
+
+  /// Cabrillo problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The session has no QSOs.'**
+  String get cabrilloIssueEmptyLog;
+
+  /// Cabrillo problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The exchange has a different number of items than the first QSO.'**
+  String get cabrilloIssueExchangeCountMismatch;
+
+  /// Cabrillo problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The frequency or band cannot be determined.'**
+  String get cabrilloIssueMissingFrequency;
+
+  /// Cabrillo problem.
+  ///
+  /// In en, this message translates to:
+  /// **'A callsign is empty.'**
+  String get cabrilloIssueMissingQsoCall;
+
+  /// Cabrillo problem.
+  ///
+  /// In en, this message translates to:
+  /// **'An exchange value contains a space; it is written with a hyphen.'**
+  String get cabrilloIssueTokenContainsWhitespace;
+
+  /// Cabrillo problem.
+  ///
+  /// In en, this message translates to:
+  /// **'There are more than 6 address lines; the extra lines are dropped.'**
+  String get cabrilloIssueTooManyAddressLines;
+
+  /// Cabrillo problem.
+  ///
+  /// In en, this message translates to:
+  /// **'An address line is longer than 45 characters; it is cut off.'**
+  String get cabrilloIssueAddressLineTooLong;
+
+  /// Cabrillo problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The transmitter number must be 0 or 1.'**
+  String get cabrilloIssueInvalidTransmitterId;
+
+  /// Which QSOs a Cabrillo problem concerns. {first} is the 1-based position of the first affected QSO.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{QSO no. {first}} other{{count} QSOs, the first is no. {first}}}'**
+  String cabrilloIssueQsos(int count, int first);
+
+  /// Wavelog state of a contest session: it is not mirrored on Wavelog.
+  ///
+  /// In en, this message translates to:
+  /// **'Only on this device'**
+  String get contestSyncLocal;
+
+  /// Wavelog state of a contest session: it will be created on Wavelog at the next sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for upload to Wavelog'**
+  String get contestSyncPending;
+
+  /// Wavelog state of a contest session: Tideline is checking whether a lost create request went through.
+  ///
+  /// In en, this message translates to:
+  /// **'Being checked on Wavelog'**
+  String get contestSyncVerifying;
+
+  /// Wavelog state of a contest session: it exists on Wavelog.
+  ///
+  /// In en, this message translates to:
+  /// **'On Wavelog'**
+  String get contestSyncCreated;
+
+  /// Wavelog state of a contest session followed by the reason it is not synced. Keep the colon.
+  ///
+  /// In en, this message translates to:
+  /// **'{state}: {reason}'**
+  String contestSyncWithReason(String state, String reason);
+
+  /// Screen reader label of the session sync status. {status} is the state text.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog: {status}'**
+  String contestSyncStatusLabel(String status);
+
+  /// Reason a contest session stays local.
+  ///
+  /// In en, this message translates to:
+  /// **'The contest is not activated on your Wavelog server.'**
+  String get contestSyncProblemNotActive;
+
+  /// Reason a contest session is not synced. Keep contest:write as is.
+  ///
+  /// In en, this message translates to:
+  /// **'The API token lacks the contest:write permission.'**
+  String get contestSyncProblemMissingPermission;
+
+  /// Reason a contest session stays local.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Wavelog server is older than version 3.2 and has no contest sessions.'**
+  String get contestSyncProblemServerTooOld;
+
+  /// Reason a contest session is not synced.
+  ///
+  /// In en, this message translates to:
+  /// **'The session was deleted in Wavelog.'**
+  String get contestSyncProblemDeletedOnServer;
+
+  /// Reason a contest session stays local.
+  ///
+  /// In en, this message translates to:
+  /// **'This contest has no ADIF contest name.'**
+  String get contestSyncProblemNoAdifName;
+
+  /// Reason a contest session is not synced.
+  ///
+  /// In en, this message translates to:
+  /// **'The station location is not on the Wavelog server.'**
+  String get contestSyncProblemStationUnknown;
+
+  /// Reason a contest session is not synced.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog rejected the session.'**
+  String get contestSyncProblemRejected;
+
+  /// Fallback reason for an unknown contest sync problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog reported a problem.'**
+  String get contestSyncProblemUnknown;
 }
 
 class _AppLocalizationsDelegate

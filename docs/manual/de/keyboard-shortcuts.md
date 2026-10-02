@@ -27,3 +27,4 @@ Diese Tabelle wird aus dem Befehlsverzeichnis der App erzeugt.
 | Nächste Betriebsart | Contest-Modus | `⌘M` | `Strg+M` |
 | Punkte und Raten ein- oder ausblenden | Contest-Modus | `⌘R` | `Strg+R` |
 | Contest-Sitzung beenden | Contest-Modus | `⇧⌘E` | `Strg+Umschalt+E` |
+| Cabrillo-Log exportieren | Contest-Modus | `⇧⌘X` | `Strg+Umschalt+X` |

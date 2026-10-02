@@ -27,3 +27,4 @@ This table is generated from the app's command registry.
 | Next mode | Contest mode | `⌘M` | `Ctrl+M` |
 | Show or hide score and rates | Contest mode | `⌘R` | `Ctrl+R` |
 | End contest session | Contest mode | `⇧⌘E` | `Ctrl+Shift+E` |
+| Export Cabrillo log | Contest mode | `⇧⌘X` | `Ctrl+Shift+X` |

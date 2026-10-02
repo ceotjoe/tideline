@@ -7,6 +7,7 @@ import 'package:tideline/src/commands/command_registry.dart';
 import 'package:tideline/src/commands/shortcuts_overlay.dart';
 import 'package:tideline/src/design/contest_density.dart';
 import 'package:tideline/src/design/theme.dart';
+import 'package:tideline/src/features/contest/cabrillo_export_flow.dart';
 import 'package:tideline/src/features/contest/contest_edit_controller.dart';
 import 'package:tideline/src/features/contest/contest_entry_controller.dart';
 import 'package:tideline/src/features/contest/contest_entry_panel.dart';
@@ -14,11 +15,14 @@ import 'package:tideline/src/features/contest/contest_providers.dart';
 import 'package:tideline/src/features/contest/contest_rates_panel.dart';
 import 'package:tideline/src/features/contest/contest_recent_list.dart';
 import 'package:tideline/src/features/contest/contest_setup_screen.dart';
+import 'package:tideline/src/features/contest/contest_spec.dart';
+import 'package:tideline/src/features/contest/contest_sync_status.dart';
 import 'package:tideline/src/layout/size_class.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/routing/routes.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/empty_state.dart';
+import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
 /// Whether the score and rates panel is open. Null means "the default for
@@ -117,6 +121,10 @@ class _ContestScreenState extends ConsumerState<ContestScreen> {
       .read(ratesPanelOpenProvider.notifier)
       .set(open: !_panelOpen(SizeClass.of(context)));
 
+  /// The session row as stored now (the spec ignores sync-state changes).
+  ContestSession _liveSession(ContestSpec spec) =>
+      ref.read(activeContestSessionProvider).value ?? spec.session;
+
   void _wipe() {
     ref.read(contestEntryProvider.notifier).wipe();
     _entryKey.currentState?.focusCall();
@@ -186,7 +194,8 @@ class _ContestScreenState extends ConsumerState<ContestScreen> {
                     constraints: BoxConstraints(
                       maxHeight: constraints.maxHeight * 0.62,
                     ),
-                    child: SingleChildScrollView(
+                    // The card scrolls its fields and pins the Log row.
+                    child: Padding(
                       padding: EdgeInsets.all(metrics.sm),
                       child: entryCard,
                     ),
@@ -251,6 +260,8 @@ class _ContestScreenState extends ConsumerState<ContestScreen> {
         CommandIds.nextMode: entryController.stepMode,
         CommandIds.contestToggleRates: _togglePanel,
         CommandIds.contestEnd: _endSession,
+        CommandIds.contestExportCabrillo: () =>
+            exportCabrillo(context, ref, _liveSession(spec)),
         CommandIds.showShortcuts: () =>
             showShortcutsOverlay(context, ref.read(commandRegistryProvider)),
         CommandIds.goToLog: () => context.go(Routes.log),
@@ -278,9 +289,90 @@ class _ContestScreenState extends ConsumerState<ContestScreen> {
               icon: const Icon(Icons.stop_circle_outlined),
               onPressed: _endSession,
             ),
+            PopupMenuButton<String>(
+              tooltip: l10n.contestMoreActions,
+              onSelected: (_) =>
+                  exportCabrillo(context, ref, _liveSession(spec)),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: CommandIds.contestExportCabrillo,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.file_upload_outlined),
+                      SizedBox(width: metrics.sm),
+                      Flexible(child: Text(l10n.commandExportCabrillo)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
-        body: body,
+        body: Column(
+          children: [
+            _StatusStrip(definition: spec.definition),
+            Expanded(child: body),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// The session's Wavelog state, and a warning when the contest cannot be
+/// exported as Cabrillo.
+class _StatusStrip extends ConsumerWidget {
+  const new({required this.definition});
+
+  final ContestDefinition definition;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final metrics = context.metrics;
+    // The live session row: the spec ignores sync changes on purpose.
+    final session = ref.watch(activeContestSessionProvider).value;
+    if (session == null) return const SizedBox.shrink();
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: metrics.md,
+        vertical: metrics.xs,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ContestSyncStatus(session: session),
+          if (definition.cabrillo == null)
+            Padding(
+              padding: EdgeInsets.only(top: metrics.xs),
+              child: Semantics(
+                container: true,
+                liveRegion: true,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ExcludeSemantics(
+                      child: Icon(
+                        Icons.warning_amber_rounded,
+                        size: 18,
+                        color: context.colors.error,
+                      ),
+                    ),
+                    SizedBox(width: metrics.xs),
+                    Expanded(
+                      child: Text(
+                        l10n.cabrilloUnavailableBanner,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: context.colors.text,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

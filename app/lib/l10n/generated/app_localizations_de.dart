@@ -439,6 +439,16 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String freqReadoutInBandKhz(String khz, String band) {
+    return '$khz kHz · $band';
+  }
+
+  @override
+  String freqReadoutOutsideBandsKhz(String khz) {
+    return '$khz kHz · außerhalb der Amateurfunkbänder';
+  }
+
+  @override
   String get freqReadoutUnreadable =>
       'Keine Frequenz. Gib MHz (14.205) oder kHz (14205) ein.';
 
@@ -453,6 +463,16 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String freqReadoutSemanticsOutsideBands(String mhz) {
     return '$mhz Megahertz, außerhalb der Amateurfunkbänder';
+  }
+
+  @override
+  String freqReadoutSemanticsInBandKhz(String khz, String band) {
+    return '$khz Kilohertz, $band';
+  }
+
+  @override
+  String freqReadoutSemanticsOutsideBandsKhz(String khz) {
+    return '$khz Kilohertz, außerhalb der Amateurfunkbänder';
   }
 
   @override
@@ -1026,6 +1046,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get actionCancel => 'Abbrechen';
 
   @override
+  String get actionClose => 'Schließen';
+
+  @override
   String get actionSave => 'Speichern';
 
   @override
@@ -1452,4 +1475,139 @@ class AppLocalizationsDe extends AppLocalizations {
   String contestLabelValue(String label, String value) {
     return '$label: $value';
   }
+
+  @override
+  String get commandExportCabrillo => 'Cabrillo-Log exportieren';
+
+  @override
+  String get contestMoreActions => 'Weitere Aktionen';
+
+  @override
+  String get contestCatTime => 'Zeitkategorie';
+
+  @override
+  String get cabrilloExportTitle => 'Cabrillo-Log exportieren';
+
+  @override
+  String get cabrilloIssuesIntro =>
+      'Das Log hat Probleme, die Auswertungen beanstanden können:';
+
+  @override
+  String get cabrilloExportAnyway => 'Trotzdem exportieren';
+
+  @override
+  String get cabrilloExportDone => 'Cabrillo-Log gespeichert.';
+
+  @override
+  String get cabrilloExportFailed =>
+      'Das Cabrillo-Log konnte nicht erstellt oder gespeichert werden.';
+
+  @override
+  String get cabrilloUnavailableBanner =>
+      'Cabrillo-Export nicht verfügbar: Für diesen Contest ist kein Cabrillo-Name hinterlegt.';
+
+  @override
+  String cabrilloUnavailableBody(String contest) {
+    return '$contest hat in der Definition keinen Cabrillo-Namen, daher kann kein Log erzeugt werden, das ein Contest-Roboter akzeptiert. Trage in der Definition einen Cabrillo-Namen ein oder nutze den ADIF-Export in den Einstellungen.';
+  }
+
+  @override
+  String get cabrilloIssueMissingContest =>
+      'Der Contest hat keinen Cabrillo-Namen.';
+
+  @override
+  String get cabrilloIssueMissingCallsign => 'Die Station hat kein Rufzeichen.';
+
+  @override
+  String get cabrilloIssueEmptyLog => 'Die Sitzung hat keine QSOs.';
+
+  @override
+  String get cabrilloIssueExchangeCountMismatch =>
+      'Der Austausch hat eine andere Anzahl an Angaben als das erste QSO.';
+
+  @override
+  String get cabrilloIssueMissingFrequency =>
+      'Frequenz oder Band lassen sich nicht bestimmen.';
+
+  @override
+  String get cabrilloIssueMissingQsoCall => 'Ein Rufzeichen ist leer.';
+
+  @override
+  String get cabrilloIssueTokenContainsWhitespace =>
+      'Ein Austauschwert enthält ein Leerzeichen; er wird mit Bindestrich geschrieben.';
+
+  @override
+  String get cabrilloIssueTooManyAddressLines =>
+      'Es gibt mehr als 6 Adresszeilen; die übrigen entfallen.';
+
+  @override
+  String get cabrilloIssueAddressLineTooLong =>
+      'Eine Adresszeile ist länger als 45 Zeichen und wird gekürzt.';
+
+  @override
+  String get cabrilloIssueInvalidTransmitterId =>
+      'Die Sendernummer muss 0 oder 1 sein.';
+
+  @override
+  String cabrilloIssueQsos(int count, int first) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs, das erste ist Nr. $first',
+      one: 'QSO Nr. $first',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get contestSyncLocal => 'Nur auf diesem Gerät';
+
+  @override
+  String get contestSyncPending => 'Wartet auf Upload zu Wavelog';
+
+  @override
+  String get contestSyncVerifying => 'Wird auf Wavelog geprüft';
+
+  @override
+  String get contestSyncCreated => 'Auf Wavelog';
+
+  @override
+  String contestSyncWithReason(String state, String reason) {
+    return '$state: $reason';
+  }
+
+  @override
+  String contestSyncStatusLabel(String status) {
+    return 'Wavelog: $status';
+  }
+
+  @override
+  String get contestSyncProblemNotActive =>
+      'Der Contest ist auf deinem Wavelog-Server nicht aktiviert.';
+
+  @override
+  String get contestSyncProblemMissingPermission =>
+      'Dem API-Token fehlt die Berechtigung contest:write.';
+
+  @override
+  String get contestSyncProblemServerTooOld =>
+      'Dein Wavelog-Server ist älter als Version 3.2 und kennt keine Contest-Sitzungen.';
+
+  @override
+  String get contestSyncProblemDeletedOnServer =>
+      'Die Sitzung wurde in Wavelog gelöscht.';
+
+  @override
+  String get contestSyncProblemNoAdifName =>
+      'Dieser Contest hat keinen ADIF-Contest-Namen.';
+
+  @override
+  String get contestSyncProblemStationUnknown =>
+      'Der Stationsstandort ist auf dem Wavelog-Server nicht bekannt.';
+
+  @override
+  String get contestSyncProblemRejected => 'Wavelog hat die Sitzung abgelehnt.';
+
+  @override
+  String get contestSyncProblemUnknown => 'Wavelog hat ein Problem gemeldet.';
 }

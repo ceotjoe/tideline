@@ -47,8 +47,36 @@ void main() {
     await tester.pumpWidget(host(controller));
     await tester.enterText(find.byType(TextField), '472');
     await tester.pump();
-    expect(find.text('0.472 MHz · 630 m'), findsOneWidget);
+    expect(find.text('472 kHz · 630 m'), findsOneWidget);
     expect(find.byIcon(Icons.waves), findsOneWidget);
+  });
+
+  testWidgets('below 1 MHz is shown in kHz, from 1 MHz up in MHz', (
+    tester,
+  ) async {
+    await tester.pumpWidget(host(controller));
+    final expected = {
+      '136': '136 kHz · 2190 m',
+      '475': '475 kHz · 630 m',
+      '1840': '1.84 MHz · 160 m',
+    };
+    for (final MapEntry(key: input, value: text) in expected.entries) {
+      await tester.enterText(find.byType(TextField), input);
+      await tester.pump();
+      expect(find.text(text), findsOneWidget, reason: input);
+    }
+  });
+
+  testWidgets('kHz readout is spoken in kilohertz, in German too', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    await tester.pumpWidget(host(controller, locale: const Locale('de')));
+    await tester.enterText(find.byType(TextField), '472');
+    await tester.pump();
+    expect(find.text('472 kHz · 630 m'), findsOneWidget);
+    expect(find.bySemanticsLabel('472 Kilohertz, 630 m'), findsOneWidget);
+    handle.dispose();
   });
 
   testWidgets('kHz and decimal MHz input resolve to the same reading', (
