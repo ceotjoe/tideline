@@ -56,6 +56,18 @@ enum JournalEvent {
 
   /// A sync run finished.
   runFinished,
+
+  /// A contest session was created on Wavelog (or found there).
+  contestSessionCreated,
+
+  /// QSOs were linked to a contest session on Wavelog.
+  contestQsosLinked,
+
+  /// A contest session stays local only (detail `problem` says why).
+  contestSessionLocalOnly,
+
+  /// A contest-session step failed and will be retried.
+  contestSessionRetry,
 }
 
 /// One journal entry.

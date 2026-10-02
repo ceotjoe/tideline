@@ -7,6 +7,7 @@ import 'package:tideline_data/src/repositories/contest_definition_repository.dar
 import 'package:tideline_data/src/repositories/qso_repository.dart';
 import 'package:tideline_data/src/repositories/qso_row_mapping.dart';
 import 'package:tideline_data/src/repositories/sync_journal_repository.dart';
+import 'package:tideline_data/src/sync/contest_session_sync.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
 /// Whether and how a contest session exists on Wavelog (3.2+).
@@ -139,6 +140,11 @@ class ContestSessionRepository {
     final remote = accountSupportsSessions && def.adif != null
         ? ContestRemoteState.pending
         : ContestRemoteState.local;
+    final localReason = def.adif == null
+        ? ContestSyncProblem.noAdifName
+        : accountSupportsSessions
+        ? null
+        : ContestSyncProblem.serverTooOld;
     await _db
         .into(_db.contestSessions)
         .insert(
@@ -157,6 +163,7 @@ class ContestSessionRepository {
               }),
             ),
             remoteState: Value(remote.name),
+            remoteErrorKey: Value(localReason),
             originDeviceId: _clock.deviceId,
             hlcCreated: hlc,
             hlcModified: hlc,
@@ -245,22 +252,20 @@ class ContestSessionRepository {
           .map((rows) => [for (final r in rows) _fromRow(r)]);
 
   /// Sessions of [accountId] the sync engine has to act on: those still to
-  /// create or verify, and created ones whose end time differs from the one
-  /// last sent.
+  /// create or verify, and created ones (which may have new QSOs to link or
+  /// a new end time).
   Future<List<ContestSession>> needingRemoteSync(String accountId) async {
     final rows =
-        await (_db.select(_db.contestSessions)..where(
-              (s) => s.accountId.equals(accountId) & s.deletedAt.isNull(),
-            ))
+        await (_db.select(_db.contestSessions)
+              ..where(
+                (s) =>
+                    s.accountId.equals(accountId) &
+                    s.deletedAt.isNull() &
+                    s.remoteState.isNotValue(ContestRemoteState.local.name),
+              )
+              ..orderBy([(s) => OrderingTerm.asc(s.startedAt)]))
             .get();
-    return [
-      for (final r in rows)
-        if (r.remoteState == ContestRemoteState.pending.name ||
-            r.remoteState == ContestRemoteState.verifying.name ||
-            (r.remoteState == ContestRemoteState.created.name &&
-                r.endedAt != r.remoteEndSynced))
-          _fromRow(r),
-    ];
+    return [for (final r in rows) _fromRow(r)];
   }
 
   /// The live QSOs of a session, oldest first (for the contest screen).
@@ -364,6 +369,41 @@ class ContestSessionRepository {
       _db.contestLinks,
     )..where((l) => l.sessionId.equals(sessionId))).get();
     return {for (final r in rows) r.qsoId: r.remoteQsoId};
+  }
+
+  /// Server ids of the session's live QSOs that have reached Wavelog, by
+  /// local QSO id.
+  Future<Map<String, int>> remoteQsoIds(String sessionId) async {
+    final query =
+        _db.select(_db.qsos).join([
+          innerJoin(
+            _db.qsoSync,
+            _db.qsoSync.qsoId.equalsExp(_db.qsos.id) &
+                _db.qsoSync.accountId.equalsExp(_db.qsos.accountId),
+          ),
+        ])..where(
+          _db.qsos.contestSessionId.equals(sessionId) &
+              _db.qsos.deletedAt.isNull() &
+              _db.qsoSync.remoteQsoId.isNotNull(),
+        );
+    return {
+      for (final row in await query.get())
+        row.readTable(_db.qsos).id: row.readTable(_db.qsoSync).remoteQsoId!,
+    };
+  }
+
+  /// The time of the session's latest live QSO (UTC ms), or null.
+  Future<int?> latestQsoTime(String sessionId) async {
+    final max = _db.qsos.timeOn.max();
+    final row =
+        await (_db.selectOnly(_db.qsos)
+              ..addColumns([max])
+              ..where(
+                _db.qsos.contestSessionId.equals(sessionId) &
+                    _db.qsos.deletedAt.isNull(),
+              ))
+            .getSingle();
+    return row.read(max);
   }
 
   /// Records that QSOs were linked to the session on the server.

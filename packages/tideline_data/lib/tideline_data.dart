@@ -17,5 +17,6 @@ export 'src/repositories/sync_journal_repository.dart';
 export 'src/repositories/sync_status_repository.dart';
 export 'src/repositories/worked_before_repository.dart';
 export 'src/security/database_key.dart';
+export 'src/sync/contest_session_sync.dart';
 export 'src/sync/sync_engine.dart';
 export 'src/sync/wavelog_mapping.dart';
