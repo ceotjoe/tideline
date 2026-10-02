@@ -1,35 +1,52 @@
 name: Set up Flutter (cached)
 description: >
-  Installs the pinned Flutter version with SDK and pub caches.
-  flutter-action's built-in cache uses actions/cache by tag, which the
-  repository's "require SHA pinning" policy rejects, so caching is done
-  here with a SHA-pinned actions/cache instead.
+  Installs a fixed Flutter release from its git tag, with SDK and pub
+  caches. Third-party setup actions are not used: the repository requires
+  every action, including nested ones, to be pinned to a commit SHA, and
+  subosito/flutter-action references actions/cache by tag.
 inputs:
   flutter-version:
-    description: Flutter version to install.
+    description: Flutter release tag to install, e.g. 3.47.2.
     required: true
 runs:
   using: composite
   steps:
-    - name: Compute Flutter cache paths
+    - name: Locate SDK and pub cache
       id: paths
-      uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
-      with:
-        flutter-version: ${{ inputs.flutter-version }}
-        channel: stable
-        dry-run: true
+      shell: bash
+      run: |
+        echo "sdk=$RUNNER_TOOL_CACHE/flutter-${{ inputs.flutter-version }}" >> "$GITHUB_OUTPUT"
+        if [ "$RUNNER_OS" = "Windows" ]; then
+          echo "pub=$LOCALAPPDATA\\Pub\\Cache" >> "$GITHUB_OUTPUT"
+        else
+          echo "pub=$HOME/.pub-cache" >> "$GITHUB_OUTPUT"
+        fi
     - name: Cache Flutter SDK
+      id: sdk-cache
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
-        path: ${{ steps.paths.outputs.CACHE-PATH }}
-        key: ${{ steps.paths.outputs.CACHE-KEY }}
+        path: ${{ steps.paths.outputs.sdk }}
+        key: flutter-sdk-${{ inputs.flutter-version }}-${{ runner.os }}-${{ runner.arch }}
+    - name: Download Flutter ${{ inputs.flutter-version }}
+      if: steps.sdk-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        git clone --depth 1 --branch "${{ inputs.flutter-version }}" \
+          https://github.com/flutter/flutter.git "${{ steps.paths.outputs.sdk }}"
+    - name: Add Flutter to PATH
+      shell: bash
+      run: |
+        echo "${{ steps.paths.outputs.sdk }}/bin" >> "$GITHUB_PATH"
+        echo "${{ steps.paths.outputs.pub }}/bin" >> "$GITHUB_PATH"
     - name: Cache pub packages
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
-        path: ${{ steps.paths.outputs.PUB-CACHE-PATH }}
-        key: ${{ steps.paths.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
-    - name: Install Flutter
-      uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
-      with:
-        flutter-version: ${{ inputs.flutter-version }}
-        channel: stable
+        path: ${{ steps.paths.outputs.pub }}
+        key: pub-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: pub-${{ runner.os }}-
+    - name: Prepare Flutter
+      shell: bash
+      run: |
+        flutter config --no-analytics --no-cli-animations
+        dart --disable-analytics
+        flutter --version
