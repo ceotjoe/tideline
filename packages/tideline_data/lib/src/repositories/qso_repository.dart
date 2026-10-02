@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:tideline_data/src/database/tideline_database.dart';
 import 'package:tideline_data/src/repositories/qso_row_mapping.dart';
 import 'package:tideline_data/src/repositories/sync_journal_repository.dart';
+import 'package:tideline_data/src/repositories/worked_before_repository.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
 /// A QSO with its sync status (null when it needs no sync anymore).
@@ -25,13 +26,15 @@ class QsoRepository {
   /// Creates the repository.
   new(this._db, this._clock, this._machine, {int Function()? nowMillis})
     : _now = nowMillis ?? (() => DateTime.now().toUtc().millisecondsSinceEpoch),
-      _journal = SyncJournalRepository(_db);
+      _journal = SyncJournalRepository(_db),
+      _workedBefore = WorkedBeforeRepository(_db);
 
   final TidelineDatabase _db;
   final HlcClock _clock;
   final SyncMachine _machine;
   final int Function() _now;
   final SyncJournalRepository _journal;
+  final WorkedBeforeRepository _workedBefore;
 
   /// Logs a new QSO.
   Future<void> log(Qso qso) => _insert(qso, JournalEvent.logged);
@@ -63,6 +66,7 @@ class QsoRepository {
                 rev: const Value(1),
               ),
             );
+        await _workedBefore.noteQso(qso);
         final status = SyncMachine.initial(
           complete: qso.stationProfileId != null,
         );
@@ -91,6 +95,7 @@ class QsoRepository {
                 hlcModified: Value(hlc),
               ),
             );
+        await _workedBefore.noteQso(qso);
         // An upload in flight when the backup was made may or may not have
         // reached the server: verify it first (ADR 0008).
         final restored = status?.state == SyncState.uploading
@@ -149,6 +154,7 @@ class QsoRepository {
         rev: Value(row.rev + 1),
       ),
     );
+    await _workedBefore.noteQso(qso);
     var status = before.status;
     if (status == null) return;
     if (status.state == SyncState.local && qso.stationProfileId != null) {

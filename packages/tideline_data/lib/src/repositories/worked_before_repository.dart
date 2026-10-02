@@ -91,6 +91,41 @@ class WorkedBeforeRepository {
   String _cursorKey(String accountId) =>
       'workedBefore.$accountId.lastFetchedId';
 
+  String _builtKey(String accountId) => 'workedBefore.$accountId.built';
+
+  /// Adds [qso] to the local index: one row per call, band and mode, with
+  /// the earliest time. Called inside the transaction that stores the QSO,
+  /// so index and log never disagree. Deleting a QSO never removes a row
+  /// (only a rebuild does).
+  Future<void> noteQso(Qso qso) {
+    final grid = qso.field('GRIDSQUARE')?.trim();
+    return _db.customStatement(_upsert, [
+      qso.accountId,
+      qso.call.value.toUpperCase(),
+      qso.band.name,
+      qso.mode.mode,
+      int.tryParse(qso.field('DXCC') ?? ''),
+      grid == null || grid.isEmpty ? null : grid.toUpperCase(),
+      qso.timeOn.millis,
+      'local',
+      false,
+    ]);
+  }
+
+  /// Whether the local index of [accountId] was built from the log at least
+  /// once (by [rebuildLocal]).
+  Future<bool> isBuilt(String accountId) async =>
+      (await _settings.readAll()).containsKey(_builtKey(accountId));
+
+  /// Runs [rebuildLocal] once per account: the first time the index is used
+  /// (an existing log from before the index existed, or a restored backup).
+  /// Returns whether it ran.
+  Future<bool> ensureBuilt(String accountId) async {
+    if (await isBuilt(accountId)) return false;
+    await rebuildLocal(accountId);
+    return true;
+  }
+
   /// Rebuilds the `local` entries of [accountId] from its non-deleted QSOs.
   /// Entries that came from the server stay (their time is lowered when a
   /// local QSO is older).
@@ -122,6 +157,7 @@ class WorkedBeforeRepository {
         ]);
       }
     });
+    await _settings.write(_builtKey(accountId), '1');
   });
 
   /// Merges an ADIF export of the server's log. Returns how many records were
@@ -203,6 +239,7 @@ class WorkedBeforeRepository {
       _db.workedBefore,
     )..where((w) => w.accountId.equals(accountId))).go();
     await setLastFetchedId(accountId, null);
+    await _settings.write(_builtKey(accountId), null);
   });
 
   /// What was worked with exactly [call] (so `DL1ABC/P` and `DL1ABC` are
