@@ -288,8 +288,11 @@ class ContestEntryPanelState extends ConsumerState<ContestEntryPanel> {
                 },
               ),
             ),
+            // Wide enough for the reading under it ("14.205 MHz · 20 m",
+            // or the hint) to stay on one line; the Wrap moves it to its own
+            // line on narrow screens.
             SizedBox(
-              width: scaled(metrics.contestFieldWidth * 1.7),
+              width: scaled(metrics.contestFieldWidth * 3),
               child: FrequencyField(
                 controller: _freq,
                 errorText: freqIssue == null

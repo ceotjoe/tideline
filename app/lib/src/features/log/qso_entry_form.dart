@@ -26,7 +26,12 @@ final callsignFocusProvider = Provider<FocusNode>((ref) {
 /// network.
 class QsoEntryForm extends ConsumerStatefulWidget {
   /// Creates the form.
-  const new({super.key});
+  const new({this.pinActions = false, super.key});
+
+  /// Keeps Clear and Log at the bottom while the fields scroll above them.
+  /// Needs a bounded height (the tablet layouts); phones scroll the whole
+  /// form instead.
+  final bool pinActions;
 
   @override
   ConsumerState<QsoEntryForm> createState() => QsoEntryFormState();
@@ -144,8 +149,14 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
     final time = entry.manualTime ?? UtcDateTime.now();
     final gap = SizedBox(height: metrics.md, width: metrics.md);
 
+    // Side by side only when every field keeps a usable width, which grows
+    // with the text size.
+    final minFieldWidth = 130 * MediaQuery.textScalerOf(context).scale(1);
     Widget row(List<Widget> children) => LayoutBuilder(
-      builder: (context, c) => c.maxWidth < 360
+      builder: (context, c) =>
+          c.maxWidth <
+              children.length * minFieldWidth +
+                  (children.length - 1) * metrics.md
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -163,7 +174,36 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
             ),
     );
 
-    return FocusTraversalGroup(
+    final clear = OutlinedButton(
+      onPressed: controller.clear,
+      child: Text(l10n.commandClearEntry, textAlign: TextAlign.center),
+    );
+    final log = FilledButton.icon(
+      onPressed: submit,
+      icon: const Icon(Icons.check),
+      label: Text(l10n.commandLogQso, textAlign: TextAlign.center),
+    );
+    // Side by side when both labels fit, else stacked with Log first.
+    final actions = LayoutBuilder(
+      builder: (context, c) => c.maxWidth >= 2 * minFieldWidth + metrics.sm
+          ? Row(
+              children: [
+                Expanded(child: clear),
+                SizedBox(width: metrics.sm),
+                Expanded(child: log),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                log,
+                SizedBox(height: metrics.sm),
+                clear,
+              ],
+            ),
+    );
+
+    final fields = FocusTraversalGroup(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -229,20 +269,21 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
               ],
               onChanged: (m) => controller.edit((e) => e.copyWith(mode: m)),
             ),
-            FrequencyField(
-              controller: _freq,
-              errorText:
-                  errorFor(
-                    EntryIssue.invalidFrequency,
-                    l10n.issueInvalidFrequency,
-                  ) ??
-                  errorFor(
-                    EntryIssue.frequencyOutsideBand,
-                    l10n.issueFrequencyOutsideBand,
-                  ),
-              onChanged: controller.setFrequency,
-            ),
           ]),
+          gap,
+          FrequencyField(
+            controller: _freq,
+            errorText:
+                errorFor(
+                  EntryIssue.invalidFrequency,
+                  l10n.issueInvalidFrequency,
+                ) ??
+                errorFor(
+                  EntryIssue.frequencyOutsideBand,
+                  l10n.issueFrequencyOutsideBand,
+                ),
+            onChanged: controller.setFrequency,
+          ),
           gap,
           row([
             TextField(
@@ -331,25 +372,28 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
                 ),
               ),
             ),
-          gap,
-          Wrap(
-            alignment: WrapAlignment.end,
-            spacing: metrics.sm,
-            runSpacing: metrics.sm,
-            children: [
-              OutlinedButton(
-                onPressed: controller.clear,
-                child: Text(l10n.commandClearEntry),
-              ),
-              FilledButton.icon(
-                onPressed: submit,
-                icon: const Icon(Icons.check),
-                label: Text(l10n.commandLogQso),
-              ),
-            ],
-          ),
+          if (!widget.pinActions) ...[gap, actions],
         ],
       ),
+    );
+    if (!widget.pinActions) return fields;
+    // As tall as the fields need; only when they do not fit do they scroll,
+    // with Clear and Log pinned under them.
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Flexible(
+          child: SingleChildScrollView(
+            // Room for the floating label of the first field, which would
+            // otherwise be clipped at the top of the scroll area.
+            padding: EdgeInsets.only(top: metrics.sm),
+            child: fields,
+          ),
+        ),
+        gap,
+        actions,
+      ],
     );
   }
 }

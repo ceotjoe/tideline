@@ -1101,6 +1101,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contestSearchEmpty => 'No contest matches your search.';
 
   @override
+  String get contestSetupChooseHint =>
+      'Choose a contest from the list to set up the session.';
+
+  @override
   String get contestBuiltin => 'Built in';
 
   @override
@@ -3069,6 +3073,10 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String get contestSearchEmpty =>
       '[Ñö çöñţéšţ ɱáţçĥéš ýöûŕ šéáŕçĥ.·············]';
+
+  @override
+  String get contestSetupChooseHint =>
+      '[Çĥööšé á çöñţéšţ ƒŕöɱ ţĥé ļîšţ ţö šéţ ûþ ţĥé šéššîöñ.······················]';
 
   @override
   String get contestBuiltin => '[Ɓûîļţ îñ····]';

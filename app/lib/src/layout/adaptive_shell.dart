@@ -12,6 +12,10 @@ import 'package:tideline/src/routing/routes.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/tide_gauge.dart';
 
+/// Window width from which the navigation rail shows its labels beside the
+/// icons (extended). Below it the rail is compact.
+const double extendedRailMinWidth = 1440;
+
 /// Top-level navigation: a bottom bar on compact windows (thumb reach), a
 /// navigation rail from medium width up. The tide gauge runs across the top
 /// of the content on every size.
@@ -26,6 +30,10 @@ class AdaptiveShell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final sizeClass = SizeClass.of(context);
+    // The wide rail with labels costs ~180 dp more. Tablets in landscape
+    // (1180–1376 dp) need that room for content, so only wider windows get it.
+    final extendedRail =
+        MediaQuery.sizeOf(context).width >= extendedRailMinWidth;
     final pending = ref.watch(pendingSyncCountProvider).value ?? 0;
 
     void goTo(int index) => navigationShell.goBranch(
@@ -104,8 +112,8 @@ class AdaptiveShell extends ConsumerWidget {
                       child: NavigationRail(
                         selectedIndex: navigationShell.currentIndex,
                         onDestinationSelected: goTo,
-                        extended: sizeClass.isAtLeast(SizeClass.large),
-                        labelType: sizeClass.isAtLeast(SizeClass.large)
+                        extended: extendedRail,
+                        labelType: extendedRail
                             ? NavigationRailLabelType.none
                             : NavigationRailLabelType.all,
                         destinations: [

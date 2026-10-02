@@ -64,8 +64,11 @@ class _ContestSetupScreenState extends ConsumerState<ContestSetupScreen> {
     final metrics = context.metrics;
     final size = SizeClass.of(context);
     final definitions = ref.watch(contestDefinitionsProvider);
+    final hasPast =
+        ref.watch(contestSessionsProvider).value?.isNotEmpty ?? false;
 
-    final form = _SetupForm(search: _search, onStart: _start);
+    _SetupForm form([_SetupPart part = _SetupPart.all]) =>
+        _SetupForm(search: _search, onStart: _start, part: part);
     final past = _PastSessions(onReopen: _reopen);
 
     return ContestDensityScope(
@@ -79,32 +82,53 @@ class _ContestSetupScreenState extends ConsumerState<ContestSetupScreen> {
                   body: l10n.contestSetupLoadFailedBody,
                 )
               : size.isAtLeast(SizeClass.expanded)
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: ListView(
-                        padding: EdgeInsets.all(context.metrics.md),
-                        children: [form],
-                      ),
-                    ),
-                    const VerticalDivider(width: 1),
-                    SizedBox(
-                      width: context.metrics.contestSideWidth,
-                      child: ListView(
-                        padding: EdgeInsets.all(context.metrics.md),
-                        children: [past],
-                      ),
-                    ),
-                  ],
+              // Landscape: pick on the left (the whole list, no hidden
+              // scroll box), set up in the middle, past sessions on the
+              // right when there is room, else under the setup.
+              ? LayoutBuilder(
+                  builder: (context, constraints) {
+                    final side = metrics.contestSideWidth;
+                    final threeColumns = constraints.maxWidth >= 3 * side;
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: side,
+                          child: Padding(
+                            padding: EdgeInsets.all(metrics.md),
+                            child: form(_SetupPart.picker),
+                          ),
+                        ),
+                        const VerticalDivider(width: 1),
+                        Expanded(
+                          child: _SetupForm(
+                            search: _search,
+                            onStart: _start,
+                            part: _SetupPart.details,
+                            below: threeColumns ? null : past,
+                          ),
+                        ),
+                        if (threeColumns) ...[
+                          const VerticalDivider(width: 1),
+                          SizedBox(
+                            width: side,
+                            child: ListView(
+                              padding: EdgeInsets.all(metrics.md),
+                              children: [past],
+                            ),
+                          ),
+                        ],
+                      ],
+                    );
+                  },
                 )
               : ListView(
                   padding: EdgeInsets.all(metrics.md),
-                  children: [
-                    form,
-                    SizedBox(height: metrics.lg),
-                    past,
-                  ],
+                  // Resuming comes first on a phone: otherwise past sessions
+                  // sit below the whole contest list.
+                  children: hasPast
+                      ? [past, SizedBox(height: metrics.lg), form()]
+                      : [form(), SizedBox(height: metrics.lg), past],
                 ),
         ),
       ),
@@ -112,11 +136,33 @@ class _ContestSetupScreenState extends ConsumerState<ContestSetupScreen> {
   }
 }
 
+/// Which part of the setup a [_SetupForm] shows.
+enum _SetupPart {
+  /// Everything in one scrolling column (phones, portrait tablets).
+  all,
+
+  /// The search and the full list of contests, filling its height.
+  picker,
+
+  /// Station, exchange, categories and Start for the chosen contest.
+  details,
+}
+
 class _SetupForm extends ConsumerWidget {
-  const new({required this.search, required this.onStart});
+  const new({
+    required this.search,
+    required this.onStart,
+    this.part = _SetupPart.all,
+    this.below,
+  });
 
   final TextEditingController search;
   final VoidCallback onStart;
+  final _SetupPart part;
+
+  /// Shown under the setup in the [_SetupPart.details] pane (the past
+  /// sessions, when there is no column for them).
+  final Widget? below;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -167,170 +213,225 @@ class _SetupForm extends ConsumerWidget {
         account != null &&
         !setup.starting;
 
-    return FocusTraversalGroup(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (active != null)
-            _Notice(
-              icon: Icons.info_outline,
-              text: l10n.contestSetupSessionRunning,
-            ),
-          heading(l10n.contestSetupChooseContest),
-          TextField(
-            controller: search,
-            decoration: InputDecoration(
-              labelText: l10n.contestSearchLabel,
-              prefixIcon: const Icon(Icons.search),
-            ),
-            onChanged: controller.setQuery,
-          ),
-          SizedBox(height: metrics.sm),
-          if (matching.isEmpty)
-            Text(l10n.contestSearchEmpty, style: text.bodyMedium)
-          else
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 300),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  for (final d in matching)
-                    _ContestTile(
-                      stored: d,
-                      selected: d.definition.id == setup.definitionId,
-                      onTap: () => controller.selectDefinition(d.definition),
-                    ),
-                ],
-              ),
-            ),
-          if (resolved == null && setup.definitionId != null)
-            Padding(
-              padding: EdgeInsets.only(top: metrics.sm),
-              child: Text(l10n.contestSetupNeedStation),
-            ),
-          if (resolved != null) ...[
-            heading(l10n.contestSetupStation),
-            DropdownButtonFormField<String>(
-              key: ValueKey('station-${resolved.station.id}'),
-              initialValue: resolved.station.id,
-              isExpanded: true,
-              decoration: InputDecoration(labelText: l10n.fieldStation),
-              items: [
-                for (final s in stations)
-                  DropdownMenuItem(
-                    value: s.id,
-                    child: Text(
-                      '${s.name} (${s.callsign})',
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-              ],
-              onChanged: (id) {
-                if (id != null) controller.selectStation(id);
-              },
-            ),
-            heading(l10n.contestSetupExchange),
-            Text(l10n.contestSetupExchangeHelp, style: text.bodySmall),
-            SizedBox(height: metrics.sm),
-            Wrap(
-              spacing: metrics.sm,
-              runSpacing: metrics.sm,
-              children: [
-                for (final (i, e) in resolved.exchange.sent.indexed)
-                  if (resolved.isEditable(i))
-                    SizedBox(
-                      width: MediaQuery.textScalerOf(context)
-                          .scale(metrics.contestFieldWidth * 1.4),
-                      child: _ExchangeValueField(
-                        // A new default (other station or contest) must show,
-                        // so the field starts over with it.
-                        key: ValueKey(
-                          '${resolved.definition.id}|${resolved.station.id}|'
-                          '${ownExchangeKey(resolved.exchange.sent, i)}',
-                        ),
-                        element: e,
-                        initial:
-                            resolved.values[ownExchangeKey(
-                              resolved.exchange.sent,
-                              i,
-                            )] ??
-                            '',
-                        errorText:
-                            setup.showErrors && resolved.errorAt(i) != null
-                            ? exchangeErrorText(l10n, e, resolved.errorAt(i)!)
-                            : null,
-                        onChanged: (v) => controller.setValue(
-                          ownExchangeKey(resolved.exchange.sent, i),
-                          v,
-                        ),
-                      ),
-                    ),
-              ],
-            ),
-            SizedBox(height: metrics.sm),
-            for (final e in resolved.exchange.sent)
-              if (e.kind == ExchangeKind.rst)
-                _Notice(icon: Icons.bolt, text: l10n.contestSetupRstAuto)
-              else if (e.kind == ExchangeKind.serial)
-                _Notice(icon: Icons.tag, text: l10n.contestSetupSerialAuto),
-            heading(l10n.contestSetupCabrillo),
-            Text(l10n.contestSetupCabrilloHelp, style: text.bodySmall),
-            SizedBox(height: metrics.sm),
-            Wrap(
-              spacing: metrics.sm,
-              runSpacing: metrics.sm,
-              children: [
-                for (final category in CabrilloCategory.values)
-                  SizedBox(
-                    width: MediaQuery.textScalerOf(context)
-                        .scale(metrics.contestFieldWidth * 2),
-                    child: DropdownButtonFormField<String?>(
-                      key: ValueKey(
-                        '${category.tag}-${setup.categories[category]}',
-                      ),
-                      initialValue: setup.categories[category],
-                      isExpanded: true,
-                      decoration: InputDecoration(
-                        labelText: category.label(l10n),
-                      ),
-                      items: [
-                        DropdownMenuItem<String?>(
-                          child: Text(l10n.contestCatNotSet),
-                        ),
-                        // Protocol tokens: shown as they are written to the
-                        // log, never translated.
-                        for (final v in category.tokens)
-                          DropdownMenuItem<String?>(value: v, child: Text(v)),
-                      ],
-                      onChanged: (v) => controller.setCategory(category, v),
-                    ),
-                  ),
-              ],
-            ),
-          ],
-          SizedBox(height: metrics.lg),
-          if (setup.startFailed)
-            Padding(
-              padding: EdgeInsets.only(bottom: metrics.sm),
-              child: Semantics(
-                liveRegion: true,
+    final tiles = [
+      for (final d in matching)
+        _ContestTile(
+          stored: d,
+          selected: d.definition.id == setup.definitionId,
+          onTap: () => controller.selectDefinition(d.definition),
+        ),
+    ];
+    final empty = Text(l10n.contestSearchEmpty, style: text.bodyMedium);
+    final pickerTop = <Widget>[
+      if (active != null)
+        _Notice(
+          icon: Icons.info_outline,
+          text: l10n.contestSetupSessionRunning,
+        ),
+      heading(l10n.contestSetupChooseContest),
+      TextField(
+        controller: search,
+        decoration: InputDecoration(
+          labelText: l10n.contestSearchLabel,
+          prefixIcon: const Icon(Icons.search),
+        ),
+        onChanged: controller.setQuery,
+      ),
+      SizedBox(height: metrics.sm),
+    ];
+    final details = <Widget>[
+      if (resolved == null && setup.definitionId != null)
+        Padding(
+          padding: EdgeInsets.only(top: metrics.sm),
+          child: Text(l10n.contestSetupNeedStation),
+        ),
+      if (resolved != null) ...[
+        heading(l10n.contestSetupStation),
+        DropdownButtonFormField<String>(
+          key: ValueKey('station-${resolved.station.id}'),
+          initialValue: resolved.station.id,
+          isExpanded: true,
+          decoration: InputDecoration(labelText: l10n.fieldStation),
+          items: [
+            for (final s in stations)
+              DropdownMenuItem(
+                value: s.id,
                 child: Text(
-                  l10n.contestStartFailed,
-                  style: TextStyle(color: context.colors.error),
+                  '${s.name} (${s.callsign})',
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-            ),
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: FilledButton.icon(
-              onPressed: canStart ? onStart : null,
-              icon: const Icon(Icons.play_arrow),
-              label: Text(l10n.contestStart),
+          ],
+          onChanged: (id) {
+            if (id != null) controller.selectStation(id);
+          },
+        ),
+        heading(l10n.contestSetupExchange),
+        Text(l10n.contestSetupExchangeHelp, style: text.bodySmall),
+        SizedBox(height: metrics.sm),
+        Wrap(
+          spacing: metrics.sm,
+          runSpacing: metrics.sm,
+          children: [
+            for (final (i, e) in resolved.exchange.sent.indexed)
+              if (resolved.isEditable(i))
+                SizedBox(
+                  width: MediaQuery.textScalerOf(context)
+                      .scale(metrics.contestFieldWidth * 1.4),
+                  child: _ExchangeValueField(
+                    // A new default (other station or contest) must show,
+                    // so the field starts over with it.
+                    key: ValueKey(
+                      '${resolved.definition.id}|${resolved.station.id}|'
+                      '${ownExchangeKey(resolved.exchange.sent, i)}',
+                    ),
+                    element: e,
+                    initial:
+                        resolved.values[ownExchangeKey(
+                          resolved.exchange.sent,
+                          i,
+                        )] ??
+                        '',
+                    errorText: setup.showErrors && resolved.errorAt(i) != null
+                        ? exchangeErrorText(l10n, e, resolved.errorAt(i)!)
+                        : null,
+                    onChanged: (v) => controller.setValue(
+                      ownExchangeKey(resolved.exchange.sent, i),
+                      v,
+                    ),
+                  ),
+                ),
+          ],
+        ),
+        SizedBox(height: metrics.sm),
+        for (final e in resolved.exchange.sent)
+          if (e.kind == ExchangeKind.rst)
+            _Notice(icon: Icons.bolt, text: l10n.contestSetupRstAuto)
+          else if (e.kind == ExchangeKind.serial)
+            _Notice(icon: Icons.tag, text: l10n.contestSetupSerialAuto),
+        heading(l10n.contestSetupCabrillo),
+        Text(l10n.contestSetupCabrilloHelp, style: text.bodySmall),
+        SizedBox(height: metrics.sm),
+        Wrap(
+          spacing: metrics.sm,
+          runSpacing: metrics.sm,
+          children: [
+            for (final category in CabrilloCategory.values)
+              SizedBox(
+                width: MediaQuery.textScalerOf(context)
+                    .scale(metrics.contestFieldWidth * 2),
+                child: DropdownButtonFormField<String?>(
+                  key: ValueKey(
+                    '${category.tag}-${setup.categories[category]}',
+                  ),
+                  initialValue: setup.categories[category],
+                  isExpanded: true,
+                  decoration: InputDecoration(labelText: category.label(l10n)),
+                  items: [
+                    DropdownMenuItem<String?>(
+                      child: Text(l10n.contestCatNotSet),
+                    ),
+                    // Protocol tokens: shown as they are written to the
+                    // log, never translated.
+                    for (final v in category.tokens)
+                      DropdownMenuItem<String?>(value: v, child: Text(v)),
+                  ],
+                  onChanged: (v) => controller.setCategory(category, v),
+                ),
+              ),
+          ],
+        ),
+      ],
+      SizedBox(height: metrics.lg),
+    ];
+    final startArea = <Widget>[
+      if (setup.startFailed)
+        Padding(
+          padding: EdgeInsets.only(bottom: metrics.sm),
+          child: Semantics(
+            liveRegion: true,
+            child: Text(
+              l10n.contestStartFailed,
+              style: TextStyle(color: context.colors.error),
             ),
           ),
-        ],
+        ),
+      Align(
+        alignment: AlignmentDirectional.centerEnd,
+        child: FilledButton.icon(
+          onPressed: canStart ? onStart : null,
+          icon: const Icon(Icons.play_arrow),
+          label: Text(l10n.contestStart),
+        ),
       ),
-    );
+    ];
+
+    switch (part) {
+      case _SetupPart.picker:
+        return FocusTraversalGroup(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ...pickerTop,
+              Expanded(
+                child: matching.isEmpty
+                    ? Align(alignment: Alignment.topLeft, child: empty)
+                    : ListView(children: tiles),
+              ),
+            ],
+          ),
+        );
+      case _SetupPart.details:
+        // Fills its height: the setup scrolls, Start stays in view.
+        return FocusTraversalGroup(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                // A short form: built in full, so nothing below the fold
+                // goes missing for assistive technology.
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(metrics.md),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (setup.definitionId == null)
+                        _Notice(
+                          icon: Icons.emoji_events_outlined,
+                          text: l10n.contestSetupChooseHint,
+                        ),
+                      ...details,
+                      if (below case final below?) ...[
+                        SizedBox(height: metrics.lg),
+                        below,
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(metrics.md),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: startArea,
+                ),
+              ),
+            ],
+          ),
+        );
+      case _SetupPart.all:
+        return FocusTraversalGroup(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ...pickerTop,
+              if (matching.isEmpty) empty else ...tiles,
+              ...details,
+              ...startArea,
+            ],
+          ),
+        );
+    }
   }
 }
 

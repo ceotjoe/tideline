@@ -6,7 +6,9 @@ import 'package:tideline/src/design/tokens/color_tokens.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 import 'package:tideline/src/features/contest/contest_hints.dart';
 import 'package:tideline/src/features/contest/contest_labels.dart';
+import 'package:tideline/src/features/contest/contest_providers.dart';
 import 'package:tideline/src/features/log/worked_hint.dart';
+import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/frequency_field.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -39,7 +41,7 @@ class ContestHintsView extends ConsumerWidget {
             match.ituz,
           ),
         ),
-      ..._statusHints(context, hints),
+      ..._statusHints(context, hints, _multiplierValue(ref)),
       if (hints.worked case final worked?
           when worked != WorkedSlotStatus.newCall)
         _Hint(
@@ -86,7 +88,31 @@ class ContestHintsView extends ConsumerWidget {
     );
   }
 
-  List<Widget> _statusHints(BuildContext context, ContestHints hints) {
+  /// How a multiplier value reads: DXCC numbers become the entity name
+  /// ("United States", not "291"); zones, prefixes and DOKs stay as they are.
+  String Function(MultiplierHit) _multiplierValue(WidgetRef ref) {
+    final rules = {
+      for (final r
+          in ref.watch(contestSpecProvider)?.definition.multipliers ??
+              const <MultiplierRule>[])
+        r.id: r,
+    };
+    final dxcc = ref.watch(dxccProvider).value;
+    return (hit) {
+      final number = int.tryParse(hit.value);
+      if (rules[hit.multiplierId]?.source.kind != MultiplierSourceKind.dxcc ||
+          number == null) {
+        return hit.value;
+      }
+      return dxcc?.entityByDxcc(number)?.name ?? hit.value;
+    };
+  }
+
+  List<Widget> _statusHints(
+    BuildContext context,
+    ContestHints hints,
+    String Function(MultiplierHit) valueOf,
+  ) {
     final l10n = AppLocalizations.of(context);
     final c = context.colors;
     final previous = hints.previous;
@@ -119,7 +145,10 @@ class ContestHintsView extends ConsumerWidget {
           text: l10n.contestHintNewMultiplier(
             [
               for (final m in hints.multipliers)
-                '${multiplierLabel(l10n, m.multiplierId)} ${m.value}',
+                l10n.contestLabelValue(
+                  multiplierLabel(l10n, m.multiplierId),
+                  valueOf(m),
+                ),
             ].join(', '),
           ),
         ),

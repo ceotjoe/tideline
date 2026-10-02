@@ -1851,6 +1851,12 @@ abstract class AppLocalizations {
   /// **'No contest matches your search.'**
   String get contestSearchEmpty;
 
+  /// Shown in the setup pane on wide screens until a contest is chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a contest from the list to set up the session.'**
+  String get contestSetupChooseHint;
+
   /// Label: contest definition shipped with the app.
   ///
   /// In en, this message translates to:

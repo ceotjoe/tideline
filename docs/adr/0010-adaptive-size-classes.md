@@ -20,7 +20,12 @@
 - Layouts never branch on the device type or platform. Platform only affects input affordances such as hover and
   shortcuts.
 - Form state lives outside widgets (notifiers), so a layout change never loses input.
+- **Panes follow the available width, not only the class.** Within a screen, the number of columns comes from the
+  width its body really has (after the navigation rail), with a minimum width per pane. The navigation rail shows its
+  labels beside the icons only from 1440 dp. (Added 2026-10-02: at 1210 dp, an iPad Pro 11" in landscape, the `large`
+  class with a wide rail and fixed columns left the log list ~130 dp, and the log body failed to lay out.)
 
 ## Consequences
 - Foldables, resizable windows and desktop work automatically.
-- Golden tests cover compact (phone), medium (tablet portrait) and expanded (tablet landscape).
+- Golden tests cover compact (phone), medium (tablet portrait) and expanded (tablet landscape), plus 1210 × 834 (just
+  past the `large` breakpoint). A layout test renders the log screen at widths from 840 to 1600 dp.

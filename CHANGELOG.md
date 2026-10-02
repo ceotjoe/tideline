@@ -98,6 +98,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   threat model, MASVS mapping, privacy statement and security policy.
 
 ### Fixed
+- **Tablet landscape.** On an iPad Pro or Air 11" in landscape (1210 dp) the log list got ~130 dp and the log screen
+  stayed empty. Columns now follow the available width, and the navigation rail shows labels only from 1440 dp. The
+  entry form pairs short fields (band and mode, reports, name and locator) and keeps Clear and Log in view. The contest
+  setup lists every contest in its own column instead of a 300 dp scroll box. Multiplier hints name the country
+  instead of its DXCC number.
 - Commands that share a key on different screens (for example Enter in the log and in contest mode) no longer shadow
   each other; the command available on the current screen runs.
 - The contest entry's Log button is no longer cut off in tablet-landscape and desktop windows; the action row stays

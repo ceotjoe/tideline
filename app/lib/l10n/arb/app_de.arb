@@ -292,6 +292,7 @@
   "contestSetupChooseContest": "Contest",
   "contestSearchLabel": "Contests suchen",
   "contestSearchEmpty": "Kein Contest passt zu deiner Suche.",
+  "contestSetupChooseHint": "Wähle einen Contest aus der Liste, um die Sitzung einzurichten.",
   "contestBuiltin": "Eingebaut",
   "contestImported": "Von dir importiert",
   "contestSetupNeedStation": "Für dieses Konto gibt es noch keinen Stationsstandort. Synchronisiere einmal, um deine Wavelog-Standorte zu laden, und versuche es dann erneut.",

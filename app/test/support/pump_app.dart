@@ -52,6 +52,10 @@ abstract final class TestSizes {
   static const phone = Size(390, 844);
   static const tabletPortrait = Size(820, 1180);
   static const tabletLandscape = Size(1180, 820);
+
+  /// iPad Pro / Air 11" in landscape: just past the `large` breakpoint, where
+  /// a wide rail plus three fixed columns once left the log list no room.
+  static const tabletLandscapeWide = Size(1210, 834);
   static const desktop = Size(1440, 900);
 }
 

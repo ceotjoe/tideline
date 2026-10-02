@@ -40,8 +40,16 @@ class LogScreen extends ConsumerStatefulWidget {
 class _LogScreenState extends ConsumerState<LogScreen> {
   final _formKey = GlobalKey<QsoEntryFormState>();
 
-  void _open(BuildContext context, String id, SizeClass size) {
-    if (size.isAtLeast(SizeClass.expanded)) {
+  /// Whether the last layout had a detail pane (three columns). Read only by
+  /// tap and command callbacks, after layout.
+  bool _hasDetailPane = false;
+
+  /// The QSO list needs this much width to be readable next to the form and
+  /// the context pane; below it the context pane is left out.
+  static const double _minListWidth = 340;
+
+  void _open(BuildContext context, String id) {
+    if (_hasDetailPane) {
       ref.read(selectedQsoProvider.notifier).select(id);
       return;
     }
@@ -66,10 +74,12 @@ class _LogScreenState extends ConsumerState<LogScreen> {
     final log = ref.watch(logProvider).value ?? const [];
     final selected = ref.watch(selectedQsoProvider);
 
-    final form = Card(
+    // One key for both variants, so typed input and focus survive a resize
+    // between the phone and tablet layouts.
+    Widget formCard({bool pinActions = false}) => Card(
       child: Padding(
         padding: EdgeInsets.all(metrics.md),
-        child: QsoEntryForm(key: _formKey),
+        child: QsoEntryForm(key: _formKey, pinActions: pinActions),
       ),
     );
 
@@ -86,7 +96,7 @@ class _LogScreenState extends ConsumerState<LogScreen> {
             itemBuilder: (context, i) => QsoTile(
               item: log[i],
               selected: log[i].qso.id == selected,
-              onTap: () => _open(context, log[i].qso.id, size),
+              onTap: () => _open(context, log[i].qso.id),
             ),
           );
 
@@ -96,7 +106,7 @@ class _LogScreenState extends ConsumerState<LogScreen> {
         body = ListView(
           padding: EdgeInsets.all(metrics.md),
           children: [
-            form,
+            formCard(),
             SizedBox(height: metrics.md),
             Semantics(
               header: true,
@@ -114,49 +124,56 @@ class _LogScreenState extends ConsumerState<LogScreen> {
               list(shrinkWrap: true),
           ],
         );
-      case SizeClass.medium:
-        body = Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 360,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(metrics.md),
-                child: form,
-              ),
-            ),
-            const VerticalDivider(width: 1),
-            Expanded(child: list()),
-          ],
-        );
-      case SizeClass.expanded || SizeClass.large:
-        body = Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 380,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(metrics.md),
-                child: form,
-              ),
-            ),
-            const VerticalDivider(width: 1),
-            Expanded(child: list()),
-            const VerticalDivider(width: 1),
-            SizedBox(
-              width: size == SizeClass.large ? 400 : 320,
-              child: selected == null
-                  ? const _ContextPanel()
-                  : QsoDetail(
-                      key: ValueKey(selected),
-                      qsoId: selected,
-                      onClosed: () =>
-                          ref.read(selectedQsoProvider.notifier).select(null),
-                    ),
-            ),
-          ],
+      case SizeClass.medium || SizeClass.expanded || SizeClass.large:
+        // Columns follow the width the body really has (the navigation rail
+        // and split-screen windows take their share), not the window class.
+        body = LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            final formWidth = width >= 1100
+                ? 400.0
+                : width >= 1000
+                ? 380.0
+                : 360.0;
+            final contextWidth = width >= 1300 ? 400.0 : 320.0;
+            final threePanes =
+                width - formWidth - contextWidth - 2 >= _minListWidth;
+            _hasDetailPane = threePanes;
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // The fields scroll inside the card; Clear and Log stay
+                // pinned at its bottom, always in reach.
+                SizedBox(
+                  width: formWidth,
+                  child: Padding(
+                    padding: EdgeInsets.all(metrics.md),
+                    child: formCard(pinActions: true),
+                  ),
+                ),
+                const VerticalDivider(width: 1),
+                Expanded(child: list()),
+                if (threePanes) ...[
+                  const VerticalDivider(width: 1),
+                  SizedBox(
+                    width: contextWidth,
+                    child: selected == null
+                        ? const _ContextPanel()
+                        : QsoDetail(
+                            key: ValueKey(selected),
+                            qsoId: selected,
+                            onClosed: () => ref
+                                .read(selectedQsoProvider.notifier)
+                                .select(null),
+                          ),
+                  ),
+                ],
+              ],
+            );
+          },
         );
     }
+    if (size == SizeClass.compact) _hasDetailPane = false;
 
     return CommandHandlers(
       handlers: {
@@ -167,7 +184,7 @@ class _LogScreenState extends ConsumerState<LogScreen> {
         },
         CommandIds.newQso: () => ref.read(callsignFocusProvider).requestFocus(),
         CommandIds.editLastQso: () {
-          if (log.isNotEmpty) _open(context, log.first.qso.id, size);
+          if (log.isNotEmpty) _open(context, log.first.qso.id);
         },
       },
       child: Scaffold(

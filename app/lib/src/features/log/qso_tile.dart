@@ -38,27 +38,50 @@ class QsoTile extends StatelessWidget {
       q.mode.label,
       ?freq,
     ].join(' · ');
-    return ListTile(
-      selected: selected,
-      selectedTileColor: context.colors.surfaceVariant,
-      onTap: onTap,
-      title: Row(
-        children: [
-          Flexible(child: CallsignText(q.call.value)),
-          if (q.field('NAME') case final name?) ...[
-            SizedBox(width: context.metrics.sm),
-            Flexible(
-              child: Text(
-                name,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ),
-          ],
-        ],
-      ),
-      subtitle: Text(details),
-      trailing: SyncStatusChip(state: item.status?.state),
+    final chip = SyncStatusChip(state: item.status?.state);
+    // Narrow panes (or large text) cannot fit the chip beside the text, and
+    // ListTile fails outright when the trailing widget takes the whole
+    // width; there the chip goes under the details.
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final stacked = constraints.maxWidth < _sideBySideMinWidth;
+        return ListTile(
+          selected: selected,
+          selectedTileColor: context.colors.surfaceVariant,
+          onTap: onTap,
+          title: _title(context, q),
+          subtitle: stacked
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(details),
+                    SizedBox(height: context.metrics.xs),
+                    chip,
+                  ],
+                )
+              : Text(details),
+          trailing: stacked ? null : chip,
+        );
+      },
     );
   }
+
+  /// Below this width the sync chip moves under the details.
+  static const double _sideBySideMinWidth = 320;
+
+  Widget _title(BuildContext context, Qso q) => Row(
+    children: [
+      Flexible(child: CallsignText(q.call.value)),
+      if (q.field('NAME') case final name?) ...[
+        SizedBox(width: context.metrics.sm),
+        Flexible(
+          child: Text(
+            name,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+      ],
+    ],
+  );
 }

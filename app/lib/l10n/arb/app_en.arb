@@ -1382,6 +1382,10 @@
   "@contestSearchEmpty": {
     "description": "Shown when the contest search has no result."
   },
+  "contestSetupChooseHint": "Choose a contest from the list to set up the session.",
+  "@contestSetupChooseHint": {
+    "description": "Shown in the setup pane on wide screens until a contest is chosen."
+  },
   "contestBuiltin": "Built in",
   "@contestBuiltin": {
     "description": "Label: contest definition shipped with the app."

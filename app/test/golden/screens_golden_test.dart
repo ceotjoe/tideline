@@ -12,6 +12,7 @@ void main() {
     'phone': TestSizes.phone,
     'tablet_portrait': TestSizes.tabletPortrait,
     'tablet_landscape': TestSizes.tabletLandscape,
+    'tablet_landscape_wide': TestSizes.tabletLandscapeWide,
   };
 
   for (final MapEntry(key: sizeName, value: size) in sizes.entries) {

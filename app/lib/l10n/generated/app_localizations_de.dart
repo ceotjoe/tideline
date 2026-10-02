@@ -1104,6 +1104,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get contestSearchEmpty => 'Kein Contest passt zu deiner Suche.';
 
   @override
+  String get contestSetupChooseHint =>
+      'Wähle einen Contest aus der Liste, um die Sitzung einzurichten.';
+
+  @override
   String get contestBuiltin => 'Eingebaut';
 
   @override
