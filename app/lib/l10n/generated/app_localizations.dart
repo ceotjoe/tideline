@@ -1293,6 +1293,30 @@ abstract class AppLocalizations {
   /// **'Sync finished'**
   String get journalRunFinished;
 
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest session created on Wavelog'**
+  String get journalContestSessionCreated;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'QSOs linked to the Wavelog contest session'**
+  String get journalContestQsosLinked;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest session kept on this device only'**
+  String get journalContestSessionLocalOnly;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest session not synced yet; will retry'**
+  String get journalContestSessionRetry;
+
   /// Empty log hint.
   ///
   /// In en, this message translates to:

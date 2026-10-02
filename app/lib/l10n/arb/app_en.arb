@@ -876,6 +876,22 @@
   "@journalRunFinished": {
     "description": "Journal entry."
   },
+  "journalContestSessionCreated": "Contest session created on Wavelog",
+  "@journalContestSessionCreated": {
+    "description": "Journal entry."
+  },
+  "journalContestQsosLinked": "QSOs linked to the Wavelog contest session",
+  "@journalContestQsosLinked": {
+    "description": "Journal entry."
+  },
+  "journalContestSessionLocalOnly": "Contest session kept on this device only",
+  "@journalContestSessionLocalOnly": {
+    "description": "Journal entry."
+  },
+  "journalContestSessionRetry": "Contest session not synced yet; will retry",
+  "@journalContestSessionRetry": {
+    "description": "Journal entry."
+  },
   "logEmptyBodyReady": "Log your first QSO above. It is saved on this device right away, with or without a connection.",
   "@logEmptyBodyReady": {
     "description": "Empty log hint."

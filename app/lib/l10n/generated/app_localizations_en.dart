@@ -704,6 +704,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get journalRunFinished => 'Sync finished';
 
   @override
+  String get journalContestSessionCreated =>
+      'Contest session created on Wavelog';
+
+  @override
+  String get journalContestQsosLinked =>
+      'QSOs linked to the Wavelog contest session';
+
+  @override
+  String get journalContestSessionLocalOnly =>
+      'Contest session kept on this device only';
+
+  @override
+  String get journalContestSessionRetry =>
+      'Contest session not synced yet; will retry';
+
+  @override
   String get logEmptyBodyReady =>
       'Log your first QSO above. It is saved on this device right away, with or without a connection.';
 
@@ -2141,6 +2157,22 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get journalRunFinished => '[Šýñç ƒîñîšĥéð······]';
+
+  @override
+  String get journalContestSessionCreated =>
+      '[Çöñţéšţ šéššîöñ çŕéáţéð öñ Ŵáṽéļöĝ··············]';
+
+  @override
+  String get journalContestQsosLinked =>
+      '[ǪŠÖš ļîñķéð ţö ţĥé Ŵáṽéļöĝ çöñţéšţ šéššîöñ·················]';
+
+  @override
+  String get journalContestSessionLocalOnly =>
+      '[Çöñţéšţ šéššîöñ ķéþţ öñ ţĥîš ðéṽîçé öñļý················]';
+
+  @override
+  String get journalContestSessionRetry =>
+      '[Çöñţéšţ šéššîöñ ñöţ šýñçéð ýéţ; ŵîļļ ŕéţŕý·················]';
 
   @override
   String get logEmptyBodyReady =>

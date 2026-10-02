@@ -284,6 +284,11 @@ class JournalTile extends StatelessWidget {
       JournalEvent.accountBlocked => l10n.journalAccountBlocked,
       JournalEvent.runStarted => l10n.journalRunStarted,
       JournalEvent.runFinished => l10n.journalRunFinished,
+      JournalEvent.contestSessionCreated => l10n.journalContestSessionCreated,
+      JournalEvent.contestQsosLinked => l10n.journalContestQsosLinked,
+      JournalEvent.contestSessionLocalOnly =>
+        l10n.journalContestSessionLocalOnly,
+      JournalEvent.contestSessionRetry => l10n.journalContestSessionRetry,
     };
     final server = entry.detail['server'] as String?;
     return ListTile(

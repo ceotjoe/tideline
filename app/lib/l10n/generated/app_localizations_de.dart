@@ -706,6 +706,22 @@ class AppLocalizationsDe extends AppLocalizations {
   String get journalRunFinished => 'Synchronisierung beendet';
 
   @override
+  String get journalContestSessionCreated =>
+      'Contest-Sitzung in Wavelog angelegt';
+
+  @override
+  String get journalContestQsosLinked =>
+      'QSOs mit der Wavelog-Contest-Sitzung verknüpft';
+
+  @override
+  String get journalContestSessionLocalOnly =>
+      'Contest-Sitzung bleibt nur auf diesem Gerät';
+
+  @override
+  String get journalContestSessionRetry =>
+      'Contest-Sitzung noch nicht synchronisiert; neuer Versuch folgt';
+
+  @override
   String get logEmptyBodyReady =>
       'Logge oben dein erstes QSO. Es wird sofort auf diesem Gerät gespeichert – mit oder ohne Verbindung.';
 
