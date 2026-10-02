@@ -1,0 +1,27 @@
+name: Translation
+description: Offer a new language or report a translation problem.
+labels: [translation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you! Translating needs no programming: see [docs/translating.md](https://github.com/ceotjoe/tideline/blob/main/docs/translating.md).
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      placeholder: e.g. French (fr), Brazilian Portuguese (pt_BR)
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is it about?
+      options: [I'd like to translate Tideline into this language, A translation is wrong or unclear, Text is cut off or doesn't fit]
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: For wrong translations, quote the current text and your suggestion; a screenshot helps.

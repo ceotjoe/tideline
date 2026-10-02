@@ -1,0 +1,61 @@
+name: Bug report
+description: Something doesn't work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping to improve Tideline!
+        **Security problems** (for example token or log disclosure) do not belong here: please use
+        [private vulnerability reporting](https://github.com/ceotjoe/tideline/security/advisories/new).
+        Never paste your API token, passphrases or private log data.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. …
+        2. …
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      multiple: true
+      options: [iPhone, iPad, Android phone, Android tablet, macOS, Windows, Linux (unofficial)]
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS version and device
+      placeholder: e.g. iPadOS 27.0, iPad Pro 11"
+  - type: input
+    id: app
+    attributes:
+      label: Tideline version
+      placeholder: Settings → About, or the release you installed
+    validations:
+      required: true
+  - type: input
+    id: wavelog
+    attributes:
+      label: Wavelog version
+      description: Only if the problem involves syncing.
+      placeholder: e.g. 3.2.3
+  - type: dropdown
+    id: sync
+    attributes:
+      label: Sync status of the affected QSOs (if any)
+      options: [Not related to sync, On device, Waiting, Uploading, Checking, Synced, Needs decision, Token problem, Rejected]
+  - type: textarea
+    id: details
+    attributes:
+      label: Details from the QSO's sync history or screenshots
+      description: Open the QSO and copy the sync history lines. Remove personal data you don't want to share.
