@@ -1,0 +1,47 @@
+{
+  "fill": {
+    "automatic-gradient": "extended-srgb:0.12157,0.43529,0.40784,1.00000"
+  },
+  "groups": [
+    {
+      "layers": [
+        {
+          "image-name": "2-signal.svg",
+          "name": "Signal"
+        }
+      ],
+      "name": "Signal",
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.5
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.4
+      }
+    },
+    {
+      "layers": [
+        {
+          "image-name": "1-tide.svg",
+          "name": "Tide"
+        }
+      ],
+      "name": "Tide",
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.5
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.4
+      }
+    }
+  ],
+  "supported-platforms": {
+    "circles": [
+      "watchOS"
+    ],
+    "squares": "shared"
+  }
+}

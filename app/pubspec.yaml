@@ -56,3 +56,4 @@ msix_config:
   # Wavelog on the internet and on the local network.
   capabilities: internetClient,privateNetworkClientServer
   store: false
+  logo_path: assets/icon/msix_logo.png
