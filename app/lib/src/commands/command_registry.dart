@@ -16,6 +16,13 @@ abstract final class CommandIds {
   static const bandUp = 'contest.bandUp';
   static const bandDown = 'contest.bandDown';
   static const nextMode = 'contest.nextMode';
+  static const openContest = 'contest.open';
+  static const contestLog = 'contest.log';
+  static const contestWipe = 'contest.wipe';
+  static const contestEditLast = 'contest.editLast';
+  static const contestFocusCall = 'contest.focusCall';
+  static const contestToggleRates = 'contest.toggleRates';
+  static const contestEnd = 'contest.end';
 }
 
 /// Every command Tideline knows, with its default shortcuts.
@@ -59,6 +66,14 @@ final List<TidelineCommand> tidelineCommands = [
     ],
   ),
   TidelineCommand(
+    id: CommandIds.openContest,
+    scope: CommandScope.global,
+    label: (l) => l.commandOpenContest,
+    defaults: const [
+      KeyChord(LogicalKeyboardKey.keyC, primary: true, shift: true),
+    ],
+  ),
+  TidelineCommand(
     id: CommandIds.newQso,
     scope: CommandScope.logging,
     label: (l) => l.commandNewQso,
@@ -83,6 +98,30 @@ final List<TidelineCommand> tidelineCommands = [
     defaults: const [KeyChord(LogicalKeyboardKey.keyE, primary: true)],
   ),
   TidelineCommand(
+    id: CommandIds.contestLog,
+    scope: CommandScope.contest,
+    label: (l) => l.commandLogQso,
+    defaults: const [KeyChord(LogicalKeyboardKey.enter)],
+  ),
+  TidelineCommand(
+    id: CommandIds.contestWipe,
+    scope: CommandScope.contest,
+    label: (l) => l.commandWipeEntry,
+    defaults: const [KeyChord(LogicalKeyboardKey.escape)],
+  ),
+  TidelineCommand(
+    id: CommandIds.contestEditLast,
+    scope: CommandScope.contest,
+    label: (l) => l.commandEditLastQso,
+    defaults: const [KeyChord(LogicalKeyboardKey.keyE, primary: true)],
+  ),
+  TidelineCommand(
+    id: CommandIds.contestFocusCall,
+    scope: CommandScope.contest,
+    label: (l) => l.commandFocusCall,
+    defaults: const [KeyChord(LogicalKeyboardKey.keyL, primary: true)],
+  ),
+  TidelineCommand(
     id: CommandIds.bandUp,
     scope: CommandScope.contest,
     label: (l) => l.commandBandUp,
@@ -99,6 +138,20 @@ final List<TidelineCommand> tidelineCommands = [
     scope: CommandScope.contest,
     label: (l) => l.commandNextMode,
     defaults: const [KeyChord(LogicalKeyboardKey.keyM, primary: true)],
+  ),
+  TidelineCommand(
+    id: CommandIds.contestToggleRates,
+    scope: CommandScope.contest,
+    label: (l) => l.commandToggleRates,
+    defaults: const [KeyChord(LogicalKeyboardKey.keyR, primary: true)],
+  ),
+  TidelineCommand(
+    id: CommandIds.contestEnd,
+    scope: CommandScope.contest,
+    label: (l) => l.commandEndContest,
+    defaults: const [
+      KeyChord(LogicalKeyboardKey.keyE, primary: true, shift: true),
+    ],
   ),
 ];
 
@@ -131,11 +184,24 @@ class CommandRegistry {
       _overrides[command.id] ?? command.defaults;
 
   /// The shortcut map for Flutter's `Shortcuts` widget.
-  Map<ShortcutActivator, Intent> shortcutMap(ShortcutPlatform platform) => {
-    for (final c in commands)
-      for (final chord in bindingsOf(c))
-        chord.toActivator(platform): CommandIntent(c.id),
-  };
+  ///
+  /// Commands of different scopes may share a chord. They end up in one
+  /// intent, and whichever has a handler on the current screen runs.
+  Map<ShortcutActivator, Intent> shortcutMap(ShortcutPlatform platform) {
+    final byChord = <KeyChord, List<String>>{};
+    for (final c in commands) {
+      for (final chord in bindingsOf(c)) {
+        (byChord[chord] ??= []).add(c.id);
+      }
+    }
+    return {
+      for (final MapEntry(key: chord, value: ids) in byChord.entries)
+        chord.toActivator(platform): CommandIntent(
+          ids.first,
+          alternatives: ids.skip(1).toList(),
+        ),
+    };
+  }
 
   /// Chords bound to more than one command whose scopes can be active at
   /// the same time (global overlaps with everything; logging and contest

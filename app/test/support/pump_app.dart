@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tideline/src/app.dart';
+import 'package:tideline/src/features/contest/contest_providers.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
+
+import 'contest_fakes.dart';
 
 /// Records settings saves without a database.
 class FakeSettingsController implements SettingsController {
@@ -105,6 +108,7 @@ typedef Pumped = ({
   FakeSettingsController settings,
   FakeQsoRepository qsos,
   FakeSyncController sync,
+  ContestBackend contest,
 });
 
 /// Pumps the full app with providers that need no database or network.
@@ -118,6 +122,7 @@ Future<Pumped> pumpTideline(
   List<Account> accounts = const [testAccount],
   List<LoggedQso> log = const [],
   Map<String, String> settingsValues = const {},
+  ContestBackend? contest,
 }) async {
   tester.view
     ..physicalSize = size * tester.view.devicePixelRatio
@@ -129,6 +134,7 @@ Future<Pumped> pumpTideline(
 
   final controller = FakeSettingsController();
   final qsos = FakeQsoRepository();
+  final backend = contest ?? ContestBackend(definitions: const []);
   final sync = FakeSyncController();
   Never noDb(Ref ref) => throw StateError('no database in widget tests');
   await tester.pumpWidget(
@@ -160,7 +166,20 @@ Future<Pumped> pumpTideline(
           ),
         ),
         accountJournalProvider.overrideWith((ref) => Stream.value(const [])),
-        qsoRepositoryProvider.overrideWithValue(qsos),
+        qsoRepositoryProvider.overrideWithValue(
+          contest == null ? qsos : backend.qsoRepository,
+        ),
+        contestSeedProvider.overrideWith((ref) async => null),
+        contestDefinitionRepositoryProvider.overrideWithValue(
+          backend.definitionRepository,
+        ),
+        contestSessionRepositoryProvider.overrideWithValue(
+          backend.sessionRepository,
+        ),
+        workedBeforeRepositoryProvider.overrideWithValue(
+          backend.workedRepository,
+        ),
+        scpDatabaseProvider.overrideWith((ref) async => backend.scp),
         dxccProvider.overrideWith((ref) async => testDxcc),
         syncControllerProvider.overrideWith(() => sync),
         databaseProvider.overrideWith(noDb),
@@ -171,5 +190,5 @@ Future<Pumped> pumpTideline(
     ),
   );
   await tester.pumpAndSettle();
-  return (settings: controller, qsos: qsos, sync: sync);
+  return (settings: controller, qsos: qsos, sync: sync, contest: backend);
 }

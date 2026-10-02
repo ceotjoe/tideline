@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/commands/command_handlers.dart';
 import 'package:tideline/src/commands/command_registry.dart';
 import 'package:tideline/src/design/theme.dart';
+import 'package:tideline/src/features/contest/contest_banner.dart';
 import 'package:tideline/src/features/log/qso_detail.dart';
 import 'package:tideline/src/features/log/qso_entry_controller.dart';
 import 'package:tideline/src/features/log/qso_entry_form.dart';
 import 'package:tideline/src/features/log/qso_tile.dart';
 import 'package:tideline/src/layout/size_class.dart';
+import 'package:tideline/src/routing/routes.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/empty_state.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -168,8 +171,22 @@ class _LogScreenState extends ConsumerState<LogScreen> {
         },
       },
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.navLog)),
-        body: body,
+        appBar: AppBar(
+          title: Text(l10n.navLog),
+          actions: [
+            IconButton(
+              tooltip: l10n.contestOpenAction,
+              icon: const Icon(Icons.emoji_events_outlined),
+              onPressed: () => context.push(Routes.contest),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            const ContestBanner(),
+            Expanded(child: body),
+          ],
+        ),
       ),
     );
   }

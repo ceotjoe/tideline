@@ -1005,4 +1005,435 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settingsReadingFontHint =>
       'Atkinson Hyperlegible: deutlich unterscheidbare Zeichen wie 0 und O, 1, l und I.';
+
+  @override
+  String get actionCancel => 'Abbrechen';
+
+  @override
+  String get actionSave => 'Speichern';
+
+  @override
+  String get commandWipeEntry => 'Eingabe löschen';
+
+  @override
+  String get commandFocusCall => 'Zum Rufzeichen springen';
+
+  @override
+  String get commandToggleRates => 'Punkte und Raten ein- oder ausblenden';
+
+  @override
+  String get commandEndContest => 'Contest-Sitzung beenden';
+
+  @override
+  String get commandOpenContest => 'Contest-Modus öffnen';
+
+  @override
+  String get contestTitle => 'Contest-Modus';
+
+  @override
+  String get contestOpenAction => 'Contest-Modus';
+
+  @override
+  String contestBannerActive(String name) {
+    return 'Contest-Sitzung läuft: $name';
+  }
+
+  @override
+  String get contestBannerReturn => 'Zurück zum Contest';
+
+  @override
+  String get contestSetupTitle => 'Contest-Sitzung';
+
+  @override
+  String get contestSetupLoadFailed => 'Contests konnten nicht geladen werden';
+
+  @override
+  String get contestSetupLoadFailedBody =>
+      'Dein normales Log funktioniert weiter. Starte Tideline neu und versuche es noch einmal.';
+
+  @override
+  String get contestSetupSessionRunning =>
+      'Es läuft bereits eine Contest-Sitzung. Beende sie, bevor du eine neue startest.';
+
+  @override
+  String get contestSetupChooseContest => 'Contest';
+
+  @override
+  String get contestSearchLabel => 'Contests suchen';
+
+  @override
+  String get contestSearchEmpty => 'Kein Contest passt zu deiner Suche.';
+
+  @override
+  String get contestBuiltin => 'Eingebaut';
+
+  @override
+  String get contestImported => 'Von dir importiert';
+
+  @override
+  String get contestSetupNeedStation =>
+      'Für dieses Konto gibt es noch keinen Stationsstandort. Synchronisiere einmal, um deine Wavelog-Standorte zu laden, und versuche es dann erneut.';
+
+  @override
+  String get contestSetupStation => 'Station';
+
+  @override
+  String get contestSetupExchange => 'Mein Exchange';
+
+  @override
+  String get contestSetupExchangeHelp =>
+      'Das sendest du an jede Station. Die Vorschläge stammen aus deinem Stationsstandort; bitte prüfen.';
+
+  @override
+  String get contestSetupRstAuto =>
+      'Der Rapport wird automatisch gesendet: 59 bei Fonie, 599 bei CW und Digimodes.';
+
+  @override
+  String get contestSetupSerialAuto =>
+      'Die laufende Nummer beginnt bei 1 und zählt mit jedem QSO hoch. Eine Nummer wird nie doppelt vergeben, auch nicht nach dem Löschen eines QSOs.';
+
+  @override
+  String get contestSetupCabrillo => 'Cabrillo-Kategorien';
+
+  @override
+  String get contestSetupCabrilloHelp =>
+      'Diese Angaben stehen im Kopf des Cabrillo-Logs, das du an den Veranstalter sendest. Die Werte sind feste Begriffe des Cabrillo-Formats.';
+
+  @override
+  String get contestCatOperator => 'Betreiberkategorie';
+
+  @override
+  String get contestCatAssisted => 'Unterstützung';
+
+  @override
+  String get contestCatBand => 'Bandkategorie';
+
+  @override
+  String get contestCatMode => 'Betriebsartenkategorie';
+
+  @override
+  String get contestCatPower => 'Leistung';
+
+  @override
+  String get contestCatStation => 'Stationstyp';
+
+  @override
+  String get contestCatTransmitter => 'Sender';
+
+  @override
+  String get contestCatOverlay => 'Overlay';
+
+  @override
+  String get contestCatNotSet => 'Nicht gesetzt';
+
+  @override
+  String get contestStart => 'Sitzung starten';
+
+  @override
+  String get contestStartFailed =>
+      'Die Sitzung konnte nicht gestartet werden. Es wurde nichts geändert. Versuche es noch einmal.';
+
+  @override
+  String get contestPastTitle => 'Frühere Sitzungen';
+
+  @override
+  String get contestPastEmpty => 'Noch keine Contest-Sitzungen.';
+
+  @override
+  String get contestStateActive => 'Läuft';
+
+  @override
+  String get contestStateEnded => 'Beendet';
+
+  @override
+  String get contestReopen => 'Wieder öffnen';
+
+  @override
+  String get contestSessionsAction => 'Sitzungen';
+
+  @override
+  String get contestMissingTitle => 'Contest-Regeln nicht gefunden';
+
+  @override
+  String get contestMissingBody =>
+      'Die Regeln dieser Sitzung sind nicht mehr auf diesem Gerät. Deine QSOs sind sicher. Beende die Sitzung, um weiterzumachen.';
+
+  @override
+  String get contestEndTitle => 'Contest-Sitzung beenden?';
+
+  @override
+  String get contestEndBody =>
+      'Deine QSOs bleiben im Log. Du kannst die Sitzung später aus der Sitzungsliste wieder öffnen.';
+
+  @override
+  String get contestKindRst => 'RST';
+
+  @override
+  String get contestKindSerial => 'Lfd. Nr.';
+
+  @override
+  String get contestKindCqZone => 'CQ-Zone';
+
+  @override
+  String get contestKindItuZone => 'ITU-Zone';
+
+  @override
+  String get contestKindGrid => 'Locator';
+
+  @override
+  String get contestKindState => 'Bundesstaat/Provinz';
+
+  @override
+  String get contestKindSection => 'Sektion';
+
+  @override
+  String get contestKindDok => 'DOK';
+
+  @override
+  String get contestKindPower => 'Leistung';
+
+  @override
+  String get contestKindName => 'Name';
+
+  @override
+  String get contestKindText => 'Exchange';
+
+  @override
+  String contestOptionalLabel(String label) {
+    return '$label (optional)';
+  }
+
+  @override
+  String contestErrorMissing(String label) {
+    return '$label fehlt.';
+  }
+
+  @override
+  String contestErrorInvalid(String label) {
+    return '$label ist ungültig.';
+  }
+
+  @override
+  String contestErrorOutOfRange(String label) {
+    return '$label liegt außerhalb des Bereichs.';
+  }
+
+  @override
+  String get contestMultZone => 'Zone';
+
+  @override
+  String get contestMultItuZone => 'ITU-Zone';
+
+  @override
+  String get contestMultDxcc => 'Land';
+
+  @override
+  String get contestMultPrefix => 'Präfix';
+
+  @override
+  String get contestMultState => 'Bundesstaat/Provinz';
+
+  @override
+  String get contestMultDok => 'DOK';
+
+  @override
+  String contestHintDupe(String bands, String modes) {
+    return 'Dupe: bereits gearbeitet auf $bands ($modes)';
+  }
+
+  @override
+  String contestHintWorkedElsewhere(String bands, String modes) {
+    return 'Bereits gearbeitet auf $bands ($modes); hier kein Dupe';
+  }
+
+  @override
+  String contestHintNewMultiplier(String items) {
+    return 'Neuer Multiplikator: $items';
+  }
+
+  @override
+  String get contestHintOutOfContest =>
+      'Außerhalb der Bänder oder Betriebsarten dieses Contests: 0 Punkte.';
+
+  @override
+  String get contestHintLogWorked =>
+      'Im Log: schon auf diesem Band und in dieser Betriebsart gearbeitet';
+
+  @override
+  String get contestHintLogNewBand => 'Im Log: schon gearbeitet, neues Band';
+
+  @override
+  String get contestHintLogNewMode =>
+      'Im Log: schon gearbeitet, neue Betriebsart';
+
+  @override
+  String get contestHintLogNewSlot =>
+      'Im Log: schon gearbeitet, neue Kombination aus Band und Betriebsart';
+
+  @override
+  String get contestHintInScp =>
+      'Rufzeichen steht in der Super-Check-Partial-Liste';
+
+  @override
+  String get contestHintScpMatches => 'Super Check:';
+
+  @override
+  String get contestHintNPlusOne => 'Meintest du:';
+
+  @override
+  String contestUseCall(String call) {
+    return '$call übernehmen';
+  }
+
+  @override
+  String contestSentSummary(String items) {
+    return 'Gesendet: $items';
+  }
+
+  @override
+  String get contestSentNothing => 'Nichts zu senden';
+
+  @override
+  String contestLoggedAnnouncement(String call, int serial, String dupe) {
+    String _temp0 = intl.Intl.selectLogic(dupe, {'yes': ', Dupe', 'other': ''});
+    return '$call geloggt, laufende Nummer $serial$_temp0';
+  }
+
+  @override
+  String contestLoggedAnnouncementNoSerial(String call, String dupe) {
+    String _temp0 = intl.Intl.selectLogic(dupe, {'yes': ', Dupe', 'other': ''});
+    return '$call geloggt$_temp0';
+  }
+
+  @override
+  String get contestSaveFailed =>
+      'Das QSO konnte nicht gespeichert werden. Deine Eingabe ist noch da. Versuche es noch einmal.';
+
+  @override
+  String get contestRecentTitle => 'Letzte QSOs';
+
+  @override
+  String get contestRecentEmpty =>
+      'Noch keine QSOs in dieser Sitzung. Gib ein Rufzeichen und den Exchange ein und drücke Enter.';
+
+  @override
+  String contestRowExchange(String sent, String rcvd) {
+    return '$sent → $rcvd';
+  }
+
+  @override
+  String get contestRowEditHint => 'QSO bearbeiten';
+
+  @override
+  String get contestFlagDupe => 'Dupe';
+
+  @override
+  String get contestFlagMult => 'Mult';
+
+  @override
+  String get contestFlagOut => 'Außer';
+
+  @override
+  String contestPoints(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: '$points Pkt.',
+      one: '1 Pkt.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get contestEditTitle => 'QSO bearbeiten';
+
+  @override
+  String contestEditSent(String items) {
+    return 'Gesendet (nicht änderbar): $items';
+  }
+
+  @override
+  String get contestDeleteTitle => 'Dieses QSO löschen?';
+
+  @override
+  String contestDeleteBody(String call) {
+    return '$call wird von diesem Gerät und aus der Contest-Wertung entfernt.';
+  }
+
+  @override
+  String contestDeleteBodySerial(String call, String serial) {
+    return '$call wird von diesem Gerät und aus der Contest-Wertung entfernt. Die laufende Nummer $serial bleibt vergeben und wird nie wieder verwendet.';
+  }
+
+  @override
+  String get contestPanelTitle => 'Punkte und Raten';
+
+  @override
+  String contestPanelSummary(int qsos, int points, int score) {
+    return '$qsos QSOs · $points Punkte · Schätzung $score';
+  }
+
+  @override
+  String get contestQsos => 'QSOs';
+
+  @override
+  String get contestPointsLabel => 'Punkte';
+
+  @override
+  String get contestMultipliers => 'Multiplikatoren';
+
+  @override
+  String get contestDupes => 'Dupes';
+
+  @override
+  String get contestScoreEstimate => 'Beanspruchte Punktzahl (Schätzung)';
+
+  @override
+  String get contestScoreEstimateNote =>
+      'Eine Schätzung für dich selbst. Das Ergebnis legt die Logprüfung des Veranstalters fest.';
+
+  @override
+  String get contestRatesTitle => 'Raten';
+
+  @override
+  String get contestRate10Min => 'Letzte 10 Minuten';
+
+  @override
+  String get contestRate60Min => 'Letzte 60 Minuten';
+
+  @override
+  String get contestRateLast10 => 'Letzte 10 QSOs';
+
+  @override
+  String get contestRateLast100 => 'Letzte 100 QSOs';
+
+  @override
+  String get contestRateBest => 'Beste 60 Minuten';
+
+  @override
+  String contestRatePerHour(int rate) {
+    return '$rate/h';
+  }
+
+  @override
+  String contestRateBestValue(int count, String time, String utc) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs',
+      one: '1 QSO',
+    );
+    return '$_temp0 ab $time $utc';
+  }
+
+  @override
+  String get contestBandsTitle => 'Nach Band';
+
+  @override
+  String get contestBandsEmpty => 'Noch keine QSOs mit Wertung.';
+
+  @override
+  String contestLabelValue(String label, String value) {
+    return '$label: $value';
+  }
 }

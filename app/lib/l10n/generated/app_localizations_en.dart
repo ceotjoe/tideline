@@ -1002,6 +1002,435 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsReadingFontHint =>
       'Atkinson Hyperlegible: clearly distinct letters such as 0 and O, 1, l and I.';
+
+  @override
+  String get actionCancel => 'Cancel';
+
+  @override
+  String get actionSave => 'Save';
+
+  @override
+  String get commandWipeEntry => 'Wipe entry';
+
+  @override
+  String get commandFocusCall => 'Go to callsign';
+
+  @override
+  String get commandToggleRates => 'Show or hide score and rates';
+
+  @override
+  String get commandEndContest => 'End contest session';
+
+  @override
+  String get commandOpenContest => 'Open contest mode';
+
+  @override
+  String get contestTitle => 'Contest mode';
+
+  @override
+  String get contestOpenAction => 'Contest mode';
+
+  @override
+  String contestBannerActive(String name) {
+    return 'Contest session active: $name';
+  }
+
+  @override
+  String get contestBannerReturn => 'Return to contest';
+
+  @override
+  String get contestSetupTitle => 'Contest session';
+
+  @override
+  String get contestSetupLoadFailed => 'Contests could not be loaded';
+
+  @override
+  String get contestSetupLoadFailedBody =>
+      'Your normal log still works. Restart Tideline and try again.';
+
+  @override
+  String get contestSetupSessionRunning =>
+      'A contest session is already running. End it before you start another one.';
+
+  @override
+  String get contestSetupChooseContest => 'Contest';
+
+  @override
+  String get contestSearchLabel => 'Search contests';
+
+  @override
+  String get contestSearchEmpty => 'No contest matches your search.';
+
+  @override
+  String get contestBuiltin => 'Built in';
+
+  @override
+  String get contestImported => 'Imported by you';
+
+  @override
+  String get contestSetupNeedStation =>
+      'This account has no station location yet. Sync once to load your Wavelog station locations, then try again.';
+
+  @override
+  String get contestSetupStation => 'Station';
+
+  @override
+  String get contestSetupExchange => 'My exchange';
+
+  @override
+  String get contestSetupExchangeHelp =>
+      'This is what you send to every station. The suggestions come from your station location; please check them.';
+
+  @override
+  String get contestSetupRstAuto =>
+      'The report is sent automatically: 59 for voice, 599 for CW and digital modes.';
+
+  @override
+  String get contestSetupSerialAuto =>
+      'The serial number starts at 1 and counts up with every QSO. A number is never used twice, even if you delete a QSO.';
+
+  @override
+  String get contestSetupCabrillo => 'Cabrillo categories';
+
+  @override
+  String get contestSetupCabrilloHelp =>
+      'These go into the header of the Cabrillo log you send to the sponsor. The values are fixed terms of the Cabrillo format.';
+
+  @override
+  String get contestCatOperator => 'Operator category';
+
+  @override
+  String get contestCatAssisted => 'Assistance';
+
+  @override
+  String get contestCatBand => 'Band category';
+
+  @override
+  String get contestCatMode => 'Mode category';
+
+  @override
+  String get contestCatPower => 'Power';
+
+  @override
+  String get contestCatStation => 'Station type';
+
+  @override
+  String get contestCatTransmitter => 'Transmitters';
+
+  @override
+  String get contestCatOverlay => 'Overlay';
+
+  @override
+  String get contestCatNotSet => 'Not set';
+
+  @override
+  String get contestStart => 'Start session';
+
+  @override
+  String get contestStartFailed =>
+      'The session could not be started. Nothing was changed. Try again.';
+
+  @override
+  String get contestPastTitle => 'Past sessions';
+
+  @override
+  String get contestPastEmpty => 'No contest sessions yet.';
+
+  @override
+  String get contestStateActive => 'Running';
+
+  @override
+  String get contestStateEnded => 'Ended';
+
+  @override
+  String get contestReopen => 'Reopen';
+
+  @override
+  String get contestSessionsAction => 'Sessions';
+
+  @override
+  String get contestMissingTitle => 'Contest rules not found';
+
+  @override
+  String get contestMissingBody =>
+      'The rules for this session are no longer on this device. Your QSOs are safe. End the session to carry on.';
+
+  @override
+  String get contestEndTitle => 'End the contest session?';
+
+  @override
+  String get contestEndBody =>
+      'Your QSOs stay in the log. You can reopen the session later from the session list.';
+
+  @override
+  String get contestKindRst => 'RST';
+
+  @override
+  String get contestKindSerial => 'Serial no.';
+
+  @override
+  String get contestKindCqZone => 'CQ zone';
+
+  @override
+  String get contestKindItuZone => 'ITU zone';
+
+  @override
+  String get contestKindGrid => 'Grid';
+
+  @override
+  String get contestKindState => 'State or province';
+
+  @override
+  String get contestKindSection => 'Section';
+
+  @override
+  String get contestKindDok => 'DOK';
+
+  @override
+  String get contestKindPower => 'Power';
+
+  @override
+  String get contestKindName => 'Name';
+
+  @override
+  String get contestKindText => 'Exchange';
+
+  @override
+  String contestOptionalLabel(String label) {
+    return '$label (optional)';
+  }
+
+  @override
+  String contestErrorMissing(String label) {
+    return '$label is required.';
+  }
+
+  @override
+  String contestErrorInvalid(String label) {
+    return '$label is not valid.';
+  }
+
+  @override
+  String contestErrorOutOfRange(String label) {
+    return '$label is out of range.';
+  }
+
+  @override
+  String get contestMultZone => 'Zone';
+
+  @override
+  String get contestMultItuZone => 'ITU zone';
+
+  @override
+  String get contestMultDxcc => 'Country';
+
+  @override
+  String get contestMultPrefix => 'Prefix';
+
+  @override
+  String get contestMultState => 'State or province';
+
+  @override
+  String get contestMultDok => 'DOK';
+
+  @override
+  String contestHintDupe(String bands, String modes) {
+    return 'Dupe: already worked on $bands ($modes)';
+  }
+
+  @override
+  String contestHintWorkedElsewhere(String bands, String modes) {
+    return 'Already worked on $bands ($modes); not a dupe here';
+  }
+
+  @override
+  String contestHintNewMultiplier(String items) {
+    return 'New multiplier: $items';
+  }
+
+  @override
+  String get contestHintOutOfContest =>
+      'Outside this contest\'s bands or modes: scores 0 points.';
+
+  @override
+  String get contestHintLogWorked =>
+      'In your log: worked before on this band and mode';
+
+  @override
+  String get contestHintLogNewBand => 'In your log: worked before, new band';
+
+  @override
+  String get contestHintLogNewMode => 'In your log: worked before, new mode';
+
+  @override
+  String get contestHintLogNewSlot =>
+      'In your log: worked before, new combination of band and mode';
+
+  @override
+  String get contestHintInScp => 'Callsign is in the super check partial list';
+
+  @override
+  String get contestHintScpMatches => 'Super check:';
+
+  @override
+  String get contestHintNPlusOne => 'Did you mean:';
+
+  @override
+  String contestUseCall(String call) {
+    return 'Use $call';
+  }
+
+  @override
+  String contestSentSummary(String items) {
+    return 'Sent: $items';
+  }
+
+  @override
+  String get contestSentNothing => 'Nothing to send';
+
+  @override
+  String contestLoggedAnnouncement(String call, int serial, String dupe) {
+    String _temp0 = intl.Intl.selectLogic(dupe, {'yes': ', dupe', 'other': ''});
+    return 'Logged $call, serial $serial$_temp0';
+  }
+
+  @override
+  String contestLoggedAnnouncementNoSerial(String call, String dupe) {
+    String _temp0 = intl.Intl.selectLogic(dupe, {'yes': ', dupe', 'other': ''});
+    return 'Logged $call$_temp0';
+  }
+
+  @override
+  String get contestSaveFailed =>
+      'The QSO could not be saved. What you typed is still here. Try again.';
+
+  @override
+  String get contestRecentTitle => 'Recent QSOs';
+
+  @override
+  String get contestRecentEmpty =>
+      'No QSOs in this session yet. Type a callsign and the exchange, then press Enter.';
+
+  @override
+  String contestRowExchange(String sent, String rcvd) {
+    return '$sent → $rcvd';
+  }
+
+  @override
+  String get contestRowEditHint => 'Edit this QSO';
+
+  @override
+  String get contestFlagDupe => 'Dupe';
+
+  @override
+  String get contestFlagMult => 'Mult';
+
+  @override
+  String get contestFlagOut => 'Out';
+
+  @override
+  String contestPoints(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: '$points pts',
+      one: '1 pt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get contestEditTitle => 'Edit QSO';
+
+  @override
+  String contestEditSent(String items) {
+    return 'Sent (cannot be changed): $items';
+  }
+
+  @override
+  String get contestDeleteTitle => 'Delete this QSO?';
+
+  @override
+  String contestDeleteBody(String call) {
+    return '$call will be removed from this device and from the contest score.';
+  }
+
+  @override
+  String contestDeleteBodySerial(String call, String serial) {
+    return '$call will be removed from this device and from the contest score. Serial $serial stays used and is never given out again.';
+  }
+
+  @override
+  String get contestPanelTitle => 'Score and rates';
+
+  @override
+  String contestPanelSummary(int qsos, int points, int score) {
+    return '$qsos QSOs · $points points · estimate $score';
+  }
+
+  @override
+  String get contestQsos => 'QSOs';
+
+  @override
+  String get contestPointsLabel => 'Points';
+
+  @override
+  String get contestMultipliers => 'Multipliers';
+
+  @override
+  String get contestDupes => 'Dupes';
+
+  @override
+  String get contestScoreEstimate => 'Claimed score (estimate)';
+
+  @override
+  String get contestScoreEstimateNote =>
+      'An estimate for your own use. The contest sponsor\'s log check decides the real result.';
+
+  @override
+  String get contestRatesTitle => 'Rates';
+
+  @override
+  String get contestRate10Min => 'Last 10 minutes';
+
+  @override
+  String get contestRate60Min => 'Last 60 minutes';
+
+  @override
+  String get contestRateLast10 => 'Last 10 QSOs';
+
+  @override
+  String get contestRateLast100 => 'Last 100 QSOs';
+
+  @override
+  String get contestRateBest => 'Best 60 minutes';
+
+  @override
+  String contestRatePerHour(int rate) {
+    return '$rate/h';
+  }
+
+  @override
+  String contestRateBestValue(int count, String time, String utc) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs',
+      one: '1 QSO',
+    );
+    return '$_temp0 from $time $utc';
+  }
+
+  @override
+  String get contestBandsTitle => 'By band';
+
+  @override
+  String get contestBandsEmpty => 'No scoring QSOs yet.';
+
+  @override
+  String contestLabelValue(String label, String value) {
+    return '$label: $value';
+  }
 }
 
 /// The translations for English (`en_XA`).
@@ -2017,4 +2446,444 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String get settingsReadingFontHint =>
       '[Åţķîñšöñ Ĥýþéŕļéĝîƀļé: çļéáŕļý ðîšţîñçţ ļéţţéŕš šûçĥ áš 0 áñð Ö, 1, ļ áñð Î.·······························]';
+
+  @override
+  String get actionCancel => '[Çáñçéļ···]';
+
+  @override
+  String get actionSave => '[Šáṽé··]';
+
+  @override
+  String get commandWipeEntry => '[Ŵîþé éñţŕý····]';
+
+  @override
+  String get commandFocusCall => '[Ĝö ţö çáļļšîĝñ······]';
+
+  @override
+  String get commandToggleRates => '[Šĥöŵ öŕ ĥîðé šçöŕé áñð ŕáţéš············]';
+
+  @override
+  String get commandEndContest => '[Éñð çöñţéšţ šéššîöñ········]';
+
+  @override
+  String get commandOpenContest => '[Öþéñ çöñţéšţ ɱöðé·······]';
+
+  @override
+  String get contestTitle => '[Çöñţéšţ ɱöðé·····]';
+
+  @override
+  String get contestOpenAction => '[Çöñţéšţ ɱöðé·····]';
+
+  @override
+  String contestBannerActive(String name) {
+    return '[Çöñţéšţ šéššîöñ áçţîṽé: ··········]$name';
+  }
+
+  @override
+  String get contestBannerReturn => '[Ŕéţûŕñ ţö çöñţéšţ·······]';
+
+  @override
+  String get contestSetupTitle => '[Çöñţéšţ šéššîöñ······]';
+
+  @override
+  String get contestSetupLoadFailed =>
+      '[Çöñţéšţš çöûļð ñöţ ƀé ļöáðéð············]';
+
+  @override
+  String get contestSetupLoadFailedBody =>
+      '[Ýöûŕ ñöŕɱáļ ļöĝ šţîļļ ŵöŕķš. Ŕéšţáŕţ Ţîðéļîñé áñð ţŕý áĝáîñ.························]';
+
+  @override
+  String get contestSetupSessionRunning =>
+      '[Å çöñţéšţ šéššîöñ îš áļŕéáðý ŕûññîñĝ. Éñð îţ ƀéƒöŕé ýöû šţáŕţ áñöţĥéŕ öñé.······························]';
+
+  @override
+  String get contestSetupChooseContest => '[Çöñţéšţ···]';
+
+  @override
+  String get contestSearchLabel => '[Šéáŕçĥ çöñţéšţš······]';
+
+  @override
+  String get contestSearchEmpty =>
+      '[Ñö çöñţéšţ ɱáţçĥéš ýöûŕ šéáŕçĥ.·············]';
+
+  @override
+  String get contestBuiltin => '[Ɓûîļţ îñ····]';
+
+  @override
+  String get contestImported => '[Îɱþöŕţéð ƀý ýöû······]';
+
+  @override
+  String get contestSetupNeedStation =>
+      '[Ţĥîš áççöûñţ ĥáš ñö šţáţîöñ ļöçáţîöñ ýéţ. Šýñç öñçé ţö ļöáð ýöûŕ Ŵáṽéļöĝ šţáţîöñ ļöçáţîöñš, ţĥéñ ţŕý áĝáîñ.···········································]';
+
+  @override
+  String get contestSetupStation => '[Šţáţîöñ···]';
+
+  @override
+  String get contestSetupExchange => '[Ṁý éẋçĥáñĝé·····]';
+
+  @override
+  String get contestSetupExchangeHelp =>
+      '[Ţĥîš îš ŵĥáţ ýöû šéñð ţö éṽéŕý šţáţîöñ. Ţĥé šûĝĝéšţîöñš çöɱé ƒŕöɱ ýöûŕ šţáţîöñ ļöçáţîöñ; þļéášé çĥéçķ ţĥéɱ.···········································]';
+
+  @override
+  String get contestSetupRstAuto =>
+      '[Ţĥé ŕéþöŕţ îš šéñţ áûţöɱáţîçáļļý: 59 ƒöŕ ṽöîçé, 599 ƒöŕ ÇŴ áñð ðîĝîţáļ ɱöðéš.·······························]';
+
+  @override
+  String get contestSetupSerialAuto =>
+      '[Ţĥé šéŕîáļ ñûɱƀéŕ šţáŕţš áţ 1 áñð çöûñţš ûþ ŵîţĥ éṽéŕý ǪŠÖ. Å ñûɱƀéŕ îš ñéṽéŕ ûšéð ţŵîçé, éṽéñ îƒ ýöû ðéļéţé á ǪŠÖ.··············································]';
+
+  @override
+  String get contestSetupCabrillo => '[Çáƀŕîļļö çáţéĝöŕîéš········]';
+
+  @override
+  String get contestSetupCabrilloHelp =>
+      '[Ţĥéšé ĝö îñţö ţĥé ĥéáðéŕ öƒ ţĥé Çáƀŕîļļö ļöĝ ýöû šéñð ţö ţĥé šþöñšöŕ. Ţĥé ṽáļûéš áŕé ƒîẋéð ţéŕɱš öƒ ţĥé Çáƀŕîļļö ƒöŕɱáţ.················································]';
+
+  @override
+  String get contestCatOperator => '[Öþéŕáţöŕ çáţéĝöŕý·······]';
+
+  @override
+  String get contestCatAssisted => '[Åššîšţáñçé····]';
+
+  @override
+  String get contestCatBand => '[Ɓáñð çáţéĝöŕý······]';
+
+  @override
+  String get contestCatMode => '[Ṁöðé çáţéĝöŕý······]';
+
+  @override
+  String get contestCatPower => '[Þöŵéŕ··]';
+
+  @override
+  String get contestCatStation => '[Šţáţîöñ ţýþé·····]';
+
+  @override
+  String get contestCatTransmitter => '[Ţŕáñšɱîţţéŕš·····]';
+
+  @override
+  String get contestCatOverlay => '[Öṽéŕļáý···]';
+
+  @override
+  String get contestCatNotSet => '[Ñöţ šéţ···]';
+
+  @override
+  String get contestStart => '[Šţáŕţ šéššîöñ······]';
+
+  @override
+  String get contestStartFailed =>
+      '[Ţĥé šéššîöñ çöûļð ñöţ ƀé šţáŕţéð. Ñöţĥîñĝ ŵáš çĥáñĝéð. Ţŕý áĝáîñ.··························]';
+
+  @override
+  String get contestPastTitle => '[Þášţ šéššîöñš······]';
+
+  @override
+  String get contestPastEmpty => '[Ñö çöñţéšţ šéššîöñš ýéţ.··········]';
+
+  @override
+  String get contestStateActive => '[Ŕûññîñĝ···]';
+
+  @override
+  String get contestStateEnded => '[Éñðéð··]';
+
+  @override
+  String get contestReopen => '[Ŕéöþéñ···]';
+
+  @override
+  String get contestSessionsAction => '[Šéššîöñš····]';
+
+  @override
+  String get contestMissingTitle => '[Çöñţéšţ ŕûļéš ñöţ ƒöûñð··········]';
+
+  @override
+  String get contestMissingBody =>
+      '[Ţĥé ŕûļéš ƒöŕ ţĥîš šéššîöñ áŕé ñö ļöñĝéŕ öñ ţĥîš ðéṽîçé. Ýöûŕ ǪŠÖš áŕé šáƒé. Éñð ţĥé šéššîöñ ţö çáŕŕý öñ.··········································]';
+
+  @override
+  String get contestEndTitle => '[Éñð ţĥé çöñţéšţ šéššîöñ?··········]';
+
+  @override
+  String get contestEndBody =>
+      '[Ýöûŕ ǪŠÖš šţáý îñ ţĥé ļöĝ. Ýöû çáñ ŕéöþéñ ţĥé šéššîöñ ļáţéŕ ƒŕöɱ ţĥé šéššîöñ ļîšţ.·································]';
+
+  @override
+  String get contestKindRst => '[ŔŠŢ··]';
+
+  @override
+  String get contestKindSerial => '[Šéŕîáļ ñö.····]';
+
+  @override
+  String get contestKindCqZone => '[ÇǪ žöñé···]';
+
+  @override
+  String get contestKindItuZone => '[ÎŢÛ žöñé····]';
+
+  @override
+  String get contestKindGrid => '[Ĝŕîð··]';
+
+  @override
+  String get contestKindState => '[Šţáţé öŕ þŕöṽîñçé·······]';
+
+  @override
+  String get contestKindSection => '[Šéçţîöñ···]';
+
+  @override
+  String get contestKindDok => '[ÐÖĶ··]';
+
+  @override
+  String get contestKindPower => '[Þöŵéŕ··]';
+
+  @override
+  String get contestKindName => '[Ñáɱé··]';
+
+  @override
+  String get contestKindText => '[Éẋçĥáñĝé····]';
+
+  @override
+  String contestOptionalLabel(String label) {
+    return '$label[ (öþţîöñáļ)·····]';
+  }
+
+  @override
+  String contestErrorMissing(String label) {
+    return '$label[ îš ŕéǫûîŕéð.······]';
+  }
+
+  @override
+  String contestErrorInvalid(String label) {
+    return '$label[ îš ñöţ ṽáļîð.······]';
+  }
+
+  @override
+  String contestErrorOutOfRange(String label) {
+    return '$label[ îš öûţ öƒ ŕáñĝé.·······]';
+  }
+
+  @override
+  String get contestMultZone => '[Žöñé··]';
+
+  @override
+  String get contestMultItuZone => '[ÎŢÛ žöñé····]';
+
+  @override
+  String get contestMultDxcc => '[Çöûñţŕý···]';
+
+  @override
+  String get contestMultPrefix => '[Þŕéƒîẋ···]';
+
+  @override
+  String get contestMultState => '[Šţáţé öŕ þŕöṽîñçé·······]';
+
+  @override
+  String get contestMultDok => '[ÐÖĶ··]';
+
+  @override
+  String contestHintDupe(String bands, String modes) {
+    return '[Ðûþé: áļŕéáðý ŵöŕķéð öñ ··········]$bands[ (·]$modes[)·]';
+  }
+
+  @override
+  String contestHintWorkedElsewhere(String bands, String modes) {
+    return '[Åļŕéáðý ŵöŕķéð öñ ········]$bands[ (·]$modes[); ñöţ á ðûþé ĥéŕé········]';
+  }
+
+  @override
+  String contestHintNewMultiplier(String items) {
+    return '[Ñéŵ ɱûļţîþļîéŕ: ·······]$items';
+  }
+
+  @override
+  String get contestHintOutOfContest =>
+      '[Öûţšîðé ţĥîš çöñţéšţ\'š ƀáñðš öŕ ɱöðéš: šçöŕéš 0 þöîñţš.······················]';
+
+  @override
+  String get contestHintLogWorked =>
+      '[Îñ ýöûŕ ļöĝ: ŵöŕķéð ƀéƒöŕé öñ ţĥîš ƀáñð áñð ɱöðé····················]';
+
+  @override
+  String get contestHintLogNewBand =>
+      '[Îñ ýöûŕ ļöĝ: ŵöŕķéð ƀéƒöŕé, ñéŵ ƀáñð···············]';
+
+  @override
+  String get contestHintLogNewMode =>
+      '[Îñ ýöûŕ ļöĝ: ŵöŕķéð ƀéƒöŕé, ñéŵ ɱöðé···············]';
+
+  @override
+  String get contestHintLogNewSlot =>
+      '[Îñ ýöûŕ ļöĝ: ŵöŕķéð ƀéƒöŕé, ñéŵ çöɱƀîñáţîöñ öƒ ƀáñð áñð ɱöðé························]';
+
+  @override
+  String get contestHintInScp =>
+      '[Çáļļšîĝñ îš îñ ţĥé šûþéŕ çĥéçķ þáŕţîáļ ļîšţ··················]';
+
+  @override
+  String get contestHintScpMatches => '[Šûþéŕ çĥéçķ:·····]';
+
+  @override
+  String get contestHintNPlusOne => '[Ðîð ýöû ɱéáñ:······]';
+
+  @override
+  String contestUseCall(String call) {
+    return '[Ûšé ··]$call';
+  }
+
+  @override
+  String contestSentSummary(String items) {
+    return '[Šéñţ: ···]$items';
+  }
+
+  @override
+  String get contestSentNothing => '[Ñöţĥîñĝ ţö šéñð······]';
+
+  @override
+  String contestLoggedAnnouncement(String call, int serial, String dupe) {
+    String _temp0 = intl.Intl.selectLogic(dupe, {
+      'yes': '[, ðûþé···]',
+      'other': '',
+    });
+    return '[Ļöĝĝéð ···]$call[, šéŕîáļ ····]$serial$_temp0';
+  }
+
+  @override
+  String contestLoggedAnnouncementNoSerial(String call, String dupe) {
+    String _temp0 = intl.Intl.selectLogic(dupe, {
+      'yes': '[, ðûþé···]',
+      'other': '',
+    });
+    return '[Ļöĝĝéð ···]$call$_temp0';
+  }
+
+  @override
+  String get contestSaveFailed =>
+      '[Ţĥé ǪŠÖ çöûļð ñöţ ƀé šáṽéð. Ŵĥáţ ýöû ţýþéð îš šţîļļ ĥéŕé. Ţŕý áĝáîñ.····························]';
+
+  @override
+  String get contestRecentTitle => '[Ŕéçéñţ ǪŠÖš·····]';
+
+  @override
+  String get contestRecentEmpty =>
+      '[Ñö ǪŠÖš îñ ţĥîš šéššîöñ ýéţ. Ţýþé á çáļļšîĝñ áñð ţĥé éẋçĥáñĝé, ţĥéñ þŕéšš Éñţéŕ.································]';
+
+  @override
+  String contestRowExchange(String sent, String rcvd) {
+    return '$sent[ → ··]$rcvd';
+  }
+
+  @override
+  String get contestRowEditHint => '[Éðîţ ţĥîš ǪŠÖ······]';
+
+  @override
+  String get contestFlagDupe => '[Ðûþé··]';
+
+  @override
+  String get contestFlagMult => '[Ṁûļţ··]';
+
+  @override
+  String get contestFlagOut => '[Öûţ··]';
+
+  @override
+  String contestPoints(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: '$points[ þţš··]',
+      one: '[1 þţ··]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get contestEditTitle => '[Éðîţ ǪŠÖ····]';
+
+  @override
+  String contestEditSent(String items) {
+    return '[Šéñţ (çáññöţ ƀé çĥáñĝéð): ···········]$items';
+  }
+
+  @override
+  String get contestDeleteTitle => '[Ðéļéţé ţĥîš ǪŠÖ?·······]';
+
+  @override
+  String contestDeleteBody(String call) {
+    return '$call[ ŵîļļ ƀé ŕéɱöṽéð ƒŕöɱ ţĥîš ðéṽîçé áñð ƒŕöɱ ţĥé çöñţéšţ šçöŕé.·························]';
+  }
+
+  @override
+  String contestDeleteBodySerial(String call, String serial) {
+    return '$call[ ŵîļļ ƀé ŕéɱöṽéð ƒŕöɱ ţĥîš ðéṽîçé áñð ƒŕöɱ ţĥé çöñţéšţ šçöŕé. Šéŕîáļ ····························]$serial[ šţáýš ûšéð áñð îš ñéṽéŕ ĝîṽéñ öûţ áĝáîñ.·················]';
+  }
+
+  @override
+  String get contestPanelTitle => '[Šçöŕé áñð ŕáţéš······]';
+
+  @override
+  String contestPanelSummary(int qsos, int points, int score) {
+    return '$qsos[ ǪŠÖš · ····]$points[ þöîñţš · éšţîɱáţé ········]$score';
+  }
+
+  @override
+  String get contestQsos => '[ǪŠÖš··]';
+
+  @override
+  String get contestPointsLabel => '[Þöîñţš···]';
+
+  @override
+  String get contestMultipliers => '[Ṁûļţîþļîéŕš·····]';
+
+  @override
+  String get contestDupes => '[Ðûþéš··]';
+
+  @override
+  String get contestScoreEstimate => '[Çļáîɱéð šçöŕé (éšţîɱáţé)··········]';
+
+  @override
+  String get contestScoreEstimateNote =>
+      '[Åñ éšţîɱáţé ƒöŕ ýöûŕ öŵñ ûšé. Ţĥé çöñţéšţ šþöñšöŕ\'š ļöĝ çĥéçķ ðéçîðéš ţĥé ŕéáļ ŕéšûļţ.···································]';
+
+  @override
+  String get contestRatesTitle => '[Ŕáţéš··]';
+
+  @override
+  String get contestRate10Min => '[Ļášţ 10 ɱîñûţéš······]';
+
+  @override
+  String get contestRate60Min => '[Ļášţ 60 ɱîñûţéš······]';
+
+  @override
+  String get contestRateLast10 => '[Ļášţ 10 ǪŠÖš·····]';
+
+  @override
+  String get contestRateLast100 => '[Ļášţ 100 ǪŠÖš······]';
+
+  @override
+  String get contestRateBest => '[Ɓéšţ 60 ɱîñûţéš······]';
+
+  @override
+  String contestRatePerHour(int rate) {
+    return '$rate[/ĥ·]';
+  }
+
+  @override
+  String contestRateBestValue(int count, String time, String utc) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš··]',
+      one: '[1 ǪŠÖ··]',
+    );
+    return '$_temp0[ ƒŕöɱ ···]$time[ ·]$utc';
+  }
+
+  @override
+  String get contestBandsTitle => '[Ɓý ƀáñð···]';
+
+  @override
+  String get contestBandsEmpty => '[Ñö šçöŕîñĝ ǪŠÖš ýéţ.········]';
+
+  @override
+  String contestLabelValue(String label, String value) {
+    return '$label[: ·]$value';
+  }
 }

@@ -13,10 +13,17 @@ Diese Tabelle wird aus dem Befehlsverzeichnis der App erzeugt.
 | Zur Synchronisierung | Überall | `⌘2` | `Strg+2` |
 | Einstellungen öffnen | Überall | `⌘,` | `Strg+,` |
 | Jetzt synchronisieren | Überall | `⇧⌘S` | `Strg+Umschalt+S` |
+| Contest-Modus öffnen | Überall | `⇧⌘C` | `Strg+Umschalt+C` |
 | Neues QSO | Loggen | `⌘N` | `Strg+N` |
 | QSO loggen | Loggen | `Eingabe` | `Eingabe` |
 | Eingabe verwerfen | Loggen | `Esc` | `Esc` |
 | Letztes QSO bearbeiten | Loggen | `⌘E` | `Strg+E` |
+| QSO loggen | Contest-Modus | `Eingabe` | `Eingabe` |
+| Eingabe löschen | Contest-Modus | `Esc` | `Esc` |
+| Letztes QSO bearbeiten | Contest-Modus | `⌘E` | `Strg+E` |
+| Zum Rufzeichen springen | Contest-Modus | `⌘L` | `Strg+L` |
 | Nächstes Band | Contest-Modus | `Bild auf` | `Bild auf` |
 | Vorheriges Band | Contest-Modus | `Bild ab` | `Bild ab` |
 | Nächste Betriebsart | Contest-Modus | `⌘M` | `Strg+M` |
+| Punkte und Raten ein- oder ausblenden | Contest-Modus | `⌘R` | `Strg+R` |
+| Contest-Sitzung beenden | Contest-Modus | `⇧⌘E` | `Strg+Umschalt+E` |

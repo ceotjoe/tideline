@@ -92,6 +92,22 @@ class TidelineMetrics extends ThemeExtension<TidelineMetrics> {
   /// Minimum touch target edge.
   double get minTouchTarget => density.minTouchTarget;
 
+  /// The density contest mode uses for a user who chose [chosen]: dense,
+  /// except that glove mode keeps its larger targets and spacing.
+  static TidelineDensity contestDensity(TidelineDensity chosen) =>
+      chosen == TidelineDensity.glove ? chosen : TidelineDensity.dense;
+
+  /// Width of one received-exchange field in contest mode. Grows with the
+  /// touch target, so glove mode gets wider fields.
+  double get contestFieldWidth => density == TidelineDensity.glove ? 140 : 112;
+
+  /// Width of the contest side column (score and rates) on wide windows.
+  double get contestSideWidth => 360;
+
+  /// Height of a dense row in the contest's recent-QSO list. Never below
+  /// the touch target.
+  double get contestRowHeight => minTouchTarget;
+
   /// Small radius: chips, inputs.
   static const radiusSm = Radius.circular(8);
 
@@ -166,6 +182,15 @@ abstract final class TidelineType {
     fontSize: 13,
     height: 18 / 13,
     fontWeight: FontWeight.w400,
+  );
+
+  /// The callsign being entered in contest mode: large, to read at a glance.
+  static const callsignLarge = TextStyle(
+    fontSize: 30,
+    height: 36 / 30,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 1,
+    fontFeatures: [FontFeature.tabularFigures(), FontFeature.slashedZero()],
   );
 
   /// Callsigns: tabular, slightly tracked, never ambiguous (0 vs O).

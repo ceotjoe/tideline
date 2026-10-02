@@ -43,12 +43,19 @@ class _CommandAction extends Action<CommandIntent> {
 
   final Map<String, VoidCallback> _handlers;
 
-  @override
-  bool isEnabled(CommandIntent intent) =>
-      _handlers.containsKey(intent.commandId);
+  VoidCallback? _handlerFor(CommandIntent intent) {
+    for (final id in intent.candidates) {
+      final handler = _handlers[id];
+      if (handler != null) return handler;
+    }
+    return null;
+  }
 
   @override
-  void invoke(CommandIntent intent) => _handlers[intent.commandId]?.call();
+  bool isEnabled(CommandIntent intent) => _handlerFor(intent) != null;
+
+  @override
+  void invoke(CommandIntent intent) => _handlerFor(intent)?.call();
 }
 
 class _HandlerScope extends InheritedWidget {

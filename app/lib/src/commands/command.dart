@@ -127,9 +127,21 @@ class TidelineCommand {
 
 /// Intent dispatched when a command's shortcut is pressed.
 class CommandIntent extends Intent {
-  /// Creates an intent for the command with [commandId].
-  const new(this.commandId);
+  /// Creates an intent for the command with [commandId]. [alternatives] are
+  /// commands of other scopes bound to the same chord (Enter logs a QSO on
+  /// the log screen and in contest mode).
+  const new(this.commandId, {this.alternatives = const []});
 
   /// The command to run.
   final String commandId;
+
+  /// Further commands on the same chord; the first one that has a handler
+  /// in the current part of the app runs.
+  final List<String> alternatives;
+
+  /// [commandId] followed by [alternatives].
+  Iterable<String> get candidates sync* {
+    yield commandId;
+    yield* alternatives;
+  }
 }

@@ -35,6 +35,14 @@ class _TidelineAppState extends ConsumerState<TidelineApp> {
       widget.router ?? createRouter(hasAccount: _hasAccount);
 
   @override
+  void initState() {
+    super.initState();
+    // Load the bundled contest definitions in the background. Nothing waits
+    // for it and a failure is only logged, so logging is never blocked.
+    ref.read(contestSeedProvider);
+  }
+
+  @override
   void dispose() {
     _hasAccount.dispose();
     super.dispose();

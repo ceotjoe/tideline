@@ -4,6 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tideline/src/features/contest/contest_seed.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/tls.dart';
 import 'package:tideline_data/tideline_data.dart';
@@ -23,11 +24,17 @@ final deviceIdProvider = Provider<String>(
 /// The sync state machine.
 final syncMachineProvider = Provider<SyncMachine>((ref) => SyncMachine());
 
+/// The hybrid logical clock of this device. One instance serves every
+/// repository, so timestamps stay strictly increasing across tables.
+final hlcClockProvider = Provider<HlcClock>(
+  (ref) => HlcClock(ref.watch(deviceIdProvider)),
+);
+
 /// QSO storage.
 final qsoRepositoryProvider = Provider<QsoRepository>(
   (ref) => QsoRepository(
     ref.watch(databaseProvider),
-    HlcClock(ref.watch(deviceIdProvider)),
+    ref.watch(hlcClockProvider),
     ref.watch(syncMachineProvider),
   ),
 );
@@ -98,6 +105,42 @@ final dxccProvider = FutureProvider<DxccDatabase>((ref) async {
   final csv = await rootBundle.loadString('assets/reference/cty.csv');
   return DxccDatabase.parseCsv(csv);
 });
+
+/// Contest definitions (bundled and imported).
+final contestDefinitionRepositoryProvider =
+    Provider<ContestDefinitionRepository>(
+      (ref) => ContestDefinitionRepository(ref.watch(databaseProvider)),
+    );
+
+/// Contest sessions and atomic serial allocation.
+final contestSessionRepositoryProvider = Provider<ContestSessionRepository>(
+  (ref) => ContestSessionRepository(
+    ref.watch(databaseProvider),
+    ref.watch(hlcClockProvider),
+    ref.watch(qsoRepositoryProvider),
+  ),
+);
+
+/// The worked-before index of the main log.
+final workedBeforeRepositoryProvider = Provider<WorkedBeforeRepository>(
+  (ref) => WorkedBeforeRepository(ref.watch(databaseProvider)),
+);
+
+/// The Super Check Partial pack the user downloaded, if any.
+final scpStoreProvider = Provider<ScpStore>(
+  (ref) => ScpStore(ref.watch(databaseProvider)),
+);
+
+/// Loads the bundled contest definitions into the database once per start.
+///
+/// Runs off the critical path: nothing waits for it, and a failure only
+/// ends up in the log (contest names and rule errors, never personal data).
+final contestSeedProvider = FutureProvider<ContestSeedReport?>(
+  (ref) => seedBundledContests(
+    bundle: rootBundle,
+    repository: ref.watch(contestDefinitionRepositoryProvider),
+  ),
+);
 
 /// Builds a pinned API client for an account (ADR 0009).
 WavelogClient clientForAccount(Account account, String token) {

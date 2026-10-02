@@ -1,18 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tideline/src/features/contest/contest_screen.dart';
+import 'package:tideline/src/features/contest/contest_setup_screen.dart';
 import 'package:tideline/src/features/log/log_screen.dart';
 import 'package:tideline/src/features/onboarding/onboarding_screen.dart';
 import 'package:tideline/src/features/settings/settings_screen.dart';
 import 'package:tideline/src/features/sync/sync_screen.dart';
 import 'package:tideline/src/layout/adaptive_shell.dart';
+import 'package:tideline/src/routing/routes.dart';
 
-/// Route paths.
-abstract final class Routes {
-  static const welcome = '/welcome';
-  static const log = '/log';
-  static const sync = '/sync';
-  static const settings = '/settings';
-}
+export 'package:tideline/src/routing/routes.dart';
 
 /// Creates the app router. Multi-pane layouts live inside screens, so
 /// resizing a window never changes the route (ADR 0004).
@@ -33,6 +30,16 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
     GoRoute(
       path: Routes.welcome,
       builder: (context, state) => const OnboardingScreen(),
+    ),
+    // Contest mode is a focused full-screen mode above the shell, so the
+    // log screen (and its state) stays underneath and Back returns to it.
+    GoRoute(
+      path: Routes.contest,
+      builder: (context, state) => const ContestRoute(),
+    ),
+    GoRoute(
+      path: Routes.contestSetup,
+      builder: (context, state) => const ContestSetupScreen(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => AdaptiveShell(navigationShell: shell),

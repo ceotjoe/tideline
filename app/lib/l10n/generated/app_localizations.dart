@@ -1688,6 +1688,720 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Atkinson Hyperlegible: clearly distinct letters such as 0 and O, 1, l and I.'**
   String get settingsReadingFontHint;
+
+  /// Button: close a dialog or editor without saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get actionCancel;
+
+  /// Button: save changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get actionSave;
+
+  /// Command: clear the callsign and exchange being entered in contest mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Wipe entry'**
+  String get commandWipeEntry;
+
+  /// Command: put the cursor in the callsign field.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to callsign'**
+  String get commandFocusCall;
+
+  /// Command: toggle the score and rates panel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show or hide score and rates'**
+  String get commandToggleRates;
+
+  /// Command and button: end the running contest session.
+  ///
+  /// In en, this message translates to:
+  /// **'End contest session'**
+  String get commandEndContest;
+
+  /// Command: open contest mode (the entry screen or the session setup).
+  ///
+  /// In en, this message translates to:
+  /// **'Open contest mode'**
+  String get commandOpenContest;
+
+  /// Title of the contest screens.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest mode'**
+  String get contestTitle;
+
+  /// Tooltip of the log screen button that opens contest mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest mode'**
+  String get contestOpenAction;
+
+  /// Banner on the log screen. The name is a proper contest name.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest session active: {name}'**
+  String contestBannerActive(String name);
+
+  /// Banner button: go back to the running contest.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to contest'**
+  String get contestBannerReturn;
+
+  /// Title of the session setup screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest session'**
+  String get contestSetupTitle;
+
+  /// Error title on the setup screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Contests could not be loaded'**
+  String get contestSetupLoadFailed;
+
+  /// Error explanation on the setup screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Your normal log still works. Restart Tideline and try again.'**
+  String get contestSetupLoadFailedBody;
+
+  /// Notice on the setup screen.
+  ///
+  /// In en, this message translates to:
+  /// **'A contest session is already running. End it before you start another one.'**
+  String get contestSetupSessionRunning;
+
+  /// Heading of the contest list on the setup screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest'**
+  String get contestSetupChooseContest;
+
+  /// Label of the contest search field.
+  ///
+  /// In en, this message translates to:
+  /// **'Search contests'**
+  String get contestSearchLabel;
+
+  /// Shown when the contest search has no result.
+  ///
+  /// In en, this message translates to:
+  /// **'No contest matches your search.'**
+  String get contestSearchEmpty;
+
+  /// Label: contest definition shipped with the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Built in'**
+  String get contestBuiltin;
+
+  /// Label: contest definition the user imported.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported by you'**
+  String get contestImported;
+
+  /// Shown when no station profile is available.
+  ///
+  /// In en, this message translates to:
+  /// **'This account has no station location yet. Sync once to load your Wavelog station locations, then try again.'**
+  String get contestSetupNeedStation;
+
+  /// Heading above the station location choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Station'**
+  String get contestSetupStation;
+
+  /// Heading of the section where the operator enters what they send.
+  ///
+  /// In en, this message translates to:
+  /// **'My exchange'**
+  String get contestSetupExchange;
+
+  /// Help text for my exchange.
+  ///
+  /// In en, this message translates to:
+  /// **'This is what you send to every station. The suggestions come from your station location; please check them.'**
+  String get contestSetupExchangeHelp;
+
+  /// Notice: signal report.
+  ///
+  /// In en, this message translates to:
+  /// **'The report is sent automatically: 59 for voice, 599 for CW and digital modes.'**
+  String get contestSetupRstAuto;
+
+  /// Notice: serial numbers.
+  ///
+  /// In en, this message translates to:
+  /// **'The serial number starts at 1 and counts up with every QSO. A number is never used twice, even if you delete a QSO.'**
+  String get contestSetupSerialAuto;
+
+  /// Heading of the Cabrillo category choices.
+  ///
+  /// In en, this message translates to:
+  /// **'Cabrillo categories'**
+  String get contestSetupCabrillo;
+
+  /// Help text for the Cabrillo categories. The values themselves are protocol tokens and are not translated.
+  ///
+  /// In en, this message translates to:
+  /// **'These go into the header of the Cabrillo log you send to the sponsor. The values are fixed terms of the Cabrillo format.'**
+  String get contestSetupCabrilloHelp;
+
+  /// Cabrillo CATEGORY-OPERATOR field name.
+  ///
+  /// In en, this message translates to:
+  /// **'Operator category'**
+  String get contestCatOperator;
+
+  /// Cabrillo CATEGORY-ASSISTED field name.
+  ///
+  /// In en, this message translates to:
+  /// **'Assistance'**
+  String get contestCatAssisted;
+
+  /// Cabrillo CATEGORY-BAND field name.
+  ///
+  /// In en, this message translates to:
+  /// **'Band category'**
+  String get contestCatBand;
+
+  /// Cabrillo CATEGORY-MODE field name.
+  ///
+  /// In en, this message translates to:
+  /// **'Mode category'**
+  String get contestCatMode;
+
+  /// Cabrillo CATEGORY-POWER field name.
+  ///
+  /// In en, this message translates to:
+  /// **'Power'**
+  String get contestCatPower;
+
+  /// Cabrillo CATEGORY-STATION field name.
+  ///
+  /// In en, this message translates to:
+  /// **'Station type'**
+  String get contestCatStation;
+
+  /// Cabrillo CATEGORY-TRANSMITTER field name.
+  ///
+  /// In en, this message translates to:
+  /// **'Transmitters'**
+  String get contestCatTransmitter;
+
+  /// Cabrillo CATEGORY-OVERLAY field name.
+  ///
+  /// In en, this message translates to:
+  /// **'Overlay'**
+  String get contestCatOverlay;
+
+  /// Dropdown choice: no Cabrillo category value.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get contestCatNotSet;
+
+  /// Button: start the contest session.
+  ///
+  /// In en, this message translates to:
+  /// **'Start session'**
+  String get contestStart;
+
+  /// Error after a failed start.
+  ///
+  /// In en, this message translates to:
+  /// **'The session could not be started. Nothing was changed. Try again.'**
+  String get contestStartFailed;
+
+  /// Heading of the session list.
+  ///
+  /// In en, this message translates to:
+  /// **'Past sessions'**
+  String get contestPastTitle;
+
+  /// Shown when there are no sessions.
+  ///
+  /// In en, this message translates to:
+  /// **'No contest sessions yet.'**
+  String get contestPastEmpty;
+
+  /// Session state.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get contestStateActive;
+
+  /// Session state.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get contestStateEnded;
+
+  /// Button: reopen an ended session.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopen'**
+  String get contestReopen;
+
+  /// Tooltip: open the list of contest sessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions'**
+  String get contestSessionsAction;
+
+  /// Error title when the definition of the running session is gone.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest rules not found'**
+  String get contestMissingTitle;
+
+  /// Error explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'The rules for this session are no longer on this device. Your QSOs are safe. End the session to carry on.'**
+  String get contestMissingBody;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'End the contest session?'**
+  String get contestEndTitle;
+
+  /// Dialog body.
+  ///
+  /// In en, this message translates to:
+  /// **'Your QSOs stay in the log. You can reopen the session later from the session list.'**
+  String get contestEndBody;
+
+  /// Label of the exchange element: RST.
+  ///
+  /// In en, this message translates to:
+  /// **'RST'**
+  String get contestKindRst;
+
+  /// Label of the exchange element: serial number.
+  ///
+  /// In en, this message translates to:
+  /// **'Serial no.'**
+  String get contestKindSerial;
+
+  /// Label of the exchange element: CQ zone.
+  ///
+  /// In en, this message translates to:
+  /// **'CQ zone'**
+  String get contestKindCqZone;
+
+  /// Label of the exchange element: ITU zone.
+  ///
+  /// In en, this message translates to:
+  /// **'ITU zone'**
+  String get contestKindItuZone;
+
+  /// Label of the exchange element: Maidenhead locator.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid'**
+  String get contestKindGrid;
+
+  /// Label of the exchange element: state or province.
+  ///
+  /// In en, this message translates to:
+  /// **'State or province'**
+  String get contestKindState;
+
+  /// Label of the exchange element: ARRL section.
+  ///
+  /// In en, this message translates to:
+  /// **'Section'**
+  String get contestKindSection;
+
+  /// Label of the exchange element: DARC local chapter code.
+  ///
+  /// In en, this message translates to:
+  /// **'DOK'**
+  String get contestKindDok;
+
+  /// Label of the exchange element: power.
+  ///
+  /// In en, this message translates to:
+  /// **'Power'**
+  String get contestKindPower;
+
+  /// Label of the exchange element: operator name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get contestKindName;
+
+  /// Label of the exchange element: free text exchange.
+  ///
+  /// In en, this message translates to:
+  /// **'Exchange'**
+  String get contestKindText;
+
+  /// Field label for an optional exchange element.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} (optional)'**
+  String contestOptionalLabel(String label);
+
+  /// Error: exchange value missing.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} is required.'**
+  String contestErrorMissing(String label);
+
+  /// Error: exchange value malformed.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} is not valid.'**
+  String contestErrorInvalid(String label);
+
+  /// Error: exchange value out of range.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} is out of range.'**
+  String contestErrorOutOfRange(String label);
+
+  /// Name of a multiplier type in the contest score.
+  ///
+  /// In en, this message translates to:
+  /// **'Zone'**
+  String get contestMultZone;
+
+  /// Name of a multiplier type in the contest score.
+  ///
+  /// In en, this message translates to:
+  /// **'ITU zone'**
+  String get contestMultItuZone;
+
+  /// Name of a multiplier type in the contest score.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get contestMultDxcc;
+
+  /// Name of a multiplier type in the contest score.
+  ///
+  /// In en, this message translates to:
+  /// **'Prefix'**
+  String get contestMultPrefix;
+
+  /// Name of a multiplier type in the contest score.
+  ///
+  /// In en, this message translates to:
+  /// **'State or province'**
+  String get contestMultState;
+
+  /// Name of a multiplier type in the contest score.
+  ///
+  /// In en, this message translates to:
+  /// **'DOK'**
+  String get contestMultDok;
+
+  /// Hint under the callsign: the station is a dupe.
+  ///
+  /// In en, this message translates to:
+  /// **'Dupe: already worked on {bands} ({modes})'**
+  String contestHintDupe(String bands, String modes);
+
+  /// Hint: worked in this contest on another band or mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Already worked on {bands} ({modes}); not a dupe here'**
+  String contestHintWorkedElsewhere(String bands, String modes);
+
+  /// Hint: logging this QSO adds multipliers.
+  ///
+  /// In en, this message translates to:
+  /// **'New multiplier: {items}'**
+  String contestHintNewMultiplier(String items);
+
+  /// Hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside this contest\'s bands or modes: scores 0 points.'**
+  String get contestHintOutOfContest;
+
+  /// Hint from the main log.
+  ///
+  /// In en, this message translates to:
+  /// **'In your log: worked before on this band and mode'**
+  String get contestHintLogWorked;
+
+  /// Hint from the main log.
+  ///
+  /// In en, this message translates to:
+  /// **'In your log: worked before, new band'**
+  String get contestHintLogNewBand;
+
+  /// Hint from the main log.
+  ///
+  /// In en, this message translates to:
+  /// **'In your log: worked before, new mode'**
+  String get contestHintLogNewMode;
+
+  /// Hint from the main log.
+  ///
+  /// In en, this message translates to:
+  /// **'In your log: worked before, new combination of band and mode'**
+  String get contestHintLogNewSlot;
+
+  /// Hint: the call is known.
+  ///
+  /// In en, this message translates to:
+  /// **'Callsign is in the super check partial list'**
+  String get contestHintInScp;
+
+  /// Label before suggested callsigns that contain what was typed.
+  ///
+  /// In en, this message translates to:
+  /// **'Super check:'**
+  String get contestHintScpMatches;
+
+  /// Label before callsigns one character away from what was typed.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you mean:'**
+  String get contestHintNPlusOne;
+
+  /// Accessibility label of a callsign suggestion. The call is spelled letter by letter.
+  ///
+  /// In en, this message translates to:
+  /// **'Use {call}'**
+  String contestUseCall(String call);
+
+  /// Read-only summary of the exchange I send.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent: {items}'**
+  String contestSentSummary(String items);
+
+  /// Shown when the exchange to send is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to send'**
+  String get contestSentNothing;
+
+  /// Screen-reader announcement after logging. The call is spelled letter by letter. dupe is yes or no.
+  ///
+  /// In en, this message translates to:
+  /// **'Logged {call}, serial {serial}{dupe, select, yes{, dupe} other{}}'**
+  String contestLoggedAnnouncement(String call, int serial, String dupe);
+
+  /// Screen-reader announcement after logging in a contest without serial numbers. dupe is yes or no.
+  ///
+  /// In en, this message translates to:
+  /// **'Logged {call}{dupe, select, yes{, dupe} other{}}'**
+  String contestLoggedAnnouncementNoSerial(String call, String dupe);
+
+  /// Error after a failed save.
+  ///
+  /// In en, this message translates to:
+  /// **'The QSO could not be saved. What you typed is still here. Try again.'**
+  String get contestSaveFailed;
+
+  /// Heading of the recent QSO list in contest mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent QSOs'**
+  String get contestRecentTitle;
+
+  /// Shown when the session has no QSOs.
+  ///
+  /// In en, this message translates to:
+  /// **'No QSOs in this session yet. Type a callsign and the exchange, then press Enter.'**
+  String get contestRecentEmpty;
+
+  /// Sent and received exchange of a QSO row.
+  ///
+  /// In en, this message translates to:
+  /// **'{sent} → {rcvd}'**
+  String contestRowExchange(String sent, String rcvd);
+
+  /// Accessibility hint of a QSO row.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit this QSO'**
+  String get contestRowEditHint;
+
+  /// Short flag on a QSO row.
+  ///
+  /// In en, this message translates to:
+  /// **'Dupe'**
+  String get contestFlagDupe;
+
+  /// Short flag on a QSO row: it added a multiplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Mult'**
+  String get contestFlagMult;
+
+  /// Short flag on a QSO row: outside the contest bands or modes.
+  ///
+  /// In en, this message translates to:
+  /// **'Out'**
+  String get contestFlagOut;
+
+  /// Points of a QSO.
+  ///
+  /// In en, this message translates to:
+  /// **'{points, plural, =1{1 pt} other{{points} pts}}'**
+  String contestPoints(int points);
+
+  /// Heading of the inline editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit QSO'**
+  String get contestEditTitle;
+
+  /// Shows the sent exchange in the editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent (cannot be changed): {items}'**
+  String contestEditSent(String items);
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this QSO?'**
+  String get contestDeleteTitle;
+
+  /// Dialog body.
+  ///
+  /// In en, this message translates to:
+  /// **'{call} will be removed from this device and from the contest score.'**
+  String contestDeleteBody(String call);
+
+  /// Dialog body for contests with serial numbers.
+  ///
+  /// In en, this message translates to:
+  /// **'{call} will be removed from this device and from the contest score. Serial {serial} stays used and is never given out again.'**
+  String contestDeleteBodySerial(String call, String serial);
+
+  /// Heading of the score panel.
+  ///
+  /// In en, this message translates to:
+  /// **'Score and rates'**
+  String get contestPanelTitle;
+
+  /// One-line summary of the collapsed score panel.
+  ///
+  /// In en, this message translates to:
+  /// **'{qsos} QSOs · {points} points · estimate {score}'**
+  String contestPanelSummary(int qsos, int points, int score);
+
+  /// Column and metric: number of QSOs.
+  ///
+  /// In en, this message translates to:
+  /// **'QSOs'**
+  String get contestQsos;
+
+  /// Column and metric: QSO points.
+  ///
+  /// In en, this message translates to:
+  /// **'Points'**
+  String get contestPointsLabel;
+
+  /// Column and metric: multipliers.
+  ///
+  /// In en, this message translates to:
+  /// **'Multipliers'**
+  String get contestMultipliers;
+
+  /// Metric: number of duplicate contacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Dupes'**
+  String get contestDupes;
+
+  /// Label of the total score.
+  ///
+  /// In en, this message translates to:
+  /// **'Claimed score (estimate)'**
+  String get contestScoreEstimate;
+
+  /// Note under the score.
+  ///
+  /// In en, this message translates to:
+  /// **'An estimate for your own use. The contest sponsor\'s log check decides the real result.'**
+  String get contestScoreEstimateNote;
+
+  /// Heading of the rates block.
+  ///
+  /// In en, this message translates to:
+  /// **'Rates'**
+  String get contestRatesTitle;
+
+  /// Rate label.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 10 minutes'**
+  String get contestRate10Min;
+
+  /// Rate label.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 60 minutes'**
+  String get contestRate60Min;
+
+  /// Rate label.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 10 QSOs'**
+  String get contestRateLast10;
+
+  /// Rate label.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 100 QSOs'**
+  String get contestRateLast100;
+
+  /// Rate label.
+  ///
+  /// In en, this message translates to:
+  /// **'Best 60 minutes'**
+  String get contestRateBest;
+
+  /// A rate in QSOs per hour.
+  ///
+  /// In en, this message translates to:
+  /// **'{rate}/h'**
+  String contestRatePerHour(int rate);
+
+  /// The best 60-minute window: count and start time (UTC).
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO} other{{count} QSOs}} from {time} {utc}'**
+  String contestRateBestValue(int count, String time, String utc);
+
+  /// Heading of the per-band table.
+  ///
+  /// In en, this message translates to:
+  /// **'By band'**
+  String get contestBandsTitle;
+
+  /// Shown when the per-band table is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No scoring QSOs yet.'**
+  String get contestBandsEmpty;
+
+  /// Screen-reader text of a label and its value.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {value}'**
+  String contestLabelValue(String label, String value);
 }
 
 class _AppLocalizationsDelegate

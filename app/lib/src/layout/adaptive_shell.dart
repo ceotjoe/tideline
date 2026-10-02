@@ -8,6 +8,7 @@ import 'package:tideline/src/commands/shortcuts_overlay.dart';
 import 'package:tideline/src/features/sync/sync_screen.dart';
 import 'package:tideline/src/layout/size_class.dart';
 import 'package:tideline/src/providers.dart';
+import 'package:tideline/src/routing/routes.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/tide_gauge.dart';
 
@@ -60,6 +61,7 @@ class AdaptiveShell extends ConsumerWidget {
         CommandIds.goToLog: () => goTo(0),
         CommandIds.goToSync: () => goTo(1),
         CommandIds.goToSettings: () => goTo(2),
+        CommandIds.openContest: () => context.push(Routes.contest),
         CommandIds.syncNow: () async {
           await ref.read(syncControllerProvider.notifier).syncNow();
           if (!context.mounted) return;
