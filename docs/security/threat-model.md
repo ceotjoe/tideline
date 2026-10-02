@@ -1,6 +1,6 @@
 # Threat model (STRIDE)
 
-_Version 1, 2026-10-01. Covers the foundation and the MVP scope. Update this page whenever the attack surface changes,
+_Version 2, 2026-10-02 (MVP implementation). Covers the foundation and the MVP scope. Update this page whenever the attack surface changes,
 for example new network flows, new input formats, peer sync or the WSJT-X listener._
 
 ## Assets
@@ -22,11 +22,11 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 
 | # | Threat | STRIDE | Actor | Mitigation | Status |
 |---|---|---|---|---|---|
-| T1 | Token sent to an impostor server via a MITM | S, I | A1 | TLS with platform roots. Self-signed certificates only via an explicit TOFU pin, warned. No "disable validation" option. HTTP only on private LANs after opt-in. | Designed (ADR 0009) |
+| T1 | Token sent to an impostor server via a MITM | S, I | A1 | TLS with platform roots. Self-signed certificates only via an explicit TOFU pin after showing the SHA-256 fingerprint; the inspection connection sends no data. No "disable validation" option. HTTP only on private LANs after opt-in. | Implemented (ADR 0009) |
 | T2 | Token leaked via logs, crash output, backups or prefs | I | A4, A5 | Token only in the secure store. Redaction in the logging layer. Backups exclude secrets. Android auto-backup excludes secure-storage files. | Designed (ADR 0006) |
-| T3 | QSO log read from a stolen device or backup | I | A4 | DB encrypted (ADR 0005). The key is in the secure store. Optional app lock (biometric/PIN). Exported backups are encrypted with a passphrase. | Designed |
-| T4 | Crafted ADIF causing a crash, memory blow-up or injection | D, T | A3 | Strict streaming parser with field-length and count limits. Fuzz tests. Imports run in an isolate. Imported QSOs are always `queued` and visible before syncing. | Planned (MVP) |
-| T5 | Crafted API responses (huge, malformed, unexpected types) | D, T | A2 | Typed decoding with validation, response-size limits and timeouts. Unknown fields are ignored and never `eval`ed. | Planned (MVP) |
+| T3 | QSO log read from a stolen device or backup | I | A4 | DB encrypted (ADR 0005). The key is in the secure store. Optional UI app lock (biometric/PIN). Backups: Argon2id + XChaCha20-Poly1305, tokens never included; restore caps KDF parameters (crafted files cannot exhaust memory). ADIF exports are plain text by design and say so. | Implemented |
+| T4 | Crafted ADIF causing a crash, memory blow-up or injection | D, T | A3 | Strict parser with 64 MiB file, 64 KiB field and 500,000 record limits; fuzz tests; parsing in a separate isolate; imports above 50 QSOs wait for a dry-run review before upload. | Implemented |
+| T5 | Crafted API responses (huge, malformed, unexpected types) | D, T | A2 | Typed decoding with validation, 16 MiB response limit, 20 s timeouts; malformed responses become errors, never crashes. | Implemented |
 | T6 | Duplicate or lost QSOs from retries after timeouts or crashes | T | — | Reconcile before retry (ADR 0008). Crash-safe states. Every transition is journaled. | Designed |
 | T7 | Server silently changes or drops uploaded QSOs | T, R | A2 | The local copy is kept and never overwritten automatically from the server. The sync journal records the server id and response for each QSO. | Designed |
 | T8 | Token with excessive privileges | E | A2 (compromised app) | Least-privilege scopes. Required scopes are explained, optional ones are opt-in. The app warns when a token has scopes it doesn't need. | Designed |
@@ -46,3 +46,10 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 - **Lost DB key:** if the key is lost (for example a keychain reset), unsynced QSOs are unrecoverable without a backup.
   Mitigated by backup prompts and by showing the unsynced count prominently.
 - **Self-hosted servers on plain HTTP:** the user explicitly accepts this risk, limited to private LANs.
+
+## Changes in version 2
+- **New flows (MVP):** onboarding with certificate inspection (F2), ADIF import and export (F4), encrypted backup and
+  restore (F4), and the optional app lock.
+- **New residual risk:** while the app lock is shown, the database stays open so sync can continue. The lock protects
+  the screen, not the data at rest; the data at rest is protected by the encrypted DB and the OS. Gating the key is
+  planned for v1.0.

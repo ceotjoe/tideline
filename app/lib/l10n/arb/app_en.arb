@@ -977,5 +977,212 @@
   "previewUpload": "Upload",
   "@previewUpload": {
     "description": "Button."
+  },
+  "settingsAccount": "Wavelog account",
+  "@settingsAccount": {
+    "description": "Settings section."
+  },
+  "settingsData": "Import, export and backup",
+  "@settingsData": {
+    "description": "Settings section."
+  },
+  "settingsSecurity": "Security",
+  "@settingsSecurity": {
+    "description": "Settings section."
+  },
+  "accountPinned": "Uses a certificate you trusted manually",
+  "@accountPinned": {
+    "description": "Account detail."
+  },
+  "accountTokenExpires": "Token expires on {date}",
+  "@accountTokenExpires": {
+    "description": "Account detail.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "accountTokenNoExpiry": "Token without expiry date",
+  "@accountTokenNoExpiry": {
+    "description": "Account detail."
+  },
+  "actionReplaceToken": "Enter a new token",
+  "@actionReplaceToken": {
+    "description": "Button."
+  },
+  "tokenReplaced": "New token saved. Syncing…",
+  "@tokenReplaced": {
+    "description": "Confirmation."
+  },
+  "actionRemoveAccount": "Remove account from this device",
+  "@actionRemoveAccount": {
+    "description": "Button."
+  },
+  "removeAccountTitle": "Remove this account?",
+  "@removeAccountTitle": {
+    "description": "Dialog title."
+  },
+  "removeAccountBody": "Its QSOs are removed from this device. Your Wavelog is not changed.",
+  "@removeAccountBody": {
+    "description": "Dialog body."
+  },
+  "removeAccountUnsynced": "{count, plural, =1{1 QSO has not reached Wavelog yet and would be lost. Export or back up first.} other{{count} QSOs have not reached Wavelog yet and would be lost. Export or back up first.}}",
+  "@removeAccountUnsynced": {
+    "description": "Warning in the remove dialog.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actionImportAdif": "Import ADIF file",
+  "@actionImportAdif": {
+    "description": "Button."
+  },
+  "importAdifHint": "For example a paper log typed in elsewhere, or another logger's export.",
+  "@importAdifHint": {
+    "description": "Hint."
+  },
+  "actionExportAdif": "Export log as ADIF",
+  "@actionExportAdif": {
+    "description": "Button."
+  },
+  "exportAdifHint": "Readable by every logging program. Not encrypted.",
+  "@exportAdifHint": {
+    "description": "Hint."
+  },
+  "exportDone": "Log exported.",
+  "@exportDone": {
+    "description": "Confirmation."
+  },
+  "actionCreateBackup": "Create encrypted backup",
+  "@actionCreateBackup": {
+    "description": "Button."
+  },
+  "backupHint": "Everything except your token, protected by a passphrase.",
+  "@backupHint": {
+    "description": "Hint."
+  },
+  "backupDone": "Backup saved.",
+  "@backupDone": {
+    "description": "Confirmation."
+  },
+  "actionRestoreBackup": "Restore a backup",
+  "@actionRestoreBackup": {
+    "description": "Button."
+  },
+  "restoreDone": "Restored {added} QSOs ({skipped} were already here).",
+  "@restoreDone": {
+    "description": "Confirmation.",
+    "placeholders": {
+      "added": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
+    }
+  },
+  "restoreWrongPassphrase": "That passphrase doesn't open this backup.",
+  "@restoreWrongPassphrase": {
+    "description": "Error."
+  },
+  "restoreInvalidFile": "This file isn't a Tideline backup or is damaged.",
+  "@restoreInvalidFile": {
+    "description": "Error."
+  },
+  "backupPassphraseTitle": "Backup passphrase",
+  "@backupPassphraseTitle": {
+    "description": "Dialog title."
+  },
+  "backupPassphraseHint": "At least 8 characters. Without it the backup cannot be opened – keep it safe.",
+  "@backupPassphraseHint": {
+    "description": "Hint."
+  },
+  "fieldPassphrase": "Passphrase",
+  "@fieldPassphrase": {
+    "description": "Field label."
+  },
+  "fieldPassphraseRepeat": "Repeat passphrase",
+  "@fieldPassphraseRepeat": {
+    "description": "Field label."
+  },
+  "passphraseMismatch": "The passphrases don't match.",
+  "@passphraseMismatch": {
+    "description": "Validation."
+  },
+  "importDoneTitle": "Import finished",
+  "@importDoneTitle": {
+    "description": "Dialog title."
+  },
+  "importImported": "{count, plural, =1{1 QSO added.} other{{count} QSOs added.}}",
+  "@importImported": {
+    "description": "Import result.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importDuplicates": "{count, plural, =1{1 was already in your log and skipped.} other{{count} were already in your log and skipped.}}",
+  "@importDuplicates": {
+    "description": "Import result.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importRejected": "{count, plural, =1{1 record had no valid callsign, time, band or mode.} other{{count} records had no valid callsign, time, band or mode.}}",
+  "@importRejected": {
+    "description": "Import result.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importWarnings": "{count, plural, =1{The file had 1 formatting problem that was worked around.} other{The file had {count} formatting problems that were worked around.}}",
+  "@importWarnings": {
+    "description": "Import result.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importStation": "Imported QSOs belong to station location {name}.",
+  "@importStation": {
+    "description": "Import result.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "importTooLarge": "This file is too large to import (maximum 64 MB).",
+  "@importTooLarge": {
+    "description": "Error."
+  },
+  "settingsAppLock": "App lock",
+  "@settingsAppLock": {
+    "description": "Setting."
+  },
+  "settingsAppLockHint": "Ask for Face ID, fingerprint or the device PIN when opening Tideline.",
+  "@settingsAppLockHint": {
+    "description": "Setting hint."
+  },
+  "appLockTitle": "Tideline is locked",
+  "@appLockTitle": {
+    "description": "Lock screen title."
+  },
+  "appLockUnlock": "Unlock",
+  "@appLockUnlock": {
+    "description": "Button."
+  },
+  "appLockReason": "Unlock your log",
+  "@appLockReason": {
+    "description": "Reason shown by the system authentication dialog."
   }
 }

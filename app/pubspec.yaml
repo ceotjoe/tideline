@@ -24,7 +24,6 @@ dependencies:
   intl: ^0.20.3
   local_auth: ^3.0.2
   path_provider: ^2.1.6
-  share_plus: ^13.3.1
   tideline_adif:
     path: ../packages/tideline_adif
   tideline_data:

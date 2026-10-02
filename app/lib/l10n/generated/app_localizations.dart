@@ -1394,6 +1394,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Upload'**
   String get previewUpload;
+
+  /// Settings section.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog account'**
+  String get settingsAccount;
+
+  /// Settings section.
+  ///
+  /// In en, this message translates to:
+  /// **'Import, export and backup'**
+  String get settingsData;
+
+  /// Settings section.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get settingsSecurity;
+
+  /// Account detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses a certificate you trusted manually'**
+  String get accountPinned;
+
+  /// Account detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Token expires on {date}'**
+  String accountTokenExpires(String date);
+
+  /// Account detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Token without expiry date'**
+  String get accountTokenNoExpiry;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a new token'**
+  String get actionReplaceToken;
+
+  /// Confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'New token saved. Syncing…'**
+  String get tokenReplaced;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove account from this device'**
+  String get actionRemoveAccount;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this account?'**
+  String get removeAccountTitle;
+
+  /// Dialog body.
+  ///
+  /// In en, this message translates to:
+  /// **'Its QSOs are removed from this device. Your Wavelog is not changed.'**
+  String get removeAccountBody;
+
+  /// Warning in the remove dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO has not reached Wavelog yet and would be lost. Export or back up first.} other{{count} QSOs have not reached Wavelog yet and would be lost. Export or back up first.}}'**
+  String removeAccountUnsynced(int count);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Import ADIF file'**
+  String get actionImportAdif;
+
+  /// Hint.
+  ///
+  /// In en, this message translates to:
+  /// **'For example a paper log typed in elsewhere, or another logger\'s export.'**
+  String get importAdifHint;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Export log as ADIF'**
+  String get actionExportAdif;
+
+  /// Hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Readable by every logging program. Not encrypted.'**
+  String get exportAdifHint;
+
+  /// Confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Log exported.'**
+  String get exportDone;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Create encrypted backup'**
+  String get actionCreateBackup;
+
+  /// Hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything except your token, protected by a passphrase.'**
+  String get backupHint;
+
+  /// Confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved.'**
+  String get backupDone;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore a backup'**
+  String get actionRestoreBackup;
+
+  /// Confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored {added} QSOs ({skipped} were already here).'**
+  String restoreDone(int added, int skipped);
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'That passphrase doesn\'t open this backup.'**
+  String get restoreWrongPassphrase;
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'This file isn\'t a Tideline backup or is damaged.'**
+  String get restoreInvalidFile;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup passphrase'**
+  String get backupPassphraseTitle;
+
+  /// Hint.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters. Without it the backup cannot be opened – keep it safe.'**
+  String get backupPassphraseHint;
+
+  /// Field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Passphrase'**
+  String get fieldPassphrase;
+
+  /// Field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat passphrase'**
+  String get fieldPassphraseRepeat;
+
+  /// Validation.
+  ///
+  /// In en, this message translates to:
+  /// **'The passphrases don\'t match.'**
+  String get passphraseMismatch;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Import finished'**
+  String get importDoneTitle;
+
+  /// Import result.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO added.} other{{count} QSOs added.}}'**
+  String importImported(int count);
+
+  /// Import result.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 was already in your log and skipped.} other{{count} were already in your log and skipped.}}'**
+  String importDuplicates(int count);
+
+  /// Import result.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 record had no valid callsign, time, band or mode.} other{{count} records had no valid callsign, time, band or mode.}}'**
+  String importRejected(int count);
+
+  /// Import result.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{The file had 1 formatting problem that was worked around.} other{The file had {count} formatting problems that were worked around.}}'**
+  String importWarnings(int count);
+
+  /// Import result.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported QSOs belong to station location {name}.'**
+  String importStation(String name);
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'This file is too large to import (maximum 64 MB).'**
+  String get importTooLarge;
+
+  /// Setting.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock'**
+  String get settingsAppLock;
+
+  /// Setting hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for Face ID, fingerprint or the device PIN when opening Tideline.'**
+  String get settingsAppLockHint;
+
+  /// Lock screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'Tideline is locked'**
+  String get appLockTitle;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock'**
+  String get appLockUnlock;
+
+  /// Reason shown by the system authentication dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock your log'**
+  String get appLockReason;
 }
 
 class _AppLocalizationsDelegate

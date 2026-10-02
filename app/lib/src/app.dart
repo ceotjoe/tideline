@@ -12,6 +12,7 @@ import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/routing/router.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/settings/app_settings.dart';
+import 'package:tideline/src/widgets/app_lock.dart';
 
 /// The Tideline app.
 class TidelineApp extends ConsumerStatefulWidget {
@@ -75,11 +76,13 @@ class _TidelineAppState extends ConsumerState<TidelineApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       builder: (context, child) {
-        Widget result = Shortcuts(
-          shortcuts: registry.shortcutMap(
-            ShortcutPlatform.of(Theme.of(context).platform),
+        Widget result = AppLock(
+          child: Shortcuts(
+            shortcuts: registry.shortcutMap(
+              ShortcutPlatform.of(Theme.of(context).platform),
+            ),
+            child: child ?? const SizedBox.shrink(),
           ),
-          child: child ?? const SizedBox.shrink(),
         );
         if (kDebugMode && settings.forceRtl) {
           result = Directionality(

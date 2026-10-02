@@ -1,5 +1,6 @@
 package com.ITWebService.tideline
 
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity : FlutterActivity()
+// FlutterFragmentActivity is required by local_auth (optional app lock).
+class MainActivity : FlutterFragmentActivity()

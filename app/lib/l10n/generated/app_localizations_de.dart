@@ -791,4 +791,184 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get previewUpload => 'Hochladen';
+
+  @override
+  String get settingsAccount => 'Wavelog-Konto';
+
+  @override
+  String get settingsData => 'Import, Export und Sicherung';
+
+  @override
+  String get settingsSecurity => 'Sicherheit';
+
+  @override
+  String get accountPinned => 'Nutzt ein manuell vertrautes Zertifikat';
+
+  @override
+  String accountTokenExpires(String date) {
+    return 'Token läuft am $date ab';
+  }
+
+  @override
+  String get accountTokenNoExpiry => 'Token ohne Ablaufdatum';
+
+  @override
+  String get actionReplaceToken => 'Neuen Token eingeben';
+
+  @override
+  String get tokenReplaced => 'Neuer Token gespeichert. Synchronisiere …';
+
+  @override
+  String get actionRemoveAccount => 'Konto von diesem Gerät entfernen';
+
+  @override
+  String get removeAccountTitle => 'Dieses Konto entfernen?';
+
+  @override
+  String get removeAccountBody =>
+      'Seine QSOs werden von diesem Gerät entfernt. Dein Wavelog bleibt unverändert.';
+
+  @override
+  String removeAccountUnsynced(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count QSOs sind noch nicht in Wavelog und gingen verloren. Exportiere oder sichere sie vorher.',
+      one: '1 QSO ist noch nicht in Wavelog und ginge verloren. Exportiere oder sichere es vorher.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionImportAdif => 'ADIF-Datei importieren';
+
+  @override
+  String get importAdifHint =>
+      'Zum Beispiel ein anderswo erfasstes Papierlog oder der Export eines anderen Loggers.';
+
+  @override
+  String get actionExportAdif => 'Log als ADIF exportieren';
+
+  @override
+  String get exportAdifHint =>
+      'Von jedem Logprogramm lesbar. Nicht verschlüsselt.';
+
+  @override
+  String get exportDone => 'Log exportiert.';
+
+  @override
+  String get actionCreateBackup => 'Verschlüsselte Sicherung erstellen';
+
+  @override
+  String get backupHint =>
+      'Alles außer deinem Token, geschützt durch ein Passwort.';
+
+  @override
+  String get backupDone => 'Sicherung gespeichert.';
+
+  @override
+  String get actionRestoreBackup => 'Sicherung wiederherstellen';
+
+  @override
+  String restoreDone(int added, int skipped) {
+    return '$added QSOs wiederhergestellt ($skipped waren schon vorhanden).';
+  }
+
+  @override
+  String get restoreWrongPassphrase =>
+      'Mit diesem Passwort lässt sich die Sicherung nicht öffnen.';
+
+  @override
+  String get restoreInvalidFile =>
+      'Diese Datei ist keine Tideline-Sicherung oder beschädigt.';
+
+  @override
+  String get backupPassphraseTitle => 'Passwort der Sicherung';
+
+  @override
+  String get backupPassphraseHint =>
+      'Mindestens 8 Zeichen. Ohne es lässt sich die Sicherung nicht öffnen – bewahre es gut auf.';
+
+  @override
+  String get fieldPassphrase => 'Passwort';
+
+  @override
+  String get fieldPassphraseRepeat => 'Passwort wiederholen';
+
+  @override
+  String get passphraseMismatch => 'Die Passwörter stimmen nicht überein.';
+
+  @override
+  String get importDoneTitle => 'Import abgeschlossen';
+
+  @override
+  String importImported(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs hinzugefügt.',
+      one: '1 QSO hinzugefügt.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count waren schon in deinem Log und wurden übersprungen.',
+      one: '1 war schon in deinem Log und wurde übersprungen.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importRejected(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count Einträge hatten kein gültiges Rufzeichen, keine Zeit, kein Band oder keine Betriebsart.',
+      one: '1 Eintrag hatte kein gültiges Rufzeichen, keine Zeit, kein Band oder keine Betriebsart.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importWarnings(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Die Datei hatte $count Formatprobleme, die umgangen wurden.',
+      one: 'Die Datei hatte 1 Formatproblem, das umgangen wurde.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importStation(String name) {
+    return 'Importierte QSOs gehören zum Stationsstandort $name.';
+  }
+
+  @override
+  String get importTooLarge =>
+      'Diese Datei ist zu groß für den Import (maximal 64 MB).';
+
+  @override
+  String get settingsAppLock => 'App-Sperre';
+
+  @override
+  String get settingsAppLockHint =>
+      'Beim Öffnen von Tideline nach Face ID, Fingerabdruck oder Geräte-PIN fragen.';
+
+  @override
+  String get appLockTitle => 'Tideline ist gesperrt';
+
+  @override
+  String get appLockUnlock => 'Entsperren';
+
+  @override
+  String get appLockReason => 'Entsperre dein Log';
 }

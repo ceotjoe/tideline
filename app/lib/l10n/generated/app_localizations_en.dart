@@ -789,6 +789,185 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get previewUpload => 'Upload';
+
+  @override
+  String get settingsAccount => 'Wavelog account';
+
+  @override
+  String get settingsData => 'Import, export and backup';
+
+  @override
+  String get settingsSecurity => 'Security';
+
+  @override
+  String get accountPinned => 'Uses a certificate you trusted manually';
+
+  @override
+  String accountTokenExpires(String date) {
+    return 'Token expires on $date';
+  }
+
+  @override
+  String get accountTokenNoExpiry => 'Token without expiry date';
+
+  @override
+  String get actionReplaceToken => 'Enter a new token';
+
+  @override
+  String get tokenReplaced => 'New token saved. Syncing…';
+
+  @override
+  String get actionRemoveAccount => 'Remove account from this device';
+
+  @override
+  String get removeAccountTitle => 'Remove this account?';
+
+  @override
+  String get removeAccountBody =>
+      'Its QSOs are removed from this device. Your Wavelog is not changed.';
+
+  @override
+  String removeAccountUnsynced(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count QSOs have not reached Wavelog yet and would be lost. Export or back up first.',
+      one: '1 QSO has not reached Wavelog yet and would be lost. Export or back up first.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionImportAdif => 'Import ADIF file';
+
+  @override
+  String get importAdifHint =>
+      'For example a paper log typed in elsewhere, or another logger\'s export.';
+
+  @override
+  String get actionExportAdif => 'Export log as ADIF';
+
+  @override
+  String get exportAdifHint =>
+      'Readable by every logging program. Not encrypted.';
+
+  @override
+  String get exportDone => 'Log exported.';
+
+  @override
+  String get actionCreateBackup => 'Create encrypted backup';
+
+  @override
+  String get backupHint =>
+      'Everything except your token, protected by a passphrase.';
+
+  @override
+  String get backupDone => 'Backup saved.';
+
+  @override
+  String get actionRestoreBackup => 'Restore a backup';
+
+  @override
+  String restoreDone(int added, int skipped) {
+    return 'Restored $added QSOs ($skipped were already here).';
+  }
+
+  @override
+  String get restoreWrongPassphrase =>
+      'That passphrase doesn\'t open this backup.';
+
+  @override
+  String get restoreInvalidFile =>
+      'This file isn\'t a Tideline backup or is damaged.';
+
+  @override
+  String get backupPassphraseTitle => 'Backup passphrase';
+
+  @override
+  String get backupPassphraseHint =>
+      'At least 8 characters. Without it the backup cannot be opened – keep it safe.';
+
+  @override
+  String get fieldPassphrase => 'Passphrase';
+
+  @override
+  String get fieldPassphraseRepeat => 'Repeat passphrase';
+
+  @override
+  String get passphraseMismatch => 'The passphrases don\'t match.';
+
+  @override
+  String get importDoneTitle => 'Import finished';
+
+  @override
+  String importImported(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs added.',
+      one: '1 QSO added.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count were already in your log and skipped.',
+      one: '1 was already in your log and skipped.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importRejected(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count records had no valid callsign, time, band or mode.',
+      one: '1 record had no valid callsign, time, band or mode.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importWarnings(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'The file had $count formatting problems that were worked around.',
+      one: 'The file had 1 formatting problem that was worked around.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importStation(String name) {
+    return 'Imported QSOs belong to station location $name.';
+  }
+
+  @override
+  String get importTooLarge =>
+      'This file is too large to import (maximum 64 MB).';
+
+  @override
+  String get settingsAppLock => 'App lock';
+
+  @override
+  String get settingsAppLockHint =>
+      'Ask for Face ID, fingerprint or the device PIN when opening Tideline.';
+
+  @override
+  String get appLockTitle => 'Tideline is locked';
+
+  @override
+  String get appLockUnlock => 'Unlock';
+
+  @override
+  String get appLockReason => 'Unlock your log';
 }
 
 /// The translations for English (`en_XA`).
@@ -1585,4 +1764,188 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get previewUpload => '[Ûþļöáð···]';
+
+  @override
+  String get settingsAccount => '[Ŵáṽéļöĝ áççöûñţ······]';
+
+  @override
+  String get settingsData => '[Îɱþöŕţ, éẋþöŕţ áñð ƀáçķûþ··········]';
+
+  @override
+  String get settingsSecurity => '[Šéçûŕîţý····]';
+
+  @override
+  String get accountPinned =>
+      '[Ûšéš á çéŕţîƒîçáţé ýöû ţŕûšţéð ɱáñûáļļý················]';
+
+  @override
+  String accountTokenExpires(String date) {
+    return '[Ţöķéñ éẋþîŕéš öñ ·······]$date';
+  }
+
+  @override
+  String get accountTokenNoExpiry => '[Ţöķéñ ŵîţĥöûţ éẋþîŕý ðáţé··········]';
+
+  @override
+  String get actionReplaceToken => '[Éñţéŕ á ñéŵ ţöķéñ·······]';
+
+  @override
+  String get tokenReplaced => '[Ñéŵ ţöķéñ šáṽéð. Šýñçîñĝ…··········]';
+
+  @override
+  String get actionRemoveAccount =>
+      '[Ŕéɱöṽé áççöûñţ ƒŕöɱ ţĥîš ðéṽîçé·············]';
+
+  @override
+  String get removeAccountTitle => '[Ŕéɱöṽé ţĥîš áççöûñţ?········]';
+
+  @override
+  String get removeAccountBody =>
+      '[Îţš ǪŠÖš áŕé ŕéɱöṽéð ƒŕöɱ ţĥîš ðéṽîçé. Ýöûŕ Ŵáṽéļöĝ îš ñöţ çĥáñĝéð.···························]';
+
+  @override
+  String removeAccountUnsynced(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count[ ǪŠÖš ĥáṽé ñöţ ŕéáçĥéð Ŵáṽéļöĝ ýéţ áñð ŵöûļð ƀé ļöšţ. Éẋþöŕţ öŕ ƀáçķ ûþ ƒîŕšţ.································]',
+      one: '[1 ǪŠÖ ĥáš ñöţ ŕéáçĥéð Ŵáṽéļöĝ ýéţ áñð ŵöûļð ƀé ļöšţ. Éẋþöŕţ öŕ ƀáçķ ûþ ƒîŕšţ.·······························]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get actionImportAdif => '[Îɱþöŕţ ÅÐÎƑ ƒîļé·······]';
+
+  @override
+  String get importAdifHint =>
+      '[Ƒöŕ éẋáɱþļé á þáþéŕ ļöĝ ţýþéð îñ éļšéŵĥéŕé, öŕ áñöţĥéŕ ļöĝĝéŕ\'š éẋþöŕţ.·····························]';
+
+  @override
+  String get actionExportAdif => '[Éẋþöŕţ ļöĝ áš ÅÐÎƑ········]';
+
+  @override
+  String get exportAdifHint =>
+      '[Ŕéáðáƀļé ƀý éṽéŕý ļöĝĝîñĝ þŕöĝŕáɱ. Ñöţ éñçŕýþţéð.····················]';
+
+  @override
+  String get exportDone => '[Ļöĝ éẋþöŕţéð.······]';
+
+  @override
+  String get actionCreateBackup => '[Çŕéáţé éñçŕýþţéð ƀáçķûþ··········]';
+
+  @override
+  String get backupHint =>
+      '[Éṽéŕýţĥîñĝ éẋçéþţ ýöûŕ ţöķéñ, þŕöţéçţéð ƀý á þáššþĥŕášé.·······················]';
+
+  @override
+  String get backupDone => '[Ɓáçķûþ šáṽéð.······]';
+
+  @override
+  String get actionRestoreBackup => '[Ŕéšţöŕé á ƀáçķûþ·······]';
+
+  @override
+  String restoreDone(int added, int skipped) {
+    return '[Ŕéšţöŕéð ····]$added[ ǪŠÖš (···]$skipped[ ŵéŕé áļŕéáðý ĥéŕé).········]';
+  }
+
+  @override
+  String get restoreWrongPassphrase =>
+      '[Ţĥáţ þáššþĥŕášé ðöéšñ\'ţ öþéñ ţĥîš ƀáçķûþ.·················]';
+
+  @override
+  String get restoreInvalidFile =>
+      '[Ţĥîš ƒîļé îšñ\'ţ á Ţîðéļîñé ƀáçķûþ öŕ îš ðáɱáĝéð.····················]';
+
+  @override
+  String get backupPassphraseTitle => '[Ɓáçķûþ þáššþĥŕášé·······]';
+
+  @override
+  String get backupPassphraseHint =>
+      '[Åţ ļéášţ 8 çĥáŕáçţéŕš. Ŵîţĥöûţ îţ ţĥé ƀáçķûþ çáññöţ ƀé öþéñéð – ķééþ îţ šáƒé.·······························]';
+
+  @override
+  String get fieldPassphrase => '[Þáššþĥŕášé····]';
+
+  @override
+  String get fieldPassphraseRepeat => '[Ŕéþéáţ þáššþĥŕášé·······]';
+
+  @override
+  String get passphraseMismatch =>
+      '[Ţĥé þáššþĥŕášéš ðöñ\'ţ ɱáţçĥ.············]';
+
+  @override
+  String get importDoneTitle => '[Îɱþöŕţ ƒîñîšĥéð······]';
+
+  @override
+  String importImported(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš áððéð.·····]',
+      one: '[1 ǪŠÖ áððéð.·····]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ŵéŕé áļŕéáðý îñ ýöûŕ ļöĝ áñð šķîþþéð.················]',
+      one: '[1 ŵáš áļŕéáðý îñ ýöûŕ ļöĝ áñð šķîþþéð.················]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importRejected(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count[ ŕéçöŕðš ĥáð ñö ṽáļîð çáļļšîĝñ, ţîɱé, ƀáñð öŕ ɱöðé.·····················]',
+      one: '[1 ŕéçöŕð ĥáð ñö ṽáļîð çáļļšîĝñ, ţîɱé, ƀáñð öŕ ɱöðé.·····················]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importWarnings(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '[Ţĥé ƒîļé ĥáð ······]$count[ ƒöŕɱáţţîñĝ þŕöƀļéɱš ţĥáţ ŵéŕé ŵöŕķéð áŕöûñð.··················]',
+      one: '[Ţĥé ƒîļé ĥáð 1 ƒöŕɱáţţîñĝ þŕöƀļéɱ ţĥáţ ŵáš ŵöŕķéð áŕöûñð.·······················]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importStation(String name) {
+    return '[Îɱþöŕţéð ǪŠÖš ƀéļöñĝ ţö šţáţîöñ ļöçáţîöñ ·················]$name[.·]';
+  }
+
+  @override
+  String get importTooLarge =>
+      '[Ţĥîš ƒîļé îš ţöö ļáŕĝé ţö îɱþöŕţ (ɱáẋîɱûɱ 64 ṀƁ).····················]';
+
+  @override
+  String get settingsAppLock => '[Åþþ ļöçķ····]';
+
+  @override
+  String get settingsAppLockHint =>
+      '[Åšķ ƒöŕ Ƒáçé ÎÐ, ƒîñĝéŕþŕîñţ öŕ ţĥé ðéṽîçé ÞÎÑ ŵĥéñ öþéñîñĝ Ţîðéļîñé.····························]';
+
+  @override
+  String get appLockTitle => '[Ţîðéļîñé îš ļöçķéð········]';
+
+  @override
+  String get appLockUnlock => '[Ûñļöçķ···]';
+
+  @override
+  String get appLockReason => '[Ûñļöçķ ýöûŕ ļöĝ······]';
 }

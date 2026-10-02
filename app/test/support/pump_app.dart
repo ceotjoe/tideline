@@ -117,6 +117,7 @@ Future<Pumped> pumpTideline(
   bool disableAnimations = true,
   List<Account> accounts = const [testAccount],
   List<LoggedQso> log = const [],
+  Map<String, String> settingsValues = const {},
 }) async {
   tester.view
     ..physicalSize = size * tester.view.devicePixelRatio
@@ -135,7 +136,10 @@ Future<Pumped> pumpTideline(
       overrides: [
         appSettingsProvider.overrideWith((ref) => Stream.value(settings)),
         settingsValuesProvider.overrideWith(
-          (ref) => Stream.value({'account.acc-1.defaultStation': '3'}),
+          (ref) => Stream.value({
+            'account.acc-1.defaultStation': '3',
+            ...settingsValues,
+          }),
         ),
         pendingSyncCountProvider.overrideWith((ref) => Stream.value(pending)),
         bindingOverridesProvider.overrideWith((ref) => Stream.value(const [])),

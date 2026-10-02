@@ -6,6 +6,7 @@ import 'package:tideline/src/commands/command_handlers.dart';
 import 'package:tideline/src/commands/command_registry.dart';
 import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
+import 'package:tideline/src/features/settings/settings_sections.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline/src/settings/language_names.dart';
@@ -37,6 +38,8 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: context.metrics.sm),
         children: [
+          _SectionHeader(l10n.settingsAccount),
+          const AccountSection(),
           _SectionHeader(l10n.settingsAppearance),
           _Group<ThemeChoice>(
             title: l10n.settingsTheme,
@@ -87,6 +90,10 @@ class SettingsScreen extends ConsumerWidget {
                 l.toLanguageTag(): localeName(l),
             },
           ),
+          _SectionHeader(l10n.settingsData),
+          const DataSection(),
+          _SectionHeader(l10n.settingsSecurity),
+          const SecuritySection(),
           _SectionHeader(l10n.settingsKeyboard),
           ListTile(
             leading: const Icon(Icons.keyboard_outlined),
