@@ -10,6 +10,7 @@ export 'src/ids/uuid.dart';
 export 'src/ports/secret_store.dart';
 export 'src/qso/qso.dart';
 export 'src/qso/qso_validation.dart';
+export 'src/sync/sync_machine.dart';
 export 'src/sync/sync_state.dart';
 export 'src/values/band.dart';
 export 'src/values/callsign.dart';

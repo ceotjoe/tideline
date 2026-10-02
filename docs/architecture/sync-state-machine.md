@@ -56,3 +56,15 @@ stateDiagram-v2
    ("12 QSOs waiting to sync"), never by colour or animation alone.
 
 See [ADR 0008](../adr/0008-sync-idempotency-without-server-uuid.md) for the reasoning.
+
+## Implementation notes
+
+- The machine is implemented as pure code in `packages/tideline_domain/lib/src/sync/sync_machine.dart` (`SyncMachine.apply`).
+  `test/sync_machine_test.dart` covers every rule above.
+- An impossible transition throws `InvalidSyncTransition`, which means a bug in the caller.
+- **Blocking:** an expired or revoked token blocks only `queued`, `uploading` and `verifying` QSOs. Drafts, conflicts,
+  rejects and synced QSOs keep their state.
+- **Unblocking:** after unblocking, a create that has no server id yet is verified once more before it is retried.
+- **Deletes:** a QSO that never reached the server is deleted locally with no sync step. A synced QSO is deleted on the
+  server only if the token has `qso:delete`; otherwise the journal records that the server copy remains. A delete
+  during an upload waits for that upload's outcome.
