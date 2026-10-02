@@ -22,11 +22,11 @@ Tideline targets **WCAG 2.2 AA** as a minimum. Accessibility is part of the Defi
 
 ## Callsigns and screen readers
 
-- Callsigns must be read letter by letter, for example "D O 1 H O Z", not as a word.
-- iOS: use `SpellOutStringAttribute` in an `AttributedString` semantics label.
-- Android/TalkBack: support for this attribute is unverified. The fallback is a label with the characters separated
-  by spaces.
-- Both are implemented and verified with the first screen that shows callsigns (MVP).
+- Callsigns must be read letter by letter, for example "D O 1 H O Z", not as a word. Use `CallsignText`
+  (`app/lib/src/widgets/callsign_text.dart`) wherever a callsign is shown.
+- iOS and macOS: `SpellOutStringAttribute` in an `AttributedString` semantics label.
+- Other platforms: a label with the characters separated by spaces. A widget test checks it.
+- **Still to verify by hand:** VoiceOver and TalkBack on real devices (simulators don't speak).
 
 ## Plain language
 
@@ -35,8 +35,9 @@ Tideline targets **WCAG 2.2 AA** as a minimum. Accessibility is part of the Defi
 
 ## Platform notes
 
-- **iPad Scribble (Apple Pencil):** `stylusHandwritingEnabled`. Known Flutter issues include automatic first-letter
-  capitalisation (#104315) and keyboard availability (#160662). The callsign field will be tested with Scribble in the MVP,
-  and findings documented here.
+- **iPad Scribble (Apple Pencil):** enabled (the default `stylusHandwritingEnabled: true`) on every text field.
+  - The callsign field upper-cases input itself, so the known first-letter capitalisation issue (#104315) has no effect.
+  - **Not yet verified:** the iOS Simulator cannot simulate Pencil handwriting, so Scribble needs a check on a real iPad
+    with an Apple Pencil. Results go here.
 - **iPadOS keyboard shortcut overlay (hold ⌘):** not supported by Flutter. Tideline's own overlay (Ctrl/⌘ + / or F1) lists
   every shortcut.

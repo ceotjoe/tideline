@@ -20,3 +20,21 @@ Der **Sync-Verlauf** listet jeden Schritt mit der Originalantwort des Servers f�
 Synchronisiert wird beim Öffnen der App, wenn die Verbindung zurückkommt, und wenn du auf **Jetzt synchronisieren**
 tippst. iPhone und iPad erlauben keine zuverlässige Hintergrund-Synchronisierung; öffne Tideline also, wenn du wieder
 online bist.
+
+## Vor einem großen Upload
+
+Warten mehr als 50 neue QSOs, etwa nach einem ADIF-Import, lädt Tideline sie nicht automatisch hoch. Der
+Sync-Bildschirm zeigt dann **Upload-Vorschau** mit drei Angaben:
+- wie viele QSOs hochgeladen werden;
+- wie viele nach Duplikaten vorhandener QSOs aussehen;
+- was der Testlauf von Wavelog meldet.
+
+Mit **Hochladen** sendest du sie.
+
+## Wenn ein QSO deine Entscheidung braucht
+
+Die Wavelog-API kann **Zeit, Betriebsart, Frequenz oder Station** eines hochgeladenen QSOs nicht ändern. Änderst du
+eines davon, zeigt das QSO **Entscheidung nötig**, und du wählst:
+- **In Wavelog ersetzen:** Der alte Eintrag wird gelöscht und das korrigierte QSO hochgeladen. Dafür ist die
+  Berechtigung `qso:delete` nötig.
+- **Ich korrigiere es in Wavelog:** Tideline lässt den Wavelog-Eintrag unverändert. Nimm dort dieselbe Korrektur vor.

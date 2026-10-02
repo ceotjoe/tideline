@@ -1,6 +1,6 @@
 # Tideline-Handbuch
 
-_Version 0.0 (Grundgerüst). Tideline ist im Pre-Alpha-Stadium._
+_Version 0.1 (MVP)._
 
 1. [Ersteinrichtung](first-setup.md)
 1. [Wavelog-API-Token erstellen](api-token.md)

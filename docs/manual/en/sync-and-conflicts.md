@@ -19,3 +19,21 @@ The **tide gauge** shows how many QSOs are still waiting to sync. When the tide 
 
 Sync runs when you open the app, when your connection comes back, and when you tap **Sync now**. iPhone and iPad do not
 allow reliable background syncing, so open Tideline when you're back online.
+
+## Before a large upload
+
+When more than 50 new QSOs are waiting, for example after an ADIF import, Tideline doesn't upload them automatically.
+The Sync screen shows **Preview upload** with three things:
+- how many QSOs will be uploaded;
+- how many look like duplicates of QSOs you already have;
+- what Wavelog's own test run says.
+
+Choose **Upload** to send them.
+
+## When a QSO needs your decision
+
+Wavelog's API can't change the **time, mode, frequency or station** of an uploaded QSO. If you change one of these,
+the QSO shows **Needs decision**, and you choose:
+- **Replace in Wavelog:** the old entry is deleted and the corrected QSO is uploaded. This needs the `qso:delete`
+  permission.
+- **I'll fix it in Wavelog:** Tideline leaves the Wavelog entry alone. Make the same correction there.

@@ -25,7 +25,7 @@ These rules apply to every session. If something here conflicts with what you fi
 - Layers: presentation → domain ← data. The domain imports neither Flutter nor drift nor http.
 - Sync logic must be unit-testable without Flutter.
 - State: Riverpod 3 (no experimental offline-persistence or mutation APIs). Navigation: go_router.
-- Constructors use the Dart 3.13 `new` syntax (`const new({super.key})`), enforced by the linter.
+- Constructors use the Dart 3.13 `new` syntax (`const new({super.key})`, named: `new _(…)`), enforced by the linter.
 - Use ADIF 3.1.x field names for the internal data model so import/export is lossless. Unknown ADIF fields go to `adif_extra`.
 - Data model rules from day one, needed for device-to-device sync:
   - Every row has a UUID primary key.
@@ -100,4 +100,8 @@ These rules apply to every session. If something here conflicts with what you fi
 - `dart analyze --fatal-infos`: analyse everything.
 - `tool/test_all.sh`: run all tests.
 - `dart run build_runner build -d` (inside `packages/tideline_data` or `app`): run code generation.
-- `flutter gen-l10n` (inside `app`): regenerate localizations.
+- `flutter gen-l10n` (inside `app`): regenerate localizations (run `dart run tool/generate_pseudo_locales.dart` first).
+- `dart run bin/serve.dart` (inside `packages/wavelog_mock`): mock Wavelog on port 8765, token `wl2_demo_token`.
+- `flutter test integration_test -d macos` (inside `app`, mock running): end-to-end test.
+- `python3 docs/design/icon/generate_icon.py && python3 docs/design/icon/build_platform_icons.py`: regenerate all app
+  icons from the layer source (needs rsvg-convert and ImageMagick).

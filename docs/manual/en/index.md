@@ -1,6 +1,6 @@
 # Tideline user manual
 
-_Version 0.0 (foundation). Tideline is pre-alpha._
+_Version 0.1 (MVP)._
 
 1. [First setup](first-setup.md)
 1. [Creating a Wavelog API token](api-token.md)
