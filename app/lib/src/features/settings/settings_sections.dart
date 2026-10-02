@@ -91,18 +91,19 @@ class AccountSection extends ConsumerWidget {
     );
     controller.dispose();
     if (token == null || token.isEmpty || !context.mounted) return;
+    // Read providers before awaiting; the widget may be gone afterwards.
+    final accounts = ref.read(accountRepositoryProvider);
+    final sync = ref.read(syncControllerProvider.notifier);
     try {
       final info = await clientForAccount(account, token).tokenInfo();
-      await ref
-          .read(accountRepositoryProvider)
-          .replaceToken(
-            account.id,
-            token: token,
-            scopes: info.scopes,
-            tokenExpiresAt: info.expiresAt?.millisecondsSinceEpoch,
-          );
+      await accounts.replaceToken(
+        account.id,
+        token: token,
+        scopes: info.scopes,
+        tokenExpiresAt: info.expiresAt?.millisecondsSinceEpoch,
+      );
       if (context.mounted) _snack(context, l10n.tokenReplaced);
-      unawaited(ref.read(syncControllerProvider.notifier).syncNow());
+      unawaited(sync.syncNow());
     } on WavelogUnauthorized {
       if (context.mounted) _snack(context, l10n.problemTokenInvalid);
     } on WavelogException {
@@ -138,7 +139,7 @@ class AccountSection extends ConsumerWidget {
         ],
       ),
     );
-    if (confirmed ?? false) {
+    if ((confirmed ?? false) && context.mounted) {
       await ref.read(accountRepositoryProvider).remove(account.id);
     }
   }

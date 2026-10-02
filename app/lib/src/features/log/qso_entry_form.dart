@@ -89,6 +89,9 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
     final l10n = AppLocalizations.of(context);
     final direction = Directionality.of(context);
     final view = View.of(context);
+    // Read before awaiting: the user may navigate away while logging.
+    final focus = ref.read(callsignFocusProvider);
+    final sync = ref.read(syncControllerProvider.notifier);
     final result = await ref
         .read(qsoEntryProvider.notifier)
         .log(accountId: account.id);
@@ -101,9 +104,9 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
           direction,
         ),
       );
-      ref.read(callsignFocusProvider).requestFocus();
+      focus.requestFocus();
       // Opportunistic: upload right away if a connection exists.
-      unawaited(ref.read(syncControllerProvider.notifier).syncNow());
+      unawaited(sync.syncNow());
     }
   }
 

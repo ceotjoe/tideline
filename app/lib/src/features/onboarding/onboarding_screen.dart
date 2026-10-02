@@ -315,10 +315,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           onContinue: stations.isEmpty
               ? () => c.submitToken(state.token ?? '')
               : () async {
+                  // Read before awaiting: saving the account navigates away
+                  // and unmounts this screen.
+                  final sync = ref.read(syncControllerProvider.notifier);
                   final id = await c.finish(_station!);
-                  if (id != null) {
-                    await ref.read(syncControllerProvider.notifier).syncNow();
-                  }
+                  if (id != null) unawaited(sync.syncNow());
                 },
           continueLabel: stations.isEmpty
               ? l10n.actionCheckToken
