@@ -8,9 +8,11 @@ environment:
   sdk: ^3.13.0
 
 dependencies:
+  cryptography: ^2.9.0
   drift: ^2.35.1
   meta: ^1.19.0
   sqlite3: ^3.7.0
+  tideline_adif: any
   tideline_domain: any
   wavelog_client: any
 

@@ -70,6 +70,53 @@ class QsoRepository {
         );
       });
 
+  /// Restores a QSO from a backup with its sync [status]. Returns false if
+  /// a QSO with the same id already exists (it is kept unchanged).
+  Future<bool> restore(Qso qso, SyncStatus? status) =>
+      _db.transaction(() async {
+        if (await find(qso.id) != null) return false;
+        final hlc = _clock.now().toString();
+        await _db
+            .into(_db.qsos)
+            .insert(
+              qsoToCompanion(qso).copyWith(
+                originDeviceId: Value(_clock.deviceId),
+                hlcCreated: Value(hlc),
+                hlcModified: Value(hlc),
+              ),
+            );
+        // An upload in flight when the backup was made may or may not have
+        // reached the server: verify it first (ADR 0008).
+        final restored = status?.state == SyncState.uploading
+            ? SyncStatus(
+                state: SyncState.verifying,
+                remoteQsoId: status!.remoteQsoId,
+              )
+            : status;
+        if (restored != null) {
+          await writeStatus(qso.id, qso.accountId, restored);
+        }
+        await _journal.append(
+          accountId: qso.accountId,
+          qsoId: qso.id,
+          event: JournalEvent.imported,
+          at: _now(),
+          detail: {'call': qso.call.value, 'from': 'backup'},
+        );
+        return true;
+      });
+
+  /// Every non-deleted QSO of every account, with status (for backups).
+  Future<List<LoggedQso>> all() async {
+    final rows = await (_db.select(
+      _db.qsos,
+    )..where((q) => q.deletedAt.isNull())).get();
+    return [
+      for (final r in rows)
+        LoggedQso(qsoFromRow(r), await readStatus(r.id, r.accountId)),
+    ];
+  }
+
   /// Saves an edited QSO.
   Future<void> update(Qso qso) => _db.transaction(() async {
     final before = await find(qso.id);
