@@ -16,5 +16,6 @@
 - [0014](0014-design-direction-low-tide.md) Design direction: "Low Tide"
 - [0015](0015-platforms-and-identifiers.md) Platforms, minimum versions and identifiers
 - [0016](0016-phase-2-product-decisions.md) Product decisions for the MVP
+- [0017](0017-adif-import-export.md) ADIF import and export
 
 New ADRs start from [0000-template.md](0000-template.md).
