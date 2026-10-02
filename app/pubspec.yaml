@@ -32,6 +32,9 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+  assets:
+    # AD1C country files (MIT-style licence in cty-LICENSE.txt), ADR 0013.
+    - assets/reference/
 
 # Windows packaging (dart run msix:create). Signing certificate and
 # publisher are supplied by the release workflow from CI secrets.

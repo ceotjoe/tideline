@@ -4,6 +4,7 @@
 library;
 
 export 'src/adif/adif_enums.g.dart' show adifSpecVersion;
+export 'src/dxcc/dxcc.dart';
 export 'src/ids/hlc.dart';
 export 'src/ids/uuid.dart';
 export 'src/ports/secret_store.dart';
