@@ -429,6 +429,33 @@ class AppLocalizationsDe extends AppLocalizations {
   String get fieldFrequency => 'Frequenz';
 
   @override
+  String freqReadoutInBand(String mhz, String band) {
+    return '$mhz MHz · $band';
+  }
+
+  @override
+  String freqReadoutOutsideBands(String mhz) {
+    return '$mhz MHz · außerhalb der Amateurfunkbänder';
+  }
+
+  @override
+  String get freqReadoutUnreadable =>
+      'Keine Frequenz. Gib MHz (14.205) oder kHz (14205) ein.';
+
+  @override
+  String get freqReadoutEmpty => 'Gib MHz (14.205) oder kHz (14205) ein.';
+
+  @override
+  String freqReadoutSemanticsInBand(String mhz, String band) {
+    return '$mhz Megahertz, $band';
+  }
+
+  @override
+  String freqReadoutSemanticsOutsideBands(String mhz) {
+    return '$mhz Megahertz, außerhalb der Amateurfunkbänder';
+  }
+
+  @override
   String get fieldRstSent => 'RST gesendet';
 
   @override

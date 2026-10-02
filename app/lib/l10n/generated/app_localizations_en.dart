@@ -427,6 +427,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fieldFrequency => 'Frequency';
 
   @override
+  String freqReadoutInBand(String mhz, String band) {
+    return '$mhz MHz · $band';
+  }
+
+  @override
+  String freqReadoutOutsideBands(String mhz) {
+    return '$mhz MHz · outside amateur bands';
+  }
+
+  @override
+  String get freqReadoutUnreadable =>
+      'Not a frequency. Type MHz (14.205) or kHz (14205).';
+
+  @override
+  String get freqReadoutEmpty => 'Type MHz (14.205) or kHz (14205).';
+
+  @override
+  String freqReadoutSemanticsInBand(String mhz, String band) {
+    return '$mhz megahertz, $band';
+  }
+
+  @override
+  String freqReadoutSemanticsOutsideBands(String mhz) {
+    return '$mhz megahertz, outside amateur bands';
+  }
+
+  @override
   String get fieldRstSent => 'RST sent';
 
   @override
@@ -1402,6 +1429,34 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get fieldFrequency => '[Ƒŕéǫûéñçý····]';
+
+  @override
+  String freqReadoutInBand(String mhz, String band) {
+    return '$mhz[ ṀĤž · ···]$band';
+  }
+
+  @override
+  String freqReadoutOutsideBands(String mhz) {
+    return '$mhz[ ṀĤž · öûţšîðé áɱáţéûŕ ƀáñðš············]';
+  }
+
+  @override
+  String get freqReadoutUnreadable =>
+      '[Ñöţ á ƒŕéǫûéñçý. Ţýþé ṀĤž (14.205) öŕ ķĤž (14205).····················]';
+
+  @override
+  String get freqReadoutEmpty =>
+      '[Ţýþé ṀĤž (14.205) öŕ ķĤž (14205).··············]';
+
+  @override
+  String freqReadoutSemanticsInBand(String mhz, String band) {
+    return '$mhz[ ɱéĝáĥéŕţž, ·····]$band';
+  }
+
+  @override
+  String freqReadoutSemanticsOutsideBands(String mhz) {
+    return '$mhz[ ɱéĝáĥéŕţž, öûţšîðé áɱáţéûŕ ƀáñðš··············]';
+  }
 
   @override
   String get fieldRstSent => '[ŔŠŢ šéñţ····]';

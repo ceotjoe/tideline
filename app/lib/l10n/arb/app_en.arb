@@ -523,6 +523,44 @@
   "@fieldFrequency": {
     "description": "Field label."
   },
+  "freqReadoutInBand": "{mhz} MHz · {band}",
+  "@freqReadoutInBand": {
+    "description": "Live interpretation under the frequency field. {mhz} is the frequency in MHz, {band} the amateur band such as '20 m'. Keep the middle dot.",
+    "placeholders": {
+      "mhz": {"type": "String"},
+      "band": {"type": "String"}
+    }
+  },
+  "freqReadoutOutsideBands": "{mhz} MHz · outside amateur bands",
+  "@freqReadoutOutsideBands": {
+    "description": "Live interpretation under the frequency field when the frequency is in no amateur band. {mhz} is the frequency in MHz.",
+    "placeholders": {
+      "mhz": {"type": "String"}
+    }
+  },
+  "freqReadoutUnreadable": "Not a frequency. Type MHz (14.205) or kHz (14205).",
+  "@freqReadoutUnreadable": {
+    "description": "Live hint under the frequency field when the input cannot be read."
+  },
+  "freqReadoutEmpty": "Type MHz (14.205) or kHz (14205).",
+  "@freqReadoutEmpty": {
+    "description": "Hint under the empty frequency field."
+  },
+  "freqReadoutSemanticsInBand": "{mhz} megahertz, {band}",
+  "@freqReadoutSemanticsInBand": {
+    "description": "Screen reader text for the frequency interpretation. {band} is spoken, e.g. '20 metres'.",
+    "placeholders": {
+      "mhz": {"type": "String"},
+      "band": {"type": "String"}
+    }
+  },
+  "freqReadoutSemanticsOutsideBands": "{mhz} megahertz, outside amateur bands",
+  "@freqReadoutSemanticsOutsideBands": {
+    "description": "Screen reader text for the frequency interpretation outside amateur bands.",
+    "placeholders": {
+      "mhz": {"type": "String"}
+    }
+  },
   "fieldRstSent": "RST sent",
   "@fieldRstSent": {
     "description": "Field label. Keep RST."

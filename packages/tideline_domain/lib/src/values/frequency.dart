@@ -1,3 +1,5 @@
+import 'package:tideline_domain/src/values/band.dart';
+
 /// Frequency helpers. Tideline stores frequencies as integer hertz; ADIF
 /// uses MHz with a decimal point and Wavelog's JSON API uses hertz.
 abstract final class Frequency {
@@ -25,15 +27,41 @@ abstract final class Frequency {
     return trimmed.isEmpty ? '$mhz' : '$mhz.$trimmed';
   }
 
-  /// Interprets what an operator types: with a decimal point it is MHz
-  /// (`14.074`, `144.300`); a whole number of 1800 or more is kHz
-  /// (`14074`, `144300`); smaller whole numbers are MHz (`7`, `50`).
-  static int? parseUserInput(String input) {
+  static const _kiloHertzThreshold = 1800;
+
+  /// Interprets what an operator types.
+  ///
+  /// With a decimal point (or comma) the value is MHz (`14.074`). A whole
+  /// number N is MHz if N MHz lies in an amateur band, else kHz if N kHz
+  /// does (`472` is 472 kHz, `14074` is 14.074 MHz). Numbers of 1800 and up are
+  /// never MHz. Outside every band the fallback is kHz from 1800 up and MHz
+  /// below.
+  static int? parseUserInput(String input) => interpretUserInput(input)?.hz;
+
+  /// Like [parseUserInput], but also reports the amateur band containing the
+  /// result (null when it lies outside every band).
+  static ({int hz, Band? band})? interpretUserInput(String input) {
+    final hz = _parse(input);
+    return hz == null ? null : (hz: hz, band: Band.forFrequency(hz));
+  }
+
+  static int? _parse(String input) {
     final text = input.trim().replaceAll(',', '.');
     if (text.isEmpty) return null;
     if (text.contains('.')) return fromAdifMhz(text);
+    if (!RegExp(r'^\d+$').hasMatch(text)) return null;
     final value = int.tryParse(text);
     if (value == null || value <= 0) return null;
-    return value >= 1800 ? value * 1000 : value * 1000000;
+    // Guard against overflow for absurdly long digit strings.
+    if (value > 1000000000000) return null;
+    final asMhz = value * 1000000;
+    final asKhz = value * 1000;
+    // Whole numbers from 1800 up are never MHz: 144300 would otherwise be
+    // 144.3 GHz and 10100 would be 10.1 GHz. Microwave users type a decimal.
+    if (value < _kiloHertzThreshold && Band.forFrequency(asMhz) != null) {
+      return asMhz;
+    }
+    if (Band.forFrequency(asKhz) != null) return asKhz;
+    return value >= _kiloHertzThreshold ? asKhz : asMhz;
   }
 }

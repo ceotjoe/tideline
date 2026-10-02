@@ -90,6 +90,59 @@ void main() {
       expect(Frequency.parseUserInput('7'), 7000000);
       expect(Frequency.parseUserInput(''), isNull);
     });
+
+    test('whole numbers prefer MHz, then kHz, when they fall in a band', () {
+      const cases = {
+        '472': 472000, // 630 m, kHz
+        '136': 136000, // 2200 m, kHz
+        '137': 137000,
+        '501': 501000, // 560 m, kHz
+        '1840': 1840000, // 160 m
+        '1800': 1800000,
+        '3573': 3573000,
+        '7': 7000000,
+        '14': 14000000,
+        '50': 50000000,
+        '144': 144000000,
+        '432': 432000000, // 70 cm MHz
+        '1296': 1296000000, // 23 cm MHz
+        '14074': 14074000,
+        '7074': 7074000,
+        '144300': 144300000,
+        '50313': 50313000,
+        // Outside every band: legacy fallback.
+        '5': 5000000,
+        '1799': 1799000000, // below 1800 stays MHz
+        '27555': 27555000,
+      };
+      cases.forEach((input, hz) {
+        expect(Frequency.parseUserInput(input), hz, reason: input);
+      });
+    });
+
+    test('rejects malformed input', () {
+      for (final bad in ['abc', '0', '-5', '1e3', '14.07.4', '.', ' ', '0.0']) {
+        expect(Frequency.parseUserInput(bad), isNull, reason: bad);
+      }
+      expect(Frequency.parseUserInput('99999999999999999999'), isNull);
+    });
+
+    test('decimal input is always MHz and trims whitespace', () {
+      expect(Frequency.parseUserInput(' 0.472 '), 472000);
+      expect(Frequency.parseUserInput('472.0'), 472000000);
+      expect(Frequency.parseUserInput('.1365'), 136500);
+    });
+
+    test('interpretUserInput reports the band', () {
+      final r = Frequency.interpretUserInput('472')!;
+      expect(r.hz, 472000);
+      expect(r.band?.name, '630m');
+      expect(Frequency.interpretUserInput('14205')!.band?.name, '20m');
+      final out = Frequency.interpretUserInput('27.555')!;
+      expect(out.hz, 27555000);
+      expect(out.band, isNull);
+      expect(Frequency.interpretUserInput('x'), isNull);
+    });
   });
 
   group('UtcDateTime', () {

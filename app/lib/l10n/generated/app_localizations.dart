@@ -843,6 +843,42 @@ abstract class AppLocalizations {
   /// **'Frequency'**
   String get fieldFrequency;
 
+  /// Live interpretation under the frequency field. {mhz} is the frequency in MHz, {band} the amateur band such as '20 m'. Keep the middle dot.
+  ///
+  /// In en, this message translates to:
+  /// **'{mhz} MHz · {band}'**
+  String freqReadoutInBand(String mhz, String band);
+
+  /// Live interpretation under the frequency field when the frequency is in no amateur band. {mhz} is the frequency in MHz.
+  ///
+  /// In en, this message translates to:
+  /// **'{mhz} MHz · outside amateur bands'**
+  String freqReadoutOutsideBands(String mhz);
+
+  /// Live hint under the frequency field when the input cannot be read.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a frequency. Type MHz (14.205) or kHz (14205).'**
+  String get freqReadoutUnreadable;
+
+  /// Hint under the empty frequency field.
+  ///
+  /// In en, this message translates to:
+  /// **'Type MHz (14.205) or kHz (14205).'**
+  String get freqReadoutEmpty;
+
+  /// Screen reader text for the frequency interpretation. {band} is spoken, e.g. '20 metres'.
+  ///
+  /// In en, this message translates to:
+  /// **'{mhz} megahertz, {band}'**
+  String freqReadoutSemanticsInBand(String mhz, String band);
+
+  /// Screen reader text for the frequency interpretation outside amateur bands.
+  ///
+  /// In en, this message translates to:
+  /// **'{mhz} megahertz, outside amateur bands'**
+  String freqReadoutSemanticsOutsideBands(String mhz);
+
   /// Field label. Keep RST.
   ///
   /// In en, this message translates to:

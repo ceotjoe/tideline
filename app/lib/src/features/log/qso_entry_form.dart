@@ -10,6 +10,7 @@ import 'package:tideline/src/design/tokens/metrics.dart';
 import 'package:tideline/src/features/log/qso_entry_controller.dart';
 import 'package:tideline/src/features/log/qso_tile.dart';
 import 'package:tideline/src/services/app_services.dart';
+import 'package:tideline/src/widgets/frequency_field.dart';
 import 'package:tideline/src/widgets/upper_case_formatter.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
@@ -226,24 +227,17 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
               ],
               onChanged: (m) => controller.edit((e) => e.copyWith(mode: m)),
             ),
-            TextField(
+            FrequencyField(
               controller: _freq,
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
-              ),
-              decoration: InputDecoration(
-                labelText: l10n.fieldFrequency,
-                suffixText: l10n.unitMhz,
-                errorText:
-                    errorFor(
-                      EntryIssue.invalidFrequency,
-                      l10n.issueInvalidFrequency,
-                    ) ??
-                    errorFor(
-                      EntryIssue.frequencyOutsideBand,
-                      l10n.issueFrequencyOutsideBand,
-                    ),
-              ),
+              errorText:
+                  errorFor(
+                    EntryIssue.invalidFrequency,
+                    l10n.issueInvalidFrequency,
+                  ) ??
+                  errorFor(
+                    EntryIssue.frequencyOutsideBand,
+                    l10n.issueFrequencyOutsideBand,
+                  ),
               onChanged: controller.setFrequency,
             ),
           ]),
