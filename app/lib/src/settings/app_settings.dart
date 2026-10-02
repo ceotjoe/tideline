@@ -42,6 +42,7 @@ class AppSettings {
     this.relaxedTextSpacing = false,
     this.localeOverride,
     this.forceRtl = false,
+    this.readingFont = false,
   });
 
   /// Parses stored key/value settings, ignoring unknown or invalid values.
@@ -56,6 +57,7 @@ class AppSettings {
       final tag => _parseLocale(tag),
     },
     forceRtl: values[_forceRtl] == 'true',
+    readingFont: values[_readingFont] == 'atkinson',
   );
 
   static const _theme = 'ui.theme';
@@ -63,6 +65,7 @@ class AppSettings {
   static const _textSpacing = 'ui.textSpacing';
   static const _locale = 'ui.locale';
   static const _forceRtl = 'debug.forceRtl';
+  static const _readingFont = 'ui.readingFont';
 
   /// Theme choice.
   final ThemeChoice theme;
@@ -79,6 +82,9 @@ class AppSettings {
   /// Debug-only: lay the UI out right-to-left to test mirroring.
   final bool forceRtl;
 
+  /// Use the Atkinson Hyperlegible reading font.
+  final bool readingFont;
+
   /// Text spacing to apply.
   TextSpacing get textSpacing =>
       relaxedTextSpacing ? TextSpacing.relaxed : TextSpacing.normal;
@@ -90,6 +96,7 @@ class AppSettings {
     _textSpacing: relaxedTextSpacing ? 'relaxed' : 'normal',
     _locale: localeOverride?.toLanguageTag(),
     _forceRtl: forceRtl ? 'true' : null,
+    _readingFont: readingFont ? 'atkinson' : null,
   };
 
   /// A copy with the given fields replaced. Pass [clearLocale] to go back
@@ -101,6 +108,7 @@ class AppSettings {
     Locale? localeOverride,
     bool clearLocale = false,
     bool? forceRtl,
+    bool? readingFont,
   }) => AppSettings(
     theme: theme ?? this.theme,
     density: density ?? this.density,
@@ -109,6 +117,7 @@ class AppSettings {
         ? null
         : (localeOverride ?? this.localeOverride),
     forceRtl: forceRtl ?? this.forceRtl,
+    readingFont: readingFont ?? this.readingFont,
   );
 
   @override
@@ -118,11 +127,18 @@ class AppSettings {
       other.density == density &&
       other.relaxedTextSpacing == relaxedTextSpacing &&
       other.localeOverride == localeOverride &&
-      other.forceRtl == forceRtl;
+      other.forceRtl == forceRtl &&
+      other.readingFont == readingFont;
 
   @override
-  int get hashCode =>
-      Object.hash(theme, density, relaxedTextSpacing, localeOverride, forceRtl);
+  int get hashCode => Object.hash(
+    theme,
+    density,
+    relaxedTextSpacing,
+    localeOverride,
+    forceRtl,
+    readingFont,
+  );
 }
 
 T? _byName<T extends Enum>(List<T> values, String? name) {

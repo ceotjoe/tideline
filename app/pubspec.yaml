@@ -45,6 +45,18 @@ flutter:
   assets:
     # AD1C country files (MIT-style licence in cty-LICENSE.txt), ADR 0013.
     - assets/reference/
+  fonts:
+    # Optional reading font (SIL OFL 1.1, assets/fonts/), ADR 0016.
+    - family: AtkinsonHyperlegible
+      fonts:
+        - asset: assets/fonts/AtkinsonHyperlegible-Regular.ttf
+        - asset: assets/fonts/AtkinsonHyperlegible-Italic.ttf
+          style: italic
+        - asset: assets/fonts/AtkinsonHyperlegible-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/AtkinsonHyperlegible-BoldItalic.ttf
+          weight: 700
+          style: italic
 
 # Windows packaging (dart run msix:create). Signing certificate and
 # publisher are supplied by the release workflow from CI secrets.

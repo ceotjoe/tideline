@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tideline/src/app.dart';
+import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline/src/widgets/app_lock.dart';
 
 import '../support/pump_app.dart';
@@ -62,5 +64,11 @@ void main() {
   testWidgets('without the app lock there is no lock screen', (tester) async {
     await pumpTideline(tester);
     expect(find.text('Tideline is locked'), findsNothing);
+  });
+
+  testWidgets('the reading font changes the whole theme', (tester) async {
+    await pumpTideline(tester, settings: const AppSettings(readingFont: true));
+    final theme = Theme.of(tester.element(find.text('Log QSO')));
+    expect(theme.textTheme.bodyLarge?.fontFamily, readingFontFamily);
   });
 }

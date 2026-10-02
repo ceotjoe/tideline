@@ -256,5 +256,7 @@
   "settingsAppLockHint": "Beim Öffnen von Tideline nach Face ID, Fingerabdruck oder Geräte-PIN fragen.",
   "appLockTitle": "Tideline ist gesperrt",
   "appLockUnlock": "Entsperren",
-  "appLockReason": "Entsperre dein Log"
+  "appLockReason": "Entsperre dein Log",
+  "settingsReadingFont": "Gut lesbare Schrift",
+  "settingsReadingFontHint": "Atkinson Hyperlegible: deutlich unterscheidbare Zeichen wie 0 und O, 1, l und I."
 }

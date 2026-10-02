@@ -1184,5 +1184,13 @@
   "appLockReason": "Unlock your log",
   "@appLockReason": {
     "description": "Reason shown by the system authentication dialog."
+  },
+  "settingsReadingFont": "Easy-to-read font",
+  "@settingsReadingFont": {
+    "description": "Setting: use the Atkinson Hyperlegible font."
+  },
+  "settingsReadingFontHint": "Atkinson Hyperlegible: clearly distinct letters such as 0 and O, 1, l and I.",
+  "@settingsReadingFontHint": {
+    "description": "Setting hint. Keep the font name."
   }
 }

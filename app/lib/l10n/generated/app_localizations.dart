@@ -1640,6 +1640,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unlock your log'**
   String get appLockReason;
+
+  /// Setting: use the Atkinson Hyperlegible font.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy-to-read font'**
+  String get settingsReadingFont;
+
+  /// Setting hint. Keep the font name.
+  ///
+  /// In en, this message translates to:
+  /// **'Atkinson Hyperlegible: clearly distinct letters such as 0 and O, 1, l and I.'**
+  String get settingsReadingFontHint;
 }
 
 class _AppLocalizationsDelegate

@@ -10,6 +10,7 @@ ThemeData buildTidelineTheme({
   required TidelineThemeVariant variant,
   TidelineDensity density = TidelineDensity.comfortable,
   TextSpacing textSpacing = TextSpacing.normal,
+  String? fontFamily,
 }) {
   final colors = TidelineColors.forVariant(variant);
   final metrics = TidelineMetrics(density: density);
@@ -29,7 +30,8 @@ ThemeData buildTidelineTheme({
     outlineVariant: colors.outline,
   );
 
-  TextStyle t(TextStyle s) => textSpacing.apply(s.copyWith(color: colors.text));
+  TextStyle t(TextStyle s) =>
+      textSpacing.apply(s.copyWith(color: colors.text, fontFamily: fontFamily));
   final textTheme = TextTheme(
     displayLarge: t(TidelineType.display),
     headlineMedium: t(TidelineType.title),
@@ -39,7 +41,10 @@ ThemeData buildTidelineTheme({
     bodyMedium: t(TidelineType.body),
     labelLarge: t(TidelineType.label),
     bodySmall: textSpacing.apply(
-      TidelineType.caption.copyWith(color: colors.textSecondary),
+      TidelineType.caption.copyWith(
+        color: colors.textSecondary,
+        fontFamily: fontFamily,
+      ),
     ),
   );
 
@@ -51,6 +56,7 @@ ThemeData buildTidelineTheme({
 
   return ThemeData(
     useMaterial3: true,
+    fontFamily: fontFamily,
     colorScheme: scheme,
     brightness: variant.brightness,
     scaffoldBackgroundColor: colors.background,

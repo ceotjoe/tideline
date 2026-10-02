@@ -971,4 +971,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get appLockReason => 'Entsperre dein Log';
+
+  @override
+  String get settingsReadingFont => 'Gut lesbare Schrift';
+
+  @override
+  String get settingsReadingFontHint =>
+      'Atkinson Hyperlegible: deutlich unterscheidbare Zeichen wie 0 und O, 1, l und I.';
 }

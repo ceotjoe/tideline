@@ -14,6 +14,9 @@ import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline/src/widgets/app_lock.dart';
 
+/// Family name of the bundled reading font (pubspec.yaml).
+const readingFontFamily = 'AtkinsonHyperlegible';
+
 /// The Tideline app.
 class TidelineApp extends ConsumerStatefulWidget {
   /// Creates the app. [router] is injectable for tests.
@@ -51,6 +54,7 @@ class _TidelineAppState extends ConsumerState<TidelineApp> {
       variant: v,
       density: settings.density,
       textSpacing: settings.textSpacing,
+      fontFamily: settings.readingFont ? readingFontFamily : null,
     );
 
     final followSystem = settings.theme == ThemeChoice.system;

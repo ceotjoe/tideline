@@ -65,6 +65,12 @@ class SettingsScreen extends ConsumerWidget {
             },
           ),
           SwitchListTile(
+            title: Text(l10n.settingsReadingFont),
+            subtitle: Text(l10n.settingsReadingFontHint),
+            value: settings.readingFont,
+            onChanged: (v) => save(settings.copyWith(readingFont: v)),
+          ),
+          SwitchListTile(
             title: Text(l10n.settingsTextSpacing),
             value: settings.relaxedTextSpacing,
             onChanged: (v) => save(settings.copyWith(relaxedTextSpacing: v)),

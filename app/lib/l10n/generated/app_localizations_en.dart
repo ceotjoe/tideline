@@ -968,6 +968,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appLockReason => 'Unlock your log';
+
+  @override
+  String get settingsReadingFont => 'Easy-to-read font';
+
+  @override
+  String get settingsReadingFontHint =>
+      'Atkinson Hyperlegible: clearly distinct letters such as 0 and O, 1, l and I.';
 }
 
 /// The translations for English (`en_XA`).
@@ -1948,4 +1955,11 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get appLockReason => '[Ûñļöçķ ýöûŕ ļöĝ······]';
+
+  @override
+  String get settingsReadingFont => '[Éášý-ţö-ŕéáð ƒöñţ·······]';
+
+  @override
+  String get settingsReadingFontHint =>
+      '[Åţķîñšöñ Ĥýþéŕļéĝîƀļé: çļéáŕļý ðîšţîñçţ ļéţţéŕš šûçĥ áš 0 áñð Ö, 1, ļ áñð Î.·······························]';
 }
