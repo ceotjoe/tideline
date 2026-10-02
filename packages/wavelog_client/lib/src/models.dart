@@ -139,3 +139,71 @@ DateTime? _parseServerTime(String value) {
   );
   return parsed?.toUtc();
 }
+
+/// A QSO as returned by `GET /qso` (only the fields Tideline needs to
+/// reconcile; see docs/architecture/wavelog-api.md).
+@immutable
+class WavelogQso {
+  /// Creates a QSO summary.
+  const new({
+    required this.id,
+    required this.stationId,
+    required this.call,
+    required this.time,
+    required this.band,
+    required this.mode,
+    this.submode,
+  });
+
+  /// Parses one element of the `data` array.
+  factory fromJson(Map<String, Object?> json) {
+    final id = _asInt(json['id']);
+    final station = _asInt(json['station_id']);
+    final call = json['call'];
+    final date = json['qso_date'];
+    final time = date is String ? _parseServerTime(date) : null;
+    if (id == null || station == null || call is! String || time == null) {
+      throw const FormatException('qso: missing id, station, call or date');
+    }
+    return WavelogQso(
+      id: id,
+      stationId: station,
+      call: call.toUpperCase(),
+      time: time,
+      band: json['band']?.toString().toLowerCase() ?? '',
+      mode: json['mode']?.toString().toUpperCase() ?? '',
+      submode: _nonEmpty(json['submode'])?.toUpperCase(),
+    );
+  }
+
+  /// Wavelog QSO id.
+  final int id;
+
+  /// `station_profile_id`.
+  final int stationId;
+
+  /// Contacted callsign, upper case.
+  final String call;
+
+  /// Start time (UTC).
+  final DateTime time;
+
+  /// Band, lower case (`20m`).
+  final String band;
+
+  /// Mode, upper case.
+  final String mode;
+
+  /// Submode, upper case, if any.
+  final String? submode;
+}
+
+/// Result of a bulk dry run (`POST /qso` with `dryrun: true`).
+@immutable
+class WavelogDryRun {
+  /// Creates the result.
+  const new({required this.parsed});
+
+  /// How many QSOs the server parsed successfully.
+  final int parsed;
+}

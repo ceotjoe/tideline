@@ -69,6 +69,127 @@ class WavelogClient {
     );
   }
 
+  /// `POST /qso` with a single QSO. [fields] are lower-case ADIF names as
+  /// Wavelog expects them (`qso_date` YYYY-MM-DD, `time_on` HH:MM:SS,
+  /// `freq` in Hz). Returns the new server id.
+  ///
+  /// A duplicate is reported as [WavelogValidationError] with
+  /// `isDuplicate` (ADR 0008).
+  Future<int> createQso({
+    required int stationProfileId,
+    required Map<String, Object> fields,
+  }) async {
+    final body = await _send(
+      _jsonRequest('POST', 'qso', {
+        ...fields,
+        'station_profile_id': stationProfileId,
+      }),
+    );
+    final data = body['data'];
+    final id = data is Map ? int.tryParse('${data['id']}') : null;
+    if (id == null) {
+      throw const WavelogMalformedResponse('qso create: no id');
+    }
+    return id;
+  }
+
+  /// `GET /qso` filtered by callsign, date range (inclusive, UTC dates) and
+  /// station: used to reconcile uncertain uploads. Follows pagination.
+  Future<List<WavelogQso>> findQsos({
+    required String callsign,
+    required DateTime since,
+    required DateTime until,
+    int? stationId,
+  }) async {
+    String day(DateTime d) {
+      final u = d.toUtc();
+      return '${u.year.toString().padLeft(4, '0')}-'
+          '${u.month.toString().padLeft(2, '0')}-'
+          '${u.day.toString().padLeft(2, '0')}';
+    }
+
+    final out = <WavelogQso>[];
+    for (var page = 1; page <= 50; page++) {
+      final body = await _get(
+        'qso',
+        query: {
+          'callsign': callsign,
+          'qso_since': day(since),
+          'qso_until': day(until),
+          'station_id': ?stationId?.toString(),
+          'page': '$page',
+          'per_page': '500',
+        },
+      );
+      final data = body['data'];
+      if (data is! List) {
+        throw const WavelogMalformedResponse('qso list: data is not a list');
+      }
+      out.addAll(
+        await _parse(
+          () => [
+            for (final item in data)
+              if (item is Map<String, Object?>)
+                WavelogQso.fromJson(item)
+              else
+                throw const FormatException('qso: element is not an object'),
+          ],
+        ),
+      );
+      final meta = body['meta'];
+      if (meta is! Map || meta['has_more'] != true) break;
+    }
+    return out;
+  }
+
+  /// `PATCH /qso/{id}` with editable fields only.
+  Future<void> patchQso(int id, Map<String, Object> fields) async {
+    await _send(_jsonRequest('PATCH', 'qso', fields, id: '$id'));
+  }
+
+  /// `DELETE /qso/{id}`. Treats "already gone" (404) as success.
+  Future<void> deleteQso(int id) async {
+    final request = http.Request('DELETE', endpoint.resolve('qso', id: '$id'))
+      ..headers['Authorization'] = 'Bearer $_token'
+      ..headers['Accept'] = 'application/json';
+    try {
+      await _send(request);
+    } on WavelogNotFound {
+      // Deleted already, or never visible to this token: nothing to do.
+    }
+  }
+
+  /// Bulk dry run: lets the server parse [qsos] without storing them.
+  Future<WavelogDryRun> dryRun({
+    required int stationProfileId,
+    required List<Map<String, Object>> qsos,
+  }) async {
+    final body = await _send(
+      _jsonRequest('POST', 'qso', {
+        'station_profile_id': stationProfileId,
+        'qsos': qsos,
+        'dryrun': true,
+      }),
+    );
+    final data = body['data'];
+    final parsed = data is Map ? int.tryParse('${data['parsed']}') : null;
+    if (parsed == null) {
+      throw const WavelogMalformedResponse('dry run: no parsed count');
+    }
+    return WavelogDryRun(parsed: parsed);
+  }
+
+  http.Request _jsonRequest(
+    String method,
+    String resource,
+    Map<String, Object> body, {
+    String? id,
+  }) => http.Request(method, endpoint.resolve(resource, id: id))
+    ..headers['Authorization'] = 'Bearer $_token'
+    ..headers['Accept'] = 'application/json'
+    ..headers['Content-Type'] = 'application/json'
+    ..body = jsonEncode(body);
+
   /// Whether `GET /catalog?topic=contest` exists (Wavelog 3.2+).
   Future<bool> hasContestCatalog() async {
     try {
