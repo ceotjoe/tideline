@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "generic-exchange",
+  "version": 1,
+  "name": "Generic contest (text exchange)",
+  "modes": [
+    "CW",
+    "PHONE",
+    "DIGI"
+  ],
+  "bands": [
+    "160m",
+    "80m",
+    "60m",
+    "40m",
+    "30m",
+    "20m",
+    "17m",
+    "15m",
+    "12m",
+    "10m",
+    "6m",
+    "4m",
+    "2m",
+    "70cm"
+  ],
+  "exchange": {
+    "sent": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "text"
+      }
+    ],
+    "rcvd": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "text"
+      }
+    ]
+  },
+  "dupe": {
+    "per": [
+      "band",
+      "modeCategory"
+    ]
+  },
+  "score": "qsos"
+}

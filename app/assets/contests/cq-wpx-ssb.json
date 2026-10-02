@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "id": "cq-wpx-ssb",
+  "version": 1,
+  "name": "CQ WPX Contest (SSB)",
+  "cabrillo": "CQ-WPX-SSB",
+  "adif": "CQ-WPX-SSB",
+  "modes": [
+    "PHONE"
+  ],
+  "bands": [
+    "160m",
+    "80m",
+    "40m",
+    "20m",
+    "15m",
+    "10m"
+  ],
+  "exchange": {
+    "sent": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "serial"
+      }
+    ],
+    "rcvd": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "serial"
+      }
+    ]
+  },
+  "dupe": {
+    "per": [
+      "band"
+    ]
+  },
+  "points": [
+    {
+      "when": {
+        "sameDxcc": true
+      },
+      "points": 1
+    },
+    {
+      "when": {
+        "sameContinent": false,
+        "band": [
+          "160m",
+          "80m",
+          "40m"
+        ]
+      },
+      "points": 6
+    },
+    {
+      "when": {
+        "sameContinent": false
+      },
+      "points": 3
+    },
+    {
+      "when": {
+        "myContinent": "NA",
+        "theirContinent": "NA",
+        "band": [
+          "160m",
+          "80m",
+          "40m"
+        ]
+      },
+      "points": 4
+    },
+    {
+      "when": {
+        "myContinent": "NA",
+        "theirContinent": "NA"
+      },
+      "points": 2
+    },
+    {
+      "when": {
+        "band": [
+          "160m",
+          "80m",
+          "40m"
+        ]
+      },
+      "points": 2
+    },
+    {
+      "points": 1
+    }
+  ],
+  "multipliers": [
+    {
+      "id": "prefix",
+      "source": "wpxPrefix",
+      "per": "contest"
+    }
+  ],
+  "score": "pointsTimesMultipliers"
+}

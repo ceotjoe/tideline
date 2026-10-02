@@ -1,0 +1,268 @@
+{
+  "schema": 1,
+  "id": "arrl-dx-cw",
+  "version": 1,
+  "name": "ARRL International DX Competition (CW)",
+  "cabrillo": "ARRL-DX-CW",
+  "adif": "ARRL-DX-CW",
+  "modes": [
+    "CW"
+  ],
+  "bands": [
+    "160m",
+    "80m",
+    "40m",
+    "20m",
+    "15m",
+    "10m"
+  ],
+  "exchange": {
+    "sent": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "power"
+      }
+    ],
+    "rcvd": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "state"
+      }
+    ],
+    "variants": [
+      {
+        "when": {
+          "myDxcc": [
+            291,
+            1
+          ]
+        },
+        "sent": [
+          {
+            "kind": "rst"
+          },
+          {
+            "kind": "state",
+            "default": "{MY_STATE}"
+          }
+        ],
+        "rcvd": [
+          {
+            "kind": "rst"
+          },
+          {
+            "kind": "power"
+          }
+        ]
+      }
+    ]
+  },
+  "dupe": {
+    "per": [
+      "band"
+    ]
+  },
+  "points": [
+    {
+      "when": {
+        "myDxcc": [
+          291,
+          1
+        ],
+        "theirDxcc": [
+          291,
+          1
+        ]
+      },
+      "points": 0
+    },
+    {
+      "when": {
+        "myDxcc": [
+          291,
+          1
+        ]
+      },
+      "points": 3
+    },
+    {
+      "when": {
+        "theirDxcc": [
+          291,
+          1
+        ]
+      },
+      "points": 3
+    },
+    {
+      "points": 0
+    }
+  ],
+  "multipliers": [
+    {
+      "id": "dxcc-overseas",
+      "source": "dxcc",
+      "per": "band",
+      "when": {
+        "myDxcc": [
+          291,
+          1
+        ],
+        "theirContinent": [
+          "AF",
+          "AN",
+          "AS",
+          "EU",
+          "OC",
+          "SA"
+        ]
+      }
+    },
+    {
+      "id": "dxcc-na",
+      "source": "dxcc",
+      "per": "band",
+      "when": {
+        "myDxcc": [
+          291,
+          1
+        ],
+        "theirDxcc": [
+          6,
+          17,
+          36,
+          37,
+          43,
+          50,
+          60,
+          62,
+          64,
+          65,
+          66,
+          69,
+          70,
+          72,
+          74,
+          76,
+          77,
+          78,
+          79,
+          80,
+          82,
+          84,
+          86,
+          88,
+          89,
+          90,
+          91,
+          95,
+          96,
+          97,
+          98,
+          105,
+          202,
+          204,
+          211,
+          213,
+          216,
+          237,
+          249,
+          252,
+          277,
+          285,
+          391,
+          516,
+          517,
+          518,
+          519,
+          520
+        ]
+      }
+    },
+    {
+      "id": "state-overseas",
+      "source": "rcvd:state",
+      "per": "band",
+      "when": {
+        "theirDxcc": [
+          291,
+          1
+        ],
+        "myContinent": [
+          "AF",
+          "AN",
+          "AS",
+          "EU",
+          "OC",
+          "SA"
+        ]
+      }
+    },
+    {
+      "id": "state-na",
+      "source": "rcvd:state",
+      "per": "band",
+      "when": {
+        "theirDxcc": [
+          291,
+          1
+        ],
+        "myDxcc": [
+          6,
+          17,
+          36,
+          37,
+          43,
+          50,
+          60,
+          62,
+          64,
+          65,
+          66,
+          69,
+          70,
+          72,
+          74,
+          76,
+          77,
+          78,
+          79,
+          80,
+          82,
+          84,
+          86,
+          88,
+          89,
+          90,
+          91,
+          95,
+          96,
+          97,
+          98,
+          105,
+          202,
+          204,
+          211,
+          213,
+          216,
+          237,
+          249,
+          252,
+          277,
+          285,
+          391,
+          516,
+          517,
+          518,
+          519,
+          520
+        ]
+      }
+    }
+  ],
+  "score": "pointsTimesMultipliers"
+}

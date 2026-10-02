@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "id": "darc-wag",
+  "version": 1,
+  "name": "Worked All Germany (WAG)",
+  "cabrillo": "DARC-WAG",
+  "adif": "WAG",
+  "modes": [
+    "CW",
+    "PHONE"
+  ],
+  "bands": [
+    "80m",
+    "40m",
+    "20m",
+    "15m",
+    "10m"
+  ],
+  "exchange": {
+    "sent": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "serial"
+      }
+    ],
+    "rcvd": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "dok"
+      }
+    ],
+    "variants": [
+      {
+        "when": {
+          "myDxcc": 230
+        },
+        "sent": [
+          {
+            "kind": "rst"
+          },
+          {
+            "kind": "dok",
+            "default": "{MY_DOK}"
+          }
+        ],
+        "rcvd": [
+          {
+            "kind": "rst"
+          },
+          {
+            "kind": "serial",
+            "optional": true
+          },
+          {
+            "kind": "dok",
+            "optional": true
+          }
+        ]
+      }
+    ]
+  },
+  "dupe": {
+    "per": [
+      "band",
+      "modeCategory"
+    ]
+  },
+  "points": [
+    {
+      "when": {
+        "myDxcc": 230,
+        "theirDxcc": 230
+      },
+      "points": 1
+    },
+    {
+      "when": {
+        "myDxcc": 230
+      },
+      "points": 3
+    },
+    {
+      "when": {
+        "theirDxcc": 230
+      },
+      "points": 3
+    },
+    {
+      "points": 0
+    }
+  ],
+  "multipliers": [
+    {
+      "id": "dxcc",
+      "source": "dxcc",
+      "per": "band",
+      "when": {
+        "myDxcc": 230,
+        "sameDxcc": false
+      }
+    },
+    {
+      "id": "dok",
+      "source": "rcvd:dok",
+      "per": "band",
+      "when": {
+        "theirDxcc": 230,
+        "sameDxcc": false
+      }
+    }
+  ],
+  "score": "pointsTimesMultipliers"
+}

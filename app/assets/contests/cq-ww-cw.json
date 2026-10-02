@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "id": "cq-ww-cw",
+  "version": 1,
+  "name": "CQ World Wide DX Contest (CW)",
+  "cabrillo": "CQ-WW-CW",
+  "adif": "CQ-WW-CW",
+  "modes": [
+    "CW"
+  ],
+  "bands": [
+    "160m",
+    "80m",
+    "40m",
+    "20m",
+    "15m",
+    "10m"
+  ],
+  "exchange": {
+    "sent": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "cqZone",
+        "default": "{MY_CQ_ZONE}"
+      }
+    ],
+    "rcvd": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "cqZone"
+      }
+    ]
+  },
+  "dupe": {
+    "per": [
+      "band"
+    ]
+  },
+  "points": [
+    {
+      "when": {
+        "sameDxcc": true
+      },
+      "points": 0
+    },
+    {
+      "when": {
+        "sameContinent": false
+      },
+      "points": 3
+    },
+    {
+      "when": {
+        "myContinent": "NA",
+        "theirContinent": "NA"
+      },
+      "points": 2
+    },
+    {
+      "points": 1
+    }
+  ],
+  "multipliers": [
+    {
+      "id": "zone",
+      "source": "rcvd:cqZone",
+      "per": "band"
+    },
+    {
+      "id": "country",
+      "source": "dxcc",
+      "per": "band"
+    }
+  ],
+  "score": "pointsTimesMultipliers"
+}

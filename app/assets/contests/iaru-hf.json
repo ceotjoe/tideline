@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "iaru-hf",
+  "version": 1,
+  "name": "IARU HF World Championship",
+  "cabrillo": "IARU-HF",
+  "adif": "IARU-HF",
+  "modes": [
+    "CW",
+    "PHONE"
+  ],
+  "bands": [
+    "160m",
+    "80m",
+    "40m",
+    "20m",
+    "15m",
+    "10m"
+  ],
+  "exchange": {
+    "sent": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "ituZone",
+        "default": "{MY_ITU_ZONE}"
+      }
+    ],
+    "rcvd": [
+      {
+        "kind": "rst"
+      },
+      {
+        "kind": "ituZone"
+      }
+    ]
+  },
+  "dupe": {
+    "per": [
+      "band",
+      "modeCategory"
+    ]
+  },
+  "points": [
+    {
+      "when": {
+        "sameDxcc": true
+      },
+      "points": 1
+    },
+    {
+      "when": {
+        "sameContinent": false
+      },
+      "points": 5
+    },
+    {
+      "points": 3
+    }
+  ],
+  "multipliers": [
+    {
+      "id": "itu-zone",
+      "source": "rcvd:ituZone",
+      "per": "bandMode"
+    }
+  ],
+  "score": "pointsTimesMultipliers"
+}

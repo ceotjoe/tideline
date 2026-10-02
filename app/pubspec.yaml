@@ -47,6 +47,8 @@ flutter:
   assets:
     # AD1C country files (MIT-style licence in cty-LICENSE.txt), ADR 0013.
     - assets/reference/
+    # Bundled contest definitions (data, not code), ADR 0018.
+    - assets/contests/
   fonts:
     # Optional reading font (SIL OFL 1.1, assets/fonts/), ADR 0016.
     - family: AtkinsonHyperlegible
