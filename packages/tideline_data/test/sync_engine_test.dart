@@ -380,4 +380,22 @@ void main() {
       JournalEvent.uploaded,
     ]);
   });
+
+  test(
+    'preview counts uploads, local duplicates and the server dry run',
+    () async {
+      final h = await Harness.start();
+      final a = h.qso(atMinute: 1);
+      await h.qsos.log(a);
+      await h.engine.sync(h.accountId);
+      // Two new QSOs: one duplicates the synced one, one is new.
+      await h.qsos.log(h.qso(atMinute: 1));
+      await h.qsos.log(h.qso(atMinute: 2));
+      final p = await h.engine.preview(h.accountId);
+      expect(p.toUpload, 2);
+      expect(p.localDuplicates, 1);
+      expect(p.serverParsed, 2);
+      expect(h.server.qsos, hasLength(1)); // nothing was uploaded
+    },
+  );
 }

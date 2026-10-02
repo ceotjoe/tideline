@@ -37,7 +37,7 @@ class FakeSyncController extends SyncController {
   SyncActivity build() => const SyncIdle();
 
   @override
-  Future<SyncRunResult?> syncNow() async {
+  Future<SyncRunResult?> syncNow({bool reviewed = false}) async {
     runs++;
     return null;
   }
@@ -145,6 +145,17 @@ Future<Pumped> pumpTideline(
           (ref) => Stream.value(const [testStation]),
         ),
         logProvider.overrideWith((ref) => Stream.value(log)),
+        syncCountsProvider.overrideWith(
+          (ref) => Stream.value(
+            {
+              for (final q in log)
+                if (q.status != null) q.status!.state: 0,
+            }..updateAll(
+              (state, _) => log.where((q) => q.status?.state == state).length,
+            ),
+          ),
+        ),
+        accountJournalProvider.overrideWith((ref) => Stream.value(const [])),
         qsoRepositoryProvider.overrideWithValue(qsos),
         dxccProvider.overrideWith((ref) async => testDxcc),
         syncControllerProvider.overrideWith(() => sync),

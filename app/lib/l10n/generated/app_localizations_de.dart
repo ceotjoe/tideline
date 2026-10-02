@@ -28,10 +28,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get logEmptyTitle => 'Noch keine QSOs';
 
   @override
-  String get logEmptyBody =>
-      'Das Loggen kommt mit der nächsten Version. Alles, was du loggst, wird zuerst auf diesem Gerät gespeichert – mit oder ohne Verbindung.';
-
-  @override
   String get syncEmptyTitle => 'Nichts zu synchronisieren';
 
   @override
@@ -149,10 +145,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get commandNextMode => 'Nächste Betriebsart';
-
-  @override
-  String get syncNotYetAvailable =>
-      'Die Synchronisierung kommt mit der nächsten Version.';
 
   @override
   String get keyControl => 'Strg';
@@ -722,4 +714,81 @@ class AppLocalizationsDe extends AppLocalizations {
   String certIssuerLine(String value) {
     return 'Ausgestellt von: $value';
   }
+
+  @override
+  String get syncRunning => 'Synchronisiere mit deinem Wavelog …';
+
+  @override
+  String syncCompleted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs synchronisiert.',
+      one: '1 QSO synchronisiert.',
+      zero: 'Alles ist aktuell.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get syncOffline =>
+      'Dein Wavelog ist gerade nicht erreichbar. Deine QSOs sind auf diesem Gerät sicher und werden später synchronisiert.';
+
+  @override
+  String get syncBlocked =>
+      'Der Token funktioniert nicht mehr. Gib in den Einstellungen einen neuen ein; es geht nichts verloren.';
+
+  @override
+  String get syncRateLimited =>
+      'Dein Wavelog hat um eine Pause gebeten. Die Synchronisierung geht automatisch weiter.';
+
+  @override
+  String syncNeedsReview(int count) {
+    return '$count neue QSOs sind bereit. Bitte prüfe den Upload zuerst.';
+  }
+
+  @override
+  String get actionPreviewUpload => 'Upload-Vorschau';
+
+  @override
+  String get previewTitle => 'Vor dem Upload';
+
+  @override
+  String previewToUpload(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs werden hochgeladen.',
+      one: '1 QSO wird hochgeladen.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String previewDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count sehen nach Duplikaten vorhandener QSOs aus; Wavelog behält jeweils nur eines.',
+      one: '1 sieht nach einem Duplikat eines vorhandenen QSOs aus; Wavelog behält nur eines.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String previewServerParsed(int parsed, int total) {
+    return 'Der Testlauf von Wavelog hat $parsed von $total akzeptiert.';
+  }
+
+  @override
+  String get previewServerUnreachable =>
+      'Wavelog konnte gerade nicht gefragt werden; der Upload prüft trotzdem jedes QSO.';
+
+  @override
+  String get previewSafety =>
+      'Jedes QSO wird vor jedem neuen Versuch mit deinem Wavelog abgeglichen, damit nichts doppelt gesendet wird.';
+
+  @override
+  String get previewUpload => 'Hochladen';
 }

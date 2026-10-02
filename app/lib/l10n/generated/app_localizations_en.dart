@@ -28,10 +28,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logEmptyTitle => 'No QSOs yet';
 
   @override
-  String get logEmptyBody =>
-      'Logging arrives in the next release. Everything you log will be saved on this device first, with or without a connection.';
-
-  @override
   String get syncEmptyTitle => 'Nothing to sync';
 
   @override
@@ -149,9 +145,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commandNextMode => 'Next mode';
-
-  @override
-  String get syncNotYetAvailable => 'Sync arrives in the next release.';
 
   @override
   String get keyControl => 'Ctrl';
@@ -719,6 +712,83 @@ class AppLocalizationsEn extends AppLocalizations {
   String certIssuerLine(String value) {
     return 'Issued by: $value';
   }
+
+  @override
+  String get syncRunning => 'Syncing with your Wavelog…';
+
+  @override
+  String syncCompleted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Synced $count QSOs.',
+      one: 'Synced 1 QSO.',
+      zero: 'Everything is up to date.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get syncOffline =>
+      'Your Wavelog isn\'t reachable right now. Your QSOs are safe on this device and will sync later.';
+
+  @override
+  String get syncBlocked =>
+      'The token no longer works. Enter a new one in Settings; nothing is lost.';
+
+  @override
+  String get syncRateLimited =>
+      'Your Wavelog asked for a pause. Sync continues automatically.';
+
+  @override
+  String syncNeedsReview(int count) {
+    return '$count new QSOs are ready. Please review the upload first.';
+  }
+
+  @override
+  String get actionPreviewUpload => 'Preview upload';
+
+  @override
+  String get previewTitle => 'Before uploading';
+
+  @override
+  String previewToUpload(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs will be uploaded.',
+      one: '1 QSO will be uploaded.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String previewDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count look like duplicates of QSOs you already have; Wavelog will keep only one of each.',
+      one: '1 looks like a duplicate of a QSO you already have; Wavelog will keep only one.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String previewServerParsed(int parsed, int total) {
+    return 'Wavelog\'s test run accepted $parsed of $total.';
+  }
+
+  @override
+  String get previewServerUnreachable =>
+      'Wavelog couldn\'t be asked right now; the upload will check each QSO anyway.';
+
+  @override
+  String get previewSafety =>
+      'Each QSO is checked against your Wavelog before any retry, so nothing is sent twice.';
+
+  @override
+  String get previewUpload => 'Upload';
 }
 
 /// The translations for English (`en_XA`).
@@ -742,10 +812,6 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get logEmptyTitle => '[Ñö ǪŠÖš ýéţ·····]';
-
-  @override
-  String get logEmptyBody =>
-      '[Ļöĝĝîñĝ áŕŕîṽéš îñ ţĥé ñéẋţ ŕéļéášé. Éṽéŕýţĥîñĝ ýöû ļöĝ ŵîļļ ƀé šáṽéð öñ ţĥîš ðéṽîçé ƒîŕšţ, ŵîţĥ öŕ ŵîţĥöûţ á çöññéçţîöñ.·················································]';
 
   @override
   String get syncEmptyTitle => '[Ñöţĥîñĝ ţö šýñç······]';
@@ -865,10 +931,6 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get commandNextMode => '[Ñéẋţ ɱöðé····]';
-
-  @override
-  String get syncNotYetAvailable =>
-      '[Šýñç áŕŕîṽéš îñ ţĥé ñéẋţ ŕéļéášé.··············]';
 
   @override
   String get keyControl => '[Çţŕļ··]';
@@ -1446,4 +1508,81 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   String certIssuerLine(String value) {
     return '[Îššûéð ƀý: ·····]$value';
   }
+
+  @override
+  String get syncRunning => '[Šýñçîñĝ ŵîţĥ ýöûŕ Ŵáṽéļöĝ…···········]';
+
+  @override
+  String syncCompleted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '[Šýñçéð ···]$count[ ǪŠÖš.···]',
+      one: '[Šýñçéð 1 ǪŠÖ.······]',
+      zero: '[Éṽéŕýţĥîñĝ îš ûþ ţö ðáţé.··········]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get syncOffline =>
+      '[Ýöûŕ Ŵáṽéļöĝ îšñ\'ţ ŕéáçĥáƀļé ŕîĝĥţ ñöŵ. Ýöûŕ ǪŠÖš áŕé šáƒé öñ ţĥîš ðéṽîçé áñð ŵîļļ šýñç ļáţéŕ.······································]';
+
+  @override
+  String get syncBlocked =>
+      '[Ţĥé ţöķéñ ñö ļöñĝéŕ ŵöŕķš. Éñţéŕ á ñéŵ öñé îñ Šéţţîñĝš; ñöţĥîñĝ îš ļöšţ.·····························]';
+
+  @override
+  String get syncRateLimited =>
+      '[Ýöûŕ Ŵáṽéļöĝ ášķéð ƒöŕ á þáûšé. Šýñç çöñţîñûéš áûţöɱáţîçáļļý.·························]';
+
+  @override
+  String syncNeedsReview(int count) {
+    return '$count[ ñéŵ ǪŠÖš áŕé ŕéáðý. Þļéášé ŕéṽîéŵ ţĥé ûþļöáð ƒîŕšţ.·····················]';
+  }
+
+  @override
+  String get actionPreviewUpload => '[Þŕéṽîéŵ ûþļöáð······]';
+
+  @override
+  String get previewTitle => '[Ɓéƒöŕé ûþļöáðîñĝ·······]';
+
+  @override
+  String previewToUpload(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš ŵîļļ ƀé ûþļöáðéð.··········]',
+      one: '[1 ǪŠÖ ŵîļļ ƀé ûþļöáðéð.··········]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String previewDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count[ ļööķ ļîķé ðûþļîçáţéš öƒ ǪŠÖš ýöû áļŕéáðý ĥáṽé; Ŵáṽéļöĝ ŵîļļ ķééþ öñļý öñé öƒ éáçĥ.··································]',
+      one: '[1 ļööķš ļîķé á ðûþļîçáţé öƒ á ǪŠÖ ýöû áļŕéáðý ĥáṽé; Ŵáṽéļöĝ ŵîļļ ķééþ öñļý öñé.································]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String previewServerParsed(int parsed, int total) {
+    return '[Ŵáṽéļöĝ\'š ţéšţ ŕûñ áççéþţéð ············]$parsed[ öƒ ··]$total[.·]';
+  }
+
+  @override
+  String get previewServerUnreachable =>
+      '[Ŵáṽéļöĝ çöûļðñ\'ţ ƀé ášķéð ŕîĝĥţ ñöŵ; ţĥé ûþļöáð ŵîļļ çĥéçķ éáçĥ ǪŠÖ áñýŵáý.······························]';
+
+  @override
+  String get previewSafety =>
+      '[Éáçĥ ǪŠÖ îš çĥéçķéð áĝáîñšţ ýöûŕ Ŵáṽéļöĝ ƀéƒöŕé áñý ŕéţŕý, šö ñöţĥîñĝ îš šéñţ ţŵîçé.··································]';
+
+  @override
+  String get previewUpload => '[Ûþļöáð···]';
 }

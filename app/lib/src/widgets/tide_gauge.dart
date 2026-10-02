@@ -86,11 +86,25 @@ class TideGauge extends StatelessWidget {
               alignment: AlignmentDirectional.centerStart,
               child: Padding(
                 padding: EdgeInsetsDirectional.only(start: context.metrics.md),
-                child: Text(
-                  label,
-                  style: Theme.of(context).textTheme.labelLarge,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                // A solid backing keeps the text readable wherever the
+                // water line happens to be.
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: colors.background,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.metrics.sm,
+                      vertical: 2,
+                    ),
+                    child: Text(
+                      label,
+                      style: Theme.of(context).textTheme.labelLarge,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ),
               ),
             ),

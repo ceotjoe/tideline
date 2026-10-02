@@ -24,10 +24,6 @@
   "@logEmptyTitle": {
     "description": "Title shown when the log is empty."
   },
-  "logEmptyBody": "Logging arrives in the next release. Everything you log will be saved on this device first, with or without a connection.",
-  "@logEmptyBody": {
-    "description": "Explanation shown when the log is empty during the foundation phase."
-  },
   "syncEmptyTitle": "Nothing to sync",
   "@syncEmptyTitle": {
     "description": "Title on the sync screen when the queue is empty."
@@ -173,10 +169,6 @@
   "commandNextMode": "Next mode",
   "@commandNextMode": {
     "description": "Command name: cycle the operating mode."
-  },
-  "syncNotYetAvailable": "Sync arrives in the next release.",
-  "@syncNotYetAvailable": {
-    "description": "Message when the user triggers sync in the foundation build."
   },
   "keyControl": "Ctrl",
   "@keyControl": {
@@ -901,5 +893,89 @@
         "type": "String"
       }
     }
+  },
+  "syncRunning": "Syncing with your Wavelog…",
+  "@syncRunning": {
+    "description": "Sync status."
+  },
+  "syncCompleted": "{count, plural, =0{Everything is up to date.} =1{Synced 1 QSO.} other{Synced {count} QSOs.}}",
+  "@syncCompleted": {
+    "description": "Sync result.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncOffline": "Your Wavelog isn't reachable right now. Your QSOs are safe on this device and will sync later.",
+  "@syncOffline": {
+    "description": "Sync result."
+  },
+  "syncBlocked": "The token no longer works. Enter a new one in Settings; nothing is lost.",
+  "@syncBlocked": {
+    "description": "Sync result."
+  },
+  "syncRateLimited": "Your Wavelog asked for a pause. Sync continues automatically.",
+  "@syncRateLimited": {
+    "description": "Sync result."
+  },
+  "syncNeedsReview": "{count} new QSOs are ready. Please review the upload first.",
+  "@syncNeedsReview": {
+    "description": "Sync waiting for the dry-run review.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actionPreviewUpload": "Preview upload",
+  "@actionPreviewUpload": {
+    "description": "Button."
+  },
+  "previewTitle": "Before uploading",
+  "@previewTitle": {
+    "description": "Dialog title."
+  },
+  "previewToUpload": "{count, plural, =1{1 QSO will be uploaded.} other{{count} QSOs will be uploaded.}}",
+  "@previewToUpload": {
+    "description": "Preview line.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "previewDuplicates": "{count, plural, =1{1 looks like a duplicate of a QSO you already have; Wavelog will keep only one.} other{{count} look like duplicates of QSOs you already have; Wavelog will keep only one of each.}}",
+  "@previewDuplicates": {
+    "description": "Preview line.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "previewServerParsed": "Wavelog's test run accepted {parsed} of {total}.",
+  "@previewServerParsed": {
+    "description": "Preview line.",
+    "placeholders": {
+      "parsed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "previewServerUnreachable": "Wavelog couldn't be asked right now; the upload will check each QSO anyway.",
+  "@previewServerUnreachable": {
+    "description": "Preview line."
+  },
+  "previewSafety": "Each QSO is checked against your Wavelog before any retry, so nothing is sent twice.",
+  "@previewSafety": {
+    "description": "Preview reassurance."
+  },
+  "previewUpload": "Upload",
+  "@previewUpload": {
+    "description": "Button."
   }
 }

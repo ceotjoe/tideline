@@ -5,8 +5,10 @@ import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/commands/command_handlers.dart';
 import 'package:tideline/src/commands/command_registry.dart';
 import 'package:tideline/src/commands/shortcuts_overlay.dart';
+import 'package:tideline/src/features/sync/sync_screen.dart';
 import 'package:tideline/src/layout/size_class.dart';
 import 'package:tideline/src/providers.dart';
+import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/tide_gauge.dart';
 
 /// Top-level navigation: a bottom bar on compact windows (thumb reach), a
@@ -58,8 +60,20 @@ class AdaptiveShell extends ConsumerWidget {
         CommandIds.goToLog: () => goTo(0),
         CommandIds.goToSync: () => goTo(1),
         CommandIds.goToSettings: () => goTo(2),
-        CommandIds.syncNow: () => ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(l10n.syncNotYetAvailable))),
+        CommandIds.syncNow: () async {
+          await ref.read(syncControllerProvider.notifier).syncNow();
+          if (!context.mounted) return;
+          final activity = ref.read(syncControllerProvider);
+          if (activity is SyncNeedsReview) {
+            await showUploadPreview(context, ref);
+            return;
+          }
+          final text = describeRun(l10n, activity);
+          if (text != null) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(text)));
+          }
+        },
       },
       // Autofocus so global shortcuts work before anything is tapped.
       child: Focus(

@@ -135,12 +135,6 @@ abstract class AppLocalizations {
   /// **'No QSOs yet'**
   String get logEmptyTitle;
 
-  /// Explanation shown when the log is empty during the foundation phase.
-  ///
-  /// In en, this message translates to:
-  /// **'Logging arrives in the next release. Everything you log will be saved on this device first, with or without a connection.'**
-  String get logEmptyBody;
-
   /// Title on the sync screen when the queue is empty.
   ///
   /// In en, this message translates to:
@@ -350,12 +344,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next mode'**
   String get commandNextMode;
-
-  /// Message when the user triggers sync in the foundation build.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync arrives in the next release.'**
-  String get syncNotYetAvailable;
 
   /// Name of the Control key in shortcut lists.
   ///
@@ -1322,6 +1310,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Issued by: {value}'**
   String certIssuerLine(String value);
+
+  /// Sync status.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing with your Wavelog…'**
+  String get syncRunning;
+
+  /// Sync result.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Everything is up to date.} =1{Synced 1 QSO.} other{Synced {count} QSOs.}}'**
+  String syncCompleted(int count);
+
+  /// Sync result.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Wavelog isn\'t reachable right now. Your QSOs are safe on this device and will sync later.'**
+  String get syncOffline;
+
+  /// Sync result.
+  ///
+  /// In en, this message translates to:
+  /// **'The token no longer works. Enter a new one in Settings; nothing is lost.'**
+  String get syncBlocked;
+
+  /// Sync result.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Wavelog asked for a pause. Sync continues automatically.'**
+  String get syncRateLimited;
+
+  /// Sync waiting for the dry-run review.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} new QSOs are ready. Please review the upload first.'**
+  String syncNeedsReview(int count);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview upload'**
+  String get actionPreviewUpload;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Before uploading'**
+  String get previewTitle;
+
+  /// Preview line.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO will be uploaded.} other{{count} QSOs will be uploaded.}}'**
+  String previewToUpload(int count);
+
+  /// Preview line.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 looks like a duplicate of a QSO you already have; Wavelog will keep only one.} other{{count} look like duplicates of QSOs you already have; Wavelog will keep only one of each.}}'**
+  String previewDuplicates(int count);
+
+  /// Preview line.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog\'s test run accepted {parsed} of {total}.'**
+  String previewServerParsed(int parsed, int total);
+
+  /// Preview line.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog couldn\'t be asked right now; the upload will check each QSO anyway.'**
+  String get previewServerUnreachable;
+
+  /// Preview reassurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Each QSO is checked against your Wavelog before any retry, so nothing is sent twice.'**
+  String get previewSafety;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get previewUpload;
 }
 
 class _AppLocalizationsDelegate

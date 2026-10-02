@@ -182,7 +182,7 @@ void main() {
       await tester.sendKeyEvent(LogicalKeyboardKey.digit2);
       await tester.sendKeyUpEvent(LogicalKeyboardKey.metaLeft);
       await tester.pumpAndSettle();
-      expect(find.text('Nothing to sync'), findsOneWidget);
+      expect(find.text('Sync history'), findsOneWidget);
       debugDefaultTargetPlatformOverride = null;
     });
   });

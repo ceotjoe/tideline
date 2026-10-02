@@ -201,6 +201,79 @@ class QsoRepository {
     );
   }
 
+  /// Number of QSOs per sync state for [accountId] (deleted ones excluded
+  /// unless a server delete is pending).
+  Stream<Map<SyncState, int>> watchCounts(String accountId) {
+    final count = _db.qsoSync.qsoId.count();
+    final query = _db.selectOnly(_db.qsoSync)
+      ..addColumns([_db.qsoSync.state, count])
+      ..where(_db.qsoSync.accountId.equals(accountId))
+      ..groupBy([_db.qsoSync.state]);
+    return query.watch().map(
+      (rows) => {
+        for (final r in rows)
+          SyncState.values.byName(r.read(_db.qsoSync.state)!):
+              r.read(count) ?? 0,
+      },
+    );
+  }
+
+  /// QSOs waiting for their first upload (create), oldest first.
+  Future<List<LoggedQso>> pendingCreates(String accountId) async {
+    final rows =
+        await (_db.select(_db.qsoSync)..where(
+              (s) =>
+                  s.accountId.equals(accountId) &
+                  s.state.equals(SyncState.queued.name) &
+                  s.operation.equals(SyncOperation.create.name),
+            ))
+            .get();
+    final out = <LoggedQso>[];
+    for (final r in rows) {
+      final qso = await (_db.select(
+        _db.qsos,
+      )..where((q) => q.id.equals(r.qsoId))).getSingle();
+      out.add(LoggedQso(qsoFromRow(qso), _statusFromRow(r)));
+    }
+    out.sort((a, b) => a.qso.timeOn.compareTo(b.qso.timeOn));
+    return out;
+  }
+
+  /// Synced QSOs of [accountId] whose duplicate key matches one of [keys].
+  Future<int> countSyncedMatching(
+    String accountId,
+    Set<(String, int, String, String, String?)> keys,
+  ) async {
+    if (keys.isEmpty) return 0;
+    final rows =
+        await (_db.select(_db.qsos).join([
+              innerJoin(
+                _db.qsoSync,
+                _db.qsoSync.qsoId.equalsExp(_db.qsos.id) &
+                    _db.qsoSync.state.equals(SyncState.synced.name),
+              ),
+            ])..where(
+              _db.qsos.accountId.equals(accountId) &
+                  _db.qsos.deletedAt.isNull(),
+            ))
+            .get();
+    var n = 0;
+    for (final r in rows) {
+      final q = qsoFromRow(r.readTable(_db.qsos));
+      final k = q.dupeKey;
+      if (keys.contains((
+        k.call,
+        k.minuteMillis,
+        k.band,
+        k.mode,
+        q.stationProfileId,
+      ))) {
+        n++;
+      }
+    }
+    return n;
+  }
+
   /// QSOs of [accountId] the engine may work on now, oldest first.
   Future<List<LoggedQso>> due(String accountId, int nowMillis) async {
     final rows =

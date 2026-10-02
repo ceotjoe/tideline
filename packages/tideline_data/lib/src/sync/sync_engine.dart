@@ -49,6 +49,31 @@ class _StopRun implements Exception {
   final SyncRunOutcome outcome;
 }
 
+/// What an upload would do, shown before large uploads.
+@immutable
+class SyncPreview {
+  /// Creates a preview.
+  const new({
+    required this.toUpload,
+    required this.localDuplicates,
+    this.serverParsed,
+    this.serverReachable = true,
+  });
+
+  /// QSOs waiting for their first upload.
+  final int toUpload;
+
+  /// Of those, how many look like duplicates of other QSOs in the local log
+  /// (same call, minute, band, mode and station). Wavelog keeps only one.
+  final int localDuplicates;
+
+  /// How many Wavelog's dry run parsed successfully (null if unknown).
+  final int? serverParsed;
+
+  /// Whether the dry run could reach the server.
+  final bool serverReachable;
+}
+
 /// Uploads, verifies, patches and deletes QSOs for one account at a time.
 ///
 /// Resumable and idempotent: every step is persisted through the
@@ -92,6 +117,67 @@ class SyncEngine {
       if (next != null && next != status) {
         await qsos.writeStatus(qsoId, accountId, next);
       }
+    }
+  }
+
+  /// Previews an upload of all pending creates without changing anything:
+  /// a local duplicate check plus Wavelog's bulk dry run.
+  Future<SyncPreview> preview(String accountId) async {
+    final pending = await qsos.pendingCreates(accountId);
+    final keys = <(String, int, String, String, String?)>{};
+    var localDuplicates = 0;
+    for (final item in pending) {
+      final k = item.qso.dupeKey;
+      final key = (
+        k.call,
+        k.minuteMillis,
+        k.band,
+        k.mode,
+        item.qso.stationProfileId,
+      );
+      if (!keys.add(key)) localDuplicates++;
+    }
+    localDuplicates += await qsos.countSyncedMatching(accountId, keys);
+
+    final account = await accounts.find(accountId);
+    final token = await accounts.tokenFor(accountId);
+    if (account == null || token == null || pending.isEmpty) {
+      return SyncPreview(
+        toUpload: pending.length,
+        localDuplicates: localDuplicates,
+        serverReachable: account != null && token != null,
+      );
+    }
+    final client = clientFor(account, token);
+    final stations = {
+      for (final s in await accounts.watchStations(accountId).first)
+        s.id: s.remoteId,
+    };
+    final byStation = <int, List<Map<String, Object>>>{};
+    for (final item in pending) {
+      final remote = stations[item.qso.stationProfileId];
+      if (remote == null) continue;
+      (byStation[remote] ??= []).add(wavelogCreateFields(item.qso));
+    }
+    try {
+      var parsed = 0;
+      for (final MapEntry(key: station, value: list) in byStation.entries) {
+        parsed += (await client.dryRun(
+          stationProfileId: station,
+          qsos: list,
+        )).parsed;
+      }
+      return SyncPreview(
+        toUpload: pending.length,
+        localDuplicates: localDuplicates,
+        serverParsed: parsed,
+      );
+    } on WavelogException {
+      return SyncPreview(
+        toUpload: pending.length,
+        localDuplicates: localDuplicates,
+        serverReachable: false,
+      );
     }
   }
 

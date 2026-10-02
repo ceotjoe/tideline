@@ -70,6 +70,22 @@ final stationsProvider = StreamProvider<List<StationProfile>>((ref) {
   return ref.watch(accountRepositoryProvider).watchStations(account.id);
 });
 
+/// QSO counts per sync state for the active account.
+final syncCountsProvider = StreamProvider<Map<SyncState, int>>((ref) {
+  final account = ref.watch(activeAccountProvider);
+  if (account == null) return Stream.value(const {});
+  return ref.watch(qsoRepositoryProvider).watchCounts(account.id);
+});
+
+/// The sync journal of the active account.
+final accountJournalProvider = StreamProvider<List<JournalEntry>>((ref) {
+  final account = ref.watch(activeAccountProvider);
+  if (account == null) return Stream.value(const []);
+  return ref
+      .watch(journalRepositoryProvider)
+      .watch(accountId: account.id, limit: 100);
+});
+
 /// The log of the active account.
 final logProvider = StreamProvider<List<LoggedQso>>((ref) {
   final account = ref.watch(activeAccountProvider);
@@ -127,6 +143,18 @@ final class SyncRunning extends SyncActivity {
   const new();
 }
 
+/// Many new QSOs are waiting; the user should review the upload first.
+final class SyncNeedsReview extends SyncActivity {
+  /// Creates the state for [count] waiting QSOs.
+  const new(this.count);
+
+  /// QSOs waiting for their first upload.
+  final int count;
+}
+
+/// Uploads larger than this wait for the user's review (dry-run preview).
+const int previewThreshold = 50;
+
 /// Runs sync on the triggers from CLAUDE.md: app foreground, connectivity
 /// regained and manual "Sync now". Never runs in the background on iOS.
 class SyncController extends Notifier<SyncActivity> {
@@ -148,12 +176,22 @@ class SyncController extends Notifier<SyncActivity> {
     return const SyncIdle();
   }
 
-  /// Starts a run for the active account unless one is running.
-  Future<SyncRunResult?> syncNow() async {
+  /// Starts a run for the active account unless one is running. Large
+  /// first uploads wait for review unless [reviewed] is true.
+  Future<SyncRunResult?> syncNow({bool reviewed = false}) async {
     final account = ref.read(activeAccountProvider);
     if (account == null || state is SyncRunning) return null;
-    state = const SyncRunning();
     final engine = ref.read(syncEngineProvider);
+    if (!reviewed) {
+      final waiting =
+          (await ref.read(qsoRepositoryProvider).pendingCreates(account.id))
+              .length;
+      if (waiting > previewThreshold) {
+        state = SyncNeedsReview(waiting);
+        return null;
+      }
+    }
+    state = const SyncRunning();
     try {
       if (!_recovered) {
         await engine.recoverAfterRestart(account.id);
