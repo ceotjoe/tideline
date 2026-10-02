@@ -47,6 +47,8 @@ does not fully understand rather than guessing.
 
 ## Fields
 
+Required keys: `schema`, `id`, `version`, `name`, `modes`, `bands`, `exchange`, `dupe`, `score`. The `points` field is required unless `score` is `qsos`. The `multipliers` field is optional (default empty). Both `modes` and `bands` must not be empty.
+
 | Key | Type | Meaning |
 |---|---|---|
 | `schema` | int | Schema version. Only `1` is valid now. |
@@ -82,38 +84,49 @@ Each element maps to one ADIF field, which is how it is stored on the QSO (ADIF 
 | `name` | `STX_STRING` | `NAME` | letters, ≤ 20 |
 | `text` | `STX_STRING` | `SRX_STRING` | `[A-Z0-9/]{1,12}` |
 
-An element may set `"label"` (an l10n key suffix, e.g. `"label": "age"`), `"default"` (sent side only; may use the
+An element may set `"label"` (an l10n key suffix matching `[a-z][a-zA-Z0-9]{0,31}`, e.g. `"label": "age"`), `"default"` (sent side only; never on `serial`; may use the
 placeholders `{MY_CQ_ZONE}`, `{MY_ITU_ZONE}`, `{MY_GRID4}`, `{MY_STATE}`, `{MY_DOK}`, which come from the station
-profile and session settings) and `"optional": true`.
+profile and session settings; a default without placeholders must itself be valid for its kind) and `"optional": true`.
 
 **Exception:** when one exchange has two elements that store into `STX_STRING` (or `SRX_STRING`), they are joined with
-a single space and split again on Cabrillo export. Each exchange may contain at most one `serial` per side.
+a single space and split again on Cabrillo export. Each exchange may contain at most one `serial` per side. Two elements writing the same ADIF field on one side are rejected, except STX_STRING/SRX_STRING, which are joined.
 
-The complete exchange as typed is also kept in `SRX_STRING`/`STX_STRING` unless that field already holds an element,
-so Wavelog shows the exchange too.
+A variant must set `sent` or `rcvd` or both.
+
+**Normalization:** values are upper-cased and numbers lose leading zeros (`05` → `5`). Grids are normalised and must have 4 or 6 characters. The `name` kind accepts Unicode letters. The `power` kind accepts 1–99999, `KW`, `K` or `QRP`.
+
+**Complete exchange copy:** if no element of a side uses `STX_STRING`/`SRX_STRING`, that field receives all given values of the side in order, space-separated (including report and serial). If any element uses it, no copy is made.
+
+**Reading back from ADIF:** a shared string field (STX_STRING/SRX_STRING) is split on whitespace and assigned in order. A single element takes the whole string. Missing tokens become empty.
 
 ### Predicates (`when`)
 
-All listed keys must hold (AND). Unknown keys are a parse error.
+An empty `when {}` is rejected. All listed keys must hold (AND). Unknown keys are a parse error. Predicate values may be a single value or a list.
 
 | Key | Value | Holds when |
 |---|---|---|
 | `sameDxcc` | bool | My and their DXCC entity are (not) equal. |
 | `sameContinent` | bool | My and their continent are (not) equal. |
 | `myContinent` / `theirContinent` | `AF` `AN` `AS` `EU` `NA` `OC` `SA` or list | Continent is one of these. |
-| `myDxcc` / `theirDxcc` | int or list | DXCC entity number is one of these. |
+| `myDxcc` / `theirDxcc` | int (1–999) or list | DXCC entity number is one of these. |
 | `modeCategory` | `CW` `PHONE` `DIGI` or list | The QSO's mode category. |
 | `band` | band or list | The QSO's band. |
 
 Their DXCC entity and continent come from the offline DXCC resolver (`Dxcc`), with the received exchange taking
 precedence when it carries a zone or DXCC. If a predicate needs data that is unknown, the rule does not match.
 
+### Dupe checks
+
+Calls are compared as typed (upper-cased), so DL1ABC and DL1ABC/P are different calls. The `mode` key in `dupe.per` refers to the ADIF main mode, where USB and LSB are both treated as SSB.
+
 ### Multiplier sources
+
+The multiplier source must be `dxcc`, `wpxPrefix`, `grid4`, `continent` or `rcvd:<kind>`. The kinds `rcvd:rst` and `rcvd:serial` are rejected. Both `rcvd:<kind>` and `grid4` must refer to an element present in some received exchange (base or a variant). Multiplier ids match `[a-z0-9_-]{1,32}` and are unique. The `per` field means `band`, `bandMode` (band + mode category), or `contest`.
 
 | `source` | Value counted |
 |---|---|
 | `dxcc` | DXCC entity number |
-| `wpxPrefix` | CQ WPX prefix rules (`WpxPrefix.of(call)`) |
+| `wpxPrefix` | CQ WPX prefix (portable suffixes /P, /M, /MM, /AM, /QRP, /A, /LH are ignored; LX/DL1ABC → LX0; K1ABC/2 → K2; calls with more than two parts after stripping suffixes have no prefix) |
 | `rcvd:<kind>` | The received value of that exchange element, upper-cased (`rcvd:cqZone`, `rcvd:state`, `rcvd:dok`, …) |
 | `grid4` | First four characters of the received grid |
 | `continent` | Their continent |
@@ -121,10 +134,26 @@ precedence when it carries a zone or DXCC. If a predicate needs data that is unk
 A multiplier counts once per `per` scope. With `when`, it only counts for QSOs matching the predicate (for example,
 ARRL DX: DX stations count `rcvd:state` only from W/VE).
 
+## Validation rules
+
+The parser enforces strict limits:
+- Input size: ≤ 256 KiB (both characters and UTF-8 bytes).
+- Lists: each ≤ 64 elements.
+- Points per rule: 0–1000.
+- Version: 1–1,000,000.
+- Name: 1–120 characters without control characters (Unicode letters allowed).
+- `cabrillo` and `adif` fields: match `[A-Za-z0-9._+-]{1,40}`.
+
+For `pointsTimesMultipliers`, at least one multiplier is required. For `points` and `qsos` scoring modes, no multipliers must be present.
+
 ## Scoring is an estimate
 
 The live score is a **claimed-score estimate** for motivation and strategy. The contest sponsor's log checking is
 authoritative. The UI says so, and the manual repeats it.
+
+## Scoring details
+
+Dupes score 0 points and credit no multipliers. Multiplier credit is independent of points: a 0-point same-country QSO still counts its zone and country. QSOs outside the contest's bands or mode categories are "out of contest": they score 0 points and do not take part in dupe checks. Contest-wide multipliers are attributed to the band of their first QSO in the per-band breakdown.
 
 ## Rates
 
@@ -132,6 +161,8 @@ authoritative. The UI says so, and the manual repeats it.
 - QSOs in the last 10 and 60 minutes, projected to QSOs/hour;
 - the time span of the last 10 and 100 QSOs, as QSOs/hour;
 - the best 60-minute window so far.
+
+The rate over the last n QSOs uses the n−1 intervals between the n-th last and the newest QSO. It is unknown with fewer than n QSOs or a zero time span. Counting windows are (now − w, now]. QSO times after `now` are ignored.
 
 All functions are pure and take a `UtcDateTime now`, so they are tested without a clock.
 
