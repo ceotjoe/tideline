@@ -6,11 +6,19 @@ never makes you wait.
 ## Logging a QSO
 
 1. **Callsign.** Type it in. Letters become upper case automatically. On iPad you can also write with the Apple Pencil.
-   - As you type, Tideline shows the **DXCC entity, continent and CQ/ITU zones**, and whether you **worked the station
-     before**. This works offline, using the built-in country data.
+   - As you type, Tideline shows the **DXCC entity, continent and CQ/ITU zones**. This works offline, using the
+     built-in country data.
+   - It also shows whether you **worked the station before**: a new call, a new band, a new mode, a new combination of
+     band and mode, or already worked (with the date of the first contact). This comes from the worked-before index,
+     which holds your log and, after a sync, the QSOs on your Wavelog server. If it looks wrong (for example after you
+     deleted QSOs in Wavelog), use **Settings → Worked-before index → Rebuild worked-before index**.
 2. **Band, mode and frequency.**
-   - Choose the band and mode, or just type a frequency. `14.205` (MHz) and `14205` (kHz) both work, and the band is
-     chosen for you.
+   - Choose the band and mode, or just type a frequency, and the band is chosen for you. Under the field, Tideline
+     shows how it read your entry, for example "14.205 MHz · 20 m".
+   - With a decimal point (or comma) the number is MHz: `14.205`, `144.300`, `2320.2`.
+   - A whole number is read as whatever lands in an amateur band: `7`, `50` and `144` are MHz, while `14205`, `1840`,
+     `472` (630 m) and `136` (2190 m) are kHz. Numbers of 1800 and more are always kHz, so for microwave bands type a
+     decimal point.
    - Band, mode, frequency and station stay set for the next QSO.
 3. **Reports.** Leave them empty for the usual default: 59 for phone, 599 for CW, −10 for FT8/FT4.
 4. **Time.** The time is always **UTC** and runs live. Choose **Change time** to log an earlier contact, and **Use current

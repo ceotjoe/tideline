@@ -17,6 +17,7 @@
 - [0015](0015-platforms-and-identifiers.md) Platforms, minimum versions and identifiers
 - [0016](0016-phase-2-product-decisions.md) Product decisions for the MVP
 - [0017](0017-adif-import-export.md) ADIF import and export
+- [0018](0018-contest-definitions-as-data.md) Contest mode: definitions as data, local serials, Wavelog sessions
 - [0019](0019-cabrillo-export.md) Cabrillo export of contest sessions
 
 New ADRs start from [0000-template.md](0000-template.md).

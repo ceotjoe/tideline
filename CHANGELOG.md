@@ -8,6 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Contest mode** (ADR 0018).
+  - Contest rules are data files with a strict, fuzz-tested parser. Bundled: CQ WW (SSB, CW), CQ WPX (SSB, CW), ARRL
+    DX (CW, SSB), IARU HF, DARC WAG and two generic contests, checked against the sponsors' rules. Your own
+    definitions can be imported in settings.
+  - Session setup with your exchange and the Cabrillo categories.
+  - A dense, keyboard-first entry screen. Enter logs the QSO or goes to the first missing field; Space and Tab move on.
+    Touch targets stay at least 48 dp.
+  - Serial numbers are taken in the same transaction as the QSO and never reused, even after a delete.
+  - Live hints as icon and text: dupe, worked on other bands, new multiplier, worked before in your log, super check
+    partial and one-character-off suggestions.
+  - Score (labelled as an estimate), multipliers, per-band table and rates (last 10/60 minutes, last 10/100 QSOs, best
+    60 minutes).
+  - Editing and deleting QSOs without leaving contest mode; the sent serial stays fixed.
+  - Phone, tablet-portrait and tablet-landscape layouts; typed input survives rotation and resizing.
+  - New commands with default shortcuts, listed in the shortcuts overlay.
+- **Wavelog contest sessions (3.2+).** A session is created on Wavelog once one of its QSOs is uploaded, its QSOs are
+  linked as they upload and its end time follows the log. A lost answer is reconciled before any retry, so no session is
+  created twice. Older servers and inactive contests keep the session on the device.
 - **Cabrillo export.**
   - Export a contest session as a Cabrillo 3.0 log, running or past, from the contest menu, the shortcut
     (⇧⌘X / Ctrl+Shift+X) and the list of past sessions (ADR 0019).
@@ -16,6 +34,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Contest session status.** The Wavelog state of a session (local, waiting, being checked, on Wavelog) and the reason
   it stays local, as icon and text in the contest screen and the session list.
 - **Cabrillo categories.** Added `CATEGORY-TIME` and the `YL` overlay (Cabrillo 3.0 specification).
+- **Super check partial.** Download MASTER.SCP from an address you can see and change (HTTPS only, at most 8 MiB, only
+  when you ask), or import the file.
+- **Worked-before index.** Built from your log and kept current as you log, filled from your Wavelog log on each sync
+  (at most 10 pages per run), and rebuildable from settings. The normal log shows new call, band, mode or combination.
+- **Frequency entry.** A live reading under the field ("14.205 MHz · 20 m", "472 kHz · 630 m") replaces the fixed MHz
+  suffix. Whole numbers are read as kHz when that lands in an amateur band and MHz does not, so `472`, `136` and `1840`
+  work while `7`, `50` and `144` stay MHz.
 - **Wavelog onboarding.**
   - Server address check, with plain HTTP allowed on the LAN only after an opt-in.
   - Every token permission is explained and checked live.
@@ -46,7 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Offline DXCC** from the bundled AD1C country files.
 - **Mock Wavelog server** with fault injection, and an end-to-end test of the real app against it (iPad simulator, macOS,
   CI).
-- **Manual v0.1** in English and German.
+- **Manual v0.2** in English and German, including the contest mode chapter.
 - **Workspace and CI.**
   - A Dart workspace with the Flutter app (iOS, iPadOS, Android, macOS, Windows; Linux unofficial) and pure-Dart
     packages for the domain, ADIF, the Wavelog client, data and a mock Wavelog server.
@@ -54,9 +79,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Release workflows that sign with CI secrets, plus an SBOM.
 - **Encrypted local database.**
   - SQLite3MultipleCiphers (ChaCha20-Poly1305), with the key in the OS secure store.
-  - Schema v1 covers QSOs (ADIF 3.1.x fields), sync state and journal, contests and serials, activations, reference
-    data, worked-before and peer devices.
-  - Migration harness.
+  - Schema v2 covers QSOs (ADIF 3.1.x fields), sync state and journal, contests and serials, activations, reference
+    data, worked-before and peer devices, plus contest-session sync state and links (v2).
+  - Migration harness, with a tested v1 → v2 migration.
 - **"Low Tide" design system.**
   - Light, dark, sunlight and night-red themes, contrast-tested against WCAG 2.2 AA (AAA for sunlight).
   - Glove mode and extra text spacing.
@@ -73,6 +98,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   threat model, MASVS mapping, privacy statement and security policy.
 
 ### Fixed
+- Commands that share a key on different screens (for example Enter in the log and in contest mode) no longer shadow
+  each other; the command available on the current screen runs.
 - The contest entry's Log button is no longer cut off in tablet-landscape and desktop windows; the action row stays
   pinned below the scrolling fields.
 - Frequencies below 1 MHz are read out in kHz (`472 kHz · 630 m`).
