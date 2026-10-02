@@ -180,6 +180,17 @@ See [ADR 0008](../adr/0008-sync-idempotency-without-server-uuid.md).
     `station_id`. Optional: `comment`, `settings`, `qso_ids`. The contest must be active.
   - `PATCH /contest/{id}` accepts `link_qso_ids` and `unlink_qso_ids` (and keeps `COL_CONTEST_ID` in step).
   - `DELETE /contest/{id}` keeps the QSOs unless `?delete_qsos=true` is passed (which also needs `qso:delete`).
+- **Verified details for the client (Phase 3.5; ✔ `Contest_resource.php`, `Catalog_resource.php`, `Qso_resource.php::index/respond_qsos` on branch `dev`):**
+  - Envelope is `{data, meta}`. Catalog: `data` is a list of `{id, contest, name}`, with `meta.topic`. Without `?topic=` the server lists topics; an unknown topic gives 400. Catalog needs no scope.
+  - Session object: `{id, contest, contest_name, time_start, time_end, station_id, comment, settings, qso_count, created_at, updated_at}`; `settings` is merged over the defaults. `GET /contest/{id}` adds `qso_ids` (ascending). Create (201 + `Location`) and PATCH (200) return the session, plus `linked` (count) and `skipped` (ids) when a link list was sent, and `unlinked` (count) on unlink. The list is not paginated.
+  - `time_end` is **required** on POST (not optional). Accepted format is `YYYY-MM-DD HH:MM` or `HH:MM:SS`; Tideline sends UTC with seconds. Datetimes are returned as `YYYY-MM-DD HH:MM:SS` without a zone, so the client treats them as UTC.
+  - An unknown or inactive contest gives **400 `validation_error`** with `details.field` = `contest` or `contest_id`. A foreign `station_id` or foreign QSO ids give 403 `forbidden`. Unknown `settings` keys give 400 (`details.errors`).
+  - PATCH editable: `contest`/`contest_id`, `time_start`, `time_end`, `station_id`, `comment`, `settings`, `link_qso_ids`, `unlink_qso_ids`. An empty body gives 400. QSOs already in another session are `skipped`, never moved. Re-linking to the same session is a no-op.
+  - DELETE returns 204. `?delete_qsos=true` additionally needs `qso:delete` (403 `insufficient_scope` otherwise).
+  - Clubstations: create/delete/edit-fields need officer level 9 (403 `insufficient_club_permission` expected; code name not checked in the source read).
+  - `GET /qso?format=adif` (✔): `data` = `{exported, lastfetchedid, adif}`; `adif` is **null** when nothing was exported, and `lastfetchedid` then equals `since_id`. `since_id` must be numeric (400). Default `per_page` is 1000 for ADIF, max 5000. `meta` is the normal pagination block (`has_more`). Sorted by ascending id. `ADIF` rows include `COL_CONTEST_ID`.
+  - Active contests seed (✔ `install/assets/install.sql`): `Other` (id 1), `CQ-WPX-CW` (51), `CQ-WW-CW` (54), `CQ-WW-SSB` (56), `DARC-WAEDC-CW` (62), `DARC-WAEDC-SSB` (64). Ids are instance-local.
+  - ? Not verified: exact 404 body of a 3.1.x server for `/catalog` (the client treats any 404 as "not available"), and the 403 code for club members below officer level.
 - **Session settings JSON** (✔ `Contesting_model::session_settings_defaults`):
   - `exchangefields`: a subset of `serial`, `gridsquare`, `exchange`.
   - `copyexchangeto`: `dok`, `locator`, `qth`, `name`, `age`, `state` or `power`.

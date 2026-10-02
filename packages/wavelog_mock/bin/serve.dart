@@ -23,6 +23,7 @@ Future<void> main(List<String> args) async {
           'station:read',
           'contest:read',
           'contest:write',
+          'contest:delete',
         },
       ),
     },

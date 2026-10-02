@@ -67,6 +67,18 @@ final class WavelogValidationError extends WavelogException {
   /// (`details.duplicate`, see ADR 0008).
   bool get isDuplicate =>
       details is Map && (details! as Map).containsKey('duplicate');
+
+  /// The request field the server rejected (`details.field`), if it named
+  /// one. For contest sessions `contest` or `contest_id` means the contest
+  /// is unknown or not activated by the instance admin.
+  String? get rejectedField {
+    final d = details;
+    return d is Map && d['field'] is String ? d['field'] as String : null;
+  }
+
+  /// Whether the server refused the contest (unknown or inactive).
+  bool get isContestRejected =>
+      rejectedField == 'contest' || rejectedField == 'contest_id';
 }
 
 /// 409: conflicting state on the server.

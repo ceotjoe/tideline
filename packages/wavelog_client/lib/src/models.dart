@@ -207,3 +207,181 @@ class WavelogDryRun {
   /// How many QSOs the server parsed successfully.
   final int parsed;
 }
+
+/// One active contest of the instance (`GET /catalog?topic=contest`).
+///
+/// The numeric [id] is instance-local; always address a contest by its
+/// [adifName].
+@immutable
+class WavelogContest {
+  /// Creates a catalog entry.
+  const new({required this.id, required this.adifName, required this.name});
+
+  /// Parses one element of the `data` array of the contest catalog.
+  factory fromJson(Map<String, Object?> json) {
+    final id = _asInt(json['id']);
+    final adifName = _nonEmpty(json['contest']);
+    if (id == null || adifName == null) {
+      throw const FormatException('contest: missing id or contest');
+    }
+    return WavelogContest(
+      id: id,
+      adifName: adifName,
+      name: _nonEmpty(json['name']) ?? adifName,
+    );
+  }
+
+  /// Instance-local catalog id.
+  final int id;
+
+  /// The ADIF contest name (`CQ-WW-SSB`), as stored in `COL_CONTEST_ID`.
+  final String adifName;
+
+  /// Human-readable name.
+  final String name;
+}
+
+/// A contest session (`/contest`).
+@immutable
+class WavelogContestSession {
+  /// Creates a session.
+  const new({
+    required this.id,
+    required this.contestAdifName,
+    required this.contestName,
+    required this.start,
+    required this.end,
+    required this.stationId,
+    required this.comment,
+    required this.settings,
+    required this.qsoCount,
+    this.qsoIds,
+    this.createdAt,
+    this.updatedAt,
+    this.linkedCount,
+    this.skippedQsoIds,
+    this.unlinkedCount,
+  });
+
+  /// Parses a session object. `qso_ids` is only present on `GET /contest/{id}`;
+  /// `linked`, `skipped` and `unlinked` only on create and update responses.
+  factory fromJson(Map<String, Object?> json) {
+    final id = _asInt(json['id']);
+    final contest = _nonEmpty(json['contest']);
+    final start = json['time_start'];
+    final end = json['time_end'];
+    final station = _asInt(json['station_id']);
+    final startTime = start is String ? _parseServerTime(start) : null;
+    final endTime = end is String ? _parseServerTime(end) : null;
+    if (id == null ||
+        contest == null ||
+        station == null ||
+        startTime == null ||
+        endTime == null) {
+      throw const FormatException('contest session: missing required field');
+    }
+    final settings = json['settings'];
+    final createdAt = json['created_at'];
+    final updatedAt = json['updated_at'];
+    return WavelogContestSession(
+      id: id,
+      contestAdifName: contest,
+      contestName: _nonEmpty(json['contest_name']) ?? contest,
+      start: startTime,
+      end: endTime,
+      stationId: station,
+      comment: json['comment']?.toString() ?? '',
+      settings: settings is Map<String, Object?>
+          ? Map.unmodifiable(settings)
+          : const {},
+      qsoCount: _asInt(json['qso_count']) ?? 0,
+      qsoIds: json.containsKey('qso_ids') ? _intList(json['qso_ids']) : null,
+      createdAt: createdAt is String ? _parseServerTime(createdAt) : null,
+      updatedAt: updatedAt is String ? _parseServerTime(updatedAt) : null,
+      linkedCount: _asInt(json['linked']),
+      skippedQsoIds: json.containsKey('skipped')
+          ? _intList(json['skipped'])
+          : null,
+      unlinkedCount: _asInt(json['unlinked']),
+    );
+  }
+
+  /// Server session id.
+  final int id;
+
+  /// ADIF name of the contest (`contest`).
+  final String contestAdifName;
+
+  /// Human-readable contest name (`contest_name`).
+  final String contestName;
+
+  /// Start (UTC, `time_start`).
+  final DateTime start;
+
+  /// End (UTC, `time_end`).
+  final DateTime end;
+
+  /// `station_profile_id` of the session.
+  final int stationId;
+
+  /// Free-text comment (empty if none).
+  final String comment;
+
+  /// Settings merged over the server defaults (unvalidated server data).
+  final Map<String, Object?> settings;
+
+  /// Number of linked QSOs.
+  final int qsoCount;
+
+  /// Ids of linked QSOs, ascending. Only set by `GET /contest/{id}`.
+  final List<int>? qsoIds;
+
+  /// Server creation time (UTC), if reported.
+  final DateTime? createdAt;
+
+  /// Server modification time (UTC), if reported.
+  final DateTime? updatedAt;
+
+  /// Create/patch only: how many QSOs were newly linked.
+  final int? linkedCount;
+
+  /// Create/patch only: QSO ids not linked because they already belong to
+  /// another session.
+  final List<int>? skippedQsoIds;
+
+  /// Patch only: how many links were removed.
+  final int? unlinkedCount;
+}
+
+/// One page of `GET /qso?format=adif`.
+@immutable
+class WavelogAdifPage {
+  /// Creates a page.
+  const new({
+    required this.exported,
+    required this.lastFetchedId,
+    required this.adif,
+    required this.hasMore,
+  });
+
+  /// Number of QSOs in [adif].
+  final int exported;
+
+  /// Highest QSO id in the page, or the requested `since_id` if the page is
+  /// empty. Pass it back as `sinceId` to continue.
+  final int lastFetchedId;
+
+  /// ADIF text (header plus records); empty if nothing was exported.
+  final String adif;
+
+  /// Whether `meta.has_more` says further pages exist for this filter.
+  final bool hasMore;
+}
+
+List<int> _intList(Object? value) {
+  if (value is! List) throw const FormatException('expected a list of ids');
+  return List.unmodifiable([
+    for (final v in value)
+      _asInt(v) ?? (throw const FormatException('id is not an integer')),
+  ]);
+}
