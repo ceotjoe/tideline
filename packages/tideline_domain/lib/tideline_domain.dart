@@ -20,6 +20,7 @@ export 'src/ids/uuid.dart';
 export 'src/ports/secret_store.dart';
 export 'src/qso/qso.dart';
 export 'src/qso/qso_validation.dart';
+export 'src/reference/activation.dart';
 export 'src/reference/activation_rules.dart';
 export 'src/reference/csv_rows.dart';
 export 'src/reference/geo_distance.dart';

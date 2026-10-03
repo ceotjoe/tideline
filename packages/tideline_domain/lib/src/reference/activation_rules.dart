@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:tideline_domain/src/qso/qso.dart';
 import 'package:tideline_domain/src/reference/reference_program.dart';
 import 'package:tideline_domain/src/values/utc_date_time.dart';
 
@@ -50,6 +51,28 @@ final class ActivationRules {
     ),
   };
 
+  /// Reads rules stored by [toJson]. Returns null for anything unusable, so
+  /// callers fall back to `defaultFor` instead of trusting bad data.
+  static ActivationRules? tryFromJson(
+    ReferenceProgram program,
+    Object? json, {
+    int version = 1,
+  }) {
+    if (json is! Map<String, dynamic>) return null;
+    final min = json['minQsos'];
+    final window = ActivationWindow.values.asNameMap()[json['window']];
+    if (min is! int || min < 1 || min > 10000 || window == null) return null;
+    return ActivationRules(
+      program: program,
+      minQsos: min,
+      window: window,
+      version: version,
+    );
+  }
+
+  /// The values to store in `program_rules.rules`.
+  Map<String, Object> toJson() => {'minQsos': minQsos, 'window': window.name};
+
   /// The programme the rules belong to.
   final ReferenceProgram program;
 
@@ -73,6 +96,14 @@ final class ActivationQso {
     required this.band,
     required this.mode,
   });
+
+  /// Takes what progress needs from [qso].
+  factory of(Qso qso) => ActivationQso(
+    time: qso.timeOn,
+    call: qso.call.value,
+    band: qso.band.name,
+    mode: qso.mode.mode,
+  );
 
   /// When the QSO started (UTC).
   final UtcDateTime time;

@@ -80,7 +80,13 @@ Serials are **monotonic and never reused**. A deleted QSO keeps its allocation r
 | Table | Columns |
 |---|---|
 | `activations` | `id` (uuid), `account_id`, `program` (`SOTA`/`POTA`/`WWFF`/`IOTA`/…), `reference`, `my_gridsquare`, `station_profile_id`, `started_at`, `ended_at` |
-| `program_rules` | `program`, `version`, `rules` (JSON: validity threshold, per-band/mode rules) |
+| `program_rules` | `program`, `version`, `rules` (JSON `{"minQsos": int, "window": "utcDay"|"session"}`; a missing or unusable row means the built-in default of the programme) |
+
+Lifecycle: at most one running (`ended_at` null) activation per account. Starting another ends the running one at the new
+start time; reopening one ends the other. A QSO logged in an activation gets `activation_id` plus `MY_POTA_REF` /
+`MY_SOTA_REF` / `MY_WWFF_REF` and `MY_GRIDSQUARE` in its ADIF fields, in the same transaction as the QSO. Values typed on
+the QSO win. The other station's reference (park to park, summit to summit) is the plain `POTA_REF` / `SOTA_REF` /
+`WWFF_REF` field of the QSO. Progress is computed from the live QSOs and the rules, never stored.
 
 ### Reference data
 | Table | Columns |

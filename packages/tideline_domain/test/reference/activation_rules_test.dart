@@ -15,6 +15,7 @@ ActivationQso q(
 );
 
 void main() {
+  rulesJsonTests();
   final pota = ActivationRules.defaultFor(ReferenceProgram.pota);
   final sota = ActivationRules.defaultFor(ReferenceProgram.sota);
 
@@ -89,5 +90,67 @@ void main() {
     expect(p.counted, 0);
     expect(p.remaining, 10);
     expect(p.isValid, isFalse);
+  });
+}
+
+void rulesJsonTests() {
+  group('rules as data', () {
+    test('round trip and rejection of unusable values', () {
+      const rules = ActivationRules(
+        program: ReferenceProgram.sota,
+        minQsos: 6,
+        window: ActivationWindow.utcDay,
+      );
+      final back = ActivationRules.tryFromJson(
+        ReferenceProgram.sota,
+        rules.toJson(),
+      )!;
+      expect(back.minQsos, 6);
+      expect(back.window, ActivationWindow.utcDay);
+      for (final bad in <Object?>[
+        null,
+        'text',
+        <String, Object>{},
+        {'minQsos': 0, 'window': 'utcDay'},
+        {'minQsos': 10001, 'window': 'utcDay'},
+        {'minQsos': '4', 'window': 'utcDay'},
+        {'minQsos': 4, 'window': 'weekly'},
+      ]) {
+        expect(
+          ActivationRules.tryFromJson(ReferenceProgram.sota, bad),
+          isNull,
+          reason: '$bad',
+        );
+      }
+    });
+  });
+
+  group('Activation', () {
+    test('adif fields carry the own reference and grid', () {
+      const a = Activation(
+        id: 'a',
+        accountId: 'acc',
+        program: ReferenceProgram.pota,
+        reference: 'US-0001',
+        startedAt: 1,
+        myGridsquare: 'FN54vh',
+      );
+      expect(a.adifFields, {
+        'MY_POTA_REF': 'US-0001',
+        'MY_GRIDSQUARE': 'FN54vh',
+      });
+      expect(a.isActive, isTrue);
+      expect(
+        const Activation(
+          id: 'b',
+          accountId: 'acc',
+          program: ReferenceProgram.sota,
+          reference: 'G/LD-001',
+          startedAt: 1,
+          endedAt: 2,
+        ).adifFields,
+        {'MY_SOTA_REF': 'G/LD-001'},
+      );
+    });
   });
 }

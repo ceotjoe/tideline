@@ -7,6 +7,7 @@ export 'src/database/encrypted_executor.dart';
 export 'src/database/tables.dart';
 export 'src/database/tideline_database.dart';
 export 'src/repositories/account_repository.dart';
+export 'src/repositories/activation_repository.dart';
 export 'src/repositories/contest_definition_repository.dart';
 export 'src/repositories/contest_session_repository.dart';
 export 'src/repositories/qso_repository.dart';
