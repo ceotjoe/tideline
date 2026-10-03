@@ -161,6 +161,44 @@ void main() {
     }
   });
 
+  group('landscape strip with too little room', () {
+    for (final (keyboard, scale) in [(520.0, 1.0), (400.0, 2.0)]) {
+      testWidgets('Clear and Log stay pinned with a ${keyboard}dp keyboard, '
+          '${scale}x text', (tester) async {
+        const size = TestSizes.tabletLandscapeWide;
+        await pumpTideline(
+          tester,
+          size: size,
+          textScale: scale,
+          log: sampleLog(5),
+        );
+        tester.view.viewInsets = FakeViewPadding(
+          bottom: keyboard * tester.view.devicePixelRatio,
+        );
+        addTearDown(tester.view.resetViewInsets);
+        await tester.pumpAndSettle();
+
+        for (final label in ['Log QSO', 'Clear entry']) {
+          final button = find.text(label);
+          final rect = tester.getRect(button);
+          expect(rect.top, greaterThanOrEqualTo(0), reason: label);
+          expect(
+            rect.bottom,
+            lessThanOrEqualTo(size.height - keyboard),
+            reason: label,
+          );
+          // Not inside any scrollable, so no scroll position can hide them.
+          expect(
+            find.ancestor(of: button, matching: find.byType(Scrollable)),
+            findsNothing,
+            reason: label,
+          );
+        }
+        expect(tester.takeException(), isNull);
+      });
+    }
+  });
+
   group('tablet portrait with the keyboard up', () {
     const keyboard = 360.0; // iPad portrait software keyboard, approx.
     const labels = [
