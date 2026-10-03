@@ -78,17 +78,10 @@ class _LogScreenState extends ConsumerState<LogScreen>
 
     // One key for all variants, so typed input and focus survive a resize
     // or rotation between the layouts.
-    Widget formCard({
-      bool pinActions = false,
-      QsoEntryLayout layout = QsoEntryLayout.stacked,
-    }) => Card(
+    Widget formCard({QsoEntryLayout layout = QsoEntryLayout.stacked}) => Card(
       child: Padding(
         padding: EdgeInsets.all(metrics.md),
-        child: QsoEntryForm(
-          key: _formKey,
-          pinActions: pinActions,
-          layout: layout,
-        ),
+        child: QsoEntryForm(key: _formKey, layout: layout),
       ),
     );
 
@@ -141,45 +134,30 @@ class _LogScreenState extends ConsumerState<LogScreen>
             MediaQuery.sizeOf(context).height;
         body = LayoutBuilder(
           builder: (context, constraints) {
-            if (landscape && constraints.maxWidth >= _stripMinWidth) {
-              // The fields across the full width, the log underneath. When
-              // the keyboard leaves too little height, the fields scroll and
-              // the list keeps a minimum.
-              return Column(
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: (constraints.maxHeight - _minListHeight).clamp(
-                        0,
-                        double.infinity,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(metrics.sm),
-                      child: SingleChildScrollView(
-                        child: formCard(layout: QsoEntryLayout.strip),
-                      ),
+            // Strip in landscape, rows of three otherwise. Either way the
+            // fields come first and the log fills the rest; when the keyboard
+            // leaves too little height the fields scroll and the list keeps
+            // a minimum.
+            final layout = landscape && constraints.maxWidth >= _stripMinWidth
+                ? QsoEntryLayout.strip
+                : QsoEntryLayout.grid;
+            return Column(
+              children: [
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: (constraints.maxHeight - _minListHeight).clamp(
+                      0,
+                      double.infinity,
                     ),
                   ),
-                  const Divider(height: 1),
-                  Expanded(child: list()),
-                ],
-              );
-            }
-            final formWidth = constraints.maxWidth >= 1000 ? 380.0 : 360.0;
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // The fields scroll inside the card; Clear and Log stay
-                // pinned at its bottom, always in reach.
-                SizedBox(
-                  width: formWidth,
                   child: Padding(
-                    padding: EdgeInsets.all(metrics.md),
-                    child: formCard(pinActions: true),
+                    padding: EdgeInsets.all(metrics.sm),
+                    child: layout == QsoEntryLayout.strip
+                        ? SingleChildScrollView(child: formCard(layout: layout))
+                        : formCard(layout: layout),
                   ),
                 ),
-                const VerticalDivider(width: 1),
+                const Divider(height: 1),
                 Expanded(child: list()),
               ],
             );

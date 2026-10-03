@@ -30,27 +30,22 @@ enum QsoEntryLayout {
   /// Three rows across the full width, so that all fields stay visible above
   /// the on-screen keyboard of a tablet in landscape.
   strip,
+
+  /// Fields in rows of up to three, the buttons pinned beneath: a tablet in
+  /// portrait, or a window too narrow for the strip.
+  grid,
 }
 
 /// The QSO entry form. Logging is local and instant: it never waits for the
 /// network.
 class QsoEntryForm extends ConsumerStatefulWidget {
   /// Creates the form.
-  const new({
-    this.pinActions = false,
-    this.layout = QsoEntryLayout.stacked,
-    super.key,
-  });
+  const new({this.layout = QsoEntryLayout.stacked, super.key});
 
   /// The arrangement of the fields. Only the arrangement differs; the
   /// controllers and the entry state are shared, so a switch (rotation)
   /// keeps typed input and focus.
   final QsoEntryLayout layout;
-
-  /// Keeps Clear and Log at the bottom while the fields scroll above them.
-  /// Needs a bounded height (the tablet layouts); phones scroll the whole
-  /// form instead.
-  final bool pinActions;
 
   @override
   ConsumerState<QsoEntryForm> createState() => QsoEntryFormState();
@@ -404,7 +399,39 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
       );
     }
 
-    final fields = FocusTraversalGroup(
+    if (widget.layout == QsoEntryLayout.grid) {
+      return _buildGrid(
+        context,
+        fields: (
+          call: callField,
+          band: bandField,
+          mode: modeField,
+          freq: freqField,
+          rstSent: rstSentField,
+          rstRcvd: rstRcvdField,
+          name: nameField,
+          grid: gridField,
+          comment: commentField,
+          station: stationField,
+        ),
+        time: timeRow,
+        hints: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _DxccHint(call: entry.call),
+            WorkedHintLine(
+              call: entry.call,
+              band: entry.band,
+              mode: entry.mode,
+            ),
+            ?issueText,
+          ],
+        ),
+        actions: (clear: clear, log: log),
+      );
+    }
+
+    return FocusTraversalGroup(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -426,28 +453,85 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
           gap,
           timeRow,
           ?issueText,
-          if (!widget.pinActions) ...[gap, actions],
+          gap,
+          actions,
         ],
       ),
     );
-    if (!widget.pinActions) return fields;
-    // As tall as the fields need; only when they do not fit do they scroll,
-    // with Clear and Log pinned under them.
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+  }
+
+  /// The portrait arrangement: rows of up to three fields. The rows scroll
+  /// only when they do not fit above the keyboard; Clear and Log stay pinned
+  /// beneath them.
+  Widget _buildGrid(
+    BuildContext context, {
+    required _StripFields fields,
+    required Widget time,
+    required Widget hints,
+    required ({Widget clear, Widget log}) actions,
+  }) {
+    final metrics = context.metrics;
+    final gap = SizedBox(width: metrics.md);
+    Widget flex(int weight, Widget child) =>
+        Expanded(flex: weight, child: child);
+    Widget spaced(List<Widget> children) => Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Flexible(
-          child: SingleChildScrollView(
-            // Room for the floating label of the first field, which would
-            // otherwise be clipped at the top of the scroll area.
-            padding: EdgeInsets.only(top: metrics.sm),
-            child: fields,
-          ),
-        ),
-        gap,
-        actions,
+        for (final (i, w) in children.indexed) ...[if (i > 0) gap, w],
       ],
+    );
+    final vgap = SizedBox(height: metrics.sm);
+    final buttonWidth = 130 * MediaQuery.textScalerOf(context).scale(1);
+    return FocusTraversalGroup(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Flexible(
+            child: SingleChildScrollView(
+              // Room for the floating label of the first field.
+              padding: EdgeInsets.only(top: metrics.sm),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  spaced([
+                    flex(3, fields.call),
+                    flex(2, fields.band),
+                    flex(2, fields.mode),
+                  ]),
+                  vgap,
+                  spaced([
+                    flex(3, fields.freq),
+                    flex(2, fields.rstSent),
+                    flex(2, fields.rstRcvd),
+                  ]),
+                  vgap,
+                  spaced([
+                    flex(2, fields.name),
+                    flex(2, fields.grid),
+                    flex(4, fields.comment),
+                  ]),
+                  vgap,
+                  spaced([
+                    if (fields.station case final station?) flex(4, station),
+                    flex(5, time),
+                  ]),
+                  hints,
+                ],
+              ),
+            ),
+          ),
+          vgap,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(width: buttonWidth, child: actions.clear),
+              SizedBox(width: metrics.sm),
+              SizedBox(width: buttonWidth, child: actions.log),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
