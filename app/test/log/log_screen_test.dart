@@ -161,6 +161,56 @@ void main() {
     }
   });
 
+  group('tablet portrait with the keyboard up', () {
+    const keyboard = 360.0; // iPad portrait software keyboard, approx.
+    const labels = [
+      'Callsign',
+      'Band',
+      'Mode',
+      'Frequency',
+      'RST sent',
+      'RST received',
+      'Name',
+      'Locator',
+      'Comment',
+      'Station location',
+    ];
+
+    for (final (size, scale) in [
+      (TestSizes.tabletPortrait, 1.0),
+      (const Size(834, 1210), 1.0),
+      (const Size(1024, 1366), 1.0),
+      (const Size(834, 1210), 1.5),
+    ]) {
+      testWidgets('all fields and buttons stay above it at $size, ${scale}x', (
+        tester,
+      ) async {
+        await pumpTideline(
+          tester,
+          size: size,
+          textScale: scale,
+          log: sampleLog(5),
+        );
+        final dpr = tester.view.devicePixelRatio;
+        tester.view.viewInsets = FakeViewPadding(bottom: keyboard * dpr);
+        addTearDown(tester.view.resetViewInsets);
+        await tester.pumpAndSettle();
+
+        final visibleBottom = size.height - keyboard;
+        for (final label in [...labels, 'Log QSO', 'Clear entry']) {
+          final finder = find.text(label);
+          expect(finder, findsWidgets, reason: label);
+          final rect = tester.getRect(finder.first);
+          expect(rect.top, greaterThanOrEqualTo(0), reason: label);
+          expect(rect.bottom, lessThanOrEqualTo(visibleBottom), reason: label);
+        }
+        // The log stays usable beside the form.
+        expect(find.text('Anna'), findsWidgets);
+        expect(tester.takeException(), isNull);
+      });
+    }
+  });
+
   group('rotation and direction', () {
     testWidgets(
       'typed input survives rotating between landscape and portrait',

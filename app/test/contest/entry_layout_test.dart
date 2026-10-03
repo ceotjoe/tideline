@@ -107,4 +107,51 @@ void main() {
       );
     }
   });
+
+  group('with the keyboard up in portrait', () {
+    const keyboard = 360.0;
+
+    for (final (size, scale) in [
+      (TestSizes.tabletPortrait, 1.0),
+      (const Size(834, 1210), 1.0),
+      (const Size(1024, 1366), 1.0),
+      (const Size(834, 1210), 1.5),
+    ]) {
+      testWidgets('entry, hints and Log stay above it at $size, ${scale}x', (
+        tester,
+      ) async {
+        await pumpContest(
+          tester,
+          size: size,
+          textScale: scale,
+          backend: ContestBackend(),
+        );
+        tester.view.viewInsets = FakeViewPadding(
+          bottom: keyboard * tester.view.devicePixelRatio,
+        );
+        addTearDown(tester.view.resetViewInsets);
+        await tester.pumpAndSettle();
+        await typeCall(tester, 'DL1ABC');
+        await tester.pumpAndSettle();
+
+        final visibleBottom = size.height - keyboard;
+        for (final label in ['Callsign', 'Band', 'Mode', 'Log QSO']) {
+          final finder = find.text(label);
+          expect(finder, findsWidgets, reason: label);
+          final rect = tester.getRect(finder.first);
+          expect(rect.top, greaterThanOrEqualTo(0), reason: label);
+          expect(
+            rect.bottom,
+            lessThanOrEqualTo(visibleBottom),
+            reason: '$label at $rect',
+          );
+        }
+        for (final element in find.byType(ExchangeField).evaluate()) {
+          final rect = tester.getRect(find.byWidget(element.widget));
+          expect(rect.bottom, lessThanOrEqualTo(visibleBottom));
+        }
+        expect(tester.takeException(), isNull);
+      });
+    }
+  });
 }
