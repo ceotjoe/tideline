@@ -81,7 +81,7 @@ void main() {
       expect(find.text('Log QSO'), findsOneWidget);
     });
 
-    testWidgets('tablet landscape: entry, log and context side by side', (
+    testWidgets('tablet landscape: entry strip above the full-width log', (
       tester,
     ) async {
       await pumpTideline(
@@ -89,12 +89,17 @@ void main() {
         size: TestSizes.tabletLandscape,
         log: sampleLog(3),
       );
-      expect(find.textContaining('This works offline'), findsOneWidget);
-      // Selecting a QSO shows it in the third pane, not on a new page.
+      // The log lies below the fields, not beside them.
+      expect(
+        tester.getTopLeft(find.text('Anna').first).dy,
+        greaterThan(tester.getBottomLeft(find.text('Log QSO')).dy),
+      );
+      // A QSO opens over the log (sheet), so the entry form stays put.
       await tester.tap(find.text('Anna').first);
       await tester.pumpAndSettle();
       expect(find.byType(QsoDetail), findsOneWidget);
       expect(find.byType(BackButton), findsNothing);
+      expect(find.text('Log QSO'), findsOneWidget);
     });
 
     testWidgets('phone: a QSO opens on its own page', (tester) async {
@@ -108,6 +113,52 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('QSO details'), findsOneWidget);
     });
+  });
+
+  group('tablet landscape with the keyboard up', () {
+    const keyboard = 400.0; // iPad landscape software keyboard, approx.
+    const labels = [
+      'Callsign',
+      'Band',
+      'Mode',
+      'Frequency',
+      'RST sent',
+      'RST received',
+      'Name',
+      'Locator',
+      'Comment',
+    ];
+
+    for (final (size, scale) in [
+      (const Size(1180, 820), 1.0),
+      (TestSizes.tabletLandscapeWide, 1.0),
+      (const Size(1366, 1024), 1.0),
+      (TestSizes.tabletLandscapeWide, 1.3),
+    ]) {
+      testWidgets('all fields are visible above it at $size, ${scale}x text', (
+        tester,
+      ) async {
+        await pumpTideline(
+          tester,
+          size: size,
+          textScale: scale,
+          log: sampleLog(5),
+        );
+        final dpr = tester.view.devicePixelRatio;
+        tester.view.viewInsets = FakeViewPadding(bottom: keyboard * dpr);
+        addTearDown(tester.view.resetViewInsets);
+        await tester.pumpAndSettle();
+
+        final visibleBottom = size.height - keyboard;
+        for (final label in [...labels, 'Log QSO', 'Clear entry']) {
+          final finder = find.text(label);
+          expect(finder, findsWidgets, reason: label);
+          final rect = tester.getRect(finder.first);
+          expect(rect.top, greaterThanOrEqualTo(0), reason: label);
+          expect(rect.bottom, lessThanOrEqualTo(visibleBottom), reason: label);
+        }
+      });
+    }
   });
 
   group('sync status is explained', () {
