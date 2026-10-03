@@ -10845,6 +10845,19 @@ class $ProgramReferencesTable extends ProgramReferences
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _activeMeta = const VerificationMeta('active');
+  @override
+  late final GeneratedColumn<bool> active = GeneratedColumn<bool>(
+    'active',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("active" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     program,
@@ -10855,6 +10868,7 @@ class $ProgramReferencesTable extends ProgramReferences
     lon,
     validFrom,
     validTo,
+    active,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -10922,6 +10936,12 @@ class $ProgramReferencesTable extends ProgramReferences
         validTo.isAcceptableOrUnknown(data['valid_to']!, _validToMeta),
       );
     }
+    if (data.containsKey('active')) {
+      context.handle(
+        _activeMeta,
+        active.isAcceptableOrUnknown(data['active']!, _activeMeta),
+      );
+    }
     return context;
   }
 
@@ -10963,6 +10983,10 @@ class $ProgramReferencesTable extends ProgramReferences
         DriftSqlType.int,
         data['${effectivePrefix}valid_to'],
       ),
+      active: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}active'],
+      )!,
     );
   }
 
@@ -10982,6 +11006,9 @@ class ProgramReferenceRow extends DataClass
   final double? lon;
   final int? validFrom;
   final int? validTo;
+
+  /// False when the source marks the reference as retired or inactive.
+  final bool active;
   const ProgramReferenceRow({
     required this.program,
     required this.ref,
@@ -10991,6 +11018,7 @@ class ProgramReferenceRow extends DataClass
     this.lon,
     this.validFrom,
     this.validTo,
+    required this.active,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -11013,6 +11041,7 @@ class ProgramReferenceRow extends DataClass
     if (!nullToAbsent || validTo != null) {
       map['valid_to'] = Variable<int>(validTo);
     }
+    map['active'] = Variable<bool>(active);
     return map;
   }
 
@@ -11032,6 +11061,7 @@ class ProgramReferenceRow extends DataClass
       validTo: validTo == null && nullToAbsent
           ? const Value.absent()
           : Value(validTo),
+      active: Value(active),
     );
   }
 
@@ -11049,6 +11079,7 @@ class ProgramReferenceRow extends DataClass
       lon: serializer.fromJson<double?>(json['lon']),
       validFrom: serializer.fromJson<int?>(json['validFrom']),
       validTo: serializer.fromJson<int?>(json['validTo']),
+      active: serializer.fromJson<bool>(json['active']),
     );
   }
   @override
@@ -11063,6 +11094,7 @@ class ProgramReferenceRow extends DataClass
       'lon': serializer.toJson<double?>(lon),
       'validFrom': serializer.toJson<int?>(validFrom),
       'validTo': serializer.toJson<int?>(validTo),
+      'active': serializer.toJson<bool>(active),
     };
   }
 
@@ -11075,6 +11107,7 @@ class ProgramReferenceRow extends DataClass
     Value<double?> lon = const Value.absent(),
     Value<int?> validFrom = const Value.absent(),
     Value<int?> validTo = const Value.absent(),
+    bool? active,
   }) => ProgramReferenceRow(
     program: program ?? this.program,
     ref: ref ?? this.ref,
@@ -11084,6 +11117,7 @@ class ProgramReferenceRow extends DataClass
     lon: lon.present ? lon.value : this.lon,
     validFrom: validFrom.present ? validFrom.value : this.validFrom,
     validTo: validTo.present ? validTo.value : this.validTo,
+    active: active ?? this.active,
   );
   ProgramReferenceRow copyWithCompanion(ProgramReferencesCompanion data) {
     return ProgramReferenceRow(
@@ -11095,6 +11129,7 @@ class ProgramReferenceRow extends DataClass
       lon: data.lon.present ? data.lon.value : this.lon,
       validFrom: data.validFrom.present ? data.validFrom.value : this.validFrom,
       validTo: data.validTo.present ? data.validTo.value : this.validTo,
+      active: data.active.present ? data.active.value : this.active,
     );
   }
 
@@ -11108,14 +11143,24 @@ class ProgramReferenceRow extends DataClass
           ..write('lat: $lat, ')
           ..write('lon: $lon, ')
           ..write('validFrom: $validFrom, ')
-          ..write('validTo: $validTo')
+          ..write('validTo: $validTo, ')
+          ..write('active: $active')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(program, ref, name, region, lat, lon, validFrom, validTo);
+  int get hashCode => Object.hash(
+    program,
+    ref,
+    name,
+    region,
+    lat,
+    lon,
+    validFrom,
+    validTo,
+    active,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -11127,7 +11172,8 @@ class ProgramReferenceRow extends DataClass
           other.lat == this.lat &&
           other.lon == this.lon &&
           other.validFrom == this.validFrom &&
-          other.validTo == this.validTo);
+          other.validTo == this.validTo &&
+          other.active == this.active);
 }
 
 class ProgramReferencesCompanion extends UpdateCompanion<ProgramReferenceRow> {
@@ -11139,6 +11185,7 @@ class ProgramReferencesCompanion extends UpdateCompanion<ProgramReferenceRow> {
   final Value<double?> lon;
   final Value<int?> validFrom;
   final Value<int?> validTo;
+  final Value<bool> active;
   final Value<int> rowid;
   const ProgramReferencesCompanion({
     this.program = const Value.absent(),
@@ -11149,6 +11196,7 @@ class ProgramReferencesCompanion extends UpdateCompanion<ProgramReferenceRow> {
     this.lon = const Value.absent(),
     this.validFrom = const Value.absent(),
     this.validTo = const Value.absent(),
+    this.active = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ProgramReferencesCompanion.insert({
@@ -11160,6 +11208,7 @@ class ProgramReferencesCompanion extends UpdateCompanion<ProgramReferenceRow> {
     this.lon = const Value.absent(),
     this.validFrom = const Value.absent(),
     this.validTo = const Value.absent(),
+    this.active = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : program = Value(program),
        ref = Value(ref),
@@ -11173,6 +11222,7 @@ class ProgramReferencesCompanion extends UpdateCompanion<ProgramReferenceRow> {
     Expression<double>? lon,
     Expression<int>? validFrom,
     Expression<int>? validTo,
+    Expression<bool>? active,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -11184,6 +11234,7 @@ class ProgramReferencesCompanion extends UpdateCompanion<ProgramReferenceRow> {
       if (lon != null) 'lon': lon,
       if (validFrom != null) 'valid_from': validFrom,
       if (validTo != null) 'valid_to': validTo,
+      if (active != null) 'active': active,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -11197,6 +11248,7 @@ class ProgramReferencesCompanion extends UpdateCompanion<ProgramReferenceRow> {
     Value<double?>? lon,
     Value<int?>? validFrom,
     Value<int?>? validTo,
+    Value<bool>? active,
     Value<int>? rowid,
   }) {
     return ProgramReferencesCompanion(
@@ -11208,6 +11260,7 @@ class ProgramReferencesCompanion extends UpdateCompanion<ProgramReferenceRow> {
       lon: lon ?? this.lon,
       validFrom: validFrom ?? this.validFrom,
       validTo: validTo ?? this.validTo,
+      active: active ?? this.active,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -11239,6 +11292,9 @@ class ProgramReferencesCompanion extends UpdateCompanion<ProgramReferenceRow> {
     if (validTo.present) {
       map['valid_to'] = Variable<int>(validTo.value);
     }
+    if (active.present) {
+      map['active'] = Variable<bool>(active.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -11256,6 +11312,7 @@ class ProgramReferencesCompanion extends UpdateCompanion<ProgramReferenceRow> {
           ..write('lon: $lon, ')
           ..write('validFrom: $validFrom, ')
           ..write('validTo: $validTo, ')
+          ..write('active: $active, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -13048,6 +13105,10 @@ abstract class _$TidelineDatabase extends GeneratedDatabase {
     'sync_journal_account_at',
     'CREATE INDEX sync_journal_account_at ON sync_journal (account_id, at)',
   );
+  late final Index programReferencesPosition = Index(
+    'program_references_position',
+    'CREATE INDEX program_references_position ON program_references (program, lat, lon)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -13079,6 +13140,7 @@ abstract class _$TidelineDatabase extends GeneratedDatabase {
     qsosContestSession,
     qsoSyncAccountState,
     syncJournalAccountAt,
+    programReferencesPosition,
   ];
 }
 
@@ -21669,6 +21731,7 @@ typedef $$ProgramReferencesTableCreateCompanionBuilder =
       Value<double?> lon,
       Value<int?> validFrom,
       Value<int?> validTo,
+      Value<bool> active,
       Value<int> rowid,
     });
 typedef $$ProgramReferencesTableUpdateCompanionBuilder =
@@ -21681,6 +21744,7 @@ typedef $$ProgramReferencesTableUpdateCompanionBuilder =
       Value<double?> lon,
       Value<int?> validFrom,
       Value<int?> validTo,
+      Value<bool> active,
       Value<int> rowid,
     });
 
@@ -21730,6 +21794,11 @@ class $$ProgramReferencesTableFilterComposer
 
   ColumnFilters<int> get validTo => $composableBuilder(
     column: $table.validTo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get active => $composableBuilder(
+    column: $table.active,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -21782,6 +21851,11 @@ class $$ProgramReferencesTableOrderingComposer
     column: $table.validTo,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get active => $composableBuilder(
+    column: $table.active,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ProgramReferencesTableAnnotationComposer
@@ -21816,6 +21890,9 @@ class $$ProgramReferencesTableAnnotationComposer
 
   GeneratedColumn<int> get validTo =>
       $composableBuilder(column: $table.validTo, builder: (column) => column);
+
+  GeneratedColumn<bool> get active =>
+      $composableBuilder(column: $table.active, builder: (column) => column);
 }
 
 class $$ProgramReferencesTableTableManager
@@ -21866,6 +21943,7 @@ class $$ProgramReferencesTableTableManager
                 Value<double?> lon = const Value.absent(),
                 Value<int?> validFrom = const Value.absent(),
                 Value<int?> validTo = const Value.absent(),
+                Value<bool> active = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ProgramReferencesCompanion(
                 program: program,
@@ -21876,6 +21954,7 @@ class $$ProgramReferencesTableTableManager
                 lon: lon,
                 validFrom: validFrom,
                 validTo: validTo,
+                active: active,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -21888,6 +21967,7 @@ class $$ProgramReferencesTableTableManager
                 Value<double?> lon = const Value.absent(),
                 Value<int?> validFrom = const Value.absent(),
                 Value<int?> validTo = const Value.absent(),
+                Value<bool> active = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ProgramReferencesCompanion.insert(
                 program: program,
@@ -21898,6 +21978,7 @@ class $$ProgramReferencesTableTableManager
                 lon: lon,
                 validFrom: validFrom,
                 validTo: validTo,
+                active: active,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

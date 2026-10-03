@@ -10,6 +10,7 @@ export 'src/repositories/account_repository.dart';
 export 'src/repositories/contest_definition_repository.dart';
 export 'src/repositories/contest_session_repository.dart';
 export 'src/repositories/qso_repository.dart';
+export 'src/repositories/reference_pack_store.dart';
 export 'src/repositories/scp_store.dart';
 export 'src/repositories/settings_store.dart';
 export 'src/repositories/shortcut_binding_store.dart';

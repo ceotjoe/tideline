@@ -85,10 +85,10 @@ Serials are **monotonic and never reused**. A deleted QSO keeps its allocation r
 ### Reference data
 | Table | Columns |
 |---|---|
-| `reference_packs` | `id`, `kind` (`dxcc`/`sota`/`pota`/`wwff`/`iota`/`scp`), `version`, `source_url`, `sha256`, `fetched_at`, `region_filter`, `licence_note` |
+| `reference_packs` | `id` (= `kind` for SOTA/POTA/WWFF), `kind` (`dxcc`/`sota`/`pota`/`wwff`/`iota`/`scp`), `version`, `source_url`, `sha256`, `fetched_at`, `region_filter`, `licence_note` |
 | `dxcc_entities` | `dxcc`, `name`, `prefix`, `cqz`, `ituz`, `cont`, `lat`, `lon`, `deleted` |
 | `dxcc_prefixes` | `prefix_or_call`, `exact` (bool), `dxcc`, `cqz_override`, `ituz_override` |
-| `program_references` | `program`, `ref`, `name`, `region`, `lat`, `lon`, `valid_from`, `valid_to` |
+| `program_references` | `program`, `ref`, `name`, `region`, `lat`, `lon`, `valid_from`, `valid_to`, `active` (schema v3; index on `program, lat, lon` for nearest-reference queries) |
 | `scp_calls` | `call` |
 
 ### worked_before

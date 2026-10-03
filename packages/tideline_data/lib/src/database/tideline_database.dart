@@ -40,7 +40,7 @@ class TidelineDatabase extends _$TidelineDatabase {
   /// Current schema version. Every change bumps it, adds a schema dump
   /// (`tool/dump_schema.sh`) and a tested migration step.
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -61,6 +61,15 @@ class TidelineDatabase extends _$TidelineDatabase {
           schema.contestSessions.remoteErrorKey,
         );
         await m.createTable(schema.contestLinks);
+      },
+      from2To3: (m, schema) async {
+        // Reference packs: retired references stay searchable but are
+        // flagged, and nearest-reference queries get a position index.
+        await m.addColumn(
+          schema.programReferences,
+          schema.programReferences.active,
+        );
+        await m.createIndex(schema.programReferencesPosition);
       },
     ),
     beforeOpen: (details) async {

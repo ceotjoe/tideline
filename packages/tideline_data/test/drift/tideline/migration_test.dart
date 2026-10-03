@@ -8,6 +8,7 @@ import 'generated/schema.dart';
 
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
+import 'generated/schema_v3.dart' as v3;
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -107,6 +108,39 @@ void main() {
           final allocations = await newDb.select(newDb.serialAllocations).get();
           expect(allocations.single.serial, 1);
           expect(await newDb.select(newDb.contestLinks).get(), isEmpty);
+        },
+      );
+    },
+  );
+
+  test(
+    'migration from v2 to v3 keeps references and marks them active',
+    () async {
+      const row = v2.ProgramReferencesData(
+        program: 'POTA',
+        ref: 'US-0001',
+        name: 'Acadia National Park',
+        region: 'US-ME',
+        lat: 44.31,
+        lon: -68.2034,
+        validFrom: 1000,
+      );
+      await verifier.testWithDataIntegrity(
+        oldVersion: 2,
+        newVersion: 3,
+        createOld: v2.DatabaseAtV2.new,
+        createNew: v3.DatabaseAtV3.new,
+        openTestedDatabase: TidelineDatabase.new,
+        createItems: (batch, oldDb) {
+          batch.insert(oldDb.programReferences, row);
+        },
+        validateItems: (newDb) async {
+          final rows = await newDb.select(newDb.programReferences).get();
+          expect(rows, hasLength(1));
+          expect(rows.single.ref, 'US-0001');
+          expect(rows.single.name, 'Acadia National Park');
+          expect(rows.single.validFrom, 1000);
+          expect(rows.single.active, 1);
         },
       );
     },

@@ -402,6 +402,10 @@ class DxccPrefixes extends Table {
 
 /// Award program references (summits, parks, …).
 @DataClassName('ProgramReferenceRow')
+@TableIndex(
+  name: 'program_references_position',
+  columns: {#program, #lat, #lon},
+)
 class ProgramReferences extends Table {
   TextColumn get program => text()();
   TextColumn get ref => text()();
@@ -411,6 +415,9 @@ class ProgramReferences extends Table {
   RealColumn get lon => real().nullable()();
   IntColumn get validFrom => integer().nullable()();
   IntColumn get validTo => integer().nullable()();
+
+  /// False when the source marks the reference as retired or inactive.
+  BoolColumn get active => boolean().withDefault(const Constant(true))();
 
   @override
   Set<Column<Object>> get primaryKey => {program, ref};
