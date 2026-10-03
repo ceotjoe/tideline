@@ -20,5 +20,6 @@
 - [0018](0018-contest-definitions-as-data.md) Contest mode: definitions as data, local serials, Wavelog sessions
 - [0019](0019-cabrillo-export.md) Cabrillo export of contest sessions
 - [0020](0020-landscape-entry-strip.md) Entry strip for the log screen in landscape
+- [0021](0021-reference-packs-and-activations.md) Reference packs and activation sessions
 
 New ADRs start from [0000-template.md](0000-template.md).
