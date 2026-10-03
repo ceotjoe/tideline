@@ -21,8 +21,8 @@
 - **The text equivalent stays.** The frequency reading ("14.205 MHz · 20 m") moves out of the narrow frequency column
   into the third row (`FrequencyReadout`); it is still shown for every layout.
 - **Room for the keyboard.** While the keyboard is up in landscape the app bar is hidden (the tide gauge stays). The
-  strip is capped at the body height minus 96 dp; if it still does not fit (Split View, very large text) it scrolls and
-  the list keeps a minimum height. Keyboard state comes from the view's insets, because the scaffolds above consume
+  strip is capped at the body height minus 96 dp; if it still does not fit (Split View, very large text) its rows scroll,
+  Clear and Log stay pinned, and the list keeps a minimum height. Keyboard state comes from the view's insets, because the scaffolds above consume
   `MediaQuery.viewInsets`.
 - **No third pane.** The context panel is removed: the DXCC and worked-before hints are the one-line hints in row 3.
   QSO details open in a bottom sheet on every non-compact window, so the form never moves; phones still use a page.
@@ -47,5 +47,6 @@
   live hints and the sent exchange. Pinned below: the frequency reading and the buttons, so Log never sits inside a
   scrollable. The recent QSOs and the score panel share the space under the strip. Keyboard detection is the shared
   `KeyboardAware` mixin.
-- The log screen's strip scrolls as a whole in the fallback case, buttons included. Pinning its buttons like the
-  contest's is a possible follow-up.
+- **Buttons stay pinned in the fallback** (added 2026-10-03). In the strip, the grid and the contest strip alike, the
+  rows and hints scroll when the keyboard leaves too little height, while Clear and Log stay below them and never sit
+  inside a scrollable (test, down to a 520 dp keyboard and at 2× text).

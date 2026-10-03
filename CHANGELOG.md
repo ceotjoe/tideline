@@ -103,6 +103,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   without scrolling; the top bar hides while the keyboard is up. QSO details open in a sheet instead of a third column,
   and the separate context column is gone (the DXCC and worked-before hints stay in the entry). The frequency reading
   moves into the third row of the strip.
+- **Clear and Log stay in reach.** In the landscape strip they are now pinned below the fields, like in the portrait
+  grid and the contest strip, so they remain visible when the keyboard leaves very little room.
 - **Log screen in portrait.** On tablets in portrait the fields are rows of up to three over the log instead of a
   narrow column beside it, with Clear and Log pinned. With the keyboard up, everything stays visible. The contest
   screen already fit in portrait; tests now cover it.
