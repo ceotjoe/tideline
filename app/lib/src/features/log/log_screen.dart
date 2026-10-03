@@ -16,6 +16,7 @@ import 'package:tideline/src/layout/size_class.dart';
 import 'package:tideline/src/routing/routes.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/empty_state.dart';
+import 'package:tideline/src/widgets/keyboard_aware.dart';
 
 /// The logging screen: entry, log and context, adapted to the window.
 class LogScreen extends ConsumerStatefulWidget {
@@ -27,11 +28,8 @@ class LogScreen extends ConsumerStatefulWidget {
 }
 
 class _LogScreenState extends ConsumerState<LogScreen>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, KeyboardAware {
   final _formKey = GlobalKey<QsoEntryFormState>();
-
-  /// Whether the on-screen keyboard is showing.
-  bool _keyboardUp = false;
 
   /// The body needs this much width, and the window must be wider than tall,
   /// for the entry strip (a tablet in landscape).
@@ -39,26 +37,6 @@ class _LogScreenState extends ConsumerState<LogScreen>
 
   /// The list keeps at least this much height beside the entry strip.
   static const double _minListHeight = 96;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  // Read from the view, not MediaQuery: the Scaffolds above consume the
-  // inset when they resize their bodies.
-  @override
-  void didChangeMetrics() {
-    final up = View.of(context).viewInsets.bottom > 0;
-    if (up != _keyboardUp) setState(() => _keyboardUp = up);
-  }
 
   void _open(BuildContext context, String id) {
     if (SizeClass.of(context) != SizeClass.compact) {
@@ -210,7 +188,7 @@ class _LogScreenState extends ConsumerState<LogScreen>
     }
 
     final hideAppBar =
-        _keyboardUp &&
+        keyboardUp &&
         size != SizeClass.compact &&
         MediaQuery.sizeOf(context).width > MediaQuery.sizeOf(context).height;
 

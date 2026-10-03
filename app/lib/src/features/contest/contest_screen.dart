@@ -17,11 +17,14 @@ import 'package:tideline/src/features/contest/contest_recent_list.dart';
 import 'package:tideline/src/features/contest/contest_setup_screen.dart';
 import 'package:tideline/src/features/contest/contest_spec.dart';
 import 'package:tideline/src/features/contest/contest_sync_status.dart';
+import 'package:tideline/src/features/log/qso_entry_form.dart'
+    show QsoEntryLayout;
 import 'package:tideline/src/layout/size_class.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/routing/routes.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/empty_state.dart';
+import 'package:tideline/src/widgets/keyboard_aware.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
@@ -110,7 +113,15 @@ class ContestScreen extends ConsumerStatefulWidget {
   ConsumerState<ContestScreen> createState() => _ContestScreenState();
 }
 
-class _ContestScreenState extends ConsumerState<ContestScreen> {
+class _ContestScreenState extends ConsumerState<ContestScreen>
+    with WidgetsBindingObserver, KeyboardAware {
+  /// The body needs this much width, and the window must be wider than
+  /// tall, for the entry strip (a tablet in landscape).
+  static const double _stripMinWidth = 900;
+
+  /// The recent list keeps at least this much height beside the strip.
+  static const double _minListHeight = 96;
+
   // Keeps the entry panel's state when the layout changes.
   final _entryKey = GlobalKey<ContestEntryPanelState>();
 
@@ -169,21 +180,26 @@ class _ContestScreenState extends ConsumerState<ContestScreen> {
         ref.watch(ratesPanelOpenProvider) ?? size.isAtLeast(SizeClass.medium);
     final entryController = ref.read(contestEntryProvider.notifier);
 
-    final entryCard = Card(
+    // One key for all layouts, so typed input and focus survive a rotation.
+    Widget entryCard({QsoEntryLayout layout = QsoEntryLayout.stacked}) => Card(
       child: Padding(
         padding: EdgeInsets.all(metrics.md),
         child: ContestEntryPanel(
           key: _entryKey,
+          layout: layout,
           onEditLast: ref.read(contestEditProvider.notifier).beginLast,
         ),
       ),
     );
 
+    final landscape =
+        MediaQuery.sizeOf(context).width > MediaQuery.sizeOf(context).height;
+
     final bottomInset = MediaQuery.paddingOf(context).bottom;
 
     final Widget body;
     if (size.isAtLeast(SizeClass.expanded)) {
-      body = Row(
+      final sideBySide = Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
@@ -197,7 +213,7 @@ class _ContestScreenState extends ConsumerState<ContestScreen> {
                     // The card scrolls its fields and pins the Log row.
                     child: Padding(
                       padding: EdgeInsets.all(metrics.sm),
-                      child: entryCard,
+                      child: entryCard(),
                     ),
                   ),
                   Expanded(
@@ -226,12 +242,68 @@ class _ContestScreenState extends ConsumerState<ContestScreen> {
           ],
         ],
       );
+      body = LayoutBuilder(
+        builder: (context, constraints) {
+          if (!landscape || constraints.maxWidth < _stripMinWidth) {
+            return sideBySide;
+          }
+          // Entry across the full width, so everything stays visible above
+          // the keyboard; recent QSOs and the score panel share the rest.
+          return Column(
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: (constraints.maxHeight - _minListHeight).clamp(
+                    0,
+                    double.infinity,
+                  ),
+                ),
+                // The card scrolls its fields and pins the Log row.
+                child: Padding(
+                  padding: EdgeInsets.all(metrics.sm),
+                  child: entryCard(layout: QsoEntryLayout.strip),
+                ),
+              ),
+              const Divider(height: 1),
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: _SectionTitle(l10n.contestRecentTitle),
+                          ),
+                          const ContestRecentSliver(),
+                          SliverToBoxAdapter(
+                            child: SizedBox(height: bottomInset),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (open) ...[
+                      const VerticalDivider(width: 1),
+                      SizedBox(
+                        width: metrics.contestSideWidth,
+                        child: const SingleChildScrollView(
+                          child: ContestRatesPanel(),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      );
     } else {
       body = CustomScrollView(
         slivers: [
           SliverPadding(
             padding: EdgeInsets.all(metrics.sm),
-            sliver: SliverToBoxAdapter(child: entryCard),
+            sliver: SliverToBoxAdapter(child: entryCard()),
           ),
           SliverToBoxAdapter(
             child: _PanelHeader(open: open, onToggle: _togglePanel),
@@ -246,6 +318,9 @@ class _ContestScreenState extends ConsumerState<ContestScreen> {
         ],
       );
     }
+
+    final hideAppBar =
+        keyboardUp && size.isAtLeast(SizeClass.medium) && landscape;
 
     return CommandHandlers(
       handlers: {
@@ -271,43 +346,49 @@ class _ContestScreenState extends ConsumerState<ContestScreen> {
             ref.read(syncControllerProvider.notifier).syncNow(),
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(spec.definition.name, overflow: TextOverflow.ellipsis),
-          actions: [
-            IconButton(
-              tooltip: l10n.commandToggleRates,
-              icon: Icon(open ? Icons.insights : Icons.insights_outlined),
-              onPressed: _togglePanel,
-            ),
-            IconButton(
-              tooltip: l10n.contestSessionsAction,
-              icon: const Icon(Icons.history),
-              onPressed: () => context.push(Routes.contestSetup),
-            ),
-            IconButton(
-              tooltip: l10n.commandEndContest,
-              icon: const Icon(Icons.stop_circle_outlined),
-              onPressed: _endSession,
-            ),
-            PopupMenuButton<String>(
-              tooltip: l10n.contestMoreActions,
-              onSelected: (_) =>
-                  exportCabrillo(context, ref, _liveSession(spec)),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: CommandIds.contestExportCabrillo,
-                  child: Row(
-                    children: [
-                      const Icon(Icons.file_upload_outlined),
-                      SizedBox(width: metrics.sm),
-                      Flexible(child: Text(l10n.commandExportCabrillo)),
+        // The keyboard needs the room on a tablet in landscape.
+        appBar: hideAppBar
+            ? null
+            : AppBar(
+                title: Text(
+                  spec.definition.name,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                actions: [
+                  IconButton(
+                    tooltip: l10n.commandToggleRates,
+                    icon: Icon(open ? Icons.insights : Icons.insights_outlined),
+                    onPressed: _togglePanel,
+                  ),
+                  IconButton(
+                    tooltip: l10n.contestSessionsAction,
+                    icon: const Icon(Icons.history),
+                    onPressed: () => context.push(Routes.contestSetup),
+                  ),
+                  IconButton(
+                    tooltip: l10n.commandEndContest,
+                    icon: const Icon(Icons.stop_circle_outlined),
+                    onPressed: _endSession,
+                  ),
+                  PopupMenuButton<String>(
+                    tooltip: l10n.contestMoreActions,
+                    onSelected: (_) =>
+                        exportCabrillo(context, ref, _liveSession(spec)),
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: CommandIds.contestExportCabrillo,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.file_upload_outlined),
+                            SizedBox(width: metrics.sm),
+                            Flexible(child: Text(l10n.commandExportCabrillo)),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
+                ],
+              ),
         body: Column(
           children: [
             _StatusStrip(definition: spec.definition),

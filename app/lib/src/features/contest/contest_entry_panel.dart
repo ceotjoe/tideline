@@ -14,6 +14,8 @@ import 'package:tideline/src/features/contest/contest_providers.dart';
 import 'package:tideline/src/features/contest/contest_qso_codec.dart';
 import 'package:tideline/src/features/contest/contest_spec.dart';
 import 'package:tideline/src/features/contest/exchange_field.dart';
+import 'package:tideline/src/features/log/qso_entry_form.dart'
+    show QsoEntryLayout;
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/frequency_field.dart';
 import 'package:tideline/src/widgets/upper_case_formatter.dart';
@@ -27,10 +29,19 @@ import 'package:tideline_domain/tideline_domain.dart';
 /// loses nothing.
 class ContestEntryPanel extends ConsumerStatefulWidget {
   /// Creates the panel. [onEditLast] opens the newest QSO for editing.
-  const new({required this.onEditLast, super.key});
+  const new({
+    required this.onEditLast,
+    this.layout = QsoEntryLayout.stacked,
+    super.key,
+  });
 
   /// Called by the "Edit last QSO" button.
   final VoidCallback onEditLast;
+
+  /// `strip` puts callsign, exchange, band, mode and frequency in one row
+  /// across the full width, with the hints and the buttons beneath it, so all
+  /// of it stays above a tablet's on-screen keyboard in landscape.
+  final QsoEntryLayout layout;
 
   @override
   ConsumerState<ContestEntryPanel> createState() => ContestEntryPanelState();
@@ -187,62 +198,112 @@ class ContestEntryPanelState extends ConsumerState<ContestEntryPanel> {
     final modeIssue = entry.issueOf(ContestIssueField.mode);
     final gap = SizedBox(height: metrics.sm);
 
+    final strip = widget.layout == QsoEntryLayout.strip;
+    final callField = TextField(
+      controller: _call,
+      focusNode: _callFocus,
+      autofocus: true,
+      style: TidelineType.callsignLarge.copyWith(color: context.colors.text),
+      textCapitalization: TextCapitalization.characters,
+      textInputAction: TextInputAction.done,
+      autocorrect: false,
+      enableSuggestions: false,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9/]')),
+        UpperCaseFormatter(),
+      ],
+      decoration: InputDecoration(
+        labelText: l10n.fieldCallsign,
+        errorText: entry.issueOf(ContestIssueField.call) == null
+            ? null
+            : l10n.issueInvalidCall,
+      ),
+      onChanged: controller.setCall,
+      onEditingComplete: submit,
+    );
+    final hints = ContestHintsView(
+      onPickCall: (call) {
+        controller.fillCall(call);
+        _focusElement(0);
+      },
+    );
+    final exchangeFields = [
+      for (final (i, element) in spec.exchange.rcvd.indexed)
+        ExchangeField(
+          element: element,
+          controller: _rcvd[i],
+          focusNode: _rcvdFocus[i],
+          errorText: exchangeError(i),
+          hintText: element.kind == ExchangeKind.rst
+              ? element.defaultFor(spec.me, category: category)
+              : null,
+          onChanged: (v) => controller.setRcvd(i, v),
+          onSubmitted: submit,
+        ),
+    ];
+    final sent = _SentExchange(spec: spec, category: category);
+    final bandField = DropdownButtonFormField<Band>(
+      key: ValueKey('band-${entry.band?.name}'),
+      focusNode: _bandFocus,
+      initialValue: entry.band,
+      isExpanded: true,
+      decoration: InputDecoration(
+        labelText: l10n.fieldBand,
+        errorText: bandIssue == null ? null : l10n.issueMissingBand,
+      ),
+      items: [
+        for (final b in {...bands, ?entry.band})
+          DropdownMenuItem(value: b, child: Text(bandDisplayName(b))),
+      ],
+      onChanged: (b) {
+        if (b != null) controller.setBand(b);
+      },
+    );
+    final modeField = DropdownButtonFormField<Mode>(
+      key: ValueKey('mode-${entry.mode?.label}'),
+      focusNode: _modeFocus,
+      initialValue: entry.mode,
+      isExpanded: true,
+      decoration: InputDecoration(
+        labelText: l10n.fieldMode,
+        errorText: modeIssue == null ? null : l10n.issueMissingMode,
+      ),
+      items: [
+        for (final m in {...modes, ?entry.mode})
+          DropdownMenuItem(value: m, child: Text(m.label)),
+      ],
+      onChanged: (m) {
+        if (m != null) controller.setMode(m);
+      },
+    );
+    final freqError = freqIssue == null
+        ? null
+        : (freqIssue.outsideBand
+              ? l10n.issueFrequencyOutsideBand
+              : l10n.issueInvalidFrequency);
+    final freqField = FrequencyField(
+      controller: _freq,
+      errorText: freqError,
+      // In the strip the reading goes into the row below the fields.
+      showReadout: !strip,
+      onChanged: controller.setFrequency,
+    );
+
     final fields = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
-          controller: _call,
-          focusNode: _callFocus,
-          autofocus: true,
-          style: TidelineType.callsignLarge.copyWith(
-            color: context.colors.text,
-          ),
-          textCapitalization: TextCapitalization.characters,
-          textInputAction: TextInputAction.done,
-          autocorrect: false,
-          enableSuggestions: false,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9/]')),
-            UpperCaseFormatter(),
-          ],
-          decoration: InputDecoration(
-            labelText: l10n.fieldCallsign,
-            errorText: entry.issueOf(ContestIssueField.call) == null
-                ? null
-                : l10n.issueInvalidCall,
-          ),
-          onChanged: controller.setCall,
-          onEditingComplete: submit,
-        ),
-        ContestHintsView(
-          onPickCall: (call) {
-            controller.fillCall(call);
-            _focusElement(0);
-          },
-        ),
+        callField,
+        hints,
         Wrap(
           spacing: metrics.sm,
           runSpacing: metrics.sm,
           children: [
-            for (final (i, element) in spec.exchange.rcvd.indexed)
-              SizedBox(
-                width: scaled(metrics.contestFieldWidth),
-                child: ExchangeField(
-                  element: element,
-                  controller: _rcvd[i],
-                  focusNode: _rcvdFocus[i],
-                  errorText: exchangeError(i),
-                  hintText: element.kind == ExchangeKind.rst
-                      ? element.defaultFor(spec.me, category: category)
-                      : null,
-                  onChanged: (v) => controller.setRcvd(i, v),
-                  onSubmitted: submit,
-                ),
-              ),
+            for (final field in exchangeFields)
+              SizedBox(width: scaled(metrics.contestFieldWidth), child: field),
           ],
         ),
         gap,
-        _SentExchange(spec: spec, category: category),
+        sent,
         gap,
         Wrap(
           spacing: metrics.sm,
@@ -250,58 +311,18 @@ class ContestEntryPanelState extends ConsumerState<ContestEntryPanel> {
           children: [
             SizedBox(
               width: scaled(metrics.contestFieldWidth),
-              child: DropdownButtonFormField<Band>(
-                key: ValueKey('band-${entry.band?.name}'),
-                focusNode: _bandFocus,
-                initialValue: entry.band,
-                isExpanded: true,
-                decoration: InputDecoration(
-                  labelText: l10n.fieldBand,
-                  errorText: bandIssue == null ? null : l10n.issueMissingBand,
-                ),
-                items: [
-                  for (final b in {...bands, ?entry.band})
-                    DropdownMenuItem(value: b, child: Text(bandDisplayName(b))),
-                ],
-                onChanged: (b) {
-                  if (b != null) controller.setBand(b);
-                },
-              ),
+              child: bandField,
             ),
             SizedBox(
               width: scaled(metrics.contestFieldWidth),
-              child: DropdownButtonFormField<Mode>(
-                key: ValueKey('mode-${entry.mode?.label}'),
-                focusNode: _modeFocus,
-                initialValue: entry.mode,
-                isExpanded: true,
-                decoration: InputDecoration(
-                  labelText: l10n.fieldMode,
-                  errorText: modeIssue == null ? null : l10n.issueMissingMode,
-                ),
-                items: [
-                  for (final m in {...modes, ?entry.mode})
-                    DropdownMenuItem(value: m, child: Text(m.label)),
-                ],
-                onChanged: (m) {
-                  if (m != null) controller.setMode(m);
-                },
-              ),
+              child: modeField,
             ),
             // Wide enough for the reading under it ("14.205 MHz · 20 m",
             // or the hint) to stay on one line; the Wrap moves it to its own
             // line on narrow screens.
             SizedBox(
               width: scaled(metrics.contestFieldWidth * 3),
-              child: FrequencyField(
-                controller: _freq,
-                errorText: freqIssue == null
-                    ? null
-                    : (freqIssue.outsideBand
-                          ? l10n.issueFrequencyOutsideBand
-                          : l10n.issueInvalidFrequency),
-                onChanged: controller.setFrequency,
-              ),
+              child: freqField,
             ),
           ],
         ),
@@ -332,6 +353,64 @@ class ContestEntryPanelState extends ConsumerState<ContestEntryPanel> {
         ),
       ],
     );
+
+    if (strip) {
+      Widget flex(int weight, Widget child) =>
+          Expanded(flex: weight, child: child);
+      final gapW = SizedBox(width: metrics.sm);
+      final rows = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              flex(4, callField),
+              for (final field in exchangeFields) ...[gapW, flex(2, field)],
+              gapW,
+              flex(2, bandField),
+              gapW,
+              flex(2, modeField),
+              gapW,
+              flex(3, freqField),
+            ],
+          ),
+          gap,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: hints),
+              gapW,
+              SizedBox(
+                width: scaled(metrics.contestFieldWidth * 3),
+                child: sent,
+              ),
+            ],
+          ),
+        ],
+      );
+      // The reading and the buttons stay pinned; only when the rows above
+      // do not fit (Split View, very large text) do they scroll.
+      final bottom = Row(
+        children: [
+          Expanded(
+            child: FrequencyReadout(controller: _freq, errorText: freqError),
+          ),
+          gapW,
+          actions,
+        ],
+      );
+      return FocusTraversalGroup(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Flexible(child: SingleChildScrollView(child: rows)),
+            gap,
+            bottom,
+          ],
+        ),
+      );
+    }
 
     // With a bounded height (tablet landscape, desktop) the fields scroll
     // and the actions stay pinned below them, so Log is never hidden. In a
