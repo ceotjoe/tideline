@@ -119,7 +119,8 @@ class _ContestScreenState extends ConsumerState<ContestScreen>
   /// tall, for the entry strip (a tablet in landscape).
   static const double _stripMinWidth = 900;
 
-  /// The recent list keeps at least this much height beside the strip.
+  /// The recent list keeps at least this much height beside the strip,
+  /// unless the keyboard is up: then the entry takes what it needs.
   static const double _minListHeight = 96;
 
   // Keeps the entry panel's state when the layout changes.
@@ -253,10 +254,11 @@ class _ContestScreenState extends ConsumerState<ContestScreen>
             children: [
               ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxHeight: (constraints.maxHeight - _minListHeight).clamp(
-                    0,
-                    double.infinity,
-                  ),
+                  maxHeight:
+                      (constraints.maxHeight -
+                              (keyboardUp && landscape ? 0 : _minListHeight) -
+                              1) // the divider below
+                          .clamp(0, double.infinity),
                 ),
                 // The card scrolls its fields and pins the Log row.
                 child: Padding(

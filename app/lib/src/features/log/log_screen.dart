@@ -35,7 +35,8 @@ class _LogScreenState extends ConsumerState<LogScreen>
   /// for the entry strip (a tablet in landscape).
   static const double _stripMinWidth = 900;
 
-  /// The list keeps at least this much height beside the entry strip.
+  /// The list keeps at least this much height beside the entry strip, unless
+  /// the keyboard is up: then the entry takes what it needs.
   static const double _minListHeight = 96;
 
   void _open(BuildContext context, String id) {
@@ -145,10 +146,11 @@ class _LogScreenState extends ConsumerState<LogScreen>
               children: [
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxHeight: (constraints.maxHeight - _minListHeight).clamp(
-                      0,
-                      double.infinity,
-                    ),
+                    maxHeight:
+                        (constraints.maxHeight -
+                                (keyboardUp && landscape ? 0 : _minListHeight) -
+                                1) // the divider below
+                            .clamp(0, double.infinity),
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(metrics.sm),
@@ -196,7 +198,8 @@ class _LogScreenState extends ConsumerState<LogScreen>
               ),
         body: Column(
           children: [
-            const ContestBanner(),
+            // The keyboard needs the room on a tablet in landscape.
+            if (!hideAppBar) const ContestBanner(),
             Expanded(child: body),
           ],
         ),

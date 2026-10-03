@@ -555,14 +555,25 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
         for (final (i, w) in children.indexed) ...[if (i > 0) gap, w],
       ],
     );
-    final buttonWidth = 130 * MediaQuery.textScalerOf(context).scale(1);
+    final scale = MediaQuery.textScalerOf(context).scale(1);
+    final buttonWidth = 130 * scale;
+    // At the normal text size the hints share the bottom row with the
+    // buttons, which saves a row of height above the keyboard. With larger
+    // text the hints (a time row, two lines) get tall and would crowd the
+    // fields out, so they scroll below the fields instead.
+    final hintsBesideButtons = scale < 1.1;
+    final buttons = [
+      SizedBox(width: buttonWidth, child: actions.clear),
+      SizedBox(width: metrics.sm),
+      SizedBox(width: buttonWidth, child: actions.log),
+    ];
     return FocusTraversalGroup(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Only when the keyboard leaves too little height do the rows and
-          // hints scroll; Clear and Log stay in reach below them.
+          // Only when the keyboard leaves too little height do the rows
+          // scroll; the buttons stay in reach below them.
           Flexible(
             child: SingleChildScrollView(
               // Room for the floating label of the first field.
@@ -585,19 +596,23 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
                     flex(6, fields.comment),
                     if (fields.station case final station?) flex(4, station),
                   ]),
-                  SizedBox(height: metrics.sm),
-                  hints,
+                  if (!hintsBesideButtons) ...[
+                    SizedBox(height: metrics.sm),
+                    hints,
+                  ],
                 ],
               ),
             ),
           ),
           SizedBox(height: metrics.sm),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: hintsBesideButtons
+                ? MainAxisAlignment.start
+                : MainAxisAlignment.end,
             children: [
-              SizedBox(width: buttonWidth, child: actions.clear),
-              SizedBox(width: metrics.sm),
-              SizedBox(width: buttonWidth, child: actions.log),
+              if (hintsBesideButtons) ...[Expanded(child: hints), gap],
+              ...buttons,
             ],
           ),
         ],
