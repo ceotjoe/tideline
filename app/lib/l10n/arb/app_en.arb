@@ -2620,5 +2620,297 @@
   "packErrorStorage": "The file could not be stored on this device. Check the free space.",
   "@packErrorStorage": {
     "description": "Download error."
+  },
+  "activationOpenAction": "Start an activation",
+  "@activationOpenAction": {
+    "description": "Tooltip of the app bar button."
+  },
+  "activationSetupTitle": "Start an activation",
+  "@activationSetupTitle": {
+    "description": "Title of the activation setup screen."
+  },
+  "activationProgramLabel": "Program",
+  "@activationProgramLabel": {
+    "description": "Label of the program choice."
+  },
+  "activationReferenceLabelSota": "Summit reference",
+  "@activationReferenceLabelSota": {
+    "description": "Label of the reference field."
+  },
+  "activationReferenceLabelPota": "Park reference",
+  "@activationReferenceLabelPota": {
+    "description": "Label of the reference field."
+  },
+  "activationReferenceLabelWwff": "Area reference",
+  "@activationReferenceLabelWwff": {
+    "description": "Label of the reference field."
+  },
+  "activationReferenceExample": "Example: {example}",
+  "@activationReferenceExample": {
+    "description": "Helper text with an example reference.",
+    "placeholders": {
+      "example": {
+        "type": "String"
+      }
+    }
+  },
+  "activationReferenceInvalid": "This is not a {program} reference. Example: {example}",
+  "@activationReferenceInvalid": {
+    "description": "Validation message.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      },
+      "example": {
+        "type": "String"
+      }
+    }
+  },
+  "activationReferenceKnown": "In your {program} list: {name}",
+  "@activationReferenceKnown": {
+    "description": "Shown when the reference is in the installed list.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "activationReferenceUnknown": "Not in your {program} list. You can still use it.",
+  "@activationReferenceUnknown": {
+    "description": "Shown when the reference is valid but not in the installed list.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      }
+    }
+  },
+  "activationNoPack": "No {program} list is installed, so references cannot be looked up. You can still type one. Download the list in Settings.",
+  "@activationNoPack": {
+    "description": "Shown when no list is installed.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      }
+    }
+  },
+  "activationOpenSettings": "Open settings",
+  "@activationOpenSettings": {
+    "description": "Button."
+  },
+  "activationMatches": "Matches",
+  "@activationMatches": {
+    "description": "Header of the search results."
+  },
+  "activationNearby": "Nearest to {grid}",
+  "@activationNearby": {
+    "description": "Header of the nearest references.",
+    "placeholders": {
+      "grid": {
+        "type": "String"
+      }
+    }
+  },
+  "activationNoMatches": "Nothing found.",
+  "@activationNoMatches": {
+    "description": "Shown when a search has no result."
+  },
+  "unitKilometers": "{km} km",
+  "@unitKilometers": {
+    "description": "A distance in kilometres.",
+    "placeholders": {
+      "km": {
+        "type": "int"
+      }
+    }
+  },
+  "activationGridLabel": "Your grid square at the reference",
+  "@activationGridLabel": {
+    "description": "Label of the grid field."
+  },
+  "activationGridFromReference": "Taken from the position of the reference.",
+  "@activationGridFromReference": {
+    "description": "Helper text of the grid field."
+  },
+  "activationGridFromStation": "Taken from the Wavelog location.",
+  "@activationGridFromStation": {
+    "description": "Helper text of the grid field."
+  },
+  "activationGridNone": "No grid square known. You can leave it empty.",
+  "@activationGridNone": {
+    "description": "Helper text of the grid field."
+  },
+  "activationLocationCarries": "This Wavelog location carries {reference}, so your QSOs reach Wavelog with it.",
+  "@activationLocationCarries": {
+    "description": "Shown when the chosen location has the reference.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "activationLocationSuggest": "The Wavelog location “{name}” carries {reference}.",
+  "@activationLocationSuggest": {
+    "description": "Shown when another location has the reference.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "activationUseLocation": "Use this location",
+  "@activationUseLocation": {
+    "description": "Button."
+  },
+  "activationLocationNone": "No Wavelog location carries {reference}. Wavelog files every QSO under its location’s own reference and ignores the one in the upload. Tideline keeps {reference} on each QSO and in ADIF exports. To have it on Wavelog too, create a location with this reference there, then choose it here.",
+  "@activationLocationNone": {
+    "description": "Warning when no Wavelog location has the reference.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "activationErrorNoStation": "No Wavelog location yet. Connect to Wavelog once to load your locations.",
+  "@activationErrorNoStation": {
+    "description": "Shown when no station location exists."
+  },
+  "activationRunning": "{reference} is still running. Starting a new activation ends it.",
+  "@activationRunning": {
+    "description": "Shown when an activation is running.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "activationStart": "Start activation",
+  "@activationStart": {
+    "description": "Button."
+  },
+  "activationStartFailed": "The activation could not be started. Try again.",
+  "@activationStartFailed": {
+    "description": "Error."
+  },
+  "activationBannerTitle": "{program} {reference}",
+  "@activationBannerTitle": {
+    "description": "Banner title: program and reference.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      },
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "activationBannerTitleNamed": "{program} {reference} · {name}",
+  "@activationBannerTitleNamed": {
+    "description": "Banner title with the name of the place.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      },
+      "reference": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "activationProgress": "{counted} of {required} QSOs · {remaining, plural, =1{1 to go} other{{remaining} to go}}",
+  "@activationProgress": {
+    "description": "Progress toward a valid activation.",
+    "placeholders": {
+      "counted": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "activationProgressValid": "Valid activation: {counted} QSOs (needs {required})",
+  "@activationProgressValid": {
+    "description": "Progress when the activation is valid.",
+    "placeholders": {
+      "counted": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "activationWindowDay": "Counted per UTC day.",
+  "@activationWindowDay": {
+    "description": "Explains how QSOs are counted."
+  },
+  "activationWindowSession": "Counted over the whole activation.",
+  "@activationWindowSession": {
+    "description": "Explains how QSOs are counted."
+  },
+  "activationDuplicates": "{count, plural, =1{1 QSO} other{{count} QSOs}} not counted (same call, band and mode).",
+  "@activationDuplicates": {
+    "description": "Duplicates note.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "activationEnd": "End activation",
+  "@activationEnd": {
+    "description": "Button."
+  },
+  "activationEndTitle": "End {reference}?",
+  "@activationEndTitle": {
+    "description": "Dialog title.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "activationEndBody": "New QSOs are no longer added to this activation. Logged QSOs stay as they are.",
+  "@activationEndBody": {
+    "description": "Dialog text."
+  },
+  "activationEnded": "Activation ended.",
+  "@activationEnded": {
+    "description": "Snack bar."
+  },
+  "activationTheirReferenceSota": "Their summit (S2S)",
+  "@activationTheirReferenceSota": {
+    "description": "Field label in the entry form."
+  },
+  "activationTheirReferencePota": "Their park (P2P)",
+  "@activationTheirReferencePota": {
+    "description": "Field label in the entry form."
+  },
+  "activationTheirReferenceWwff": "Their area (WWFF)",
+  "@activationTheirReferenceWwff": {
+    "description": "Field label in the entry form."
+  },
+  "activationIssueTheirReference": "This is not a valid reference.",
+  "@activationIssueTheirReference": {
+    "description": "Validation message in the entry form."
+  },
+  "commandStartActivation": "Start an activation",
+  "@commandStartActivation": {
+    "description": "Command name."
+  },
+  "commandEndActivation": "End the running activation",
+  "@commandEndActivation": {
+    "description": "Command name."
   }
 }

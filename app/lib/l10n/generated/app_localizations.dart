@@ -3308,6 +3308,280 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The file could not be stored on this device. Check the free space.'**
   String get packErrorStorage;
+
+  /// Tooltip of the app bar button.
+  ///
+  /// In en, this message translates to:
+  /// **'Start an activation'**
+  String get activationOpenAction;
+
+  /// Title of the activation setup screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Start an activation'**
+  String get activationSetupTitle;
+
+  /// Label of the program choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Program'**
+  String get activationProgramLabel;
+
+  /// Label of the reference field.
+  ///
+  /// In en, this message translates to:
+  /// **'Summit reference'**
+  String get activationReferenceLabelSota;
+
+  /// Label of the reference field.
+  ///
+  /// In en, this message translates to:
+  /// **'Park reference'**
+  String get activationReferenceLabelPota;
+
+  /// Label of the reference field.
+  ///
+  /// In en, this message translates to:
+  /// **'Area reference'**
+  String get activationReferenceLabelWwff;
+
+  /// Helper text with an example reference.
+  ///
+  /// In en, this message translates to:
+  /// **'Example: {example}'**
+  String activationReferenceExample(String example);
+
+  /// Validation message.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a {program} reference. Example: {example}'**
+  String activationReferenceInvalid(String program, String example);
+
+  /// Shown when the reference is in the installed list.
+  ///
+  /// In en, this message translates to:
+  /// **'In your {program} list: {name}'**
+  String activationReferenceKnown(String program, String name);
+
+  /// Shown when the reference is valid but not in the installed list.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in your {program} list. You can still use it.'**
+  String activationReferenceUnknown(String program);
+
+  /// Shown when no list is installed.
+  ///
+  /// In en, this message translates to:
+  /// **'No {program} list is installed, so references cannot be looked up. You can still type one. Download the list in Settings.'**
+  String activationNoPack(String program);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get activationOpenSettings;
+
+  /// Header of the search results.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches'**
+  String get activationMatches;
+
+  /// Header of the nearest references.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest to {grid}'**
+  String activationNearby(String grid);
+
+  /// Shown when a search has no result.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found.'**
+  String get activationNoMatches;
+
+  /// A distance in kilometres.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km'**
+  String unitKilometers(int km);
+
+  /// Label of the grid field.
+  ///
+  /// In en, this message translates to:
+  /// **'Your grid square at the reference'**
+  String get activationGridLabel;
+
+  /// Helper text of the grid field.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken from the position of the reference.'**
+  String get activationGridFromReference;
+
+  /// Helper text of the grid field.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken from the Wavelog location.'**
+  String get activationGridFromStation;
+
+  /// Helper text of the grid field.
+  ///
+  /// In en, this message translates to:
+  /// **'No grid square known. You can leave it empty.'**
+  String get activationGridNone;
+
+  /// Shown when the chosen location has the reference.
+  ///
+  /// In en, this message translates to:
+  /// **'This Wavelog location carries {reference}, so your QSOs reach Wavelog with it.'**
+  String activationLocationCarries(String reference);
+
+  /// Shown when another location has the reference.
+  ///
+  /// In en, this message translates to:
+  /// **'The Wavelog location “{name}” carries {reference}.'**
+  String activationLocationSuggest(String name, String reference);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this location'**
+  String get activationUseLocation;
+
+  /// Warning when no Wavelog location has the reference.
+  ///
+  /// In en, this message translates to:
+  /// **'No Wavelog location carries {reference}. Wavelog files every QSO under its location’s own reference and ignores the one in the upload. Tideline keeps {reference} on each QSO and in ADIF exports. To have it on Wavelog too, create a location with this reference there, then choose it here.'**
+  String activationLocationNone(String reference);
+
+  /// Shown when no station location exists.
+  ///
+  /// In en, this message translates to:
+  /// **'No Wavelog location yet. Connect to Wavelog once to load your locations.'**
+  String get activationErrorNoStation;
+
+  /// Shown when an activation is running.
+  ///
+  /// In en, this message translates to:
+  /// **'{reference} is still running. Starting a new activation ends it.'**
+  String activationRunning(String reference);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Start activation'**
+  String get activationStart;
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'The activation could not be started. Try again.'**
+  String get activationStartFailed;
+
+  /// Banner title: program and reference.
+  ///
+  /// In en, this message translates to:
+  /// **'{program} {reference}'**
+  String activationBannerTitle(String program, String reference);
+
+  /// Banner title with the name of the place.
+  ///
+  /// In en, this message translates to:
+  /// **'{program} {reference} · {name}'**
+  String activationBannerTitleNamed(
+    String program,
+    String reference,
+    String name,
+  );
+
+  /// Progress toward a valid activation.
+  ///
+  /// In en, this message translates to:
+  /// **'{counted} of {required} QSOs · {remaining, plural, =1{1 to go} other{{remaining} to go}}'**
+  String activationProgress(int counted, int required, int remaining);
+
+  /// Progress when the activation is valid.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid activation: {counted} QSOs (needs {required})'**
+  String activationProgressValid(int counted, int required);
+
+  /// Explains how QSOs are counted.
+  ///
+  /// In en, this message translates to:
+  /// **'Counted per UTC day.'**
+  String get activationWindowDay;
+
+  /// Explains how QSOs are counted.
+  ///
+  /// In en, this message translates to:
+  /// **'Counted over the whole activation.'**
+  String get activationWindowSession;
+
+  /// Duplicates note.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO} other{{count} QSOs}} not counted (same call, band and mode).'**
+  String activationDuplicates(int count);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'End activation'**
+  String get activationEnd;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'End {reference}?'**
+  String activationEndTitle(String reference);
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'New QSOs are no longer added to this activation. Logged QSOs stay as they are.'**
+  String get activationEndBody;
+
+  /// Snack bar.
+  ///
+  /// In en, this message translates to:
+  /// **'Activation ended.'**
+  String get activationEnded;
+
+  /// Field label in the entry form.
+  ///
+  /// In en, this message translates to:
+  /// **'Their summit (S2S)'**
+  String get activationTheirReferenceSota;
+
+  /// Field label in the entry form.
+  ///
+  /// In en, this message translates to:
+  /// **'Their park (P2P)'**
+  String get activationTheirReferencePota;
+
+  /// Field label in the entry form.
+  ///
+  /// In en, this message translates to:
+  /// **'Their area (WWFF)'**
+  String get activationTheirReferenceWwff;
+
+  /// Validation message in the entry form.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a valid reference.'**
+  String get activationIssueTheirReference;
+
+  /// Command name.
+  ///
+  /// In en, this message translates to:
+  /// **'Start an activation'**
+  String get commandStartActivation;
+
+  /// Command name.
+  ///
+  /// In en, this message translates to:
+  /// **'End the running activation'**
+  String get commandEndActivation;
 }
 
 class _AppLocalizationsDelegate

@@ -7,6 +7,8 @@ import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/commands/command_handlers.dart';
 import 'package:tideline/src/commands/command_registry.dart';
 import 'package:tideline/src/design/theme.dart';
+import 'package:tideline/src/features/activation/activation_banner.dart';
+import 'package:tideline/src/features/activation/activation_providers.dart';
 import 'package:tideline/src/features/contest/contest_banner.dart';
 import 'package:tideline/src/features/log/qso_detail.dart';
 import 'package:tideline/src/features/log/qso_entry_controller.dart';
@@ -178,6 +180,8 @@ class _LogScreenState extends ConsumerState<LogScreen>
           ref.read(callsignFocusProvider).requestFocus();
         },
         CommandIds.newQso: () => ref.read(callsignFocusProvider).requestFocus(),
+        if (ref.watch(activeActivationProvider).value != null)
+          CommandIds.endActivation: () => endActivationFlow(context, ref),
         CommandIds.editLastQso: () {
           if (log.isNotEmpty) _open(context, log.first.qso.id);
         },
@@ -190,6 +194,11 @@ class _LogScreenState extends ConsumerState<LogScreen>
                 title: Text(l10n.navLog),
                 actions: [
                   IconButton(
+                    tooltip: l10n.activationOpenAction,
+                    icon: const Icon(Icons.terrain_outlined),
+                    onPressed: () => context.push(Routes.activationSetup),
+                  ),
+                  IconButton(
                     tooltip: l10n.contestOpenAction,
                     icon: const Icon(Icons.emoji_events_outlined),
                     onPressed: () => context.push(Routes.contest),
@@ -200,6 +209,7 @@ class _LogScreenState extends ConsumerState<LogScreen>
           children: [
             // The keyboard needs the room on a tablet in landscape.
             if (!hideAppBar) const ContestBanner(),
+            if (!hideAppBar) const ActivationBanner(),
             Expanded(child: body),
           ],
         ),

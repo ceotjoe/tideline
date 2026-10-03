@@ -2026,6 +2026,196 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get packErrorStorage =>
       'The file could not be stored on this device. Check the free space.';
+
+  @override
+  String get activationOpenAction => 'Start an activation';
+
+  @override
+  String get activationSetupTitle => 'Start an activation';
+
+  @override
+  String get activationProgramLabel => 'Program';
+
+  @override
+  String get activationReferenceLabelSota => 'Summit reference';
+
+  @override
+  String get activationReferenceLabelPota => 'Park reference';
+
+  @override
+  String get activationReferenceLabelWwff => 'Area reference';
+
+  @override
+  String activationReferenceExample(String example) {
+    return 'Example: $example';
+  }
+
+  @override
+  String activationReferenceInvalid(String program, String example) {
+    return 'This is not a $program reference. Example: $example';
+  }
+
+  @override
+  String activationReferenceKnown(String program, String name) {
+    return 'In your $program list: $name';
+  }
+
+  @override
+  String activationReferenceUnknown(String program) {
+    return 'Not in your $program list. You can still use it.';
+  }
+
+  @override
+  String activationNoPack(String program) {
+    return 'No $program list is installed, so references cannot be looked up. You can still type one. Download the list in Settings.';
+  }
+
+  @override
+  String get activationOpenSettings => 'Open settings';
+
+  @override
+  String get activationMatches => 'Matches';
+
+  @override
+  String activationNearby(String grid) {
+    return 'Nearest to $grid';
+  }
+
+  @override
+  String get activationNoMatches => 'Nothing found.';
+
+  @override
+  String unitKilometers(int km) {
+    return '$km km';
+  }
+
+  @override
+  String get activationGridLabel => 'Your grid square at the reference';
+
+  @override
+  String get activationGridFromReference =>
+      'Taken from the position of the reference.';
+
+  @override
+  String get activationGridFromStation => 'Taken from the Wavelog location.';
+
+  @override
+  String get activationGridNone =>
+      'No grid square known. You can leave it empty.';
+
+  @override
+  String activationLocationCarries(String reference) {
+    return 'This Wavelog location carries $reference, so your QSOs reach Wavelog with it.';
+  }
+
+  @override
+  String activationLocationSuggest(String name, String reference) {
+    return 'The Wavelog location “$name” carries $reference.';
+  }
+
+  @override
+  String get activationUseLocation => 'Use this location';
+
+  @override
+  String activationLocationNone(String reference) {
+    return 'No Wavelog location carries $reference. Wavelog files every QSO under its location’s own reference and ignores the one in the upload. Tideline keeps $reference on each QSO and in ADIF exports. To have it on Wavelog too, create a location with this reference there, then choose it here.';
+  }
+
+  @override
+  String get activationErrorNoStation =>
+      'No Wavelog location yet. Connect to Wavelog once to load your locations.';
+
+  @override
+  String activationRunning(String reference) {
+    return '$reference is still running. Starting a new activation ends it.';
+  }
+
+  @override
+  String get activationStart => 'Start activation';
+
+  @override
+  String get activationStartFailed =>
+      'The activation could not be started. Try again.';
+
+  @override
+  String activationBannerTitle(String program, String reference) {
+    return '$program $reference';
+  }
+
+  @override
+  String activationBannerTitleNamed(
+    String program,
+    String reference,
+    String name,
+  ) {
+    return '$program $reference · $name';
+  }
+
+  @override
+  String activationProgress(int counted, int required, int remaining) {
+    String _temp0 = intl.Intl.pluralLogic(
+      remaining,
+      locale: localeName,
+      other: '$remaining to go',
+      one: '1 to go',
+    );
+    return '$counted of $required QSOs · $_temp0';
+  }
+
+  @override
+  String activationProgressValid(int counted, int required) {
+    return 'Valid activation: $counted QSOs (needs $required)';
+  }
+
+  @override
+  String get activationWindowDay => 'Counted per UTC day.';
+
+  @override
+  String get activationWindowSession => 'Counted over the whole activation.';
+
+  @override
+  String activationDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs',
+      one: '1 QSO',
+    );
+    return '$_temp0 not counted (same call, band and mode).';
+  }
+
+  @override
+  String get activationEnd => 'End activation';
+
+  @override
+  String activationEndTitle(String reference) {
+    return 'End $reference?';
+  }
+
+  @override
+  String get activationEndBody =>
+      'New QSOs are no longer added to this activation. Logged QSOs stay as they are.';
+
+  @override
+  String get activationEnded => 'Activation ended.';
+
+  @override
+  String get activationTheirReferenceSota => 'Their summit (S2S)';
+
+  @override
+  String get activationTheirReferencePota => 'Their park (P2P)';
+
+  @override
+  String get activationTheirReferenceWwff => 'Their area (WWFF)';
+
+  @override
+  String get activationIssueTheirReference => 'This is not a valid reference.';
+
+  @override
+  String get commandStartActivation => 'Start an activation';
+
+  @override
+  String get commandEndActivation => 'End the running activation';
 }
 
 /// The translations for English (`en_XA`).
@@ -4101,4 +4291,198 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String get packErrorStorage =>
       '[Ţĥé ƒîļé çöûļð ñöţ ƀé šţöŕéð öñ ţĥîš ðéṽîçé. Çĥéçķ ţĥé ƒŕéé šþáçé.···························]';
+
+  @override
+  String get activationOpenAction => '[Šţáŕţ áñ áçţîṽáţîöñ········]';
+
+  @override
+  String get activationSetupTitle => '[Šţáŕţ áñ áçţîṽáţîöñ········]';
+
+  @override
+  String get activationProgramLabel => '[Þŕöĝŕáɱ···]';
+
+  @override
+  String get activationReferenceLabelSota => '[Šûɱɱîţ ŕéƒéŕéñçé·······]';
+
+  @override
+  String get activationReferenceLabelPota => '[Þáŕķ ŕéƒéŕéñçé······]';
+
+  @override
+  String get activationReferenceLabelWwff => '[Åŕéá ŕéƒéŕéñçé······]';
+
+  @override
+  String activationReferenceExample(String example) {
+    return '[Éẋáɱþļé: ····]$example';
+  }
+
+  @override
+  String activationReferenceInvalid(String program, String example) {
+    return '[Ţĥîš îš ñöţ á ······]$program[ ŕéƒéŕéñçé. Éẋáɱþļé: ·········]$example';
+  }
+
+  @override
+  String activationReferenceKnown(String program, String name) {
+    return '[Îñ ýöûŕ ····]$program[ ļîšţ: ···]$name';
+  }
+
+  @override
+  String activationReferenceUnknown(String program) {
+    return '[Ñöţ îñ ýöûŕ ·····]$program[ ļîšţ. Ýöû çáñ šţîļļ ûšé îţ.············]';
+  }
+
+  @override
+  String activationNoPack(String program) {
+    return '[Ñö ··]$program[ ļîšţ îš îñšţáļļéð, šö ŕéƒéŕéñçéš çáññöţ ƀé ļööķéð ûþ. Ýöû çáñ šţîļļ ţýþé öñé. Ðöŵñļöáð ţĥé ļîšţ îñ Šéţţîñĝš.············································]';
+  }
+
+  @override
+  String get activationOpenSettings => '[Öþéñ šéţţîñĝš······]';
+
+  @override
+  String get activationMatches => '[Ṁáţçĥéš···]';
+
+  @override
+  String activationNearby(String grid) {
+    return '[Ñéáŕéšţ ţö ·····]$grid';
+  }
+
+  @override
+  String get activationNoMatches => '[Ñöţĥîñĝ ƒöûñð.······]';
+
+  @override
+  String unitKilometers(int km) {
+    return '$km[ ķɱ··]';
+  }
+
+  @override
+  String get activationGridLabel =>
+      '[Ýöûŕ ĝŕîð šǫûáŕé áţ ţĥé ŕéƒéŕéñçé··············]';
+
+  @override
+  String get activationGridFromReference =>
+      '[Ţáķéñ ƒŕöɱ ţĥé þöšîţîöñ öƒ ţĥé ŕéƒéŕéñçé.·················]';
+
+  @override
+  String get activationGridFromStation =>
+      '[Ţáķéñ ƒŕöɱ ţĥé Ŵáṽéļöĝ ļöçáţîöñ.·············]';
+
+  @override
+  String get activationGridNone =>
+      '[Ñö ĝŕîð šǫûáŕé ķñöŵñ. Ýöû çáñ ļéáṽé îţ éɱþţý.··················]';
+
+  @override
+  String activationLocationCarries(String reference) {
+    return '[Ţĥîš Ŵáṽéļöĝ ļöçáţîöñ çáŕŕîéš ············]$reference[, šö ýöûŕ ǪŠÖš ŕéáçĥ Ŵáṽéļöĝ ŵîţĥ îţ.···············]';
+  }
+
+  @override
+  String activationLocationSuggest(String name, String reference) {
+    return '[Ţĥé Ŵáṽéļöĝ ļöçáţîöñ “·········]$name[” çáŕŕîéš ····]$reference[.·]';
+  }
+
+  @override
+  String get activationUseLocation => '[Ûšé ţĥîš ļöçáţîöñ·······]';
+
+  @override
+  String activationLocationNone(String reference) {
+    return '[Ñö Ŵáṽéļöĝ ļöçáţîöñ çáŕŕîéš ············]$reference[. Ŵáṽéļöĝ ƒîļéš éṽéŕý ǪŠÖ ûñðéŕ îţš ļöçáţîöñ’š öŵñ ŕéƒéŕéñçé áñð îĝñöŕéš ţĥé öñé îñ ţĥé ûþļöáð. Ţîðéļîñé ķééþš ·············································]$reference[ öñ éáçĥ ǪŠÖ áñð îñ ÅÐÎƑ éẋþöŕţš. Ţö ĥáṽé îţ öñ Ŵáṽéļöĝ ţöö, çŕéáţé á ļöçáţîöñ ŵîţĥ ţĥîš ŕéƒéŕéñçé ţĥéŕé, ţĥéñ çĥööšé îţ ĥéŕé.···················································]';
+  }
+
+  @override
+  String get activationErrorNoStation =>
+      '[Ñö Ŵáṽéļöĝ ļöçáţîöñ ýéţ. Çöññéçţ ţö Ŵáṽéļöĝ öñçé ţö ļöáð ýöûŕ ļöçáţîöñš.·····························]';
+
+  @override
+  String activationRunning(String reference) {
+    return '$reference[ îš šţîļļ ŕûññîñĝ. Šţáŕţîñĝ á ñéŵ áçţîṽáţîöñ éñðš îţ.······················]';
+  }
+
+  @override
+  String get activationStart => '[Šţáŕţ áçţîṽáţîöñ·······]';
+
+  @override
+  String get activationStartFailed =>
+      '[Ţĥé áçţîṽáţîöñ çöûļð ñöţ ƀé šţáŕţéð. Ţŕý áĝáîñ.···················]';
+
+  @override
+  String activationBannerTitle(String program, String reference) {
+    return '$program[ ·]$reference';
+  }
+
+  @override
+  String activationBannerTitleNamed(
+    String program,
+    String reference,
+    String name,
+  ) {
+    return '$program[ ·]$reference[ · ··]$name';
+  }
+
+  @override
+  String activationProgress(int counted, int required, int remaining) {
+    String _temp0 = intl.Intl.pluralLogic(
+      remaining,
+      locale: localeName,
+      other: '$remaining[ ţö ĝö···]',
+      one: '[1 ţö ĝö···]',
+    );
+    return '$counted[ öƒ ··]$required[ ǪŠÖš · ····]$_temp0';
+  }
+
+  @override
+  String activationProgressValid(int counted, int required) {
+    return '[Ṽáļîð áçţîṽáţîöñ: ········]$counted[ ǪŠÖš (ñééðš ······]$required[)·]';
+  }
+
+  @override
+  String get activationWindowDay => '[Çöûñţéð þéŕ ÛŢÇ ðáý.········]';
+
+  @override
+  String get activationWindowSession =>
+      '[Çöûñţéð öṽéŕ ţĥé ŵĥöļé áçţîṽáţîöñ.··············]';
+
+  @override
+  String activationDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš··]',
+      one: '[1 ǪŠÖ··]',
+    );
+    return '$_temp0[ ñöţ çöûñţéð (šáɱé çáļļ, ƀáñð áñð ɱöðé).················]';
+  }
+
+  @override
+  String get activationEnd => '[Éñð áçţîṽáţîöñ······]';
+
+  @override
+  String activationEndTitle(String reference) {
+    return '[Éñð ··]$reference[?·]';
+  }
+
+  @override
+  String get activationEndBody =>
+      '[Ñéŵ ǪŠÖš áŕé ñö ļöñĝéŕ áððéð ţö ţĥîš áçţîṽáţîöñ. Ļöĝĝéð ǪŠÖš šţáý áš ţĥéý áŕé.································]';
+
+  @override
+  String get activationEnded => '[Åçţîṽáţîöñ éñðéð.·······]';
+
+  @override
+  String get activationTheirReferenceSota => '[Ţĥéîŕ šûɱɱîţ (Š2Š)········]';
+
+  @override
+  String get activationTheirReferencePota => '[Ţĥéîŕ þáŕķ (Þ2Þ)·······]';
+
+  @override
+  String get activationTheirReferenceWwff => '[Ţĥéîŕ áŕéá (ŴŴƑƑ)·······]';
+
+  @override
+  String get activationIssueTheirReference =>
+      '[Ţĥîš îš ñöţ á ṽáļîð ŕéƒéŕéñçé.············]';
+
+  @override
+  String get commandStartActivation => '[Šţáŕţ áñ áçţîṽáţîöñ········]';
+
+  @override
+  String get commandEndActivation => '[Éñð ţĥé ŕûññîñĝ áçţîṽáţîöñ···········]';
 }

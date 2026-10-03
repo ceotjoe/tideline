@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tideline/src/features/activation/activation_setup_screen.dart';
 import 'package:tideline/src/features/contest/contest_screen.dart';
 import 'package:tideline/src/features/contest/contest_setup_screen.dart';
 import 'package:tideline/src/features/log/log_screen.dart';
@@ -40,6 +41,10 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
     GoRoute(
       path: Routes.contestSetup,
       builder: (context, state) => const ContestSetupScreen(),
+    ),
+    GoRoute(
+      path: Routes.activationSetup,
+      builder: (context, state) => const ActivationSetupScreen(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => AdaptiveShell(navigationShell: shell),

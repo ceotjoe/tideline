@@ -7,6 +7,21 @@ import 'package:tideline_data/src/repositories/qso_row_mapping.dart';
 import 'package:tideline_data/src/repositories/sync_journal_repository.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
+/// The activation a QSO was to be logged in does not exist or has ended.
+class ActivationUnavailable implements Exception {
+  /// Creates the exception.
+  const new(this.activationId, {required this.ended});
+
+  /// The activation's id.
+  final String activationId;
+
+  /// Whether it exists but has ended (otherwise it is unknown or deleted).
+  final bool ended;
+
+  @override
+  String toString() => 'ActivationUnavailable($activationId, ended: $ended)';
+}
+
 /// SOTA, POTA and WWFF activations, the logging of their QSOs, and the
 /// validity rules per programme (`program_rules`).
 class ActivationRepository {
@@ -148,16 +163,16 @@ class ActivationRepository {
   /// profile. Values the QSO already carries are kept, so a different grid
   /// typed for one contact wins.
   ///
-  /// Throws [StateError] for an unknown, deleted or ended activation and
-  /// [ArgumentError] when the QSO belongs to another account.
+  /// Throws [ActivationUnavailable] for an unknown, deleted or ended
+  /// activation and [ArgumentError] when the QSO belongs to another account.
   Future<Qso> logQso(Qso qso, {required String activationId}) =>
       _db.transaction(() async {
         final activation = await find(activationId);
         if (activation == null) {
-          throw StateError('Activation $activationId unknown');
+          throw ActivationUnavailable(activationId, ended: false);
         }
         if (!activation.isActive) {
-          throw StateError('Activation $activationId has ended');
+          throw ActivationUnavailable(activationId, ended: true);
         }
         if (qso.accountId != activation.accountId) {
           throw ArgumentError.value(qso.accountId, 'qso', 'other account');

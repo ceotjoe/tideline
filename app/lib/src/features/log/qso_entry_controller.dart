@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tideline/src/features/activation/activation_providers.dart';
 import 'package:tideline/src/services/app_services.dart';
+import 'package:tideline_data/tideline_data.dart' show ActivationUnavailable;
 import 'package:tideline_domain/tideline_domain.dart';
 
 /// The QSO being entered. Lives in a provider, so rotating or resizing the
@@ -16,6 +18,7 @@ class QsoEntry {
     this.name = '',
     this.grid = '',
     this.comment = '',
+    this.theirReference = '',
     this.stationProfileId,
     this.manualTime,
     this.issues = const [],
@@ -49,6 +52,10 @@ class QsoEntry {
   /// Comment.
   final String comment;
 
+  /// The other station's reference (park to park, summit to summit) while an
+  /// activation runs.
+  final String theirReference;
+
   /// Local station profile id (kept after logging).
   final String? stationProfileId;
 
@@ -72,6 +79,7 @@ class QsoEntry {
     String? name,
     String? grid,
     String? comment,
+    String? theirReference,
     String? stationProfileId,
     UtcDateTime? manualTime,
     bool clearManualTime = false,
@@ -87,6 +95,7 @@ class QsoEntry {
     name: name ?? this.name,
     grid: grid ?? this.grid,
     comment: comment ?? this.comment,
+    theirReference: theirReference ?? this.theirReference,
     stationProfileId: stationProfileId ?? this.stationProfileId,
     manualTime: clearManualTime ? null : (manualTime ?? this.manualTime),
     issues: issues ?? this.issues,
@@ -113,6 +122,9 @@ enum EntryIssue {
 
   /// Locator invalid.
   invalidGrid,
+
+  /// The other station's reference does not have the right shape.
+  invalidTheirReference,
 
   /// Time in the future (clock?). Warning only.
   timeInFuture,
@@ -169,6 +181,13 @@ class QsoEntryController extends Notifier<QsoEntry> {
     if (grid.isNotEmpty && Maidenhead.normalize(grid) == null) {
       issues.add(EntryIssue.invalidGrid);
     }
+    final activation = ref.read(activeActivationProvider).value;
+    final theirReference = e.theirReference.trim().toUpperCase();
+    if (activation != null &&
+        theirReference.isNotEmpty &&
+        !activation.program.isValidReference(theirReference)) {
+      issues.add(EntryIssue.invalidTheirReference);
+    }
     if (issues.isNotEmpty) {
       state = e.copyWith(issues: issues);
       return (logged: null, issues: issues);
@@ -190,6 +209,8 @@ class QsoEntryController extends Notifier<QsoEntry> {
         'NAME': e.name.trim(),
         'GRIDSQUARE': ?Maidenhead.normalize(grid),
         'COMMENT': e.comment.trim(),
+        if (activation != null && theirReference.isNotEmpty)
+          activation.program.adifField: theirReference,
         if (dxcc != null) ...{
           'DXCC': '${dxcc.entity.dxcc}',
           'COUNTRY': dxcc.entity.name,
@@ -211,7 +232,19 @@ class QsoEntryController extends Notifier<QsoEntry> {
       state = e.copyWith(issues: mapped);
       return (logged: null, issues: mapped);
     }
-    await ref.read(qsoRepositoryProvider).log(qso);
+    var stored = qso;
+    if (activation != null) {
+      try {
+        stored = await ref
+            .read(activationRepositoryProvider)
+            .logQso(qso, activationId: activation.id);
+      } on ActivationUnavailable {
+        // The activation ended while the form was open: log as usual.
+        await ref.read(qsoRepositoryProvider).log(qso);
+      }
+    } else {
+      await ref.read(qsoRepositoryProvider).log(qso);
+    }
     final warnings = [
       if (validateQso(qso).contains(QsoIssue.timeInFuture))
         EntryIssue.timeInFuture,
@@ -219,7 +252,7 @@ class QsoEntryController extends Notifier<QsoEntry> {
     ];
     clear();
     state = state.copyWith(issues: warnings);
-    return (logged: qso, issues: warnings);
+    return (logged: stored, issues: warnings);
   }
 }
 

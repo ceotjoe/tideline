@@ -70,6 +70,7 @@ class AdaptiveShell extends ConsumerWidget {
         CommandIds.goToSync: () => goTo(1),
         CommandIds.goToSettings: () => goTo(2),
         CommandIds.openContest: () => context.push(Routes.contest),
+        CommandIds.startActivation: () => context.push(Routes.activationSetup),
         CommandIds.syncNow: () async {
           await ref.read(syncControllerProvider.notifier).syncNow();
           if (!context.mounted) return;

@@ -161,13 +161,17 @@ void main() {
       () async {
         expect(
           () => repo.logQso(testQso(), activationId: 'nope'),
-          throwsStateError,
+          throwsA(
+            isA<ActivationUnavailable>().having((e) => e.ended, 'ended', false),
+          ),
         );
         final a = await startPota();
         await repo.end(a.id, 11000);
         expect(
           () => repo.logQso(testQso(), activationId: a.id),
-          throwsStateError,
+          throwsA(
+            isA<ActivationUnavailable>().having((e) => e.ended, 'ended', true),
+          ),
         );
         await repo.reopen(a.id);
         final foreign = Qso(

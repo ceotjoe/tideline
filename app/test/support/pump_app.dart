@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tideline/src/app.dart';
+import 'package:tideline/src/features/activation/activation_providers.dart';
 import 'package:tideline/src/features/contest/contest_providers.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
@@ -34,11 +35,114 @@ class FakeQsoRepository implements QsoRepository {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-/// Reference packs that are never installed: no database, no network.
+/// Reference lists held in memory: none installed unless [references] is
+/// given. No database, no network.
 class FakeReferencePackStore extends Fake implements ReferencePackStore {
+  new({this.references = const []});
+
+  /// What the installed lists contain.
+  final List<ProgramReference> references;
+
+  bool _has(ReferenceProgram program) =>
+      references.any((r) => r.program == program);
+
   @override
   Stream<ReferencePackInfo?> watchInfo(ReferenceProgram program) =>
-      Stream.value(null);
+      Stream.value(
+        _has(program)
+            ? ReferencePackInfo(
+                program: program,
+                count: references.where((r) => r.program == program).length,
+                sha256: 'x',
+                sourceUrl: 'https://example.org/list.csv',
+                fetchedAt: DateTime.utc(2026, 10, 3).millisecondsSinceEpoch,
+                version: '2026-10-03',
+              )
+            : null,
+      );
+
+  @override
+  Future<ProgramReference?> find(ReferenceProgram program, String ref) async =>
+      references
+          .where((r) => r.program == program && r.reference == ref)
+          .firstOrNull;
+
+  @override
+  Future<List<ProgramReference>> search(
+    String query, {
+    ReferenceProgram? program,
+    int limit = 50,
+    bool includeInactive = false,
+  }) async {
+    final q = query.trim().toLowerCase();
+    return [
+      for (final r in references)
+        if ((program == null || r.program == program) &&
+            (r.reference.toLowerCase().contains(q) ||
+                r.name.toLowerCase().contains(q)))
+          r,
+    ].take(limit).toList();
+  }
+
+  @override
+  Future<List<NearbyReference>> nearest(
+    ReferenceProgram program,
+    double latitude,
+    double longitude, {
+    int limit = 20,
+    bool includeInactive = false,
+  }) async => GeoDistance.nearest(
+    references.where((r) => r.program == program),
+    latitude,
+    longitude,
+    limit: limit,
+  );
+}
+
+/// Activations held in memory; records what is logged in them.
+class FakeActivationRepository extends Fake implements ActivationRepository {
+  final List<Qso> logged = [];
+  final List<({String id, int at})> ended = [];
+  final List<Activation> started = [];
+
+  @override
+  Future<Qso> logQso(Qso qso, {required String activationId}) async {
+    final stored = qso.copyWith(
+      activationId: activationId,
+      fields: {'MY_POTA_REF': 'US-0001', ...qso.fields},
+    );
+    logged.add(stored);
+    return stored;
+  }
+
+  @override
+  Future<void> end(String id, int at) async => ended.add((id: id, at: at));
+
+  @override
+  Future<Activation> start({
+    required String accountId,
+    required ReferenceProgram program,
+    required String reference,
+    String? myGridsquare,
+    String? stationProfileId,
+    int? startedAt,
+  }) async {
+    final a = Activation(
+      id: 'act-${started.length + 1}',
+      accountId: accountId,
+      program: program,
+      reference: reference,
+      myGridsquare: myGridsquare,
+      stationProfileId: stationProfileId,
+      startedAt: startedAt ?? 0,
+    );
+    started.add(a);
+    return a;
+  }
+
+  @override
+  Future<ActivationRules> rulesFor(ReferenceProgram program) async =>
+      ActivationRules.defaultFor(program);
 }
 
 /// A sync controller that never touches the network or plugins.
@@ -139,6 +243,10 @@ Future<Pumped> pumpTideline(
   ContestDefinitionRepository? definitions,
   WorkedBeforeRepository? workedBefore,
   ReferencePackStore? referencePacks,
+  Activation? activation,
+  ActivationProgress? activationProgress,
+  ActivationRepository? activations,
+  List<StationProfile> stations = const [testStation],
   List<Override> overrides = const [],
 }) async {
   tester.view
@@ -168,8 +276,18 @@ Future<Pumped> pumpTideline(
         bindingOverridesProvider.overrideWith((ref) => Stream.value(const [])),
         settingsControllerProvider.overrideWithValue(controller),
         accountsProvider.overrideWith((ref) => Stream.value(accounts)),
-        stationsProvider.overrideWith(
-          (ref) => Stream.value(const [testStation]),
+        stationsProvider.overrideWith((ref) => Stream.value(stations)),
+        activeActivationProvider.overrideWith(
+          (ref) => Stream.value(activation),
+        ),
+        activationProgressProvider.overrideWith(
+          (ref) => Stream.value(activationProgress),
+        ),
+        activationRulesProvider.overrideWith(
+          (ref, program) => ActivationRules.defaultFor(program),
+        ),
+        activationRepositoryProvider.overrideWithValue(
+          activations ?? FakeActivationRepository(),
         ),
         logProvider.overrideWith((ref) => Stream.value(log)),
         syncCountsProvider.overrideWith(

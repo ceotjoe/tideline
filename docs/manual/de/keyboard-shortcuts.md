@@ -14,10 +14,12 @@ Diese Tabelle wird aus dem Befehlsverzeichnis der App erzeugt.
 | Einstellungen öffnen | Überall | `⌘,` | `Strg+,` |
 | Jetzt synchronisieren | Überall | `⇧⌘S` | `Strg+Umschalt+S` |
 | Contest-Modus öffnen | Überall | `⇧⌘C` | `Strg+Umschalt+C` |
+| Aktivierung starten | Überall | `⇧⌘A` | `Strg+Umschalt+A` |
 | Neues QSO | Loggen | `⌘N` | `Strg+N` |
 | QSO loggen | Loggen | `Eingabe` | `Eingabe` |
 | Eingabe verwerfen | Loggen | `Esc` | `Esc` |
 | Letztes QSO bearbeiten | Loggen | `⌘E` | `Strg+E` |
+| Laufende Aktivierung beenden | Loggen | `⇧⌘E` | `Strg+Umschalt+E` |
 | QSO loggen | Contest-Modus | `Eingabe` | `Eingabe` |
 | Eingabe löschen | Contest-Modus | `Esc` | `Esc` |
 | Letztes QSO bearbeiten | Contest-Modus | `⌘E` | `Strg+E` |

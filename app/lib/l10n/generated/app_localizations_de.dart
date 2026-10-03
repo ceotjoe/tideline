@@ -2042,4 +2042,195 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get packErrorStorage =>
       'Die Datei konnte auf diesem Gerät nicht gespeichert werden. Prüfe den freien Speicher.';
+
+  @override
+  String get activationOpenAction => 'Aktivierung starten';
+
+  @override
+  String get activationSetupTitle => 'Aktivierung starten';
+
+  @override
+  String get activationProgramLabel => 'Programm';
+
+  @override
+  String get activationReferenceLabelSota => 'Gipfelreferenz';
+
+  @override
+  String get activationReferenceLabelPota => 'Parkreferenz';
+
+  @override
+  String get activationReferenceLabelWwff => 'Gebietsreferenz';
+
+  @override
+  String activationReferenceExample(String example) {
+    return 'Beispiel: $example';
+  }
+
+  @override
+  String activationReferenceInvalid(String program, String example) {
+    return 'Das ist keine $program-Referenz. Beispiel: $example';
+  }
+
+  @override
+  String activationReferenceKnown(String program, String name) {
+    return 'In Deiner $program-Liste: $name';
+  }
+
+  @override
+  String activationReferenceUnknown(String program) {
+    return 'Nicht in Deiner $program-Liste. Du kannst sie trotzdem verwenden.';
+  }
+
+  @override
+  String activationNoPack(String program) {
+    return 'Es ist keine $program-Liste installiert, daher kann nicht nach Referenzen gesucht werden. Du kannst trotzdem eine eintippen. Lade die Liste in den Einstellungen herunter.';
+  }
+
+  @override
+  String get activationOpenSettings => 'Einstellungen öffnen';
+
+  @override
+  String get activationMatches => 'Treffer';
+
+  @override
+  String activationNearby(String grid) {
+    return 'Am nächsten zu $grid';
+  }
+
+  @override
+  String get activationNoMatches => 'Nichts gefunden.';
+
+  @override
+  String unitKilometers(int km) {
+    return '$km km';
+  }
+
+  @override
+  String get activationGridLabel => 'Dein Locator an der Referenz';
+
+  @override
+  String get activationGridFromReference =>
+      'Aus der Position der Referenz übernommen.';
+
+  @override
+  String get activationGridFromStation =>
+      'Aus dem Wavelog-Standort übernommen.';
+
+  @override
+  String get activationGridNone =>
+      'Kein Locator bekannt. Du kannst das Feld leer lassen.';
+
+  @override
+  String activationLocationCarries(String reference) {
+    return 'Dieser Wavelog-Standort trägt $reference, deine QSOs erreichen Wavelog also mit dieser Referenz.';
+  }
+
+  @override
+  String activationLocationSuggest(String name, String reference) {
+    return 'Der Wavelog-Standort „$name“ trägt $reference.';
+  }
+
+  @override
+  String get activationUseLocation => 'Diesen Standort verwenden';
+
+  @override
+  String activationLocationNone(String reference) {
+    return 'Kein Wavelog-Standort trägt $reference. Wavelog legt jedes QSO unter der Referenz seines Standorts ab und ignoriert die Referenz im Upload. Tideline behält $reference bei jedem QSO und in ADIF-Exporten. Damit sie auch in Wavelog steht, lege dort einen Standort mit dieser Referenz an und wähle ihn hier.';
+  }
+
+  @override
+  String get activationErrorNoStation =>
+      'Noch kein Wavelog-Standort. Verbinde Dich einmal mit Wavelog, um Deine Standorte zu laden.';
+
+  @override
+  String activationRunning(String reference) {
+    return '$reference läuft noch. Eine neue Aktivierung beendet sie.';
+  }
+
+  @override
+  String get activationStart => 'Aktivierung starten';
+
+  @override
+  String get activationStartFailed =>
+      'Die Aktivierung konnte nicht gestartet werden. Versuche es erneut.';
+
+  @override
+  String activationBannerTitle(String program, String reference) {
+    return '$program $reference';
+  }
+
+  @override
+  String activationBannerTitleNamed(
+    String program,
+    String reference,
+    String name,
+  ) {
+    return '$program $reference · $name';
+  }
+
+  @override
+  String activationProgress(int counted, int required, int remaining) {
+    String _temp0 = intl.Intl.pluralLogic(
+      remaining,
+      locale: localeName,
+      other: 'noch $remaining',
+      one: 'noch 1',
+    );
+    return '$counted von $required QSOs · $_temp0';
+  }
+
+  @override
+  String activationProgressValid(int counted, int required) {
+    return 'Gültige Aktivierung: $counted QSOs (nötig: $required)';
+  }
+
+  @override
+  String get activationWindowDay => 'Gezählt pro UTC-Tag.';
+
+  @override
+  String get activationWindowSession => 'Gezählt über die ganze Aktivierung.';
+
+  @override
+  String activationDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs',
+      one: '1 QSO',
+    );
+    return '$_temp0 nicht gezählt (gleiches Rufzeichen, Band und Betriebsart).';
+  }
+
+  @override
+  String get activationEnd => 'Aktivierung beenden';
+
+  @override
+  String activationEndTitle(String reference) {
+    return '$reference beenden?';
+  }
+
+  @override
+  String get activationEndBody =>
+      'Neue QSOs werden dieser Aktivierung nicht mehr zugeordnet. Geloggte QSOs bleiben unverändert.';
+
+  @override
+  String get activationEnded => 'Aktivierung beendet.';
+
+  @override
+  String get activationTheirReferenceSota => 'Ihr Gipfel (S2S)';
+
+  @override
+  String get activationTheirReferencePota => 'Ihr Park (P2P)';
+
+  @override
+  String get activationTheirReferenceWwff => 'Ihr Gebiet (WWFF)';
+
+  @override
+  String get activationIssueTheirReference => 'Das ist keine gültige Referenz.';
+
+  @override
+  String get commandStartActivation => 'Aktivierung starten';
+
+  @override
+  String get commandEndActivation => 'Laufende Aktivierung beenden';
 }

@@ -14,10 +14,12 @@ This table is generated from the app's command registry.
 | Open settings | Everywhere | `⌘,` | `Ctrl+,` |
 | Sync now | Everywhere | `⇧⌘S` | `Ctrl+Shift+S` |
 | Open contest mode | Everywhere | `⇧⌘C` | `Ctrl+Shift+C` |
+| Start an activation | Everywhere | `⇧⌘A` | `Ctrl+Shift+A` |
 | New QSO | Logging | `⌘N` | `Ctrl+N` |
 | Log QSO | Logging | `Enter` | `Enter` |
 | Clear entry | Logging | `Esc` | `Esc` |
 | Edit last QSO | Logging | `⌘E` | `Ctrl+E` |
+| End the running activation | Logging | `⇧⌘E` | `Ctrl+Shift+E` |
 | Log QSO | Contest mode | `Enter` | `Enter` |
 | Wipe entry | Contest mode | `Esc` | `Esc` |
 | Edit last QSO | Contest mode | `⌘E` | `Ctrl+E` |

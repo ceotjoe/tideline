@@ -10,4 +10,7 @@ abstract final class Routes {
 
   /// Contest session setup and the list of past sessions.
   static const contestSetup = '/contest-setup';
+
+  /// Starting a SOTA, POTA or WWFF activation.
+  static const activationSetup = '/activation-setup';
 }

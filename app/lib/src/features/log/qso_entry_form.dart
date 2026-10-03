@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
+import 'package:tideline/src/features/activation/activation_labels.dart';
+import 'package:tideline/src/features/activation/activation_providers.dart';
 import 'package:tideline/src/features/log/qso_entry_controller.dart';
 import 'package:tideline/src/features/log/qso_tile.dart';
 import 'package:tideline/src/features/log/worked_hint.dart';
@@ -60,6 +62,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
   final _name = TextEditingController();
   final _grid = TextEditingController();
   final _comment = TextEditingController();
+  final _theirRef = TextEditingController();
   int _revision = -1;
   Timer? _clock;
 
@@ -85,6 +88,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
       _name,
       _grid,
       _comment,
+      _theirRef,
     ]) {
       c.dispose();
     }
@@ -101,6 +105,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
     _name.text = e.name;
     _grid.text = e.grid;
     _comment.text = e.comment;
+    _theirRef.text = e.theirReference;
   }
 
   /// Logs the entry. Announces the result for screen readers.
@@ -318,6 +323,26 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
       decoration: InputDecoration(labelText: l10n.fieldComment),
       onChanged: (v) => controller.edit((e) => e.copyWith(comment: v)),
     );
+    final activation = ref.watch(activeActivationProvider).value;
+    final theirRefField = activation == null
+        ? null
+        : TextField(
+            controller: _theirRef,
+            autocorrect: false,
+            enableSuggestions: false,
+            textCapitalization: TextCapitalization.characters,
+            textDirection: TextDirection.ltr,
+            inputFormatters: [UpperCaseFormatter()],
+            decoration: InputDecoration(
+              labelText: theirReferenceFieldLabel(l10n, activation.program),
+              errorText: errorFor(
+                EntryIssue.invalidTheirReference,
+                l10n.activationIssueTheirReference,
+              ),
+            ),
+            onChanged: (v) =>
+                controller.edit((e) => e.copyWith(theirReference: v)),
+          );
     final stationField = stations.isEmpty
         ? null
         : DropdownButtonFormField<String>(
@@ -373,6 +398,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
           name: nameField,
           grid: gridField,
           comment: commentField,
+          theirRef: theirRefField,
           station: stationField,
         ),
         hints: Column(
@@ -412,6 +438,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
           name: nameField,
           grid: gridField,
           comment: commentField,
+          theirRef: theirRefField,
           station: stationField,
         ),
         time: timeRow,
@@ -449,6 +476,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
           gap,
           commentField,
           gap,
+          if (theirRefField != null) ...[theirRefField, gap],
           ?stationField,
           gap,
           timeRow,
@@ -513,6 +541,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
                   ]),
                   vgap,
                   spaced([
+                    if (fields.theirRef case final theirRef?) flex(3, theirRef),
                     if (fields.station case final station?) flex(4, station),
                     flex(5, time),
                   ]),
@@ -594,6 +623,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
                     flex(3, fields.name),
                     flex(2, fields.grid),
                     flex(6, fields.comment),
+                    if (fields.theirRef case final theirRef?) flex(3, theirRef),
                     if (fields.station case final station?) flex(4, station),
                   ]),
                   if (!hintsBesideButtons) ...[
@@ -631,6 +661,7 @@ typedef _StripFields = ({
   Widget name,
   Widget grid,
   Widget comment,
+  Widget? theirRef,
   Widget? station,
 });
 
