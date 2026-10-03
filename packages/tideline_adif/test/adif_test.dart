@@ -234,6 +234,11 @@ void main() {
       expect(AdifQsoMapping.toRecord(again), record);
       expect(record['BAND'], '40m');
       expect(record['FREQ'], '7.0305');
+      expect(
+        record['MY_SOTA_REF'],
+        'EA8/TF-001',
+        reason: 'own reference exported',
+      );
     });
   });
 }

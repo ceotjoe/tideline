@@ -38,5 +38,9 @@ Verified on 2026-10-03 with `curl` (headers and the first lines only):
 - First use of each program needs a connection. The manual says so.
 - `PackDownloader` (app/lib/src/services/pack_download.dart) follows the MASTER.SCP rules but streams to a file. The SCP
   downloader keeps its in-memory path (8 MiB) for now. Merging the two is a later cleanup, not needed for correctness.
-- Open: whether the 4 QSO SOTA rule also needs the "same summit, once per UTC day" handling, and which Wavelog field
-  carries a second reference for P2P (to be verified against the API docs in step 4.6, not assumed).
+- **Own references and Wavelog (verified 2026-10-03, see `wavelog-api.md`):** Wavelog ignores `MY_*_REF` and
+  `MY_GRIDSQUARE` in an upload and copies them from the station location the QSO is uploaded to. Tideline keeps them on
+  every QSO and exports them in ADIF, but only a location carrying the reference puts them on the server. The other
+  station's reference (`POTA_REF`, `SOTA_REF`, `WWFF_REF`) syncs normally, so park to park works.
+- **Decision pending (maintainer):** how activations pick or prepare that location. See the Phase 4 step 4.6 report.
+- Open: whether the 4 QSO SOTA rule also needs the "same summit, once per UTC day" handling.

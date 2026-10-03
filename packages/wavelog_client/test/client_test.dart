@@ -242,4 +242,27 @@ void main() {
       expect(info.expiresAt, DateTime.utc(2027, 1, 31, 12));
     });
   });
+
+  test('a station location carries its programme references', () {
+    final s = WavelogStation.fromJson(const {
+      'id': '4',
+      'callsign': 'DO1HOZ',
+      'name': 'Acadia',
+      'sota': '',
+      'pota': 'US-0001',
+      'wwff': ' KFF-0001 ',
+      'iota': null,
+      'sig': 'DOK',
+      'sig_info': 'F03',
+    });
+    expect(s.id, 4);
+    expect(s.potaRef, 'US-0001');
+    expect(s.sotaRef, isNull, reason: 'empty means none');
+    expect(s.wwffRef, 'KFF-0001');
+    expect(s.iota, isNull);
+    expect(s.sig, 'DOK');
+    expect(s.sigInfo, 'F03');
+    final plain = WavelogStation.fromJson(const {'id': 1, 'callsign': 'X'});
+    expect(plain.potaRef, isNull);
+  });
 }

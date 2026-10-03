@@ -121,6 +121,7 @@ Available scopes (✔ `*_resource.php::scope_labels`):
 - **Fields kept on import** (✔ `Logbook_model::import`): the standard columns plus `contest_id`, `srx`, `stx`,
   `srx_string`, `stx_string`, `check`, `class`, `precedence`, `arrl_sect`, `darc_dok`, `sota_ref`, `pota_ref`, `wwff_ref`.
 - **Fields dropped:** unknown keys, including `APP_*` fields. ✔ explicit field mapping
+- **Own references are overwritten:** see "Own references" below.
 - **Batch size:** no limit in the API code. ✔ PHP and web-server body limits may apply. ? unknown
 
 ### Server duplicate rule
@@ -158,6 +159,35 @@ See [ADR 0008](../adr/0008-sync-idempotency-without-server-uuid.md).
 
 ### Delete
 `DELETE /qso/{id}` returns 204 and needs `qso:delete`. ✔ docs
+
+## Own references (`MY_*`) and station locations
+
+_Verified 2026-10-03 on `wavelog/wavelog@dev` (latest release 3.2.3):
+`Qso_resource::create_from_json/create_bulk_json/create_from_adif` → `Logbook_model::import_bulk` → `::import`._
+
+- **The own-station fields of an uploaded QSO come from its station location, never from the upload.** `import` first reads
+  `my_gridsquare`, `my_sota_ref`, `my_wwff_ref`, `my_pota_ref`, `my_sig`, `my_sig_info` from the record, then, because
+  `station_profile_id` is always set for API uploads, overwrites them with `station_gridsquare`, `station_sota`,
+  `station_wwff`, `station_pota`, `station_sig`, `station_sig_info` of the location. An empty value on the location
+  therefore also clears what the upload said. ✔ `Logbook_model::import` (the block "Collect field information from the
+  station profile table")
+- The same applies to bulk JSON and bulk ADIF uploads, which share `import`. ✔
+- `PATCH /qso/{id}` cannot change them either: the `MY_*` station refs are deliberately out of scope. ✔
+  `Qso_resource` class comment and `editable_fields()`
+- **The other station's references do travel:** `sota_ref`, `pota_ref` and `wwff_ref` are kept on create and are editable
+  on PATCH. Park-to-park and summit-to-summit contacts therefore sync. ✔
+- **Consequence for activations:** to have `MY_POTA_REF` (or SOTA/WWFF) and the grid on the server, the QSOs must be
+  uploaded to a station location that carries that reference and grid. Tideline keeps the references locally on every
+  QSO (`MY_*_REF`, `MY_GRIDSQUARE`) and in its own ADIF export regardless.
+- **Station locations can be written through API v2** (earlier versions of this page said read only). ✔ `Station_resource`
+  - `GET/POST/PATCH/DELETE /station`, scopes `station:read`, `station:write`, `station:delete`.
+  - `POST` needs `name`, `callsign`, `dxcc`, `cq`, `itu` and club level 9 on club stations. An identical location answers
+    409 `conflict`. The first location of a user becomes the active one.
+  - Writable fields: `name`, `callsign`, `gridsquare`, `city`, `dxcc`, `cq`, `itu`, `state`, `iota`, `sota`, `wwff`,
+    `pota`, `sig`, `sig_info`, `power`. `PATCH` may add `set_active: true`.
+  - `DELETE` removes the location **with all its QSOs**, and the active location cannot be deleted (409).
+  - Tideline currently requests `station:read` only. Writing would need the optional `station:write` scope and an
+    explicit user decision (a change of the user's server configuration).
 
 ## Station locations
 - `GET /station` returns `{id, uuid, name, callsign, gridsquare, city, dxcc, country, cq, itu, state, cnty, iota, sota,

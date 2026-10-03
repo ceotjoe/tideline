@@ -263,16 +263,21 @@ class SyncEngine {
         hasContestSessions: account.hasContestSessions,
         tokenExpiresAt: token.expiresAt?.millisecondsSinceEpoch,
       );
-      await accounts.syncStations(account.id, [
-        for (final s in stations)
-          (
-            remoteId: s.id,
-            name: s.name,
-            callsign: s.callsign,
-            grid: s.gridsquare,
-            active: s.active,
-          ),
-      ], nowMillis: _now());
+      await accounts.syncStations(
+        account.id,
+        [
+          for (final s in stations)
+            (
+              remoteId: s.id,
+              name: s.name,
+              callsign: s.callsign,
+              grid: s.gridsquare,
+              active: s.active,
+            ),
+        ],
+        nowMillis: _now(),
+        references: stationReferences(stations),
+      );
     } on WavelogUnauthorized catch (e) {
       await _blockAccount(
         account.id,

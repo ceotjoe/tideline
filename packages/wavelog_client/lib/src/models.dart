@@ -71,6 +71,12 @@ class WavelogStation {
     this.dxcc,
     this.cqz,
     this.ituz,
+    this.sotaRef,
+    this.potaRef,
+    this.wwffRef,
+    this.iota,
+    this.sig,
+    this.sigInfo,
   });
 
   /// Parses one element of the `data` array of `GET /station`.
@@ -88,6 +94,12 @@ class WavelogStation {
       dxcc: _asInt(json['dxcc']),
       cqz: _asInt(json['cq']),
       ituz: _asInt(json['itu']),
+      sotaRef: _nonEmpty(json['sota']),
+      potaRef: _nonEmpty(json['pota']),
+      wwffRef: _nonEmpty(json['wwff']),
+      iota: _nonEmpty(json['iota']),
+      sig: _nonEmpty(json['sig']),
+      sigInfo: _nonEmpty(json['sig_info']),
       active:
           json['active'] == true ||
           json['active'] == 1 ||
@@ -115,6 +127,25 @@ class WavelogStation {
 
   /// ITU zone.
   final int? ituz;
+
+  /// The location's SOTA reference. Wavelog copies it into the `MY_SOTA_REF`
+  /// of every QSO uploaded to the location.
+  final String? sotaRef;
+
+  /// The location's POTA reference (copied into `MY_POTA_REF`).
+  final String? potaRef;
+
+  /// The location's WWFF reference (copied into `MY_WWFF_REF`).
+  final String? wwffRef;
+
+  /// The location's IOTA reference.
+  final String? iota;
+
+  /// The location's special interest group (`MY_SIG`).
+  final String? sig;
+
+  /// The location's special interest group info (`MY_SIG_INFO`).
+  final String? sigInfo;
 
   /// Whether this is the user's active location in Wavelog.
   final bool active;

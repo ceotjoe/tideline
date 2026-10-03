@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/services/tls.dart';
+import 'package:tideline_data/tideline_data.dart' show stationReferences;
 import 'package:wavelog_client/wavelog_client.dart';
 
 /// Onboarding steps.
@@ -287,16 +288,21 @@ class OnboardingController extends Notifier<OnboardingState> {
       certPinSha256: state.pinnedSha256,
       tokenExpiresAt: caps.token.expiresAt?.millisecondsSinceEpoch,
     );
-    await accounts.syncStations(id, [
-      for (final s in state.stations)
-        (
-          remoteId: s.id,
-          name: s.name,
-          callsign: s.callsign,
-          grid: s.gridsquare,
-          active: s.active,
-        ),
-    ], nowMillis: now);
+    await accounts.syncStations(
+      id,
+      [
+        for (final s in state.stations)
+          (
+            remoteId: s.id,
+            name: s.name,
+            callsign: s.callsign,
+            grid: s.gridsquare,
+            active: s.active,
+          ),
+      ],
+      nowMillis: now,
+      references: stationReferences(state.stations),
+    );
     final settings = ref.read(settingsStoreProvider);
     await settings.write('account.active', id);
     await settings.write('account.$id.defaultStation', '$stationId');

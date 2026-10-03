@@ -448,6 +448,7 @@ class MockWavelog {
       'mode': '${body['mode']}'.toUpperCase(),
       'qso_date': '${body['qso_date']} $hh:$mm:$ss',
     }..remove('station_profile_id');
+    _applyStationOwnFields(normalised, station);
 
     // Wavelog's duplicate rule: call + minute + band + mode + station.
     final minute = '${body['qso_date']} $hh:$mm';
@@ -491,6 +492,29 @@ class MockWavelog {
       {'data': _format(q)},
       headers: {'location': '/index.php/api/v2/qso/${q.id}'},
     );
+  }
+
+  /// Wavelog's `Logbook_model::import` fills the own-station fields of every
+  /// uploaded QSO from the station location and discards what the upload said
+  /// (verified 2026-10-03 on `dev`, docs/architecture/wavelog-api.md, "Own
+  /// references"). The mock does the same, so a test can never rely on a
+  /// per-QSO `my_pota_ref` reaching the server.
+  void _applyStationOwnFields(Map<String, Object?> fields, int stationId) {
+    const mapping = {
+      'my_gridsquare': 'gridsquare',
+      'my_sota_ref': 'sota',
+      'my_wwff_ref': 'wwff',
+      'my_pota_ref': 'pota',
+      'my_sig': 'sig',
+      'my_sig_info': 'sig_info',
+      'my_iota': 'iota',
+    };
+    final station = stations.firstWhere((s) => s['id'] == stationId);
+    for (final MapEntry(key: field, value: stationKey) in mapping.entries) {
+      fields.remove(field);
+      final value = '${station[stationKey] ?? ''}'.trim().toUpperCase();
+      if (value.isNotEmpty) fields[field] = value;
+    }
   }
 
   Response _listQsos(Map<String, String> query) {

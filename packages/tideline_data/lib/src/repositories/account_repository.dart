@@ -64,6 +64,7 @@ class StationProfile {
     required this.callsign,
     required this.active,
     this.gridsquare,
+    this.references = const StationReferences(),
   });
 
   /// Local UUID.
@@ -86,6 +87,59 @@ class StationProfile {
 
   /// Active location in Wavelog.
   final bool active;
+
+  /// The programme references stored on the location in Wavelog.
+  final StationReferences references;
+}
+
+/// The SOTA, POTA, WWFF, IOTA and SIG values of a Wavelog station location.
+///
+/// Wavelog files every uploaded QSO under such a location and copies these
+/// values into the QSO's own `MY_*` fields, ignoring what the upload says
+/// (docs/architecture/wavelog-api.md, "Own references").
+@immutable
+class StationReferences {
+  /// Creates the values; all are optional.
+  const new({
+    this.sota,
+    this.pota,
+    this.wwff,
+    this.iota,
+    this.sig,
+    this.sigInfo,
+  });
+
+  /// SOTA reference.
+  final String? sota;
+
+  /// POTA reference.
+  final String? pota;
+
+  /// WWFF reference.
+  final String? wwff;
+
+  /// IOTA reference.
+  final String? iota;
+
+  /// Special interest group.
+  final String? sig;
+
+  /// Special interest group info.
+  final String? sigInfo;
+
+  /// The location's reference of [program], or null.
+  String? of(ReferenceProgram program) => switch (program) {
+    ReferenceProgram.sota => sota,
+    ReferenceProgram.pota => pota,
+    ReferenceProgram.wwff => wwff,
+  };
+
+  /// Whether the location carries exactly [reference] for [program]
+  /// (ignoring case and surrounding space).
+  bool matches(ReferenceProgram program, String reference) {
+    final own = of(program)?.trim().toUpperCase();
+    return own != null && own == reference.trim().toUpperCase();
+  }
 }
 
 /// Accounts and their station profiles. Tokens go to the [SecretStore].
@@ -233,6 +287,7 @@ class AccountRepository {
     >
     stations, {
     required int nowMillis,
+    Map<int, StationReferences> references = const {},
   }) => _db.transaction(() async {
     final existing = await (_db.select(
       _db.stationProfiles,
@@ -250,6 +305,12 @@ class AccountRepository {
               name: s.name,
               callsign: s.callsign,
               gridsquare: Value(s.grid),
+              sotaRef: Value(references[s.remoteId]?.sota),
+              potaRef: Value(references[s.remoteId]?.pota),
+              wwffRef: Value(references[s.remoteId]?.wwff),
+              iota: Value(references[s.remoteId]?.iota),
+              sig: Value(references[s.remoteId]?.sig),
+              sigInfo: Value(references[s.remoteId]?.sigInfo),
               active: Value(s.active),
               fetchedAt: nowMillis,
             ),
@@ -276,6 +337,14 @@ class AccountRepository {
                   callsign: r.callsign,
                   gridsquare: r.gridsquare,
                   active: r.active,
+                  references: StationReferences(
+                    sota: r.sotaRef,
+                    pota: r.potaRef,
+                    wwff: r.wwffRef,
+                    iota: r.iota,
+                    sig: r.sig,
+                    sigInfo: r.sigInfo,
+                  ),
                 ),
             ],
           );

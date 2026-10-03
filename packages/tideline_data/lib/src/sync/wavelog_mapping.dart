@@ -1,4 +1,6 @@
+import 'package:tideline_data/src/repositories/account_repository.dart';
 import 'package:tideline_domain/tideline_domain.dart';
+import 'package:wavelog_client/wavelog_client.dart';
 
 /// Fields Wavelog's `PATCH /qso/{id}` accepts (verified in
 /// Qso_resource::editable_fields; docs/architecture/wavelog-api.md).
@@ -57,3 +59,19 @@ Map<String, Object> wavelogPatchFields(Qso qso) {
     for (final f in _patchableInts) f: ?int.tryParse(all[f] ?? ''),
   };
 }
+
+/// The programme references of the station locations in [stations], by
+/// Wavelog station id, for `AccountRepository.syncStations`.
+Map<int, StationReferences> stationReferences(
+  Iterable<WavelogStation> stations,
+) => {
+  for (final s in stations)
+    s.id: StationReferences(
+      sota: s.sotaRef,
+      pota: s.potaRef,
+      wwff: s.wwffRef,
+      iota: s.iota,
+      sig: s.sig,
+      sigInfo: s.sigInfo,
+    ),
+};
