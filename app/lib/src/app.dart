@@ -13,6 +13,7 @@ import 'package:tideline/src/routing/router.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline/src/widgets/app_lock.dart';
+import 'package:tideline/src/widgets/phone_orientation_lock.dart';
 
 /// Family name of the bundled reading font (pubspec.yaml).
 const readingFontFamily = 'AtkinsonHyperlegible';
@@ -91,12 +92,14 @@ class _TidelineAppState extends ConsumerState<TidelineApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       builder: (context, child) {
-        Widget result = AppLock(
-          child: Shortcuts(
-            shortcuts: registry.shortcutMap(
-              ShortcutPlatform.of(Theme.of(context).platform),
+        Widget result = PhoneOrientationLock(
+          child: AppLock(
+            child: Shortcuts(
+              shortcuts: registry.shortcutMap(
+                ShortcutPlatform.of(Theme.of(context).platform),
+              ),
+              child: child ?? const SizedBox.shrink(),
             ),
-            child: child ?? const SizedBox.shrink(),
           ),
         );
         if (kDebugMode && settings.forceRtl) {
