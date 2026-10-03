@@ -954,36 +954,6 @@
   "@recentQsos": {
     "description": "Heading."
   },
-  "contextHint": "Type a callsign to see its DXCC entity, zones and whether you worked it before. This works offline.",
-  "@contextHint": {
-    "description": "Context panel hint."
-  },
-  "contextWae": "WAE: {name}",
-  "@contextWae": {
-    "description": "WAE-only entity line.",
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "contextDxccNumber": "DXCC entity {number}",
-  "@contextDxccNumber": {
-    "description": "ADIF DXCC code.",
-    "placeholders": {
-      "number": {
-        "type": "int"
-      }
-    }
-  },
-  "contextWorkedBefore": "Worked before",
-  "@contextWorkedBefore": {
-    "description": "Heading."
-  },
-  "contextNewOne": "Not in your log yet – a new one!",
-  "@contextNewOne": {
-    "description": "No previous QSOs with this station."
-  },
   "certSubjectLine": "Issued to: {value}",
   "@certSubjectLine": {
     "description": "Certificate subject line.",

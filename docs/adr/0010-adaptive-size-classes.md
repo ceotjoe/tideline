@@ -24,6 +24,8 @@
   width its body really has (after the navigation rail), with a minimum width per pane. The navigation rail shows its
   labels beside the icons only from 1440 dp. (Added 2026-10-02: at 1210 dp, an iPad Pro 11" in landscape, the `large`
   class with a wide rail and fixed columns left the log list ~130 dp, and the log body failed to lay out.)
+- **Landscape logging uses a full-width entry strip** instead of columns, so the fields fit above the keyboard
+  ([ADR 0020](0020-landscape-entry-strip.md)). (Added 2026-10-03.)
 
 ## Consequences
 - Foldables, resizable windows and desktop work automatically.

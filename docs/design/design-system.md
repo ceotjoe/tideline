@@ -83,12 +83,15 @@ so it is distinguishable only by icon and text, which is intended.
 
 The layout follows window size classes ([ADR 0010](../adr/0010-adaptive-size-classes.md)):
 
-| Size class | Width | Navigation | Panes |
+| Size class | Width | Navigation | Log screen |
 |---|---|---|---|
-| compact | < 600 | Bottom bar, within thumb reach | 1 |
-| medium | 600–839 | Navigation rail | 2 |
-| expanded | 840–1199 | Navigation rail | 3 |
-| large | ≥ 1200 | Extended rail | 3 |
+| compact | < 600 | Bottom bar, within thumb reach | One column |
+| medium | 600–839 | Navigation rail | Form and log side by side |
+| expanded | 840–1199 | Navigation rail | Landscape: entry strip over the log; portrait: form and log |
+| large | ≥ 1200 | Rail (labels from 1440) | Landscape: entry strip over the log |
+
+In landscape the entry form is a three-row strip across the full width, so every field stays visible above the
+on-screen keyboard ([ADR 0020](../adr/0020-landscape-entry-strip.md)). Phones stay in portrait.
 
 ## Themes
 

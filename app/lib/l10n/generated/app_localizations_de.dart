@@ -749,26 +749,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get recentQsos => 'Letzte QSOs';
 
   @override
-  String get contextHint =>
-      'Gib ein Rufzeichen ein, um DXCC-Gebiet, Zonen und frühere Verbindungen zu sehen. Das funktioniert offline.';
-
-  @override
-  String contextWae(String name) {
-    return 'WAE: $name';
-  }
-
-  @override
-  String contextDxccNumber(int number) {
-    return 'DXCC-Gebiet $number';
-  }
-
-  @override
-  String get contextWorkedBefore => 'Schon gearbeitet';
-
-  @override
-  String get contextNewOne => 'Noch nicht in deinem Log – ein neues!';
-
-  @override
   String certSubjectLine(String value) {
     return 'Ausgestellt für: $value';
   }

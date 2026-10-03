@@ -747,26 +747,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recentQsos => 'Recent QSOs';
 
   @override
-  String get contextHint =>
-      'Type a callsign to see its DXCC entity, zones and whether you worked it before. This works offline.';
-
-  @override
-  String contextWae(String name) {
-    return 'WAE: $name';
-  }
-
-  @override
-  String contextDxccNumber(int number) {
-    return 'DXCC entity $number';
-  }
-
-  @override
-  String get contextWorkedBefore => 'Worked before';
-
-  @override
-  String get contextNewOne => 'Not in your log yet – a new one!';
-
-  @override
   String certSubjectLine(String value) {
     return 'Issued to: $value';
   }
@@ -2712,26 +2692,6 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get recentQsos => '[Ŕéçéñţ ǪŠÖš·····]';
-
-  @override
-  String get contextHint =>
-      '[Ţýþé á çáļļšîĝñ ţö šéé îţš ÐẊÇÇ éñţîţý, žöñéš áñð ŵĥéţĥéŕ ýöû ŵöŕķéð îţ ƀéƒöŕé. Ţĥîš ŵöŕķš öƒƒļîñé.········································]';
-
-  @override
-  String contextWae(String name) {
-    return '[ŴÅÉ: ··]$name';
-  }
-
-  @override
-  String contextDxccNumber(int number) {
-    return '[ÐẊÇÇ éñţîţý ·····]$number';
-  }
-
-  @override
-  String get contextWorkedBefore => '[Ŵöŕķéð ƀéƒöŕé······]';
-
-  @override
-  String get contextNewOne => '[Ñöţ îñ ýöûŕ ļöĝ ýéţ – á ñéŵ öñé!·············]';
 
   @override
   String certSubjectLine(String value) {

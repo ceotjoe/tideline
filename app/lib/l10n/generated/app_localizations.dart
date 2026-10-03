@@ -1353,36 +1353,6 @@ abstract class AppLocalizations {
   /// **'Recent QSOs'**
   String get recentQsos;
 
-  /// Context panel hint.
-  ///
-  /// In en, this message translates to:
-  /// **'Type a callsign to see its DXCC entity, zones and whether you worked it before. This works offline.'**
-  String get contextHint;
-
-  /// WAE-only entity line.
-  ///
-  /// In en, this message translates to:
-  /// **'WAE: {name}'**
-  String contextWae(String name);
-
-  /// ADIF DXCC code.
-  ///
-  /// In en, this message translates to:
-  /// **'DXCC entity {number}'**
-  String contextDxccNumber(int number);
-
-  /// Heading.
-  ///
-  /// In en, this message translates to:
-  /// **'Worked before'**
-  String get contextWorkedBefore;
-
-  /// No previous QSOs with this station.
-  ///
-  /// In en, this message translates to:
-  /// **'Not in your log yet – a new one!'**
-  String get contextNewOne;
-
   /// Certificate subject line.
   ///
   /// In en, this message translates to:

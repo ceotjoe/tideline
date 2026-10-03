@@ -97,6 +97,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Documentation.** README, manual skeleton (EN/DE), architecture, verified Wavelog API notes, ADRs 0001–0015, STRIDE
   threat model, MASVS mapping, privacy statement and security policy.
 
+### Changed
+- **Log screen in landscape (ADR 0020).** On tablets and wide windows in landscape, the entry form is three rows across
+  the full width with the log underneath. With the on-screen keyboard open, all fields, Clear and Log stay visible
+  without scrolling; the top bar hides while the keyboard is up. QSO details open in a sheet instead of a third column,
+  and the separate context column is gone (the DXCC and worked-before hints stay in the entry). The frequency reading
+  moves into the third row of the strip.
+- **Phones stay in portrait.** iPhone and Android phones no longer rotate; tablets and desktop windows do.
+
 ### Fixed
 - **Tablet landscape.** On an iPad Pro or Air 11" in landscape (1210 dp) the log list got ~130 dp and the log screen
   stayed empty. Columns now follow the available width, and the navigation rail shows labels only from 1440 dp. The

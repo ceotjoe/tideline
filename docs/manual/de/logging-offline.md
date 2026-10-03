@@ -42,7 +42,12 @@ Die vollständige Liste steht unter [Tastenkürzel](keyboard-shortcuts.md).
 
 ## Tablet und Desktop
 
+- **Querformat:** Die Felder stehen in drei Zeilen über die ganze Breite, darunter dein Log. Bei geöffneter
+  Bildschirmtastatur bleiben alle Felder sowie **Eingabe verwerfen** und **QSO loggen** ohne Scrollen sichtbar. Die
+  obere Leiste wird ausgeblendet, solange die Tastatur offen ist, und kommt mit dem Schließen zurück. Tab und
+  Umschalt+Tab springen zeilenweise durch die Felder.
 - **Hochformat:** Eingabe und Log stehen nebeneinander.
-- **Querformat und Desktop:** Eine dritte Spalte zeigt Details zum Rufzeichen, das du gerade tippst, oder zum
-  ausgewählten QSO.
+- **QSO-Details:** Wähle ein QSO im Log, um die Details in einem Blatt über dem Log zu sehen; was du gerade tippst,
+  bleibt unverändert. Zum Schließen das Blatt nach unten wischen.
+- **Smartphones** bleiben im Hochformat.
 - **Fenstergröße ändern:** Drehen oder Ändern der Fenstergröße (Split View, Stage Manager) verliert nie deine Eingabe.
