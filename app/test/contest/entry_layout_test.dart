@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:tideline/src/features/contest/exchange_field.dart';
+
 import '../support/contest_fakes.dart';
 import '../support/pump_app.dart';
 import 'contest_harness.dart';
@@ -42,4 +44,67 @@ void main() {
       });
     }
   }
+
+  group('with the keyboard up in landscape', () {
+    const keyboard = 400.0;
+
+    for (final (size, scale) in [
+      (TestSizes.tabletLandscape, 1.0),
+      (TestSizes.tabletLandscapeWide, 1.0),
+      (const Size(1366, 1024), 1.0),
+      (TestSizes.tabletLandscapeWide, 1.3),
+    ]) {
+      testWidgets(
+        'entry, hints and buttons stay above it at $size, ${scale}x',
+        (tester) async {
+          await pumpContest(
+            tester,
+            size: size,
+            textScale: scale,
+            backend: ContestBackend(),
+          );
+          tester.view.viewInsets = FakeViewPadding(
+            bottom: keyboard * tester.view.devicePixelRatio,
+          );
+          addTearDown(tester.view.resetViewInsets);
+          await tester.pumpAndSettle();
+          await typeCall(tester, 'DL1ABC');
+          await tester.pumpAndSettle();
+
+          final visibleBottom = size.height - keyboard;
+          final targets = <String, Finder>{
+            'Callsign': find.text('Callsign'),
+            'Band': find.text('Band'),
+            'Mode': find.text('Mode'),
+            'Frequency': find.text('Frequency'),
+            'Log': find.text('Log QSO'),
+            'Edit last': find.text('Edit last QSO'),
+            'Exchange': find.byType(ExchangeField),
+          };
+          for (final MapEntry(:key, :value) in targets.entries) {
+            expect(value, findsWidgets, reason: key);
+            for (final element in value.evaluate()) {
+              final rect = tester.getRect(find.byWidget(element.widget).first);
+              expect(rect.top, greaterThanOrEqualTo(0), reason: key);
+              expect(
+                rect.bottom,
+                lessThanOrEqualTo(visibleBottom),
+                reason: key,
+              );
+            }
+          }
+          // The dupe/multiplier/country hints are shown too.
+          expect(find.textContaining('Germany'), findsWidgets);
+          expect(
+            find.ancestor(
+              of: find.widgetWithText(FilledButton, 'Log QSO'),
+              matching: find.byType(Scrollable),
+            ),
+            findsNothing,
+          );
+          expect(tester.takeException(), isNull);
+        },
+      );
+    }
+  });
 }
