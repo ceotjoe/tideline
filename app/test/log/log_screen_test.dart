@@ -161,6 +161,111 @@ void main() {
     }
   });
 
+  group('rotation and direction', () {
+    testWidgets(
+      'typed input survives rotating between landscape and portrait',
+      (tester) async {
+        await pumpTideline(
+          tester,
+          size: TestSizes.tabletLandscapeWide,
+          log: sampleLog(2),
+        );
+        await tester.enterText(field('Callsign'), 'dl1abc');
+        await tester.enterText(field('Name'), 'Anna');
+        await tester.pump();
+
+        for (final size in [
+          TestSizes.tabletPortrait,
+          TestSizes.tabletLandscapeWide,
+        ]) {
+          tester.view.physicalSize = size * tester.view.devicePixelRatio;
+          await tester.pumpAndSettle();
+          expect(
+            tester.widget<TextField>(field('Callsign')).controller!.text,
+            'DL1ABC',
+          );
+          expect(
+            tester.widget<TextField>(field('Name')).controller!.text,
+            'Anna',
+          );
+          expect(tester.takeException(), isNull);
+        }
+      },
+    );
+
+    testWidgets(
+      'the strip mirrors in right-to-left and fits the pseudo-locale',
+      (tester) async {
+        await pumpTideline(
+          tester,
+          size: TestSizes.tabletLandscapeWide,
+          settings: const AppSettings(
+            localeOverride: Locale('en', 'XA'),
+            forceRtl: true,
+          ),
+        );
+        tester.view.viewInsets = FakeViewPadding(
+          bottom: 400 * tester.view.devicePixelRatio,
+        );
+        addTearDown(tester.view.resetViewInsets);
+        await tester.pumpAndSettle();
+        final callsign = tester.getRect(find.byType(TextField).first);
+        final last = tester.getRect(find.byType(TextField).at(5));
+        // Reading order runs right to left; the row stays above the keyboard.
+        expect(callsign.left, greaterThan(last.left));
+        expect(
+          tester.getRect(find.byType(TextField).last).bottom,
+          lessThanOrEqualTo(TestSizes.tabletLandscapeWide.height - 400),
+        );
+        expect(tester.takeException(), isNull);
+      },
+    );
+  });
+
+  group('accessibility with the keyboard up', () {
+    testWidgets('tap targets, labels and contrast in the strip', (
+      tester,
+    ) async {
+      final handle = tester.ensureSemantics();
+      await pumpTideline(
+        tester,
+        size: TestSizes.tabletLandscapeWide,
+        log: sampleLog(4),
+      );
+      tester.view.viewInsets = FakeViewPadding(
+        bottom: 400 * tester.view.devicePixelRatio,
+      );
+      addTearDown(tester.view.resetViewInsets);
+      await tester.pumpAndSettle();
+      await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(iOSTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(textContrastGuideline));
+      handle.dispose();
+    });
+
+    testWidgets('fields are reached left to right, row by row', (tester) async {
+      await pumpTideline(tester, size: TestSizes.tabletLandscapeWide);
+      await tester.tap(field('Callsign'));
+      await tester.pump();
+      var previous = FocusManager.instance.primaryFocus!.rect;
+      for (var i = 0; i < 9; i++) {
+        await tester.sendKeyEvent(LogicalKeyboardKey.tab);
+        await tester.pump();
+        final next = FocusManager.instance.primaryFocus!.rect;
+        // Either further right in the same row, or on a lower row.
+        final sameRow = (next.top - previous.top).abs() < 20;
+        expect(
+          sameRow ? next.left > previous.left : next.top > previous.top,
+          isTrue,
+          reason: 'step ${i + 1}: $previous -> $next',
+        );
+        previous = next;
+      }
+      expect(tester.takeException(), isNull);
+    });
+  });
+
   group('sync status is explained', () {
     testWidgets('a conflict offers both choices in plain language', (
       tester,

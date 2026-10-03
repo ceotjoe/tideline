@@ -44,4 +44,25 @@ void main() {
       );
     });
   }
+
+  testWidgets('log screen, tablet landscape with the keyboard up', (
+    tester,
+  ) async {
+    await pumpTideline(
+      tester,
+      size: TestSizes.tabletLandscapeWide,
+      settings: const AppSettings(theme: ThemeChoice.light),
+      log: sampleLog(6),
+      pending: 4,
+    );
+    tester.view.viewInsets = FakeViewPadding(
+      bottom: 400 * tester.view.devicePixelRatio,
+    );
+    addTearDown(tester.view.resetViewInsets);
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/log_tablet_landscape_keyboard.png'),
+    );
+  });
 }
