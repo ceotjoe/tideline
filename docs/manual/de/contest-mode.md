@@ -37,6 +37,11 @@ CQ-Zone oder RST und laufende Nummer). Darüber steht, was du sendest, einschlie
 Auf einem Touchscreen nutzt du die Schaltfläche **QSO loggen**. Alle Schaltflächen sind mindestens 48 dp groß, im
 Handschuhmodus größer.
 
+**Tablet im Querformat:** Rufzeichen, empfangener Exchange, Band, Betriebsart und Frequenz stehen in einer Zeile über
+die ganze Breite. Darunter folgen die Hinweise und der gesendete Exchange, dann die Frequenzanzeige und die
+Schaltflächen. Unten siehst du deine letzten QSOs und das Punktefeld. Bei geöffneter Bildschirmtastatur bleibt alles
+ohne Scrollen sichtbar, und die obere Leiste wird ausgeblendet, bis du die Tastatur schließt.
+
 ### Laufende Nummern
 
 Deine laufende Nummer wird in dem Moment vergeben, in dem das QSO gespeichert wird, im selben Schritt wie das QSO selbst.

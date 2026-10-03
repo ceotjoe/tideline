@@ -36,4 +36,10 @@
 - The callsign details beyond the hints (WAE entity, DXCC number, list of earlier QSOs) are no longer on the log screen.
   The worked-before status is still shown; the full history is in the log list.
 - Portrait tablets and narrow windows keep the form-plus-list layout; with the keyboard up they still scroll.
-- The contest screen has the same keyboard problem and is a follow-up.
+- **Contest mode uses the same strip** (added 2026-10-03). `ContestEntryPanel` takes the same `QsoEntryLayout`. Row 1:
+  callsign, the received exchange elements (their number depends on the contest), band, mode, frequency. Row 2: the
+  live hints and the sent exchange. Pinned below: the frequency reading and the buttons, so Log never sits inside a
+  scrollable. The recent QSOs and the score panel share the space under the strip. Keyboard detection is the shared
+  `KeyboardAware` mixin.
+- The log screen's strip scrolls as a whole in the fallback case, buttons included. Pinning its buttons like the
+  contest's is a possible follow-up.

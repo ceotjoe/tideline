@@ -103,6 +103,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   without scrolling; the top bar hides while the keyboard is up. QSO details open in a sheet instead of a third column,
   and the separate context column is gone (the DXCC and worked-before hints stay in the entry). The frequency reading
   moves into the third row of the strip.
+- **Contest entry in landscape.** The same strip for contest mode: callsign, received exchange, band, mode and
+  frequency in one row, hints and sent exchange below, the frequency reading and buttons pinned at the bottom, recent
+  QSOs and the score panel underneath. Everything stays above the on-screen keyboard.
 - **Phones stay in portrait.** iPhone and Android phones no longer rotate; tablets and desktop windows do.
 
 ### Fixed

@@ -36,6 +36,11 @@ and serial number). What you send is shown above it, including the **next serial
 
 On a touch screen, use the **Log QSO** button. All buttons are at least 48 dp; glove mode makes them larger.
 
+**Tablet in landscape:** callsign, received exchange, band, mode and frequency are one row across the whole width. The
+hints and the sent exchange are below it, then the frequency reading and the buttons. Your recent QSOs and the score
+panel are underneath. With the on-screen keyboard open, all of this stays visible without scrolling and the top bar
+hides until you close the keyboard.
+
 ### Serial numbers
 
 Your serial number is taken at the moment the QSO is saved, in the same step that stores the QSO. The number shown
