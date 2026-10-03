@@ -46,7 +46,7 @@ void main() {
   }
 
   group('with the keyboard up in landscape', () {
-    const keyboard = 400.0;
+    const keyboard = 430.0;
 
     for (final (size, scale) in [
       (TestSizes.tabletLandscape, 1.0),
@@ -109,7 +109,7 @@ void main() {
   });
 
   group('with the keyboard up in portrait', () {
-    const keyboard = 360.0;
+    const keyboard = 380.0;
 
     for (final (size, scale) in [
       (TestSizes.tabletPortrait, 1.0),
@@ -136,7 +136,11 @@ void main() {
 
         final visibleBottom = size.height - keyboard;
         for (final label in ['Callsign', 'Band', 'Mode', 'Log QSO']) {
-          final finder = find.text(label);
+          final finder =
+              (label == 'Log QSO'
+                      ? find.text(label)
+                      : find.widgetWithText(InputDecorator, label))
+                  .hitTestable();
           expect(finder, findsWidgets, reason: label);
           final rect = tester.getRect(finder.first);
           expect(rect.top, greaterThanOrEqualTo(0), reason: label);

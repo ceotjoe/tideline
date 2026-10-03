@@ -6,6 +6,8 @@ import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
+import '../contest/contest_harness.dart' show pumpContest;
+import '../support/contest_fakes.dart';
 import '../support/pump_app.dart';
 
 Finder field(String label) => find.widgetWithText(TextField, label);
@@ -116,7 +118,7 @@ void main() {
   });
 
   group('tablet landscape with the keyboard up', () {
-    const keyboard = 400.0; // iPad landscape software keyboard, approx.
+    const keyboard = 430.0; // iPad landscape software keyboard, measured
     const labels = [
       'Callsign',
       'Band',
@@ -138,10 +140,13 @@ void main() {
       testWidgets('all fields are visible above it at $size, ${scale}x text', (
         tester,
       ) async {
-        await pumpTideline(
+        // A running contest adds its banner above the log.
+        await pumpContest(
           tester,
           size: size,
           textScale: scale,
+          backend: ContestBackend(),
+          open: false,
           log: sampleLog(5),
         );
         final dpr = tester.view.devicePixelRatio;
@@ -151,7 +156,12 @@ void main() {
 
         final visibleBottom = size.height - keyboard;
         for (final label in [...labels, 'Log QSO', 'Clear entry']) {
-          final finder = find.text(label);
+          // Hit-testable: really inside the visible part of any scroll view.
+          final finder =
+              (label.startsWith('Log') || label.startsWith('Clear')
+                      ? find.text(label)
+                      : find.widgetWithText(InputDecorator, label))
+                  .hitTestable();
           expect(finder, findsWidgets, reason: label);
           final rect = tester.getRect(finder.first);
           expect(rect.top, greaterThanOrEqualTo(0), reason: label);
@@ -200,7 +210,7 @@ void main() {
   });
 
   group('tablet portrait with the keyboard up', () {
-    const keyboard = 360.0; // iPad portrait software keyboard, approx.
+    const keyboard = 380.0; // iPad portrait software keyboard, with margin
     const labels = [
       'Callsign',
       'Band',
@@ -236,7 +246,11 @@ void main() {
 
         final visibleBottom = size.height - keyboard;
         for (final label in [...labels, 'Log QSO', 'Clear entry']) {
-          final finder = find.text(label);
+          final finder =
+              (label.startsWith('Log') || label.startsWith('Clear')
+                      ? find.text(label)
+                      : find.widgetWithText(InputDecorator, label))
+                  .hitTestable();
           expect(finder, findsWidgets, reason: label);
           final rect = tester.getRect(finder.first);
           expect(rect.top, greaterThanOrEqualTo(0), reason: label);

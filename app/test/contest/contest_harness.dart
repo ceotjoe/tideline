@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tideline/src/settings/app_settings.dart';
+import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
 import '../support/contest_fakes.dart';
@@ -24,6 +25,7 @@ Future<Pumped> pumpContest(
   ContestBackend? backend,
   Map<String, String> ownExchange = const {},
   bool open = true,
+  List<LoggedQso> log = const [],
   List<Override> overrides = const [],
 }) async {
   final contest = backend ?? ContestBackend();
@@ -45,6 +47,7 @@ Future<Pumped> pumpContest(
     settings: settings,
     textScale: textScale,
     contest: contest,
+    log: log,
     overrides: overrides,
   );
   if (open) {
