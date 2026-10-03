@@ -152,9 +152,7 @@ class _LogScreenState extends ConsumerState<LogScreen>
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(metrics.sm),
-                    child: layout == QsoEntryLayout.strip
-                        ? SingleChildScrollView(child: formCard(layout: layout))
-                        : formCard(layout: layout),
+                    child: formCard(layout: layout),
                   ),
                 ),
                 const Divider(height: 1),

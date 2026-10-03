@@ -561,27 +561,40 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          spaced([
-            flex(4, fields.call),
-            flex(2, fields.band),
-            flex(2, fields.mode),
-            flex(3, fields.freq),
-            flex(3, fields.rstSent),
-            flex(3, fields.rstRcvd),
-          ]),
-          SizedBox(height: metrics.sm),
-          spaced([
-            flex(3, fields.name),
-            flex(2, fields.grid),
-            flex(6, fields.comment),
-            if (fields.station case final station?) flex(4, station),
-          ]),
+          // Only when the keyboard leaves too little height do the rows and
+          // hints scroll; Clear and Log stay in reach below them.
+          Flexible(
+            child: SingleChildScrollView(
+              // Room for the floating label of the first field.
+              padding: EdgeInsets.only(top: metrics.sm),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  spaced([
+                    flex(4, fields.call),
+                    flex(2, fields.band),
+                    flex(2, fields.mode),
+                    flex(3, fields.freq),
+                    flex(3, fields.rstSent),
+                    flex(3, fields.rstRcvd),
+                  ]),
+                  SizedBox(height: metrics.sm),
+                  spaced([
+                    flex(3, fields.name),
+                    flex(2, fields.grid),
+                    flex(6, fields.comment),
+                    if (fields.station case final station?) flex(4, station),
+                  ]),
+                  SizedBox(height: metrics.sm),
+                  hints,
+                ],
+              ),
+            ),
+          ),
           SizedBox(height: metrics.sm),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Expanded(child: hints),
-              gap,
               SizedBox(width: buttonWidth, child: actions.clear),
               SizedBox(width: metrics.sm),
               SizedBox(width: buttonWidth, child: actions.log),
