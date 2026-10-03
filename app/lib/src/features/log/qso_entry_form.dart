@@ -478,12 +478,12 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           spaced([
-            flex(5, fields.call),
+            flex(4, fields.call),
             flex(2, fields.band),
             flex(2, fields.mode),
             flex(3, fields.freq),
-            flex(2, fields.rstSent),
-            flex(2, fields.rstRcvd),
+            flex(3, fields.rstSent),
+            flex(3, fields.rstRcvd),
           ]),
           SizedBox(height: metrics.sm),
           spaced([
