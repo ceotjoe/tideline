@@ -24,8 +24,10 @@ Verified on 2026-10-03 with `curl` (headers and the first lines only):
 - Download only on user request, from the URLs above shown beforehand and editable (as for MASTER.SCP). HTTPS only,
   also after redirects. Platform TLS validation, never disabled.
 - Per-pack size caps: POTA 20 MB, SOTA 60 MB, WWFF 60 MB, enforced on `Content-Length` and while streaming.
-- **Stream** the body to a temporary file, hash it, parse line by line in an isolate, write to a staging table and swap it
-  in one transaction. A failed download or parse never damages the installed pack.
+- **Stream** the body to a temporary file while hashing it, then parse it chunk by chunk into a temporary table and swap
+  it in one transaction. A failed download or parse never damages the installed pack. Parsing runs on the app isolate:
+  it awaits between 64 KB chunks and takes about one second per 25 MB on a desktop, and the database work already runs on
+  a background isolate. Revisit only if profiling on a phone shows dropped frames.
 - Parsers are strict about the header row (an unknown header fails the pack), and tolerant only of extra trailing columns.
   Rows with an invalid reference are skipped and counted, and the count is shown.
 - Activations are local sessions in the `activations` table. QSOs get `MY_*_REF` from the active session at write time,
@@ -34,6 +36,7 @@ Verified on 2026-10-03 with `curl` (headers and the first lines only):
 
 ## Consequences
 - First use of each program needs a connection. The manual says so.
-- A shared download service replaces the SCP-specific one; the SCP behaviour and tests must stay identical.
+- `PackDownloader` (app/lib/src/services/pack_download.dart) follows the MASTER.SCP rules but streams to a file. The SCP
+  downloader keeps its in-memory path (8 MiB) for now. Merging the two is a later cleanup, not needed for correctness.
 - Open: whether the 4 QSO SOTA rule also needs the "same summit, once per UTC day" handling, and which Wavelog field
   carries a second reference for P2P (to be verified against the API docs in step 4.6, not assumed).
