@@ -103,6 +103,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   without scrolling; the top bar hides while the keyboard is up. QSO details open in a sheet instead of a third column,
   and the separate context column is gone (the DXCC and worked-before hints stay in the entry). The frequency reading
   moves into the third row of the strip.
+- **More room above the keyboard.** In landscape the contest banner hides with the app bar while the keyboard is up,
+  and the list yields its minimum height, so name, locator, comment, station, hints and both buttons fit on an iPad Pro
+  11" without scrolling. With larger text the hints scroll below the fields.
 - **Clear and Log stay in reach.** In the landscape strip they are now pinned below the fields, like in the portrait
   grid and the contest strip, so they remain visible when the keyboard leaves very little room.
 - **Log screen in portrait.** On tablets in portrait the fields are rows of up to three over the log instead of a

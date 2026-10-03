@@ -20,7 +20,8 @@
   same field widgets, controllers and `GlobalKey`, so rotation keeps typed input and focus.
 - **The text equivalent stays.** The frequency reading ("14.205 MHz · 20 m") moves out of the narrow frequency column
   into the third row (`FrequencyReadout`); it is still shown for every layout.
-- **Room for the keyboard.** While the keyboard is up in landscape the app bar is hidden (the tide gauge stays). The
+- **Room for the keyboard.** While the keyboard is up in landscape the app bar and the contest banner are hidden (the tide gauge stays), and the
+  list gives up its minimum height. The iPad Pro 11" landscape keyboard is about 426 pt tall, which leaves ~330 pt. The
   strip is capped at the body height minus 96 dp; if it still does not fit (Split View, very large text) its rows scroll,
   Clear and Log stay pinned, and the list keeps a minimum height. Keyboard state comes from the view's insets, because the scaffolds above consume
   `MediaQuery.viewInsets`.
@@ -47,6 +48,10 @@
   live hints and the sent exchange. Pinned below: the frequency reading and the buttons, so Log never sits inside a
   scrollable. The recent QSOs and the score panel share the space under the strip. Keyboard detection is the shared
   `KeyboardAware` mixin.
+- **Tests check real visibility.** Keyboard-fit tests require each control to be hit-testable (inside the visible part of
+  any scroll view) with a 430 dp keyboard and the contest banner present; a first version that only compared
+  positions let clipped rows pass. At text scales of 1.1 and above the hints scroll below the fields instead of sitting
+  beside the buttons, because the time row and two hint lines grow tall.
 - **Buttons stay pinned in the fallback** (added 2026-10-03). In the strip, the grid and the contest strip alike, the
   rows and hints scroll when the keyboard leaves too little height, while Clear and Log stay below them and never sit
   inside a scrollable (test, down to a 520 dp keyboard and at 2× text).
