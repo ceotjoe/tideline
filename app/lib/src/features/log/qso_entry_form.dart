@@ -271,14 +271,19 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
       ],
       onChanged: (m) => controller.edit((e) => e.copyWith(mode: m)),
     );
+    final freqError =
+        errorFor(EntryIssue.invalidFrequency, l10n.issueInvalidFrequency) ??
+        errorFor(
+          EntryIssue.frequencyOutsideBand,
+          l10n.issueFrequencyOutsideBand,
+        );
+    final strip = widget.layout == QsoEntryLayout.strip;
     final freqField = FrequencyField(
       controller: _freq,
-      errorText:
-          errorFor(EntryIssue.invalidFrequency, l10n.issueInvalidFrequency) ??
-          errorFor(
-            EntryIssue.frequencyOutsideBand,
-            l10n.issueFrequencyOutsideBand,
-          ),
+      errorText: freqError,
+      // The strip's frequency column is too narrow for the readout; it goes
+      // into the bottom row.
+      showReadout: !strip,
       onChanged: controller.setFrequency,
     );
     final rstSentField = TextField(
@@ -360,7 +365,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
           )
         : null;
 
-    if (widget.layout == QsoEntryLayout.strip) {
+    if (strip) {
       return _buildStrip(
         context,
         fields: (
@@ -378,7 +383,14 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
         hints: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            timeRow,
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: metrics.lg,
+              children: [
+                timeRow,
+                FrequencyReadout(controller: _freq, errorText: freqError),
+              ],
+            ),
             _DxccHint(call: entry.call),
             WorkedHintLine(
               call: entry.call,

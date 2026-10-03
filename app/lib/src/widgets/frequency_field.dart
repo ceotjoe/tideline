@@ -23,6 +23,7 @@ class FrequencyField extends StatelessWidget {
     required this.controller,
     required this.onChanged,
     this.errorText,
+    this.showReadout = true,
     super.key,
   });
 
@@ -36,35 +37,56 @@ class FrequencyField extends StatelessWidget {
   /// the hint for unreadable input.
   final String? errorText;
 
+  /// Whether the readout (band, MHz) sits under the field. A layout that is
+  /// too narrow for it shows a [FrequencyReadout] elsewhere instead.
+  final bool showReadout;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final field = TextField(
+      controller: controller,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      decoration: InputDecoration(
+        labelText: l10n.fieldFrequency,
+        errorText: errorText,
+      ),
+      onChanged: onChanged,
+    );
+    if (!showReadout) return field;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
-          controller: controller,
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          decoration: InputDecoration(
-            labelText: l10n.fieldFrequency,
-            errorText: errorText,
-          ),
-          onChanged: onChanged,
-        ),
+        field,
         Padding(
           padding: EdgeInsets.only(top: context.metrics.xs),
-          child: ValueListenableBuilder<TextEditingValue>(
-            valueListenable: controller,
-            builder: (context, value, _) => _Readout(
-              text: value.text,
-              suppressUnreadable: errorText != null,
-            ),
-          ),
+          child: FrequencyReadout(controller: controller, errorText: errorText),
         ),
       ],
     );
   }
+}
+
+/// What a frequency field's text means: the band and MHz it reads as, or why
+/// it cannot be read. The text equivalent of the field's value.
+class FrequencyReadout extends StatelessWidget {
+  /// Creates the readout for the text in [controller].
+  const new({required this.controller, this.errorText, super.key});
+
+  /// The frequency field's controller.
+  final TextEditingController controller;
+
+  /// The field's validation error; unreadable input is then not repeated.
+  final String? errorText;
+
+  @override
+  Widget build(BuildContext context) =>
+      ValueListenableBuilder<TextEditingValue>(
+        valueListenable: controller,
+        builder: (context, value, _) =>
+            _Readout(text: value.text, suppressUnreadable: errorText != null),
+      );
 }
 
 const _oneMhz = 1000000;
