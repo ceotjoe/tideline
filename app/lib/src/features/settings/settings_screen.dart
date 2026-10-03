@@ -7,6 +7,7 @@ import 'package:tideline/src/commands/command_registry.dart';
 import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 import 'package:tideline/src/features/settings/contest_definitions_section.dart';
+import 'package:tideline/src/features/settings/reference_packs_section.dart';
 import 'package:tideline/src/features/settings/scp_section.dart';
 import 'package:tideline/src/features/settings/settings_sections.dart';
 import 'package:tideline/src/features/settings/worked_before_section.dart';
@@ -103,6 +104,8 @@ class SettingsScreen extends ConsumerWidget {
           const DataSection(),
           _SectionHeader(l10n.settingsContestDefinitions),
           const ContestDefinitionsSection(),
+          _SectionHeader(l10n.settingsReferencePacks),
+          const ReferencePacksSection(),
           _SectionHeader(l10n.settingsScp),
           const ScpSection(),
           _SectionHeader(l10n.settingsWorkedBefore),

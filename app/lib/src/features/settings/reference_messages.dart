@@ -1,5 +1,6 @@
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/services/contest_definition_import.dart';
+import 'package:tideline/src/services/pack_download.dart';
 import 'package:tideline/src/services/scp_download.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -95,4 +96,31 @@ String deleteResultText(
   ContestDeleteResult.notFound => l10n.contestDefNotFound,
   ContestDeleteResult.builtin => l10n.contestDefBuiltinNoDelete,
   ContestDeleteResult.inUse => l10n.contestDefInUse,
+};
+
+/// The localised name of a reference programme's list.
+String packName(AppLocalizations l10n, ReferenceProgram program) =>
+    switch (program) {
+      ReferenceProgram.sota => l10n.packNameSota,
+      ReferenceProgram.pota => l10n.packNamePota,
+      ReferenceProgram.wwff => l10n.packNameWwff,
+    };
+
+/// The localised message for a failed reference list download or install.
+/// Null for a cancellation, which is not an error to show.
+String? packFailureText(
+  AppLocalizations l10n,
+  PackException e,
+  ReferenceProgram program,
+) => switch (e.failure) {
+  PackFailure.insecureUrl => l10n.scpErrorInsecureUrl,
+  PackFailure.invalidUrl => l10n.scpErrorInvalidUrl,
+  PackFailure.network => l10n.scpErrorNetwork,
+  PackFailure.timeout => l10n.scpErrorTimeout,
+  PackFailure.certificate => l10n.scpErrorCertificate,
+  PackFailure.tooLarge => l10n.packErrorTooLarge,
+  PackFailure.httpStatus => l10n.scpErrorStatus(e.statusCode ?? 0),
+  PackFailure.invalidFile => l10n.packErrorInvalidFile(program.code),
+  PackFailure.storage => l10n.packErrorStorage,
+  PackFailure.cancelled => null,
 };

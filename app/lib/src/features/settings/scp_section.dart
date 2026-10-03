@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/design/theme.dart';
-import 'package:tideline/src/design/tokens/metrics.dart';
 import 'package:tideline/src/features/settings/reference_messages.dart';
 import 'package:tideline/src/services/data_transfer.dart';
 import 'package:tideline/src/services/scp_download.dart';
+import 'package:tideline/src/widgets/error_box.dart';
 import 'package:tideline_data/tideline_data.dart';
 
 /// The MASTER.SCP list (super check partial): what is installed, and the
@@ -248,45 +248,7 @@ class _ScpSectionState extends ConsumerState<ScpSection> {
           ],
           if (_error != null) ...[
             SizedBox(height: metrics.sm),
-            Semantics(
-              liveRegion: true,
-              container: true,
-              child: Container(
-                padding: EdgeInsets.all(metrics.sm),
-                decoration: BoxDecoration(
-                  color: context.colors.rejected.background,
-                  borderRadius: const BorderRadius.all(
-                    TidelineMetrics.radiusSm,
-                  ),
-                  border: Border.all(
-                    color: context.colors.rejected.foreground.withValues(
-                      alpha: .4,
-                    ),
-                  ),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ExcludeSemantics(
-                      child: Icon(
-                        Icons.error_outline,
-                        size: 20,
-                        color: context.colors.rejected.foreground,
-                      ),
-                    ),
-                    SizedBox(width: metrics.sm),
-                    Expanded(
-                      child: Text(
-                        _error!,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: context.colors.rejected.foreground,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            ErrorBox(_error!),
           ],
         ],
       ),

@@ -23,14 +23,24 @@ void main() {
     await tester.scrollUntilVisible(
       find.text('Create encrypted backup'),
       200,
-      scrollable: find.byType(Scrollable).last,
+      // Text fields (the reference list addresses) have scrollables too.
+      scrollable: find
+          .byWidgetPredicate(
+            (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
+          )
+          .last,
     );
     expect(find.text('Import ADIF file'), findsOneWidget);
     expect(find.text('Export log as ADIF'), findsOneWidget);
     await tester.scrollUntilVisible(
       find.text('App lock'),
       200,
-      scrollable: find.byType(Scrollable).last,
+      // Text fields (the reference list addresses) have scrollables too.
+      scrollable: find
+          .byWidgetPredicate(
+            (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
+          )
+          .last,
     );
     expect(find.text('App lock'), findsOneWidget);
   });

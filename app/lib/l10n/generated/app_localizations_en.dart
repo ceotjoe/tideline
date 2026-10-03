@@ -1939,6 +1939,93 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contestDefErrorDuplicateValue => 'The same value is listed twice.';
+
+  @override
+  String get settingsReferencePacks => 'Reference lists (SOTA, POTA, WWFF)';
+
+  @override
+  String get packsHint =>
+      'Offline lists of summits, parks and flora and fauna areas for activations. They are not part of Tideline: you download each one yourself, directly from its official source. Each list is 10 to 25 MB.';
+
+  @override
+  String get packNameSota => 'Summits on the Air (SOTA)';
+
+  @override
+  String get packNamePota => 'Parks on the Air (POTA)';
+
+  @override
+  String get packNameWwff => 'World Wide Flora & Fauna (WWFF)';
+
+  @override
+  String get packNone => 'No list installed';
+
+  @override
+  String packSummary(int count, String version, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count references',
+      one: '1 reference',
+    );
+    return '$_temp0 · list dated $version · downloaded $date';
+  }
+
+  @override
+  String get actionUpdate => 'Update';
+
+  @override
+  String get packDownloading => 'Downloading…';
+
+  @override
+  String packDownloadingSize(String size) {
+    return 'Downloading… $size';
+  }
+
+  @override
+  String get packInstalling => 'Reading and storing the list…';
+
+  @override
+  String packInstalled(String program, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count references',
+      one: '1 reference',
+    );
+    return '$program list installed: $_temp0.';
+  }
+
+  @override
+  String get packCancelled =>
+      'Download cancelled. The installed list was not changed.';
+
+  @override
+  String packRemoveTitle(String program) {
+    return 'Remove the $program list?';
+  }
+
+  @override
+  String packRemoveBody(String program) {
+    return 'Searching for $program references stops until you install a list again. Your activations and QSOs are not affected.';
+  }
+
+  @override
+  String packRemoved(String program) {
+    return '$program list removed.';
+  }
+
+  @override
+  String get packErrorTooLarge =>
+      'The file is larger than allowed. It was not stored.';
+
+  @override
+  String packErrorInvalidFile(String program) {
+    return 'This is not a $program list. Check the address.';
+  }
+
+  @override
+  String get packErrorStorage =>
+      'The file could not be stored on this device. Check the free space.';
 }
 
 /// The translations for English (`en_XA`).
@@ -3926,4 +4013,92 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String get contestDefErrorDuplicateValue =>
       '[Ţĥé šáɱé ṽáļûé îš ļîšţéð ţŵîçé.·············]';
+
+  @override
+  String get settingsReferencePacks =>
+      '[Ŕéƒéŕéñçé ļîšţš (ŠÖŢÅ, ÞÖŢÅ, ŴŴƑƑ)··············]';
+
+  @override
+  String get packsHint =>
+      '[Öƒƒļîñé ļîšţš öƒ šûɱɱîţš, þáŕķš áñð ƒļöŕá áñð ƒáûñá áŕéáš ƒöŕ áçţîṽáţîöñš. Ţĥéý áŕé ñöţ þáŕţ öƒ Ţîðéļîñé: ýöû ðöŵñļöáð éáçĥ öñé ýöûŕšéļƒ, ðîŕéçţļý ƒŕöɱ îţš öƒƒîçîáļ šöûŕçé. Éáçĥ ļîšţ îš 10 ţö 25 ṀƁ.················································································]';
+
+  @override
+  String get packNameSota => '[Šûɱɱîţš öñ ţĥé Åîŕ (ŠÖŢÅ)··········]';
+
+  @override
+  String get packNamePota => '[Þáŕķš öñ ţĥé Åîŕ (ÞÖŢÅ)··········]';
+
+  @override
+  String get packNameWwff => '[Ŵöŕļð Ŵîðé Ƒļöŕá & Ƒáûñá (ŴŴƑƑ)·············]';
+
+  @override
+  String get packNone => '[Ñö ļîšţ îñšţáļļéð·······]';
+
+  @override
+  String packSummary(int count, String version, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ŕéƒéŕéñçéš·····]',
+      one: '[1 ŕéƒéŕéñçé·····]',
+    );
+    return '$_temp0[ · ļîšţ ðáţéð ······]$version[ · ðöŵñļöáðéð ······]$date';
+  }
+
+  @override
+  String get actionUpdate => '[Ûþðáţé···]';
+
+  @override
+  String get packDownloading => '[Ðöŵñļöáðîñĝ…·····]';
+
+  @override
+  String packDownloadingSize(String size) {
+    return '[Ðöŵñļöáðîñĝ… ······]$size';
+  }
+
+  @override
+  String get packInstalling => '[Ŕéáðîñĝ áñð šţöŕîñĝ ţĥé ļîšţ…············]';
+
+  @override
+  String packInstalled(String program, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ŕéƒéŕéñçéš·····]',
+      one: '[1 ŕéƒéŕéñçé·····]',
+    );
+    return '$program[ ļîšţ îñšţáļļéð: ·······]$_temp0[.·]';
+  }
+
+  @override
+  String get packCancelled =>
+      '[Ðöŵñļöáð çáñçéļļéð. Ţĥé îñšţáļļéð ļîšţ ŵáš ñöţ çĥáñĝéð.······················]';
+
+  @override
+  String packRemoveTitle(String program) {
+    return '[Ŕéɱöṽé ţĥé ·····]$program[ ļîšţ?···]';
+  }
+
+  @override
+  String packRemoveBody(String program) {
+    return '[Šéáŕçĥîñĝ ƒöŕ ······]$program[ ŕéƒéŕéñçéš šţöþš ûñţîļ ýöû îñšţáļļ á ļîšţ áĝáîñ. Ýöûŕ áçţîṽáţîöñš áñð ǪŠÖš áŕé ñöţ áƒƒéçţéð.······································]';
+  }
+
+  @override
+  String packRemoved(String program) {
+    return '$program[ ļîšţ ŕéɱöṽéð.······]';
+  }
+
+  @override
+  String get packErrorTooLarge =>
+      '[Ţĥé ƒîļé îš ļáŕĝéŕ ţĥáñ áļļöŵéð. Îţ ŵáš ñöţ šţöŕéð.·····················]';
+
+  @override
+  String packErrorInvalidFile(String program) {
+    return '[Ţĥîš îš ñöţ á ······]$program[ ļîšţ. Çĥéçķ ţĥé áððŕéšš.··········]';
+  }
+
+  @override
+  String get packErrorStorage =>
+      '[Ţĥé ƒîļé çöûļð ñöţ ƀé šţöŕéð öñ ţĥîš ðéṽîçé. Çĥéçķ ţĥé ƒŕéé šþáçé.···························]';
 }

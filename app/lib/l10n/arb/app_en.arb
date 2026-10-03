@@ -2500,5 +2500,125 @@
   "contestDefErrorDuplicateValue": "The same value is listed twice.",
   "@contestDefErrorDuplicateValue": {
     "description": "Why a contest definition was rejected."
+  },
+  "settingsReferencePacks": "Reference lists (SOTA, POTA, WWFF)",
+  "@settingsReferencePacks": {
+    "description": "Settings section header."
+  },
+  "packsHint": "Offline lists of summits, parks and flora and fauna areas for activations. They are not part of Tideline: you download each one yourself, directly from its official source. Each list is 10 to 25 MB.",
+  "@packsHint": {
+    "description": "Explains the reference lists."
+  },
+  "packNameSota": "Summits on the Air (SOTA)",
+  "@packNameSota": {
+    "description": "Name of the SOTA list."
+  },
+  "packNamePota": "Parks on the Air (POTA)",
+  "@packNamePota": {
+    "description": "Name of the POTA list."
+  },
+  "packNameWwff": "World Wide Flora & Fauna (WWFF)",
+  "@packNameWwff": {
+    "description": "Name of the WWFF list."
+  },
+  "packNone": "No list installed",
+  "@packNone": {
+    "description": "Shown when a reference list is not installed."
+  },
+  "packSummary": "{count, plural, =1{1 reference} other{{count} references}} · list dated {version} · downloaded {date}",
+  "@packSummary": {
+    "description": "Summary of an installed reference list.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "version": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "actionUpdate": "Update",
+  "@actionUpdate": {
+    "description": "Button."
+  },
+  "packDownloading": "Downloading…",
+  "@packDownloading": {
+    "description": "Progress text while a list downloads."
+  },
+  "packDownloadingSize": "Downloading… {size}",
+  "@packDownloadingSize": {
+    "description": "Progress text with the size so far.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "packInstalling": "Reading and storing the list…",
+  "@packInstalling": {
+    "description": "Progress text while a downloaded list is stored."
+  },
+  "packInstalled": "{program} list installed: {count, plural, =1{1 reference} other{{count} references}}.",
+  "@packInstalled": {
+    "description": "Shown after a list was installed.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "packCancelled": "Download cancelled. The installed list was not changed.",
+  "@packCancelled": {
+    "description": "Shown after the user cancelled."
+  },
+  "packRemoveTitle": "Remove the {program} list?",
+  "@packRemoveTitle": {
+    "description": "Dialog title.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      }
+    }
+  },
+  "packRemoveBody": "Searching for {program} references stops until you install a list again. Your activations and QSOs are not affected.",
+  "@packRemoveBody": {
+    "description": "Dialog text.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      }
+    }
+  },
+  "packRemoved": "{program} list removed.",
+  "@packRemoved": {
+    "description": "Shown after a list was removed.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      }
+    }
+  },
+  "packErrorTooLarge": "The file is larger than allowed. It was not stored.",
+  "@packErrorTooLarge": {
+    "description": "Download error."
+  },
+  "packErrorInvalidFile": "This is not a {program} list. Check the address.",
+  "@packErrorInvalidFile": {
+    "description": "Download error.",
+    "placeholders": {
+      "program": {
+        "type": "String"
+      }
+    }
+  },
+  "packErrorStorage": "The file could not be stored on this device. Check the free space.",
+  "@packErrorStorage": {
+    "description": "Download error."
   }
 }

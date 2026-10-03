@@ -331,6 +331,37 @@ void main() {
       );
     });
 
+    test('cancelling during the body stops it and leaves nothing', () async {
+      final cancel = PackCancellation();
+      final controller = StreamController<List<int>>();
+      final server = _FakeServer(
+        (_) async => http.StreamedResponse(controller.stream, 200),
+      );
+      final result = _failure(
+        server.downloader().download(_url, maxBytes: _max, cancel: cancel),
+      );
+      controller.add(List.filled(100, 65));
+      await Future<void>.delayed(const Duration(milliseconds: 20));
+      cancel.cancel();
+      controller.add(List.filled(100, 65));
+      expect(await result, PackFailure.cancelled);
+      expect(server.leftFiles, isFalse);
+      expect(server.clientsClosed, 1);
+      await controller.close();
+    });
+
+    test('a token cancelled before the start sends no request', () async {
+      final server = _FakeServer((_) async => _ok(const []));
+      final cancel = PackCancellation()..cancel();
+      expect(
+        await _failure(
+          server.downloader().download(_url, maxBytes: _max, cancel: cancel),
+        ),
+        PackFailure.cancelled,
+      );
+      expect(server.requests, isEmpty);
+    });
+
     test('a directory that cannot be made is a storage failure', () async {
       final downloader = PackDownloader(
         clientFactory: () => MockClient((_) async => http.Response('', 200)),
@@ -443,6 +474,24 @@ void main() {
         ),
         PackFailure.invalidFile,
       );
+    });
+
+    test('cancelling while installing stores nothing', () async {
+      start(utf8.encode(_potaCsv));
+      final cancel = PackCancellation();
+      final result = _failure(
+        container
+            .read(referencePackActionsProvider)
+            .download(
+              ReferenceProgram.pota,
+              cancel: cancel,
+              onProgress: (phase, _, _) {
+                if (phase == PackPhase.installing) cancel.cancel();
+              },
+            ),
+      );
+      expect(await result, PackFailure.cancelled);
+      expect(server.leftFiles, isFalse);
     });
 
     test('remove clears the pack', () async {

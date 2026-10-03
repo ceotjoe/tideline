@@ -8,6 +8,7 @@ import 'package:tideline/src/app.dart';
 import 'package:tideline/src/features/contest/contest_providers.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
+import 'package:tideline/src/services/pack_download.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -31,6 +32,13 @@ class FakeQsoRepository implements QsoRepository {
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+/// Reference packs that are never installed: no database, no network.
+class FakeReferencePackStore extends Fake implements ReferencePackStore {
+  @override
+  Stream<ReferencePackInfo?> watchInfo(ReferenceProgram program) =>
+      Stream.value(null);
 }
 
 /// A sync controller that never touches the network or plugins.
@@ -130,6 +138,7 @@ Future<Pumped> pumpTideline(
   ContestBackend? contest,
   ContestDefinitionRepository? definitions,
   WorkedBeforeRepository? workedBefore,
+  ReferencePackStore? referencePacks,
   List<Override> overrides = const [],
 }) async {
   tester.view
@@ -178,6 +187,9 @@ Future<Pumped> pumpTideline(
           contest == null ? qsos : backend.qsoRepository,
         ),
         contestSeedProvider.overrideWith((ref) async => null),
+        referencePackStoreProvider.overrideWithValue(
+          referencePacks ?? FakeReferencePackStore(),
+        ),
         workedBeforeIndexProvider.overrideWith((ref) async {}),
         contestDefinitionRepositoryProvider.overrideWithValue(
           definitions ?? backend.definitionRepository,

@@ -3194,6 +3194,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The same value is listed twice.'**
   String get contestDefErrorDuplicateValue;
+
+  /// Settings section header.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference lists (SOTA, POTA, WWFF)'**
+  String get settingsReferencePacks;
+
+  /// Explains the reference lists.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline lists of summits, parks and flora and fauna areas for activations. They are not part of Tideline: you download each one yourself, directly from its official source. Each list is 10 to 25 MB.'**
+  String get packsHint;
+
+  /// Name of the SOTA list.
+  ///
+  /// In en, this message translates to:
+  /// **'Summits on the Air (SOTA)'**
+  String get packNameSota;
+
+  /// Name of the POTA list.
+  ///
+  /// In en, this message translates to:
+  /// **'Parks on the Air (POTA)'**
+  String get packNamePota;
+
+  /// Name of the WWFF list.
+  ///
+  /// In en, this message translates to:
+  /// **'World Wide Flora & Fauna (WWFF)'**
+  String get packNameWwff;
+
+  /// Shown when a reference list is not installed.
+  ///
+  /// In en, this message translates to:
+  /// **'No list installed'**
+  String get packNone;
+
+  /// Summary of an installed reference list.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 reference} other{{count} references}} · list dated {version} · downloaded {date}'**
+  String packSummary(int count, String version, String date);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get actionUpdate;
+
+  /// Progress text while a list downloads.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading…'**
+  String get packDownloading;
+
+  /// Progress text with the size so far.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading… {size}'**
+  String packDownloadingSize(String size);
+
+  /// Progress text while a downloaded list is stored.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading and storing the list…'**
+  String get packInstalling;
+
+  /// Shown after a list was installed.
+  ///
+  /// In en, this message translates to:
+  /// **'{program} list installed: {count, plural, =1{1 reference} other{{count} references}}.'**
+  String packInstalled(String program, int count);
+
+  /// Shown after the user cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Download cancelled. The installed list was not changed.'**
+  String get packCancelled;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the {program} list?'**
+  String packRemoveTitle(String program);
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'Searching for {program} references stops until you install a list again. Your activations and QSOs are not affected.'**
+  String packRemoveBody(String program);
+
+  /// Shown after a list was removed.
+  ///
+  /// In en, this message translates to:
+  /// **'{program} list removed.'**
+  String packRemoved(String program);
+
+  /// Download error.
+  ///
+  /// In en, this message translates to:
+  /// **'The file is larger than allowed. It was not stored.'**
+  String get packErrorTooLarge;
+
+  /// Download error.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a {program} list. Check the address.'**
+  String packErrorInvalidFile(String program);
+
+  /// Download error.
+  ///
+  /// In en, this message translates to:
+  /// **'The file could not be stored on this device. Check the free space.'**
+  String get packErrorStorage;
 }
 
 class _AppLocalizationsDelegate

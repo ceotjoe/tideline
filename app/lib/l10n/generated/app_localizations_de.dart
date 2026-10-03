@@ -1955,4 +1955,91 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get contestDefErrorDuplicateValue =>
       'Derselbe Wert ist doppelt aufgeführt.';
+
+  @override
+  String get settingsReferencePacks => 'Referenzlisten (SOTA, POTA, WWFF)';
+
+  @override
+  String get packsHint =>
+      'Offline-Listen von Gipfeln, Parks und Flora-und-Fauna-Gebieten für Aktivierungen. Sie gehören nicht zu Tideline: Du lädst jede Liste selbst herunter, direkt von der offiziellen Quelle. Jede Liste ist 10 bis 25 MB groß.';
+
+  @override
+  String get packNameSota => 'Summits on the Air (SOTA)';
+
+  @override
+  String get packNamePota => 'Parks on the Air (POTA)';
+
+  @override
+  String get packNameWwff => 'World Wide Flora & Fauna (WWFF)';
+
+  @override
+  String get packNone => 'Keine Liste installiert';
+
+  @override
+  String packSummary(int count, String version, String date) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Referenzen',
+      one: '1 Referenz',
+    );
+    return '$_temp0 · Liste vom $version · geladen am $date';
+  }
+
+  @override
+  String get actionUpdate => 'Aktualisieren';
+
+  @override
+  String get packDownloading => 'Wird heruntergeladen …';
+
+  @override
+  String packDownloadingSize(String size) {
+    return 'Wird heruntergeladen … $size';
+  }
+
+  @override
+  String get packInstalling => 'Liste wird gelesen und gespeichert …';
+
+  @override
+  String packInstalled(String program, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Referenzen',
+      one: '1 Referenz',
+    );
+    return '$program-Liste installiert: $_temp0.';
+  }
+
+  @override
+  String get packCancelled =>
+      'Download abgebrochen. Die installierte Liste wurde nicht verändert.';
+
+  @override
+  String packRemoveTitle(String program) {
+    return '$program-Liste entfernen?';
+  }
+
+  @override
+  String packRemoveBody(String program) {
+    return 'Die Suche nach $program-Referenzen ist dann nicht mehr möglich, bis Du wieder eine Liste installierst. Deine Aktivierungen und QSOs bleiben unverändert.';
+  }
+
+  @override
+  String packRemoved(String program) {
+    return '$program-Liste entfernt.';
+  }
+
+  @override
+  String get packErrorTooLarge =>
+      'Die Datei ist größer als erlaubt. Sie wurde nicht gespeichert.';
+
+  @override
+  String packErrorInvalidFile(String program) {
+    return 'Das ist keine $program-Liste. Prüfe die Adresse.';
+  }
+
+  @override
+  String get packErrorStorage =>
+      'Die Datei konnte auf diesem Gerät nicht gespeichert werden. Prüfe den freien Speicher.';
 }

@@ -91,6 +91,9 @@ enum PackFailure {
 
   /// The file could not be stored on the device.
   storage,
+
+  /// The user cancelled. Not an error to show.
+  cancelled,
 }
 
 /// A failed download or install.
@@ -143,6 +146,26 @@ class DownloadedPack {
     } on FileSystemException {
       // Nothing more can be done; the OS clears its temp area.
     }
+  }
+}
+
+/// Lets the user stop a download or install that is running.
+class PackCancellation {
+  /// Creates a token that is not cancelled.
+  new();
+
+  bool _cancelled = false;
+
+  /// Whether [cancel] was called.
+  bool get isCancelled => _cancelled;
+
+  /// Stops the work at the next chunk. Whatever was fetched so far is
+  /// discarded and the installed pack stays as it was.
+  void cancel() => _cancelled = true;
+
+  /// Throws [PackFailure.cancelled] if [cancel] was called.
+  void check() {
+    if (_cancelled) throw const PackException(PackFailure.cancelled);
   }
 }
 
@@ -200,6 +223,7 @@ class PackDownloader {
     Uri url, {
     required int maxBytes,
     PackProgress? onProgress,
+    PackCancellation? cancel,
   }) async {
     if (url.scheme != 'https') {
       throw const PackException(PackFailure.insecureUrl);
@@ -219,6 +243,7 @@ class PackDownloader {
         File('${dir.path}/pack.csv'),
         maxBytes,
         onProgress,
+        cancel,
       ).timeout(totalTimeout);
       ok = true;
       return pack;
@@ -243,9 +268,11 @@ class PackDownloader {
     File target,
     int maxBytes,
     PackProgress? onProgress,
+    PackCancellation? cancel,
   ) async {
     var url = start;
     for (var hops = 0; ; hops++) {
+      cancel?.check();
       final request = http.Request('GET', url)
         ..followRedirects = false
         ..headers['user-agent'] = userAgent
@@ -283,7 +310,7 @@ class PackDownloader {
         _discard(response);
         throw const PackException(PackFailure.tooLarge);
       }
-      return await _save(response, target, maxBytes, total, onProgress);
+      return await _save(response, target, maxBytes, total, onProgress, cancel);
     }
   }
 
@@ -293,6 +320,7 @@ class PackDownloader {
     int maxBytes,
     int? total,
     PackProgress? onProgress,
+    PackCancellation? cancel,
   ) async {
     final digestSink = _DigestSink();
     final hasher = sha256.startChunkedConversion(digestSink);
@@ -308,6 +336,7 @@ class PackDownloader {
     final chunks = StreamIterator(response.stream);
     try {
       while (await chunks.moveNext().timeout(idleTimeout)) {
+        cancel?.check();
         final chunk = chunks.current;
         received += chunk.length;
         if (received > maxBytes) {
@@ -416,6 +445,7 @@ class ReferencePackActions {
     ReferenceProgram program, {
     String? urlText,
     PackInstallProgress? onProgress,
+    PackCancellation? cancel,
   }) async {
     final source = referencePackSources[program]!;
     final url = parsePackUrl(urlText ?? source.defaultUrl);
@@ -425,6 +455,7 @@ class ReferencePackActions {
           url,
           maxBytes: source.maxBytes,
           onProgress: (r, t) => onProgress?.call(PackPhase.downloading, r, t),
+          cancel: cancel,
         );
     try {
       onProgress?.call(PackPhase.installing, pack.bytes, pack.bytes);
@@ -433,6 +464,7 @@ class ReferencePackActions {
         pack.file,
         sha256: pack.sha256,
         sourceUrl: url.toString(),
+        cancel: cancel,
       );
     } finally {
       await pack.delete();
@@ -445,15 +477,23 @@ class ReferencePackActions {
     File file, {
     required String sha256,
     required String sourceUrl,
+    PackCancellation? cancel,
   }) async {
     final source = referencePackSources[program]!;
     final parser = ReferencePackParser(program);
+    // Checked for every reference: a throw here aborts the install, whose
+    // transaction was not started yet, so the installed pack is untouched.
+    Stream<ProgramReference> references() =>
+        parser.parse(file.openRead().transform(utf8.decoder)).map((r) {
+          cancel?.check();
+          return r;
+        });
     try {
       final info = await _ref
           .read(referencePackStoreProvider)
           .install(
             program,
-            parser.parse(file.openRead().transform(utf8.decoder)),
+            references(),
             sourceUrl: sourceUrl,
             sha256: sha256,
             fetchedAt: DateTime.now().toUtc(),

@@ -170,7 +170,13 @@ Future<void> _show(WidgetTester tester, Finder finder) async {
 }
 
 Future<void> _tapText(WidgetTester tester, String text) async {
-  final finder = find.text(text);
+  // The reference lists above the super check partial section have a
+  // Download button of their own: go to this section, then take the last.
+  if (text == 'Download') {
+    await _show(tester, find.text('Super check partial'));
+  }
+  final matches = find.text(text);
+  final finder = text == 'Download' ? matches.last : matches;
   await _show(tester, finder);
   await tester.tap(finder);
   await tester.pumpAndSettle();
@@ -357,19 +363,21 @@ void main() {
         ],
       );
       await _openSettings(tester);
-      await _show(tester, find.text('Download address (https)'));
+      // The reference lists above share the label: go to this section first.
+      await _show(tester, find.text('Super check partial'));
+      await _show(tester, find.text('Download address (https)').last);
     }
 
     String urlText(WidgetTester tester) => tester
         .widget<TextField>(
-          find.widgetWithText(TextField, 'Download address (https)'),
+          find.widgetWithText(TextField, 'Download address (https)').last,
         )
         .controller!
         .text;
 
     testWidgets('nothing is installed or fetched by default', (tester) async {
       await setup(tester);
-      expect(find.text('No list installed'), findsOneWidget);
+      expect(find.text('No list installed').last, findsOneWidget);
       expect(urlText(tester), 'https://www.supercheckpartial.com/MASTER.SCP');
       expect(find.text('Remove'), findsNothing);
       expect(requests, isEmpty);
@@ -398,7 +406,7 @@ void main() {
     ) async {
       await setup(tester);
       await tester.enterText(
-        find.widgetWithText(TextField, 'Download address (https)'),
+        find.widgetWithText(TextField, 'Download address (https)').last,
         'http://www.supercheckpartial.com/MASTER.SCP',
       );
       await _tapText(tester, 'Download');
@@ -464,7 +472,8 @@ void main() {
         tester,
         handler: (_) async => http.StreamedResponse(body.stream, 200),
       );
-      final finder = find.text('Download');
+      // The reference lists above have a Download button of their own.
+      final finder = find.text('Download').last;
       await _show(tester, finder);
       await tester.tap(finder);
       await tester.pump();
@@ -511,7 +520,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(store.stored, isNull);
       expect(find.text('List removed.'), findsOneWidget);
-      expect(find.text('No list installed'), findsOneWidget);
+      expect(find.text('No list installed').last, findsOneWidget);
     });
 
     testWidgets('meets the guidelines at 200 % text', (tester) async {
