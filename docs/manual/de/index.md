@@ -1,6 +1,6 @@
 # Tideline-Handbuch
 
-_Version 0.2 (Contest-Modus)._
+_Version 0.3 (Aktivierungen)._
 
 1. [Ersteinrichtung](first-setup.md)
 1. [Wavelog-API-Token erstellen](api-token.md)

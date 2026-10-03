@@ -1,6 +1,6 @@
 # 0021. Reference packs and activation sessions
 
-- Status: proposed
+- Status: accepted
 - Date: 2026-10-03
 
 ## Context
@@ -42,5 +42,8 @@ Verified on 2026-10-03 with `curl` (headers and the first lines only):
   `MY_GRIDSQUARE` in an upload and copies them from the station location the QSO is uploaded to. Tideline keeps them on
   every QSO and exports them in ADIF, but only a location carrying the reference puts them on the server. The other
   station's reference (`POTA_REF`, `SOTA_REF`, `WWFF_REF`) syncs normally, so park to park works.
-- **Decision pending (maintainer):** how activations pick or prepare that location. See the Phase 4 step 4.6 report.
+- **Decision (maintainer, 2026-10-03): option A.** Tideline compares the activation's reference with the references on the
+  cached Wavelog locations, preselects a match and warns when none matches. It never changes the user's Wavelog
+  configuration, so it needs no `station:write` scope. Updating or creating locations (options B and C) remains a possible
+  opt-in feature with its own consent step.
 - Open: whether the 4 QSO SOTA rule also needs the "same summit, once per UTC day" handling.

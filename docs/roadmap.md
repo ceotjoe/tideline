@@ -8,7 +8,7 @@ The milestones from the Phase 0 plan. Each phase ends with a summary and the mai
 | 1 | M1 Foundation | done |
 | 2 | M2 MVP (v0.1) | done |
 | 3 | M3 Contest mode (v0.2) | done, approved 2026-10-03 |
-| 4 | M4 Activations and reference packs (v0.3) | plan written, awaiting approval of the plan |
+| 4 | M4 Activations and reference packs (v0.3) | done, awaiting approval |
 | 5 | M5 FLE, field modes, multi-account UI, store releases (v0.4 → v1.0) | planned |
 | — | Device-to-device sync, WSJT-X listener, desktop extras, iPad drag and drop, Android background sync | later |
 

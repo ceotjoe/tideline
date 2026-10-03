@@ -16,8 +16,9 @@ reporting service and no third-party tracker. The developers never receive your 
 | Your QSO log (callsigns, times, frequencies, locations, notes) | The app's core function | Encrypted database (SQLite3MultipleCiphers); key held in the OS secure store |
 | Wavelog server address and API token(s) | Syncing to your own Wavelog | Token kept only in the OS secure store (Keychain, Android Keystore, Windows protected storage) |
 | Pinned server certificate fingerprints | Trusting your self-hosted server | Encrypted database |
-| Downloaded reference data (DXCC, SOTA, POTA, WWFF, call history, MASTER.SCP) | Offline lookups | Encrypted database |
+| Downloaded reference data (DXCC, SOTA, POTA, WWFF, call history, MASTER.SCP) | Offline lookups | Encrypted database (during installation a list is briefly held in a temporary table; it contains only public reference data) |
 | Worked-before index (calls, bands and modes from your log and your Wavelog server) | "Worked before" hints | Encrypted database; rebuildable from settings |
+| Activations (programme, reference, your grid square, start and end) | Activation logging and progress | Encrypted database |
 | Contest definitions you import | Contest rules and scoring | Encrypted database |
 | Device location (only while you ask for it) | Computing your Maidenhead grid locator | Used on device, stored only as the grid in your QSO / activation |
 | Settings | Your preferences | Encrypted database |
@@ -40,6 +41,13 @@ Tideline connects only to:
      fetches the address shown there (default `https://www.supercheckpartial.com/MASTER.SCP`, which you can
      change). Only HTTPS is allowed. The request contains no information about you or your log; it sends only a
      generic `Tideline/<version>` user agent. Tideline never contacts this address on its own.
+   - **SOTA, POTA and WWFF reference lists:** when you press "Download" (or "Update") on a list in Settings →
+     Reference lists, Tideline fetches the address shown there. The defaults are the official files:
+     `https://pota.app/all_parks_ext.csv`, `https://www.sotadata.org.uk/summitslist.csv` (which forwards to
+     `https://storage.sota.org.uk/summitslist.csv`) and `https://wwff.co/wwff-data/wwff_directory.csv`. Only HTTPS is
+     allowed. Each list is 10 to 25 MB. The requests contain no information about you or your log, only a generic
+     `Tideline/<version>` user agent, and Tideline never contacts these addresses on its own. The operators of these
+     sites see your IP address like for any web request.
 3. **Other Tideline devices on your local network**, only when you pair them (a later feature).
    - Traffic stays in the local network and is end-to-end encrypted.
 

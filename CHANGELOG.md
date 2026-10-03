@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **SOTA, POTA and WWFF activations** (ADR 0021).
+  - Reference lists you download yourself from the official source, only when you press Download (HTTPS only, size
+    caps, streamed to disk, cancellable). The installed list is replaced in one step only after the whole file was read,
+    so a failed or cancelled download changes nothing. Address, version, date and source are shown in settings.
+  - Search by reference, name or region, and the nearest references to your grid square, all offline.
+  - Activation setup with the grid square taken from the reference, and advice on which Wavelog location carries
+    your reference. Wavelog fills the own reference of an upload from the station location and ignores the one sent
+    (verified); Tideline keeps it on every QSO and in ADIF exports and never changes your Wavelog locations.
+  - A banner on the log screen with the reference, place name and progress toward validity as a bar and a sentence
+    (POTA 10 QSOs per UTC day, SOTA 4, WWFF 44; duplicates are not counted).
+  - Park-to-park and summit-to-summit: the other station's reference is a field of the entry form and syncs.
+  - Commands `activation.start` (⇧⌘A / Ctrl+Shift+A) and `activation.end` (⇧⌘E / Ctrl+Shift+E).
+  - Local data: schema version 3 (reference status and position index), activations and rules as data.
+  - Station locations now cache their SOTA, POTA, WWFF, IOTA and SIG values.
 - **Contest mode** (ADR 0018).
   - Contest rules are data files with a strict, fuzz-tested parser. Bundled: CQ WW (SSB, CW), CQ WPX (SSB, CW), ARRL
     DX (CW, SSB), IARU HF, DARC WAG and two generic contests, checked against the sponsors' rules. Your own

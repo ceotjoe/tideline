@@ -31,7 +31,7 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 | T7 | Server silently changes or drops uploaded QSOs | T, R | A2 | The local copy is kept and never overwritten automatically from the server. The sync journal records the server id and response for each QSO. | Designed |
 | T8 | Token with excessive privileges | E | A2 (compromised app) | Least-privilege scopes. Required scopes are explained, optional ones are opt-in. The app warns when a token has scopes it doesn't need. | Designed |
 | T9 | Pinned certificate silently replaced | S | A1 | A pin mismatch blocks the connection and requires re-confirmation that shows both fingerprints. | Designed |
-| T10 | Malicious reference pack (wrong data, oversized, parser exploit) | T, D | A1, A3 | Downloads only from built-in official URLs over TLS. Size limits. Strict parsers. Pack hash and source recorded. Packs never contain executable content. MASTER.SCP: see T19. | Planned (v0.3) |
+| T10 | Malicious reference list (SOTA, POTA, WWFF: wrong data, oversized, parser exploit) | T, D | A1, A3 | Downloads only when the user presses Download, from a URL shown and editable in settings (defaults are the official files). HTTPS only, also after redirects (≤ 3); no credentials, query or fragment in URLs; platform TLS validation, never disabled. Per-list size caps (POTA 20 MB, SOTA 60 MB, WWFF 60 MB) enforced on `Content-Length` and while streaming; the body goes to a temporary file that is deleted afterwards. Strict streaming CSV parser: a wrong header rejects the file, bad rows are skipped and counted, field length, column count and row count are capped (400,000 rows). The new list replaces the old one in a single transaction only after the whole file parsed, so a failed or cancelled download never damages the installed list. The request carries only a neutral `Tideline/<version>` User-Agent. Hash, source and fetch date are recorded. Lists are display data: they never change QSOs. MASTER.SCP: see T19. | Implemented (ADR 0021) |
 | T11 | DoS on the server through aggressive sync | D | — | Single worker. Exponential backoff with jitter. `Retry-After` honoured. | Designed |
 | T12 | Clock skew corrupting QSO times | T | — | Times are taken from the device's UTC clock. A warning is shown when the server's `Date` header differs by more than 2 minutes. The time is always editable before sync. | Planned (MVP) |
 | T13 | Other apps reading exported files | I | A5 | Exports go only where the user saves them, through the system file pickers. A warning that ADIF exports are unencrypted. | Planned (MVP) |
@@ -44,6 +44,8 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 | T20 | Server data injected into the worked-before index (crafted ADIF in `GET /qso?format=adif`) | T, D | A2 | Parsed with the same strict, fuzz-tested ADIF parser and the 16 MiB response limit. At most 10 pages per run. The index is derived data: it only drives hints, never changes QSOs, and can be rebuilt from settings. | Implemented |
 | T21 | Duplicate or orphaned contest sessions on Wavelog after lost answers | T | — | The session is marked `verifying` before `POST /contest`; a retry first looks for a server session with the same contest, station and start minute. Linking is idempotent. A session deleted on the server is never recreated automatically. Every step is journaled. | Implemented |
 | T22 | Cabrillo export used for header injection (CR/LF in soapbox, name or address) | T | A3 | The writer replaces control characters and line separators with spaces and writes pure ASCII; tested with injection attempts. | Implemented |
+| T23 | Activation data sent to Wavelog is not what the user expects (own park or grid silently replaced by the station location's values) | T | A2 | Own references and grid are kept on every QSO and in ADIF exports. Wavelog ignores them in an upload and uses its station location (verified 2026-10-03, `wavelog-api.md`), so the setup screen shows whether the chosen location carries the reference and warns when none does. Tideline never edits Wavelog station locations (ADR 0021, option A). | Implemented |
+| T24 | Unencrypted copy of a reference list in SQLite's temporary storage while a list is installed | I | A5 | The list is public data (reference, name, region, position). It is collected in a SQLite temporary table, which lives in memory or in SQLite's temp file and is dropped when the install ends, also on failure. No QSO, callsign or other personal data is ever written there. | Accepted |
 
 ## Residual risks
 - **Compromised OS (jailbreak/root):** an attacker who controls the OS can read the secure store. This is out of scope,
@@ -65,3 +67,12 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 - **New flows:** Wavelog contest-session sync (`/contest`, needs `contest:write`; T21) and Cabrillo export (T22).
 - **New residual risk:** the default MASTER.SCP URL points at a third-party site. Its operator sees the user's IP
   address when the user downloads the list. PRIVACY.md says so.
+
+## Changes in version 4
+- **New inputs (activations):** the SOTA, POTA and WWFF reference lists (T10), downloaded only on request.
+- **New flows:** the own references of an activation travel with the QSO to Wavelog, which replaces them with the
+  values of the station location (T23). No new Wavelog scope is requested.
+- **New residual data:** reference lists in the local database (encrypted at rest) and a short-lived temporary table
+  during installation (T24).
+- **Not changed:** the set of hosts the app talks to grows only by the three official list sources, each contacted only
+  when the user presses Download. PRIVACY.md lists them.

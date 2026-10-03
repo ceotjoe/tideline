@@ -35,7 +35,7 @@ Tideline is built around four ideas:
 | ✅ English and German UI, accessibility baseline (WCAG 2.2 AA) | MVP (v0.1) |
 | ✅ Contest mode: keyboard-first entry, serials, dupe checks, super check partial, rates, multipliers, Cabrillo, Wavelog contest sessions | v0.2 |
 | ✅ "Worked before" index from your own Wavelog log | v0.2 |
-| SOTA / POTA / WWFF activation sessions with offline reference packs and progress toward validity | v0.3 |
+| ✅ SOTA / POTA / WWFF activations: offline reference lists you download yourself, search by name or distance, progress toward validity, park-to-park and summit-to-summit | v0.3 |
 | Fast Log Entry (FLE), glove mode, battery saver, multiple Wavelog accounts | v0.4 → v1.0 |
 | Device-to-device sync over local Wi-Fi (no internet), WSJT-X listener on desktop | later |
 

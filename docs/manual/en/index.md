@@ -1,6 +1,6 @@
 # Tideline user manual
 
-_Version 0.2 (contest mode)._
+_Version 0.3 (activations)._
 
 1. [First setup](first-setup.md)
 1. [Creating a Wavelog API token](api-token.md)
