@@ -43,7 +43,8 @@ See [Keyboard shortcuts](keyboard-shortcuts.md) for the full list.
   keyboard open, all fields and the **Clear entry** and **Log QSO** buttons stay visible without scrolling. The top bar
   hides while the keyboard is open; it returns when you close the keyboard. Tab and Shift+Tab move through the fields
   row by row.
-- **Portrait:** the entry form and the log sit side by side.
+- **Portrait:** the fields form rows of up to three across the width, with Clear entry and Log QSO pinned beneath them
+  and your log below. With the on-screen keyboard open, every field and both buttons stay visible without scrolling.
 - **QSO details:** choose a QSO in the log to see its details in a sheet over the log; what you are typing stays where
   it is. Swipe the sheet down to close it.
 - **Phones** stay in portrait.

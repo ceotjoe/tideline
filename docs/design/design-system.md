@@ -86,12 +86,12 @@ The layout follows window size classes ([ADR 0010](../adr/0010-adaptive-size-cla
 | Size class | Width | Navigation | Log screen |
 |---|---|---|---|
 | compact | < 600 | Bottom bar, within thumb reach | One column |
-| medium | 600–839 | Navigation rail | Form and log side by side |
-| expanded | 840–1199 | Navigation rail | Landscape: entry strip over the log; portrait: form and log |
-| large | ≥ 1200 | Rail (labels from 1440) | Landscape: entry strip over the log |
+| medium | 600–839 | Navigation rail | Entry grid (rows of three) over the log |
+| expanded | 840–1199 | Navigation rail | Landscape: entry strip over the log; portrait: entry grid over the log |
+| large | ≥ 1200 | Rail (labels from 1440) | Landscape: entry strip over the log; portrait: entry grid |
 
-In landscape the entry form is a three-row strip across the full width, so every field stays visible above the
-on-screen keyboard ([ADR 0020](../adr/0020-landscape-entry-strip.md)). Phones stay in portrait.
+In landscape the entry form is a three-row strip across the full width, in portrait rows of up to three, so every
+field stays visible above the on-screen keyboard ([ADR 0020](../adr/0020-landscape-entry-strip.md)). Phones stay in portrait.
 
 ## Themes
 
