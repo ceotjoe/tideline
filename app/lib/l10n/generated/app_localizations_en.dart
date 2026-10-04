@@ -2617,6 +2617,226 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get commandFastLogEntry => 'Fast Log Entry';
+
+  @override
+  String get fleTitle => 'Fast Log Entry';
+
+  @override
+  String get fleIntro =>
+      'Type QSOs as shorthand, one per line. Nothing is logged until you confirm at the bottom.';
+
+  @override
+  String get fleStation => 'Station location';
+
+  @override
+  String get fleTextLabel => 'QSOs';
+
+  @override
+  String get fleExample =>
+      '20m cw\n1734 DL1ABC 599 579\n5 G4XYZ\n1800 F5ABC jn18';
+
+  @override
+  String get fleSyntaxTitle => 'How the shorthand works';
+
+  @override
+  String get fleSyntaxBody =>
+      'One QSO per line: time, callsign, then optional reports, locator, reference, @name.\nBand, mode or frequency on a line of their own apply to the lines after it (20m, cw, 14.205).\nAfter the first time, only the changed digits are needed: 1734, then 5 means 1735, 40 means 1740.\nDate: date 2026-10-02, or day + for the next day. Time zone: timezone +2 (your local time is then converted to UTC).\nReports: 59, 599, -12. One report is the one you sent.\nMore: <comment>, [QSL message], <tx_pwr:50>.';
+
+  @override
+  String get flePreview => 'Preview';
+
+  @override
+  String get fleEmpty => 'Nothing to read yet.';
+
+  @override
+  String fleLine(int number) {
+    return 'Line $number';
+  }
+
+  @override
+  String get fleHeaderLine => 'Sets what follows';
+
+  @override
+  String get fleDuplicate =>
+      'Duplicate: already in the log or earlier in this text';
+
+  @override
+  String get fleWarnBackwards =>
+      'Earlier than the QSO before. A day + missing?';
+
+  @override
+  String get fleWarnFuture => 'In the future';
+
+  @override
+  String get fleSkipProblems => 'Skip lines with problems';
+
+  @override
+  String get fleLogDuplicates => 'Also log duplicates';
+
+  @override
+  String fleSummary(int qsos, int problems, int dupes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      qsos,
+      locale: localeName,
+      other: '$qsos QSOs',
+      one: '1 QSO',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      problems,
+      locale: localeName,
+      other: '$problems problems',
+      one: '1 problem',
+      zero: 'no problems',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      dupes,
+      locale: localeName,
+      other: '$dupes duplicates',
+      one: '1 duplicate',
+      zero: 'no duplicates',
+    );
+    return '$_temp0 to log · $_temp1 · $_temp2';
+  }
+
+  @override
+  String fleLogButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Log $count QSOs',
+      one: 'Log 1 QSO',
+      zero: 'Log QSOs',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fleActivationNotice(String reference) {
+    return 'These QSOs go into your running activation $reference.';
+  }
+
+  @override
+  String fleLogged(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Logged $count QSOs',
+      one: 'Logged 1 QSO',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fleQsoDetails(String time, String band, String mode, String rst) {
+    return '$time UTC · $band $mode · $rst';
+  }
+
+  @override
+  String fleProblemUnknownToken(String token) {
+    return 'Not understood: $token';
+  }
+
+  @override
+  String get fleProblemUnclosedBracket => 'A [ or < is never closed';
+
+  @override
+  String fleProblemInvalidTime(String token) {
+    return 'Not a time: $token';
+  }
+
+  @override
+  String get fleProblemMissingTime =>
+      'No time yet. Start with a full time like 1734.';
+
+  @override
+  String get fleProblemMissingCall => 'No callsign on this line';
+
+  @override
+  String get fleProblemMissingBand =>
+      'No band yet. Put a band (20m) or frequency (14.205) on a line before.';
+
+  @override
+  String get fleProblemMissingMode =>
+      'No mode yet. Put a mode (cw, ssb, ft8) on a line before.';
+
+  @override
+  String fleProblemUnsupportedBand(String token) {
+    return 'Band not supported: $token';
+  }
+
+  @override
+  String fleProblemFrequencyOutsideBands(String token) {
+    return 'Frequency is not in an amateur band: $token';
+  }
+
+  @override
+  String fleProblemInvalidDate(String token) {
+    return 'Not a date: $token';
+  }
+
+  @override
+  String get fleProblemInvalidDayShift => 'Too many + after day';
+
+  @override
+  String fleProblemInvalidTimezone(String token) {
+    return 'Time zone must be between -12 and +14: $token';
+  }
+
+  @override
+  String fleProblemSecondCallsign(String token) {
+    return 'A second callsign: $token. One QSO per line.';
+  }
+
+  @override
+  String fleProblemDuplicateSegment(String token) {
+    return 'Twice on one line: $token';
+  }
+
+  @override
+  String fleProblemReportBeforeCall(String token) {
+    return 'Reports come after the callsign: $token';
+  }
+
+  @override
+  String fleProblemTooManyReports(String token) {
+    return 'More than two reports: $token';
+  }
+
+  @override
+  String fleProblemInvalidReport(String token) {
+    return 'Report does not fit the mode: $token';
+  }
+
+  @override
+  String fleProblemInvalidFieldName(String token) {
+    return 'Not a field name: $token';
+  }
+
+  @override
+  String fleProblemReservedField(String token) {
+    return 'This field cannot be set here: $token';
+  }
+
+  @override
+  String fleProblemValueTooLong(String token) {
+    return 'Too long: $token';
+  }
+
+  @override
+  String get fleProblemLineTooLong => 'The line is too long';
+
+  @override
+  String get fleProblemTooManyLines => 'Too many lines. The rest was not read.';
+
+  @override
+  String get fleLogFailed =>
+      'The QSOs could not be logged. Nothing was logged.';
+
+  @override
+  String get fleNoStation => 'Choose a station location first.';
 }
 
 /// The translations for English (`en_XA`).
@@ -5295,4 +5515,226 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
     );
     return '$_temp0';
   }
+
+  @override
+  String get commandFastLogEntry => '[Ƒášţ Ļöĝ Éñţŕý······]';
+
+  @override
+  String get fleTitle => '[Ƒášţ Ļöĝ Éñţŕý······]';
+
+  @override
+  String get fleIntro =>
+      '[Ţýþé ǪŠÖš áš šĥöŕţĥáñð, öñé þéŕ ļîñé. Ñöţĥîñĝ îš ļöĝĝéð ûñţîļ ýöû çöñƒîŕɱ áţ ţĥé ƀöţţöɱ.····································]';
+
+  @override
+  String get fleStation => '[Šţáţîöñ ļöçáţîöñ·······]';
+
+  @override
+  String get fleTextLabel => '[ǪŠÖš··]';
+
+  @override
+  String get fleExample =>
+      '[20ɱ çŵ\n1734 ÐĻ1ÅƁÇ 599 579\n5 Ĝ4ẊÝŽ\n1800 Ƒ5ÅƁÇ ĵñ18····················]';
+
+  @override
+  String get fleSyntaxTitle => '[Ĥöŵ ţĥé šĥöŕţĥáñð ŵöŕķš··········]';
+
+  @override
+  String get fleSyntaxBody =>
+      '[Öñé ǪŠÖ þéŕ ļîñé: ţîɱé, çáļļšîĝñ, ţĥéñ öþţîöñáļ ŕéþöŕţš, ļöçáţöŕ, ŕéƒéŕéñçé, @ñáɱé.\nƁáñð, ɱöðé öŕ ƒŕéǫûéñçý öñ á ļîñé öƒ ţĥéîŕ öŵñ áþþļý ţö ţĥé ļîñéš áƒţéŕ îţ (20ɱ, çŵ, 14.205).\nÅƒţéŕ ţĥé ƒîŕšţ ţîɱé, öñļý ţĥé çĥáñĝéð ðîĝîţš áŕé ñééðéð: 1734, ţĥéñ 5 ɱéáñš 1735, 40 ɱéáñš 1740.\nÐáţé: ðáţé 2026-10-02, öŕ ðáý + ƒöŕ ţĥé ñéẋţ ðáý. Ţîɱé žöñé: ţîɱéžöñé +2 (ýöûŕ ļöçáļ ţîɱé îš ţĥéñ çöñṽéŕţéð ţö ÛŢÇ).\nŔéþöŕţš: 59, 599, -12. Öñé ŕéþöŕţ îš ţĥé öñé ýöû šéñţ.\nṀöŕé: <çöɱɱéñţ>, [ǪŠĻ ɱéššáĝé], <ţẋ_þŵŕ:50>.·····································································································································································································]';
+
+  @override
+  String get flePreview => '[Þŕéṽîéŵ···]';
+
+  @override
+  String get fleEmpty => '[Ñöţĥîñĝ ţö ŕéáð ýéţ.········]';
+
+  @override
+  String fleLine(int number) {
+    return '[Ļîñé ··]$number';
+  }
+
+  @override
+  String get fleHeaderLine => '[Šéţš ŵĥáţ ƒöļļöŵš·······]';
+
+  @override
+  String get fleDuplicate =>
+      '[Ðûþļîçáţé: áļŕéáðý îñ ţĥé ļöĝ öŕ éáŕļîéŕ îñ ţĥîš ţéẋţ······················]';
+
+  @override
+  String get fleWarnBackwards =>
+      '[Éáŕļîéŕ ţĥáñ ţĥé ǪŠÖ ƀéƒöŕé. Å ðáý + ɱîššîñĝ?··················]';
+
+  @override
+  String get fleWarnFuture => '[Îñ ţĥé ƒûţûŕé······]';
+
+  @override
+  String get fleSkipProblems => '[Šķîþ ļîñéš ŵîţĥ þŕöƀļéɱš··········]';
+
+  @override
+  String get fleLogDuplicates => '[Åļšö ļöĝ ðûþļîçáţéš········]';
+
+  @override
+  String fleSummary(int qsos, int problems, int dupes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      qsos,
+      locale: localeName,
+      other: '$qsos[ ǪŠÖš··]',
+      one: '[1 ǪŠÖ··]',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      problems,
+      locale: localeName,
+      other: '$problems[ þŕöƀļéɱš····]',
+      one: '[1 þŕöƀļéɱ····]',
+      zero: '[ñö þŕöƀļéɱš·····]',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      dupes,
+      locale: localeName,
+      other: '$dupes[ ðûþļîçáţéš·····]',
+      one: '[1 ðûþļîçáţé·····]',
+      zero: '[ñö ðûþļîçáţéš······]',
+    );
+    return '$_temp0[ ţö ļöĝ · ····]$_temp1[ · ··]$_temp2';
+  }
+
+  @override
+  String fleLogButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '[Ļöĝ ··]$count[ ǪŠÖš··]',
+      one: '[Ļöĝ 1 ǪŠÖ····]',
+      zero: '[Ļöĝ ǪŠÖš····]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fleActivationNotice(String reference) {
+    return '[Ţĥéšé ǪŠÖš ĝö îñţö ýöûŕ ŕûññîñĝ áçţîṽáţîöñ ··················]$reference[.·]';
+  }
+
+  @override
+  String fleLogged(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '[Ļöĝĝéð ···]$count[ ǪŠÖš··]',
+      one: '[Ļöĝĝéð 1 ǪŠÖ·····]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fleQsoDetails(String time, String band, String mode, String rst) {
+    return '$time[ ÛŢÇ · ···]$band[ ·]$mode[ · ··]$rst';
+  }
+
+  @override
+  String fleProblemUnknownToken(String token) {
+    return '[Ñöţ ûñðéŕšţööð: ·······]$token';
+  }
+
+  @override
+  String get fleProblemUnclosedBracket =>
+      '[Å [ öŕ < îš ñéṽéŕ çļöšéð··········]';
+
+  @override
+  String fleProblemInvalidTime(String token) {
+    return '[Ñöţ á ţîɱé: ·····]$token';
+  }
+
+  @override
+  String get fleProblemMissingTime =>
+      '[Ñö ţîɱé ýéţ. Šţáŕţ ŵîţĥ á ƒûļļ ţîɱé ļîķé 1734.···················]';
+
+  @override
+  String get fleProblemMissingCall => '[Ñö çáļļšîĝñ öñ ţĥîš ļîñé··········]';
+
+  @override
+  String get fleProblemMissingBand =>
+      '[Ñö ƀáñð ýéţ. Þûţ á ƀáñð (20ɱ) öŕ ƒŕéǫûéñçý (14.205) öñ á ļîñé ƀéƒöŕé.····························]';
+
+  @override
+  String get fleProblemMissingMode =>
+      '[Ñö ɱöðé ýéţ. Þûţ á ɱöðé (çŵ, ššƀ, ƒţ8) öñ á ļîñé ƀéƒöŕé.·······················]';
+
+  @override
+  String fleProblemUnsupportedBand(String token) {
+    return '[Ɓáñð ñöţ šûþþöŕţéð: ········]$token';
+  }
+
+  @override
+  String fleProblemFrequencyOutsideBands(String token) {
+    return '[Ƒŕéǫûéñçý îš ñöţ îñ áñ áɱáţéûŕ ƀáñð: ···············]$token';
+  }
+
+  @override
+  String fleProblemInvalidDate(String token) {
+    return '[Ñöţ á ðáţé: ·····]$token';
+  }
+
+  @override
+  String get fleProblemInvalidDayShift => '[Ţöö ɱáñý + áƒţéŕ ðáý········]';
+
+  @override
+  String fleProblemInvalidTimezone(String token) {
+    return '[Ţîɱé žöñé ɱûšţ ƀé ƀéţŵééñ -12 áñð +14: ················]$token';
+  }
+
+  @override
+  String fleProblemSecondCallsign(String token) {
+    return '[Å šéçöñð çáļļšîĝñ: ········]$token[. Öñé ǪŠÖ þéŕ ļîñé.········]';
+  }
+
+  @override
+  String fleProblemDuplicateSegment(String token) {
+    return '[Ţŵîçé öñ öñé ļîñé: ········]$token';
+  }
+
+  @override
+  String fleProblemReportBeforeCall(String token) {
+    return '[Ŕéþöŕţš çöɱé áƒţéŕ ţĥé çáļļšîĝñ: ··············]$token';
+  }
+
+  @override
+  String fleProblemTooManyReports(String token) {
+    return '[Ṁöŕé ţĥáñ ţŵö ŕéþöŕţš: ··········]$token';
+  }
+
+  @override
+  String fleProblemInvalidReport(String token) {
+    return '[Ŕéþöŕţ ðöéš ñöţ ƒîţ ţĥé ɱöðé: ············]$token';
+  }
+
+  @override
+  String fleProblemInvalidFieldName(String token) {
+    return '[Ñöţ á ƒîéļð ñáɱé: ········]$token';
+  }
+
+  @override
+  String fleProblemReservedField(String token) {
+    return '[Ţĥîš ƒîéļð çáññöţ ƀé šéţ ĥéŕé: ·············]$token';
+  }
+
+  @override
+  String fleProblemValueTooLong(String token) {
+    return '[Ţöö ļöñĝ: ····]$token';
+  }
+
+  @override
+  String get fleProblemLineTooLong => '[Ţĥé ļîñé îš ţöö ļöñĝ········]';
+
+  @override
+  String get fleProblemTooManyLines =>
+      '[Ţöö ɱáñý ļîñéš. Ţĥé ŕéšţ ŵáš ñöţ ŕéáð.················]';
+
+  @override
+  String get fleLogFailed =>
+      '[Ţĥé ǪŠÖš çöûļð ñöţ ƀé ļöĝĝéð. Ñöţĥîñĝ ŵáš ļöĝĝéð.····················]';
+
+  @override
+  String get fleNoStation => '[Çĥööšé á šţáţîöñ ļöçáţîöñ ƒîŕšţ.·············]';
 }

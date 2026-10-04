@@ -3368,5 +3368,304 @@
         "type": "int"
       }
     }
+  },
+  "commandFastLogEntry": "Fast Log Entry",
+  "@commandFastLogEntry": {
+    "description": "Command name and screen title."
+  },
+  "fleTitle": "Fast Log Entry",
+  "@fleTitle": {
+    "description": "Screen title."
+  },
+  "fleIntro": "Type QSOs as shorthand, one per line. Nothing is logged until you confirm at the bottom.",
+  "@fleIntro": {
+    "description": "Intro text on the FLE screen."
+  },
+  "fleStation": "Station location",
+  "@fleStation": {
+    "description": "Label of the station choice."
+  },
+  "fleTextLabel": "QSOs",
+  "@fleTextLabel": {
+    "description": "Label of the shorthand text field."
+  },
+  "fleExample": "20m cw\n1734 DL1ABC 599 579\n5 G4XYZ\n1800 F5ABC jn18",
+  "@fleExample": {
+    "description": "Example shorthand shown as hint. Keep the shorthand itself as is."
+  },
+  "fleSyntaxTitle": "How the shorthand works",
+  "@fleSyntaxTitle": {
+    "description": "Heading of the help."
+  },
+  "fleSyntaxBody": "One QSO per line: time, callsign, then optional reports, locator, reference, @name.\nBand, mode or frequency on a line of their own apply to the lines after it (20m, cw, 14.205).\nAfter the first time, only the changed digits are needed: 1734, then 5 means 1735, 40 means 1740.\nDate: date 2026-10-02, or day + for the next day. Time zone: timezone +2 (your local time is then converted to UTC).\nReports: 59, 599, -12. One report is the one you sent.\nMore: <comment>, [QSL message], <tx_pwr:50>.",
+  "@fleSyntaxBody": {
+    "description": "Short help for the shorthand. Keep the examples as they are."
+  },
+  "flePreview": "Preview",
+  "@flePreview": {
+    "description": "Heading of the preview list."
+  },
+  "fleEmpty": "Nothing to read yet.",
+  "@fleEmpty": {
+    "description": "Empty state of the preview."
+  },
+  "fleLine": "Line {number}",
+  "@fleLine": {
+    "description": "Line number label in the preview.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "fleHeaderLine": "Sets what follows",
+  "@fleHeaderLine": {
+    "description": "Label of a line that sets band, mode, date or time zone."
+  },
+  "fleDuplicate": "Duplicate: already in the log or earlier in this text",
+  "@fleDuplicate": {
+    "description": "Warning on a QSO line."
+  },
+  "fleWarnBackwards": "Earlier than the QSO before. A day + missing?",
+  "@fleWarnBackwards": {
+    "description": "Warning on a QSO line."
+  },
+  "fleWarnFuture": "In the future",
+  "@fleWarnFuture": {
+    "description": "Warning on a QSO line."
+  },
+  "fleSkipProblems": "Skip lines with problems",
+  "@fleSkipProblems": {
+    "description": "Switch."
+  },
+  "fleLogDuplicates": "Also log duplicates",
+  "@fleLogDuplicates": {
+    "description": "Switch."
+  },
+  "fleSummary": "{qsos, plural, =1{1 QSO} other{{qsos} QSOs}} to log · {problems, plural, =0{no problems} =1{1 problem} other{{problems} problems}} · {dupes, plural, =0{no duplicates} =1{1 duplicate} other{{dupes} duplicates}}",
+  "@fleSummary": {
+    "description": "Summary above the log button.",
+    "placeholders": {
+      "qsos": {
+        "type": "int"
+      },
+      "problems": {
+        "type": "int"
+      },
+      "dupes": {
+        "type": "int"
+      }
+    }
+  },
+  "fleLogButton": "{count, plural, =0{Log QSOs} =1{Log 1 QSO} other{Log {count} QSOs}}",
+  "@fleLogButton": {
+    "description": "Button.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fleActivationNotice": "These QSOs go into your running activation {reference}.",
+  "@fleActivationNotice": {
+    "description": "Notice on the FLE screen while an activation runs.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "fleLogged": "{count, plural, =1{Logged 1 QSO} other{Logged {count} QSOs}}",
+  "@fleLogged": {
+    "description": "Snackbar after logging.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fleQsoDetails": "{time} UTC · {band} {mode} · {rst}",
+  "@fleQsoDetails": {
+    "description": "Details of a QSO line in the preview.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "band": {
+        "type": "String"
+      },
+      "mode": {
+        "type": "String"
+      },
+      "rst": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemUnknownToken": "Not understood: {token}",
+  "@fleProblemUnknownToken": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemUnclosedBracket": "A [ or < is never closed",
+  "@fleProblemUnclosedBracket": {
+    "description": "Problem."
+  },
+  "fleProblemInvalidTime": "Not a time: {token}",
+  "@fleProblemInvalidTime": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemMissingTime": "No time yet. Start with a full time like 1734.",
+  "@fleProblemMissingTime": {
+    "description": "Problem."
+  },
+  "fleProblemMissingCall": "No callsign on this line",
+  "@fleProblemMissingCall": {
+    "description": "Problem."
+  },
+  "fleProblemMissingBand": "No band yet. Put a band (20m) or frequency (14.205) on a line before.",
+  "@fleProblemMissingBand": {
+    "description": "Problem."
+  },
+  "fleProblemMissingMode": "No mode yet. Put a mode (cw, ssb, ft8) on a line before.",
+  "@fleProblemMissingMode": {
+    "description": "Problem."
+  },
+  "fleProblemUnsupportedBand": "Band not supported: {token}",
+  "@fleProblemUnsupportedBand": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemFrequencyOutsideBands": "Frequency is not in an amateur band: {token}",
+  "@fleProblemFrequencyOutsideBands": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemInvalidDate": "Not a date: {token}",
+  "@fleProblemInvalidDate": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemInvalidDayShift": "Too many + after day",
+  "@fleProblemInvalidDayShift": {
+    "description": "Problem."
+  },
+  "fleProblemInvalidTimezone": "Time zone must be between -12 and +14: {token}",
+  "@fleProblemInvalidTimezone": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemSecondCallsign": "A second callsign: {token}. One QSO per line.",
+  "@fleProblemSecondCallsign": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemDuplicateSegment": "Twice on one line: {token}",
+  "@fleProblemDuplicateSegment": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemReportBeforeCall": "Reports come after the callsign: {token}",
+  "@fleProblemReportBeforeCall": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemTooManyReports": "More than two reports: {token}",
+  "@fleProblemTooManyReports": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemInvalidReport": "Report does not fit the mode: {token}",
+  "@fleProblemInvalidReport": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemInvalidFieldName": "Not a field name: {token}",
+  "@fleProblemInvalidFieldName": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemReservedField": "This field cannot be set here: {token}",
+  "@fleProblemReservedField": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemValueTooLong": "Too long: {token}",
+  "@fleProblemValueTooLong": {
+    "description": "Problem.",
+    "placeholders": {
+      "token": {
+        "type": "String"
+      }
+    }
+  },
+  "fleProblemLineTooLong": "The line is too long",
+  "@fleProblemLineTooLong": {
+    "description": "Problem."
+  },
+  "fleProblemTooManyLines": "Too many lines. The rest was not read.",
+  "@fleProblemTooManyLines": {
+    "description": "Problem."
+  },
+  "fleLogFailed": "The QSOs could not be logged. Nothing was logged.",
+  "@fleLogFailed": {
+    "description": "Snackbar when logging a batch failed (nothing stored)."
+  },
+  "fleNoStation": "Choose a station location first.",
+  "@fleNoStation": {
+    "description": "Shown when the account has no station location to log to."
   }
 }

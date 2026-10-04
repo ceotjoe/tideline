@@ -40,6 +40,33 @@ class FakeQsoRepository implements QsoRepository {
   @override
   Future<void> log(Qso qso) async => logged.add(qso);
 
+  /// Batches logged in one transaction.
+  final List<List<Qso>> batches = [];
+
+  /// When set, a batch fails with it and stores nothing.
+  Exception? batchFailure;
+
+  /// Duplicate keys the log already holds.
+  Set<(String, int, String, String, String?)> existingKeys = {};
+
+  @override
+  Future<int> logAll(List<Qso> qsos) async {
+    if (batchFailure != null) throw batchFailure!;
+    batches.add(qsos);
+    logged.addAll(qsos);
+    return qsos.length;
+  }
+
+  @override
+  Future<Set<(String, int, String, String, String?)>> dupeKeysBetween(
+    String accountId,
+    int fromMillis,
+    int toMillis,
+  ) async => {
+    for (final k in existingKeys)
+      if (k.$2 >= fromMillis && k.$2 <= toMillis) k,
+  };
+
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -113,6 +140,18 @@ class FakeActivationRepository extends Fake implements ActivationRepository {
   final List<Qso> logged = [];
   final List<({String id, int at})> ended = [];
   final List<Activation> started = [];
+
+  /// Batches logged into an activation: (activation id, QSOs).
+  final List<(String, List<Qso>)> batches = [];
+
+  @override
+  Future<List<Qso>> logQsos(
+    List<Qso> qsos, {
+    required String activationId,
+  }) async {
+    batches.add((activationId, qsos));
+    return qsos;
+  }
 
   @override
   Future<Qso> logQso(Qso qso, {required String activationId}) async {

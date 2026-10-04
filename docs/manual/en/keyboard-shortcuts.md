@@ -16,6 +16,7 @@ This table is generated from the app's command registry.
 | Sync now | Everywhere | `⇧⌘S` | `Ctrl+Shift+S` |
 | Open contest mode | Everywhere | `⇧⌘C` | `Ctrl+Shift+C` |
 | Start an activation | Everywhere | `⇧⌘A` | `Ctrl+Shift+A` |
+| Fast Log Entry | Everywhere | `⇧⌘F` | `Ctrl+Shift+F` |
 | New QSO | Logging | `⌘N` | `Ctrl+N` |
 | Log QSO | Logging | `Enter` | `Enter` |
 | Clear entry | Logging | `Esc` | `Esc` |

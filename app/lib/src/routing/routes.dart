@@ -41,6 +41,9 @@ abstract final class Routes {
   /// Contest session setup and the list of past sessions.
   static const contestSetup = '/contest-setup';
 
+  /// Fast Log Entry: QSOs typed as shorthand.
+  static const fle = '/fle';
+
   /// Starting a SOTA, POTA or WWFF activation.
   static const activationSetup = '/activation-setup';
 }

@@ -9,6 +9,7 @@ _Version 0.3 (activations)._
 1. [Callsign directory and notes](callsigns.md)
 1. [Sync and conflicts](sync-and-conflicts.md)
 1. [Activations (SOTA, POTA, WWFF)](activations.md)
+1. [Fast Log Entry](fast-log-entry.md)
 1. [Contest mode](contest-mode.md)
 1. [Settings](settings.md)
 1. [Free up space](free-space.md)

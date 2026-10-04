@@ -9,6 +9,7 @@ _Version 0.3 (Aktivierungen)._
 1. [Rufzeichen-Verzeichnis und Notizen](callsigns.md)
 1. [Synchronisierung und Konflikte](sync-and-conflicts.md)
 1. [Aktivierungen (SOTA, POTA, WWFF)](activations.md)
+1. [Fast Log Entry](fast-log-entry.md)
 1. [Contest-Modus](contest-mode.md)
 1. [Einstellungen](settings.md)
 1. [Speicher freigeben](free-space.md)

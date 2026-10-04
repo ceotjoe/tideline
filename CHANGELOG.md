@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Fast Log Entry** (ADR 0028). Type QSOs as shorthand in the dialect of Wavelog's SimpleFLE (time fragments, band, mode,
+  frequency, reports, locator, references, @name, date and time zone), see how every line was read, and log them all in
+  one transaction. Problem lines are named and left out, duplicates and odd times are flagged, a running activation takes
+  the QSOs. Open it with the lightning bolt in the log or Ctrl/⌘+Shift+F. Not for contest sessions.
 - **Free up space** (ADR 0027). On an account's page, *Remove synced QSOs from this device* removes the local copies of
   QSOs that Wavelog already has, by age (older than 1, 2 or 5 years, or all). Tideline asks Wavelog first and keeps what
   it cannot find there; QSOs of contests and activations, and QSOs not yet sent or changed since, stay. Nothing is deleted

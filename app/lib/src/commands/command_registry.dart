@@ -26,6 +26,7 @@ abstract final class CommandIds {
   static const contestEnd = 'contest.end';
   static const contestExportCabrillo = 'contest.exportCabrillo';
   static const startActivation = 'activation.start';
+  static const fastLogEntry = 'log.fle';
   static const endActivation = 'activation.end';
 }
 
@@ -94,6 +95,14 @@ final List<TidelineCommand> tidelineCommands = [
     label: (l) => l.commandStartActivation,
     defaults: const [
       KeyChord(LogicalKeyboardKey.keyA, primary: true, shift: true),
+    ],
+  ),
+  TidelineCommand(
+    id: CommandIds.fastLogEntry,
+    scope: CommandScope.global,
+    label: (l) => l.commandFastLogEntry,
+    defaults: const [
+      KeyChord(LogicalKeyboardKey.keyF, primary: true, shift: true),
     ],
   ),
   TidelineCommand(

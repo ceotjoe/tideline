@@ -69,7 +69,11 @@ List<_Menu> _menus({
     ]),
     _Menu(l10n.menuOperate, [
       [item(CommandIds.syncNow)],
-      [item(CommandIds.openContest), item(CommandIds.startActivation)],
+      [
+        item(CommandIds.fastLogEntry),
+        item(CommandIds.openContest),
+        item(CommandIds.startActivation),
+      ],
     ]),
     _Menu(l10n.menuHelp, [
       [item(CommandIds.showShortcuts)],

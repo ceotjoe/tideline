@@ -4092,6 +4092,282 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 QSO removed from this device (still on Wavelog)} other{{count} QSOs removed from this device (still on Wavelog)}}'**
   String journalEvictedLocally(int count);
+
+  /// Command name and screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast Log Entry'**
+  String get commandFastLogEntry;
+
+  /// Screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast Log Entry'**
+  String get fleTitle;
+
+  /// Intro text on the FLE screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Type QSOs as shorthand, one per line. Nothing is logged until you confirm at the bottom.'**
+  String get fleIntro;
+
+  /// Label of the station choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Station location'**
+  String get fleStation;
+
+  /// Label of the shorthand text field.
+  ///
+  /// In en, this message translates to:
+  /// **'QSOs'**
+  String get fleTextLabel;
+
+  /// Example shorthand shown as hint. Keep the shorthand itself as is.
+  ///
+  /// In en, this message translates to:
+  /// **'20m cw\n1734 DL1ABC 599 579\n5 G4XYZ\n1800 F5ABC jn18'**
+  String get fleExample;
+
+  /// Heading of the help.
+  ///
+  /// In en, this message translates to:
+  /// **'How the shorthand works'**
+  String get fleSyntaxTitle;
+
+  /// Short help for the shorthand. Keep the examples as they are.
+  ///
+  /// In en, this message translates to:
+  /// **'One QSO per line: time, callsign, then optional reports, locator, reference, @name.\nBand, mode or frequency on a line of their own apply to the lines after it (20m, cw, 14.205).\nAfter the first time, only the changed digits are needed: 1734, then 5 means 1735, 40 means 1740.\nDate: date 2026-10-02, or day + for the next day. Time zone: timezone +2 (your local time is then converted to UTC).\nReports: 59, 599, -12. One report is the one you sent.\nMore: <comment>, [QSL message], <tx_pwr:50>.'**
+  String get fleSyntaxBody;
+
+  /// Heading of the preview list.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get flePreview;
+
+  /// Empty state of the preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to read yet.'**
+  String get fleEmpty;
+
+  /// Line number label in the preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Line {number}'**
+  String fleLine(int number);
+
+  /// Label of a line that sets band, mode, date or time zone.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets what follows'**
+  String get fleHeaderLine;
+
+  /// Warning on a QSO line.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate: already in the log or earlier in this text'**
+  String get fleDuplicate;
+
+  /// Warning on a QSO line.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier than the QSO before. A day + missing?'**
+  String get fleWarnBackwards;
+
+  /// Warning on a QSO line.
+  ///
+  /// In en, this message translates to:
+  /// **'In the future'**
+  String get fleWarnFuture;
+
+  /// Switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip lines with problems'**
+  String get fleSkipProblems;
+
+  /// Switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Also log duplicates'**
+  String get fleLogDuplicates;
+
+  /// Summary above the log button.
+  ///
+  /// In en, this message translates to:
+  /// **'{qsos, plural, =1{1 QSO} other{{qsos} QSOs}} to log · {problems, plural, =0{no problems} =1{1 problem} other{{problems} problems}} · {dupes, plural, =0{no duplicates} =1{1 duplicate} other{{dupes} duplicates}}'**
+  String fleSummary(int qsos, int problems, int dupes);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Log QSOs} =1{Log 1 QSO} other{Log {count} QSOs}}'**
+  String fleLogButton(int count);
+
+  /// Notice on the FLE screen while an activation runs.
+  ///
+  /// In en, this message translates to:
+  /// **'These QSOs go into your running activation {reference}.'**
+  String fleActivationNotice(String reference);
+
+  /// Snackbar after logging.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Logged 1 QSO} other{Logged {count} QSOs}}'**
+  String fleLogged(int count);
+
+  /// Details of a QSO line in the preview.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} UTC · {band} {mode} · {rst}'**
+  String fleQsoDetails(String time, String band, String mode, String rst);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Not understood: {token}'**
+  String fleProblemUnknownToken(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'A [ or < is never closed'**
+  String get fleProblemUnclosedBracket;
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a time: {token}'**
+  String fleProblemInvalidTime(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'No time yet. Start with a full time like 1734.'**
+  String get fleProblemMissingTime;
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'No callsign on this line'**
+  String get fleProblemMissingCall;
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'No band yet. Put a band (20m) or frequency (14.205) on a line before.'**
+  String get fleProblemMissingBand;
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'No mode yet. Put a mode (cw, ssb, ft8) on a line before.'**
+  String get fleProblemMissingMode;
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Band not supported: {token}'**
+  String fleProblemUnsupportedBand(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency is not in an amateur band: {token}'**
+  String fleProblemFrequencyOutsideBands(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a date: {token}'**
+  String fleProblemInvalidDate(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many + after day'**
+  String get fleProblemInvalidDayShift;
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone must be between -12 and +14: {token}'**
+  String fleProblemInvalidTimezone(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'A second callsign: {token}. One QSO per line.'**
+  String fleProblemSecondCallsign(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Twice on one line: {token}'**
+  String fleProblemDuplicateSegment(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports come after the callsign: {token}'**
+  String fleProblemReportBeforeCall(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'More than two reports: {token}'**
+  String fleProblemTooManyReports(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Report does not fit the mode: {token}'**
+  String fleProblemInvalidReport(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a field name: {token}'**
+  String fleProblemInvalidFieldName(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'This field cannot be set here: {token}'**
+  String fleProblemReservedField(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Too long: {token}'**
+  String fleProblemValueTooLong(String token);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The line is too long'**
+  String get fleProblemLineTooLong;
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many lines. The rest was not read.'**
+  String get fleProblemTooManyLines;
+
+  /// Snackbar when logging a batch failed (nothing stored).
+  ///
+  /// In en, this message translates to:
+  /// **'The QSOs could not be logged. Nothing was logged.'**
+  String get fleLogFailed;
+
+  /// Shown when the account has no station location to log to.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a station location first.'**
+  String get fleNoStation;
 }
 
 class _AppLocalizationsDelegate

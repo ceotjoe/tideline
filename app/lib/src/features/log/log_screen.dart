@@ -197,6 +197,11 @@ class _LogScreenState extends ConsumerState<LogScreen>
                 actions: [
                   const AccountSwitcher(),
                   IconButton(
+                    tooltip: l10n.fleTitle,
+                    icon: const Icon(Icons.bolt_outlined),
+                    onPressed: () => context.push(Routes.fle),
+                  ),
+                  IconButton(
                     tooltip: l10n.activationOpenAction,
                     icon: const Icon(Icons.terrain_outlined),
                     onPressed: () => context.push(Routes.activationSetup),

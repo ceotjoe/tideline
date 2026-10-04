@@ -48,6 +48,7 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 | T24 | Unencrypted copy of a reference list in SQLite's temporary storage while a list is installed | I | A5 | The list is public data (reference, name, region, position). It is collected in a SQLite temporary table, which lives in memory or in SQLite's temp file and is dropped when the install ends, also on failure. No QSO, callsign or other personal data is ever written there. | Accepted |
 | T25 | Personal data of third parties (names and places of the stations you worked, your own notes about them) leaks from the device or a backup | I | A4, A5 | The directory and the notes live in the encrypted database (T3); notes travel only in encrypted backups; neither is part of any ADIF or Cabrillo export or sent to Wavelog (it has no notes API, `wavelog-api.md`). Text from untrusted ADIF (server pull, restored backup) is cleaned (control characters removed, length limited), the directory is capped at 500,000 stations per account for server pulls, and notes are limited to 2,000 characters. | Implemented (ADR 0026) |
 | T26 | A QSO is removed from the device although Wavelog does not have it (data loss), or Wavelog data is deleted by mistake | T, D | A2 | Removal is a purge of the local copy, never a delete: nothing is sent to the server and no delete scope is used. Only QSOs that are synced, unchanged since and outside contests and activations are eligible, and Wavelog must confirm each by id and duplicate key through a read-only listing before removal; if the listing cannot be read completely (offline, revoked token, too large) nothing is removed. The conditions are re-checked inside the removal transaction. An ADIF export of exactly the removed QSOs is offered first and removal is cancelled if saving fails. The record that stays holds ids and a SHA-256 of the duplicate key, no callsign. | Implemented (ADR 0027) |
+| T27 | Crafted or huge Fast Log Entry text (pasted from elsewhere): crash, slow parsing, injected fields, QSOs logged wrongly | D, T | A3 | The parser is total (never throws), reads at most 5,000 lines of 500 characters and values of 256, uses only linear patterns, and is fuzzed (token soup, random characters, mutations, hostile sizes). A line with a problem is left out whole and cannot change what later lines inherit. Control characters are removed from values; fields that are core, that have their own word, or that Tideline sets (`my_*`, station, operator) are refused. Nothing is stored until the user confirms, all QSOs in one all-or-none transaction. | Implemented (ADR 0028) |
 
 ## Residual risks
 - **Compromised OS (jailbreak/root):** an attacker who controls the OS can read the secure store. This is out of scope,
@@ -78,6 +79,10 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
   during installation (T24).
 - **Not changed:** the set of hosts the app talks to grows only by the three official list sources, each contacted only
   when the user presses Download. PRIVACY.md lists them.
+
+## Changes in version 5 (Fast Log Entry, step 6.7)
+- **New input:** typed or pasted shorthand text (T27), read by a pure parser with limits and a preview before anything is
+  stored. No new network access, scope or stored data beyond QSOs with source `fle`.
 
 ## Changes in version 5 (removing synced QSOs, step 6.6)
 - **New flow:** one read-only `GET /qso` listing by date range (the existing `qso:read` scope; no new scope) to confirm

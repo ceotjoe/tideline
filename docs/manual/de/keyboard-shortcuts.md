@@ -16,6 +16,7 @@ Diese Tabelle wird aus dem Befehlsverzeichnis der App erzeugt.
 | Jetzt synchronisieren | Überall | `⇧⌘S` | `Strg+Umschalt+S` |
 | Contest-Modus öffnen | Überall | `⇧⌘C` | `Strg+Umschalt+C` |
 | Aktivierung starten | Überall | `⇧⌘A` | `Strg+Umschalt+A` |
+| Fast Log Entry | Überall | `⇧⌘F` | `Strg+Umschalt+F` |
 | Neues QSO | Loggen | `⌘N` | `Strg+N` |
 | QSO loggen | Loggen | `Eingabe` | `Eingabe` |
 | Eingabe verwerfen | Loggen | `Esc` | `Esc` |

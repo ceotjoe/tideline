@@ -2637,4 +2637,224 @@ class AppLocalizationsDe extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get commandFastLogEntry => 'Fast Log Entry';
+
+  @override
+  String get fleTitle => 'Fast Log Entry';
+
+  @override
+  String get fleIntro =>
+      'Tippe QSOs als Kurzschrift, eins pro Zeile. Es wird erst geloggt, wenn du unten bestätigst.';
+
+  @override
+  String get fleStation => 'Stationsstandort';
+
+  @override
+  String get fleTextLabel => 'QSOs';
+
+  @override
+  String get fleExample =>
+      '20m cw\n1734 DL1ABC 599 579\n5 G4XYZ\n1800 F5ABC jn18';
+
+  @override
+  String get fleSyntaxTitle => 'So funktioniert die Kurzschrift';
+
+  @override
+  String get fleSyntaxBody =>
+      'Ein QSO pro Zeile: Zeit, Rufzeichen, dann optional Rapporte, Locator, Referenz, @Name.\nBand, Mode oder Frequenz in einer eigenen Zeile gelten für die Zeilen danach (20m, cw, 14.205).\nNach der ersten Zeit genügen die geänderten Ziffern: 1734, dann 5 heißt 1735, 40 heißt 1740.\nDatum: date 2026-10-02, oder day + für den nächsten Tag. Zeitzone: timezone +2 (deine Ortszeit wird dann in UTC umgerechnet).\nRapporte: 59, 599, -12. Ein Rapport ist der gesendete.\nWeiteres: <Kommentar>, [QSL-Nachricht], <tx_pwr:50>.';
+
+  @override
+  String get flePreview => 'Vorschau';
+
+  @override
+  String get fleEmpty => 'Noch nichts zu lesen.';
+
+  @override
+  String fleLine(int number) {
+    return 'Zeile $number';
+  }
+
+  @override
+  String get fleHeaderLine => 'Gilt für die folgenden Zeilen';
+
+  @override
+  String get fleDuplicate =>
+      'Doppelt: schon im Log oder weiter oben in diesem Text';
+
+  @override
+  String get fleWarnBackwards => 'Früher als das QSO davor. Fehlt ein day +?';
+
+  @override
+  String get fleWarnFuture => 'In der Zukunft';
+
+  @override
+  String get fleSkipProblems => 'Zeilen mit Problemen überspringen';
+
+  @override
+  String get fleLogDuplicates => 'Doppelte auch loggen';
+
+  @override
+  String fleSummary(int qsos, int problems, int dupes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      qsos,
+      locale: localeName,
+      other: '$qsos QSOs',
+      one: '1 QSO',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      problems,
+      locale: localeName,
+      other: '$problems Probleme',
+      one: '1 Problem',
+      zero: 'keine Probleme',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      dupes,
+      locale: localeName,
+      other: '$dupes Doppelte',
+      one: '1 Doppeltes',
+      zero: 'keine Doppelten',
+    );
+    return '$_temp0 zum Loggen · $_temp1 · $_temp2';
+  }
+
+  @override
+  String fleLogButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs loggen',
+      one: '1 QSO loggen',
+      zero: 'QSOs loggen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fleActivationNotice(String reference) {
+    return 'Diese QSOs kommen in deine laufende Aktivierung $reference.';
+  }
+
+  @override
+  String fleLogged(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs geloggt',
+      one: '1 QSO geloggt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String fleQsoDetails(String time, String band, String mode, String rst) {
+    return '$time UTC · $band $mode · $rst';
+  }
+
+  @override
+  String fleProblemUnknownToken(String token) {
+    return 'Nicht verstanden: $token';
+  }
+
+  @override
+  String get fleProblemUnclosedBracket => 'Eine [ oder < wird nie geschlossen';
+
+  @override
+  String fleProblemInvalidTime(String token) {
+    return 'Keine Uhrzeit: $token';
+  }
+
+  @override
+  String get fleProblemMissingTime =>
+      'Noch keine Zeit. Beginne mit einer vollständigen Zeit wie 1734.';
+
+  @override
+  String get fleProblemMissingCall => 'Kein Rufzeichen in dieser Zeile';
+
+  @override
+  String get fleProblemMissingBand =>
+      'Noch kein Band. Schreibe vorher ein Band (20m) oder eine Frequenz (14.205) in eine Zeile.';
+
+  @override
+  String get fleProblemMissingMode =>
+      'Noch kein Mode. Schreibe vorher einen Mode (cw, ssb, ft8) in eine Zeile.';
+
+  @override
+  String fleProblemUnsupportedBand(String token) {
+    return 'Band nicht unterstützt: $token';
+  }
+
+  @override
+  String fleProblemFrequencyOutsideBands(String token) {
+    return 'Frequenz liegt in keinem Amateurfunkband: $token';
+  }
+
+  @override
+  String fleProblemInvalidDate(String token) {
+    return 'Kein Datum: $token';
+  }
+
+  @override
+  String get fleProblemInvalidDayShift => 'Zu viele + nach day';
+
+  @override
+  String fleProblemInvalidTimezone(String token) {
+    return 'Die Zeitzone muss zwischen -12 und +14 liegen: $token';
+  }
+
+  @override
+  String fleProblemSecondCallsign(String token) {
+    return 'Ein zweites Rufzeichen: $token. Ein QSO pro Zeile.';
+  }
+
+  @override
+  String fleProblemDuplicateSegment(String token) {
+    return 'Zweimal in einer Zeile: $token';
+  }
+
+  @override
+  String fleProblemReportBeforeCall(String token) {
+    return 'Rapporte stehen nach dem Rufzeichen: $token';
+  }
+
+  @override
+  String fleProblemTooManyReports(String token) {
+    return 'Mehr als zwei Rapporte: $token';
+  }
+
+  @override
+  String fleProblemInvalidReport(String token) {
+    return 'Der Rapport passt nicht zum Mode: $token';
+  }
+
+  @override
+  String fleProblemInvalidFieldName(String token) {
+    return 'Kein Feldname: $token';
+  }
+
+  @override
+  String fleProblemReservedField(String token) {
+    return 'Dieses Feld kann hier nicht gesetzt werden: $token';
+  }
+
+  @override
+  String fleProblemValueTooLong(String token) {
+    return 'Zu lang: $token';
+  }
+
+  @override
+  String get fleProblemLineTooLong => 'Die Zeile ist zu lang';
+
+  @override
+  String get fleProblemTooManyLines =>
+      'Zu viele Zeilen. Der Rest wurde nicht gelesen.';
+
+  @override
+  String get fleLogFailed =>
+      'Die QSOs konnten nicht geloggt werden. Es wurde nichts geloggt.';
+
+  @override
+  String get fleNoStation => 'Wähle zuerst einen Stationsstandort.';
 }

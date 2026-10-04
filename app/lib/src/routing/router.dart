@@ -4,6 +4,7 @@ import 'package:tideline/src/features/activation/activation_setup_screen.dart';
 import 'package:tideline/src/features/callsigns/callsigns_page.dart';
 import 'package:tideline/src/features/contest/contest_screen.dart';
 import 'package:tideline/src/features/contest/contest_setup_screen.dart';
+import 'package:tideline/src/features/fle/fle_screen.dart';
 import 'package:tideline/src/features/freespace/free_space_page.dart';
 import 'package:tideline/src/features/log/log_screen.dart';
 import 'package:tideline/src/features/onboarding/onboarding_screen.dart';
@@ -49,6 +50,7 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
       path: Routes.contestSetup,
       builder: (context, state) => const ContestSetupScreen(),
     ),
+    GoRoute(path: Routes.fle, builder: (context, state) => const FleScreen()),
     GoRoute(
       path: Routes.activationSetup,
       builder: (context, state) => const ActivationSetupScreen(),
