@@ -78,3 +78,54 @@ After every dependency update, repeat the check: build for release, then `nm -u`
 `Runner.app/Frameworks` and compare with the manifest. In Xcode, *Product → Archive → Generate Privacy Report* gives
 the combined report.
 
+## Android: first test build and Google Play
+
+Package name `com.ITWebService.tideline` (kept on purpose, ADR 0015; it is permanent once uploaded). Signing is read from
+`app/android/key.properties`, which is git-ignored together with every `*.jks` and `*.keystore`.
+
+### 1. Create the upload key (once, on your computer)
+Keep the keystore and its passwords out of the repository and out of chat. Back them up: with Play App Signing a lost
+upload key can be reset through Play support, but it costs days.
+
+```bash
+keytool -genkeypair -v -keystore ~/tideline-upload.jks -storetype JKS -keyalg RSA -keysize 2048 \
+  -validity 10000 -alias upload
+```
+
+Then create `app/android/key.properties` (never commit it):
+
+```properties
+storePassword=<password>
+keyPassword=<password>
+keyAlias=upload
+storeFile=/Users/<you>/tideline-upload.jks
+```
+
+Checked on 2026-10-04: `flutter build appbundle --release` succeeds (69.4 MB, debug-signed without `key.properties`).
+
+### 2. A signed build for your own device (TalkBack tests, no Play needed)
+```bash
+cd app && flutter build apk --release --build-name 0.3.0 --build-number 1
+adb install -r build/app/outputs/flutter-apk/app-release.apk
+```
+Without `key.properties` the build is signed with the debug key and Play will refuse it, but it installs for testing.
+
+### 3. Google Play
+1. Play Console → **Create app**: name, default language, App (not game), free, accept the declarations.
+2. **App content** (required before any track works): privacy policy URL (a public page; `PRIVACY.md` on GitHub works),
+   app access (the app needs a Wavelog server: give the demo address and token, as for Apple), ads (none), content rating
+   questionnaire, target audience (not for children), and the **Data safety** form. From `PRIVACY.md`: no data collected
+   or shared, no tracking. The merged manifest of the release build (checked 2026-10-04) has `INTERNET`, `ACCESS_NETWORK_STATE`
+   (connectivity check), `USE_BIOMETRIC` and `USE_FINGERPRINT` (app lock), minSdk 24 and targetSdk 36.
+3. Build the bundle: `cd app && flutter build appbundle --release --build-name 0.3.0 --build-number <N>`.
+   The `versionCode` is the build number and must grow with every upload. Output:
+   `build/app/outputs/bundle/release/app-release.aab`.
+4. **Testing → Internal testing** → create a release → upload the AAB, accept Play App Signing → add testers by email
+   (up to 100) → copy the opt-in link. Internal testers get the build within minutes and need no review.
+5. **Personal developer accounts created after 2023-11-13** must run a **closed test** with at least 12 testers opted in
+   for 14 days before they can apply for production (Google's rule; organisation accounts and older accounts are
+   exempt). Internal testing does not count. Check your account type in Play Console and start the closed test early.
+
+Not automated yet: the upload. The release workflow builds the AAB; uploading through the Play Developer API needs a
+service account (step 5.4).
+
