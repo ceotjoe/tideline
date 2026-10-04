@@ -8,8 +8,8 @@ The milestones from the Phase 0 plan. Each phase ends with a summary and the mai
 | 1 | M1 Foundation | done |
 | 2 | M2 MVP (v0.1) | done |
 | 3 | M3 Contest mode (v0.2) | done, approved 2026-10-03 |
-| 4 | M4 Activations and reference packs (v0.3) | done, awaiting approval |
-| 5 | M5 FLE, field modes, multi-account UI, store releases (v0.4 → v1.0) | planned |
+| 4 | M4 Activations and reference packs (v0.3) | done, approved 2026-10-04 |
+| 5 | M5 First TestFlight build, then FLE, field modes, multi-account UI, store releases (v0.4 → v1.0) | release plan written, awaiting approval |
 | — | Device-to-device sync, WSJT-X listener, desktop extras, iPad drag and drop, Android background sync | later |
 
 ## Phase 3 scope
@@ -81,3 +81,42 @@ Design: [ADR 0018](adr/0018-contest-definitions-as-data.md) and [contest-definit
 | 4.6 | Sync: `MY_*_REF` and `SIG` fields in the Wavelog payload; verify field names against the API docs | data, wavelog_client, wavelog_mock |
 | 4.7 | UI: pack settings, reference picker, activation setup, entry with progress and P2P/S2S | app |
 | 4.8 | Goldens, accessibility, manual EN/DE (`activations.md`), CHANGELOG, threat model T10, PRIVACY.md | all |
+
+## Phase 5 scope
+
+**First: a build the maintainer can test on devices.** Phase 5 starts with TestFlight (iOS and iPadOS), because the
+hand tests that remain (VoiceOver, TalkBack, a real contest run, a real activation) need an installable build. The
+reasoning and the verified facts are in [ADR 0022](adr/0022-testflight-first-distribution.md). The feature work (FLE,
+field modes, multi-account UI) and the v1.0 store releases follow after the first test round, each with its own scope
+proposal.
+
+## Phase 5 plan
+
+| Step | Work | Needs from the maintainer |
+|---|---|---|
+| 5.1 | **Release readiness.** `PrivacyInfo.xcprivacy` for the app (no tracking, no collected data; required-reason APIs verified in Xcode's privacy report, see below). `ITSAppUsesNonExemptEncryption` in `Info.plist`. Version 0.3.0+1 with the tests that keep it in step. CHANGELOG section for 0.3.0. Check the Info.plist strings, orientations and entitlements. A signed archive installed on a real iPhone and iPad. | Export-compliance decision; confirm the Apple team |
+| 5.2 | **Getting past onboarding.** A solution for testers and for Beta App Review (decision below). | Choose option A or B |
+| 5.3 | **Runbook and test checklist.** `docs/release.md` first-build section (done), `docs/testing/testflight.md` with what to test (VoiceOver, TalkBack later, contest, activation, offline, sync problems) and how to report. App Store Connect text for the beta description (EN, DE). | App record in App Store Connect |
+| 5.4 | **Automate the upload.** CI job on a manual trigger: build number from the run number, signing, upload with an App Store Connect API key (secrets documented in `docs/release.md`). | API key as repository secrets |
+| 5.5 | **First test round.** Triage findings, fix, upload the next build. | Test results |
+| 5.6+ | FLE, field modes (glove, battery saver), multi-account UI → v0.4; store listing and release for v1.0. Scope proposals after 5.5. | |
+
+### What the check of 2026-10-04 found
+- `flutter build ios --release --no-codesign` works (29.8 MB, minimum iOS 16.0).
+- The plugins `file_picker`, `flutter_secure_storage`, `connectivity_plus`, `local_auth` and Flutter itself ship privacy
+  manifests. `sqlite3mc.framework` does not. It imports `stat`, `fstat`, `lstat`, `utimes` and `futimes` (the "file
+  timestamp" category) and `statfs` and `fstatfs` (the "disk space" category). The app's own manifest has to declare
+  them with a reason Apple accepts. For file timestamps `C617.1` (files inside the app's container) fits; for disk space
+  I have not found a reason that clearly fits SQLite's use, so 5.1 verifies it with Xcode's privacy report and Apple's
+  list instead of guessing.
+- Encryption: HTTPS is exempt as OS-provided. The app's own encryption (SQLite3MultipleCiphers with ChaCha20, backups with
+  Argon2id and XChaCha20-Poly1305) is for the maintainer to classify. I am not giving a legal answer.
+- Without an account the app always shows onboarding. Internal testers use the maintainer's server; Beta App Review for
+  external testers needs a way in.
+
+### Decision for 5.2: how do testers and reviewers get past onboarding?
+- **A. A demo Wavelog server (recommended first).** The maintainer runs or picks a Wavelog instance and a limited token
+  for reviewers, entered in the review notes. No app change. Works for TestFlight and later for App Review.
+- **B. "Try without a server".** Log locally with no account; QSOs are kept until an account is added. It suits an
+  "offline logger" and removes the review problem for good. It is a feature: QSOs belong to an account today, so it
+  needs a local account, a data-model decision and an ADR.

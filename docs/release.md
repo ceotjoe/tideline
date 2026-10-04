@@ -25,9 +25,12 @@ Encode a file with: `base64 -i file.jks | pbcopy` (macOS).
 ## Not automated yet
 
 - **Apple:**
-  - Provisioning profiles and `ExportOptions.plist` for `flutter build ipa` and for the Mac App Store build.
-  - Upload to App Store Connect.
-  - Prerequisite: an Apple Developer Team ID, which must be configured first.
+  - The iOS project already has a development team and automatic signing (checked 2026-10-04), so a local
+    `flutter build ipa` signs with the maintainer's certificates. CI has no provisioning profile and no App Store Connect
+    credentials yet.
+  - Upload to App Store Connect (manual until step 5.4 of the Phase 5 plan, see
+    [ADR 0022](adr/0022-testflight-first-distribution.md)).
+  - The Mac App Store build needs its own certificates, provisioning profile and `ExportOptions.plist`.
   - After that, the macOS app can switch to the data-protection keychain (ADR 0006).
 - **Google Play upload:** planned via the Play Developer API once a service account exists. Until then, upload the AAB
   artifact manually.
@@ -39,3 +42,22 @@ Encode a file with: `base64 -i file.jks | pbcopy` (macOS).
 2. Bump `version:` in `app/pubspec.yaml` (and `msix_version`).
 3. Tag `vX.Y.Z` and push.
 4. Attach artifacts and the SBOM to the GitHub release.
+
+## First TestFlight build (iOS and iPadOS, manual)
+
+Prerequisites, all in the maintainer's Apple account: an app record for `com.ITWebService.tideline` in App Store
+Connect, and the privacy manifest and export-compliance answer from step 5.1 of the roadmap in the build.
+
+1. Choose the version and build number. The version stays `0.3.0` for the first round; the build number grows with
+   every upload (`1`, `2`, …). Keep `app/pubspec.yaml`, `app/lib/src/app_version.dart` (`appVersion`) and
+   `msix_version` in step.
+2. From `app/`: `flutter build ipa --release --build-name 0.3.0 --build-number <N>`. The IPA lands in
+   `app/build/ios/ipa/`.
+3. Upload it with the Transporter app (drag the IPA in, **Deliver**).
+4. In App Store Connect → TestFlight: wait for processing, answer any compliance question, add an **internal** testing
+   group and install through the TestFlight app. External testers need Beta App Review: a beta description, a feedback
+   address and a way for the reviewer to get past onboarding (a Wavelog address and token).
+5. Test with the checklist in the roadmap (VoiceOver, a contest run, an activation) and note findings as issues.
+
+Checked on 2026-10-04: `flutter build ios --release --no-codesign` succeeds (29.8 MB, minimum iOS 16.0) and contains
+`sqlite3mc.framework`, which has no privacy manifest of its own.
