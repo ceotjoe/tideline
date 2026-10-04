@@ -3859,7 +3859,7 @@ final class Schema5 extends i0.VersionedSchema {
       withoutRowId: false,
       isStrict: false,
       tableConstraints: ['PRIMARY KEY(qso_id)'],
-      columns: [_column_158, _column_10, _column_113, _column_159],
+      columns: [_column_158, _column_10, _column_113, _column_159, _column_160],
       attachedDatabase: database,
     ),
     alias: null,
@@ -3944,6 +3944,8 @@ class Shape24 extends i0.VersionedTable {
       columnsByName['remote_qso_id']! as i1.GeneratedColumn<int>;
   i1.GeneratedColumn<int> get evictedAt =>
       columnsByName['evicted_at']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get dupeHash =>
+      columnsByName['dupe_hash']! as i1.GeneratedColumn<String>;
 }
 
 i1.GeneratedColumn<String> _column_158(String aliasedName) =>
@@ -3960,6 +3962,14 @@ i1.GeneratedColumn<int> _column_159(String aliasedName) =>
       aliasedName,
       false,
       type: i1.DriftSqlType.int,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<String> _column_160(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'dupe_hash',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
       $customConstraints: 'NOT NULL',
     );
 i0.MigrationStepWithVersion migrationSteps({

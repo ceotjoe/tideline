@@ -389,6 +389,26 @@ void main() {
       },
     );
 
+    test('a removed QSO is recognised later by its fingerprint only', () async {
+      final q = await h.synced();
+      await h.service.carryOut(await h.service.plan(h.account));
+      final hashes = await h.eviction.evictedDupeHashes(h.accountId);
+      expect(hashes, {QsoEvictionRepository.dupeHash(q)});
+      expect(hashes.single, matches(RegExp(r'^[0-9a-f]{64}$')));
+      // The record holds no callsign.
+      final record = (await h.db.select(h.db.evictedQsos).get()).single;
+      expect('$record', isNot(contains('DL1ABC')));
+      // Another QSO, or the same one on another station, differs.
+      expect(
+        QsoEvictionRepository.dupeHash(h.qso()),
+        isNot(hashes.single),
+      );
+      expect(
+        QsoEvictionRepository.dupeHash(q.copyWith(stationProfileId: 'other')),
+        isNot(hashes.single),
+      );
+    });
+
     test('the journal says how many were removed', () async {
       await h.synced(call: 'DL1AAA');
       await h.synced(call: 'DL1BBB');

@@ -2960,6 +2960,16 @@
             "default_dart": null,
             "default_client_dart": null,
             "dsl_features": []
+          },
+          {
+            "name": "dupe_hash",
+            "getter_name": "dupeHash",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
           }
         ],
         "is_virtual": false,
@@ -3489,7 +3499,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"evicted_qsos\" (\"qso_id\" TEXT NOT NULL, \"account_id\" TEXT NOT NULL REFERENCES accounts (id), \"remote_qso_id\" INTEGER NOT NULL, \"evicted_at\" INTEGER NOT NULL, PRIMARY KEY (\"qso_id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"evicted_qsos\" (\"qso_id\" TEXT NOT NULL, \"account_id\" TEXT NOT NULL REFERENCES accounts (id), \"remote_qso_id\" INTEGER NOT NULL, \"evicted_at\" INTEGER NOT NULL, \"dupe_hash\" TEXT NOT NULL, PRIMARY KEY (\"qso_id\"));"
         }
       ]
     },

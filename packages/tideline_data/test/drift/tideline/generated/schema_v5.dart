@@ -10894,12 +10894,21 @@ class EvictedQsos extends Table with TableInfo<EvictedQsos, EvictedQsosData> {
     requiredDuringInsert: true,
     $customConstraints: 'NOT NULL',
   );
+  late final GeneratedColumn<String> dupeHash = GeneratedColumn<String>(
+    'dupe_hash',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
   @override
   List<GeneratedColumn> get $columns => [
     qsoId,
     accountId,
     remoteQsoId,
     evictedAt,
+    dupeHash,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -10928,6 +10937,10 @@ class EvictedQsos extends Table with TableInfo<EvictedQsos, EvictedQsosData> {
         DriftSqlType.int,
         data['${effectivePrefix}evicted_at'],
       )!,
+      dupeHash: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}dupe_hash'],
+      )!,
     );
   }
 
@@ -10947,11 +10960,13 @@ class EvictedQsosData extends DataClass implements Insertable<EvictedQsosData> {
   final String accountId;
   final int remoteQsoId;
   final int evictedAt;
+  final String dupeHash;
   const EvictedQsosData({
     required this.qsoId,
     required this.accountId,
     required this.remoteQsoId,
     required this.evictedAt,
+    required this.dupeHash,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -10960,6 +10975,7 @@ class EvictedQsosData extends DataClass implements Insertable<EvictedQsosData> {
     map['account_id'] = Variable<String>(accountId);
     map['remote_qso_id'] = Variable<int>(remoteQsoId);
     map['evicted_at'] = Variable<int>(evictedAt);
+    map['dupe_hash'] = Variable<String>(dupeHash);
     return map;
   }
 
@@ -10969,6 +10985,7 @@ class EvictedQsosData extends DataClass implements Insertable<EvictedQsosData> {
       accountId: Value(accountId),
       remoteQsoId: Value(remoteQsoId),
       evictedAt: Value(evictedAt),
+      dupeHash: Value(dupeHash),
     );
   }
 
@@ -10982,6 +10999,7 @@ class EvictedQsosData extends DataClass implements Insertable<EvictedQsosData> {
       accountId: serializer.fromJson<String>(json['accountId']),
       remoteQsoId: serializer.fromJson<int>(json['remoteQsoId']),
       evictedAt: serializer.fromJson<int>(json['evictedAt']),
+      dupeHash: serializer.fromJson<String>(json['dupeHash']),
     );
   }
   @override
@@ -10992,6 +11010,7 @@ class EvictedQsosData extends DataClass implements Insertable<EvictedQsosData> {
       'accountId': serializer.toJson<String>(accountId),
       'remoteQsoId': serializer.toJson<int>(remoteQsoId),
       'evictedAt': serializer.toJson<int>(evictedAt),
+      'dupeHash': serializer.toJson<String>(dupeHash),
     };
   }
 
@@ -11000,11 +11019,13 @@ class EvictedQsosData extends DataClass implements Insertable<EvictedQsosData> {
     String? accountId,
     int? remoteQsoId,
     int? evictedAt,
+    String? dupeHash,
   }) => EvictedQsosData(
     qsoId: qsoId ?? this.qsoId,
     accountId: accountId ?? this.accountId,
     remoteQsoId: remoteQsoId ?? this.remoteQsoId,
     evictedAt: evictedAt ?? this.evictedAt,
+    dupeHash: dupeHash ?? this.dupeHash,
   );
   EvictedQsosData copyWithCompanion(EvictedQsosCompanion data) {
     return EvictedQsosData(
@@ -11014,6 +11035,7 @@ class EvictedQsosData extends DataClass implements Insertable<EvictedQsosData> {
           ? data.remoteQsoId.value
           : this.remoteQsoId,
       evictedAt: data.evictedAt.present ? data.evictedAt.value : this.evictedAt,
+      dupeHash: data.dupeHash.present ? data.dupeHash.value : this.dupeHash,
     );
   }
 
@@ -11023,13 +11045,15 @@ class EvictedQsosData extends DataClass implements Insertable<EvictedQsosData> {
           ..write('qsoId: $qsoId, ')
           ..write('accountId: $accountId, ')
           ..write('remoteQsoId: $remoteQsoId, ')
-          ..write('evictedAt: $evictedAt')
+          ..write('evictedAt: $evictedAt, ')
+          ..write('dupeHash: $dupeHash')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(qsoId, accountId, remoteQsoId, evictedAt);
+  int get hashCode =>
+      Object.hash(qsoId, accountId, remoteQsoId, evictedAt, dupeHash);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -11037,7 +11061,8 @@ class EvictedQsosData extends DataClass implements Insertable<EvictedQsosData> {
           other.qsoId == this.qsoId &&
           other.accountId == this.accountId &&
           other.remoteQsoId == this.remoteQsoId &&
-          other.evictedAt == this.evictedAt);
+          other.evictedAt == this.evictedAt &&
+          other.dupeHash == this.dupeHash);
 }
 
 class EvictedQsosCompanion extends UpdateCompanion<EvictedQsosData> {
@@ -11045,12 +11070,14 @@ class EvictedQsosCompanion extends UpdateCompanion<EvictedQsosData> {
   final Value<String> accountId;
   final Value<int> remoteQsoId;
   final Value<int> evictedAt;
+  final Value<String> dupeHash;
   final Value<int> rowid;
   const EvictedQsosCompanion({
     this.qsoId = const Value.absent(),
     this.accountId = const Value.absent(),
     this.remoteQsoId = const Value.absent(),
     this.evictedAt = const Value.absent(),
+    this.dupeHash = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   EvictedQsosCompanion.insert({
@@ -11058,16 +11085,19 @@ class EvictedQsosCompanion extends UpdateCompanion<EvictedQsosData> {
     required String accountId,
     required int remoteQsoId,
     required int evictedAt,
+    required String dupeHash,
     this.rowid = const Value.absent(),
   }) : qsoId = Value(qsoId),
        accountId = Value(accountId),
        remoteQsoId = Value(remoteQsoId),
-       evictedAt = Value(evictedAt);
+       evictedAt = Value(evictedAt),
+       dupeHash = Value(dupeHash);
   static Insertable<EvictedQsosData> custom({
     Expression<String>? qsoId,
     Expression<String>? accountId,
     Expression<int>? remoteQsoId,
     Expression<int>? evictedAt,
+    Expression<String>? dupeHash,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -11075,6 +11105,7 @@ class EvictedQsosCompanion extends UpdateCompanion<EvictedQsosData> {
       if (accountId != null) 'account_id': accountId,
       if (remoteQsoId != null) 'remote_qso_id': remoteQsoId,
       if (evictedAt != null) 'evicted_at': evictedAt,
+      if (dupeHash != null) 'dupe_hash': dupeHash,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -11084,6 +11115,7 @@ class EvictedQsosCompanion extends UpdateCompanion<EvictedQsosData> {
     Value<String>? accountId,
     Value<int>? remoteQsoId,
     Value<int>? evictedAt,
+    Value<String>? dupeHash,
     Value<int>? rowid,
   }) {
     return EvictedQsosCompanion(
@@ -11091,6 +11123,7 @@ class EvictedQsosCompanion extends UpdateCompanion<EvictedQsosData> {
       accountId: accountId ?? this.accountId,
       remoteQsoId: remoteQsoId ?? this.remoteQsoId,
       evictedAt: evictedAt ?? this.evictedAt,
+      dupeHash: dupeHash ?? this.dupeHash,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -11110,6 +11143,9 @@ class EvictedQsosCompanion extends UpdateCompanion<EvictedQsosData> {
     if (evictedAt.present) {
       map['evicted_at'] = Variable<int>(evictedAt.value);
     }
+    if (dupeHash.present) {
+      map['dupe_hash'] = Variable<String>(dupeHash.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -11123,6 +11159,7 @@ class EvictedQsosCompanion extends UpdateCompanion<EvictedQsosData> {
           ..write('accountId: $accountId, ')
           ..write('remoteQsoId: $remoteQsoId, ')
           ..write('evictedAt: $evictedAt, ')
+          ..write('dupeHash: $dupeHash, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();

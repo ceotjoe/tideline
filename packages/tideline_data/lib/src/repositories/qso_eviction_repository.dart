@@ -1,3 +1,4 @@
+import 'package:cryptography/dart.dart';
 import 'package:drift/drift.dart';
 import 'package:meta/meta.dart';
 import 'package:tideline_data/src/database/tideline_database.dart';
@@ -167,6 +168,7 @@ class QsoEvictionRepository {
                   accountId: accountId,
                   remoteQsoId: item.status!.remoteQsoId!,
                   evictedAt: now,
+                  dupeHash: dupeHash(q),
                 ),
                 mode: InsertMode.insertOrReplace,
               );
@@ -190,6 +192,26 @@ class QsoEvictionRepository {
     for (var i = 0; i < list.length; i += size) {
       yield list.sublist(i, i + size > list.length ? list.length : i + size);
     }
+  }
+
+  /// A fingerprint of the QSO's duplicate key and station: a later ADIF import
+  /// of a QSO with the same fingerprint is a duplicate of one on Wavelog.
+  static String dupeHash(Qso q) {
+    final k = q.dupeKey;
+    final text =
+        '${k.call}|${k.minuteMillis}|${k.band}|${k.mode}|${q.stationProfileId}';
+    final digest = const DartSha256().hashSync(text.codeUnits);
+    return [
+      for (final b in digest.bytes) b.toRadixString(16).padLeft(2, '0'),
+    ].join();
+  }
+
+  /// The fingerprints of the QSOs of [accountId] removed from this device.
+  Future<Set<String>> evictedDupeHashes(String accountId) async {
+    final rows = await (_db.select(
+      _db.evictedQsos,
+    )..where((e) => e.accountId.equals(accountId))).get();
+    return {for (final r in rows) r.dupeHash};
   }
 
   /// How many QSOs of [accountId] were removed from this device so far.

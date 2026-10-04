@@ -452,7 +452,8 @@ class WorkedBefore extends Table {
 
 /// A QSO whose local copy was removed to free space, because Wavelog has it
 /// (`QsoEvictionRepository`). It is a record, not a delete: nothing is sent
-/// to the server, and the row holds ids only (no callsign, no personal data).
+/// to the server, and the row holds ids and a hash only (no callsign, no
+/// personal data).
 @DataClassName('EvictedQsoRow')
 class EvictedQsos extends Table {
   /// The local id the QSO had. No foreign key: the row is gone.
@@ -464,6 +465,10 @@ class EvictedQsos extends Table {
 
   /// When the local copy was removed (UTC millis).
   IntColumn get evictedAt => integer()();
+
+  /// SHA-256 (hex) of the QSO's duplicate key, so a later ADIF import can
+  /// tell that Wavelog already has it without the callsign being kept.
+  TextColumn get dupeHash => text()();
 
   @override
   Set<Column<Object>> get primaryKey => {qsoId};
