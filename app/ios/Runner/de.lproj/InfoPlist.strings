@@ -1,1 +1,2 @@
 "NSFaceIDUsageDescription" = "Face ID entsperrt Dein Log, wenn die optionale App-Sperre aktiv ist.";
+"NSLocalNetworkUsageDescription" = "Tideline verbindet sich mit einem Wavelog-Server in Deinem eigenen Netzwerk, wenn Du dessen Adresse eingibst.";

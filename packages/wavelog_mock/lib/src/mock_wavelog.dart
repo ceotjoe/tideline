@@ -258,9 +258,14 @@ class MockWavelog {
     return Uri.parse('http://127.0.0.1:${server.port}');
   }
 
-  /// Starts listening on [port] of the loopback interface (0 = any free
-  /// port).
-  Future<void> start({int port = 0}) async {
+  /// Starts listening on [port] (0 = any free port).
+  ///
+  /// By default only the loopback interface listens, so only this computer
+  /// can reach the server. Pass [address] (for example
+  /// `InternetAddress.anyIPv4`) to test from a device in the same network.
+  /// The mock has no TLS and a published token: never use it on a network
+  /// you do not trust.
+  Future<void> start({int port = 0, InternetAddress? address}) async {
     _server = await shelf_io.serve(
       (request) async {
         try {
@@ -271,7 +276,7 @@ class MockWavelog {
           request.hijack((channel) => channel.sink.close());
         }
       },
-      InternetAddress.loopbackIPv4,
+      address ?? InternetAddress.loopbackIPv4,
       port,
     );
   }

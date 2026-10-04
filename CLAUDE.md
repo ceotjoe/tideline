@@ -101,7 +101,8 @@ These rules apply to every session. If something here conflicts with what you fi
 - `tool/test_all.sh`: run all tests.
 - `dart run build_runner build -d` (inside `packages/tideline_data` or `app`): run code generation.
 - `flutter gen-l10n` (inside `app`): regenerate localizations (run `dart run tool/generate_pseudo_locales.dart` first).
-- `dart run bin/serve.dart` (inside `packages/wavelog_mock`): mock Wavelog on port 8765, token `wl2_demo_token`.
+- `dart run bin/serve.dart` (inside `packages/wavelog_mock`): mock Wavelog on port 8765, token `wl2_demo_token`. Add `--lan`
+  to reach it from other devices in the network.
 - `flutter test integration_test -d macos` (inside `app`, mock running): end-to-end test.
 - `python3 docs/design/icon/generate_icon.py && python3 docs/design/icon/build_platform_icons.py`: regenerate all app
   icons from the layer source (needs rsvg-convert and ImageMagick).

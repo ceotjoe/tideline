@@ -17,7 +17,7 @@ logging and sync) and 0.2 (contest mode) were never released on their own.
   disk-space reasons for the bundled SQLite), the languages the app supports (English, German) declared to the system,
   and the Face ID text in both languages.
   The launch screen shows the Tideline mark instead of the template's empty placeholder image, which Flutter's IPA
-  validation rejects.
+  validation rejects. The system's local-network prompt now explains why (Wavelog servers in your own network).
 - **SOTA, POTA and WWFF activations** (ADR 0021).
   - Reference lists you download yourself from the official source, only when you press Download (HTTPS only, size
     caps, streamed to disk, cancellable). The installed list is replaced in one step only after the whole file was read,

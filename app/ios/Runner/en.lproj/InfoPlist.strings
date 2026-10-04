@@ -1,1 +1,2 @@
 "NSFaceIDUsageDescription" = "Face ID unlocks your log when the optional app lock is on.";
+"NSLocalNetworkUsageDescription" = "Tideline connects to a Wavelog server in your own network when you enter its address.";

@@ -71,6 +71,9 @@ To try sync without a real Wavelog, run the mock server and connect to `http://1
 
 ```bash
 cd packages/wavelog_mock && dart run bin/serve.dart
+
+# Reachable from a phone or tablet in the same network (plain HTTP, public token: trusted networks only):
+cd packages/wavelog_mock && dart run bin/serve.dart --lan
 ```
 
 The end-to-end test uses the same mock: `cd app && flutter test integration_test -d macos`.
