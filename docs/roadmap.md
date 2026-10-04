@@ -100,7 +100,7 @@ proposal.
 | 5.3b | **Android for TalkBack.** Runbook written 2026-10-04 (`docs/release.md`), AAB build checked, Play account exists. Open: the upload key, the Play app record and content forms, the first internal release. Original scope: A signed release APK for `adb install` (upload key, `key.properties`), then a Play Console account, the internal track and, if the account needs it, the closed test of 12 testers for 14 days. | Play Console account, upload key |
 | 5.3c | **macOS preparation.** Done 2026-10-04 except signing and upload: privacy manifest, category, languages, local-network text, export options, runbook and the keychain check list in `docs/release.md`. | Signed archive and a first run |
 | 5.4 | **Automate the upload.** CI job on a manual trigger: build number from the run number, signing, upload with an App Store Connect API key (secrets documented in `docs/release.md`). | API key as repository secrets |
-| 5.5 | **First test round.** Triage findings, fix, upload the next build. | Test results |
+| 5.5 | **First test round.** Build 2 (with the local-network text) reported fine by the maintainer on 2026-10-04; no findings to fix so far. Original scope: Triage findings, fix, upload the next build. | Test results |
 | 5.6+ | FLE, field modes (glove, battery saver), multi-account UI → v0.4; store listing and release for v1.0. Scope proposals after 5.5. | |
 
 ### What the check of 2026-10-04 found
@@ -122,3 +122,57 @@ proposal.
 - **B. "Try without a server".** Log locally with no account; QSOs are kept until an account is added. It suits an
   "offline logger" and removes the review problem for good. It is a feature: QSOs belong to an account today, so it
   needs a local account, a data-model decision and an ADR.
+
+## Phase 5 scope proposal: v0.4 features (awaiting the maintainer's decisions)
+
+Written 2026-10-04 after build 2 was reported fine. Nothing here is built yet. Recommended order: multi-account UI,
+then FLE, then field modes.
+
+### A. Multi-account UI (smallest; the data model already has accounts)
+Today one account is active and `accountId` is on every QSO, contest session and activation, so the model needs no change.
+- Add an account (the onboarding flow, reused), switch the active account from the log screen's app bar, rename, remove
+  (token deleted from the secure store, local QSOs kept or exported first, with a clear choice).
+- Per account: stations, sync state and journal, worked-before index, default station. The tide gauge shows the sum with
+  a per-account breakdown in text.
+- One account is active for logging at a time; there is no per-QSO account choice (decision below).
+
+### B. FLE: typing QSOs as shorthand
+Fast Log Entry is a text shorthand that several programs share, in slightly different dialects: the original by DF3CB,
+`FLEcli`, and **SimpleFLE in Wavelog**. Wavelog's documentation lists, for QSO lines, in this order: time (full `HHMM`
+first, then deltas), callsign, optional reports, locator, SOTA/POTA/IOTA/WWFF reference (recognised by shape, POTA with
+several references separated by commas), `@` operator, contest exchange (`,` sent and `.` received), `[]` QSL message and
+`<>` comment; header lines set band and mode, date (`date`, `day +`) and a time-zone offset.
+- **Proposal:** follow Wavelog's SimpleFLE (users sync there and it is documented), and read the classic core
+  (`date`, `mycall`, band and mode lines, time fragments) too. Step 1 of the work verifies the grammar against the Wavelog
+  source (`wavelog/wavelog`, SimpleFLE) and records it in `docs/architecture/fle.md`; nothing is assumed beyond the
+  documentation until then.
+- A pure Dart parser in `tideline_domain` with typed errors per line and a fuzz test. QSOs are previewed (a table with
+  per-line problems as icon and text) before they are logged, and one confirmation logs them all in one local
+  transaction. Times are UTC (a time-zone offset is shown explicitly).
+- Works with activations (references and `MY_*` come from the running activation) and respects the dupe and band rules
+  that the normal log has. Accessible as text input with an error list readable by VoiceOver.
+- An ADR for the dialect and for how FLE meets contest mode (decision below).
+
+### C. Field modes
+There are already themes for sunlight and night, glove mode (larger targets), the reduced-motion setting and no
+background work. Open question: what exactly should a "field mode" be? Candidates:
+1. **One switch** that turns on glove mode, the sunlight theme and the battery saver at once.
+2. **Battery saver:** stop the one-second clock timer on the entry form and the tide animation, no periodic work, longer
+   sync backoff. Measurable on a device.
+3. **Keep the screen on while logging** (needs a small plugin; an ADR and a threat-model line for the dependency).
+4. **A location button** that fills the grid square from GPS (a location permission, `PRIVACY.md` and the store forms
+   change; it is only used when pressed).
+
+### D. Other open items from earlier phases
+- A rules editor for activation counting (and checking the SOTA and WWFF windows against the programmes' rules).
+- Two-fer activations (one activation at two references).
+- An end-to-end test with the mock server for activations.
+- Automating the uploads (step 5.4) once the API key and the Play service account exist.
+
+### Decisions needed
+1. Order and scope: A, B, C as above, or a different order?
+2. Multi-account: a switcher with one active account (recommended), or choosing the account per QSO?
+3. FLE: follow Wavelog's SimpleFLE (recommended)? Should FLE also work in contest mode, or only in the normal log?
+4. Field modes: which of the four candidates do you want, and are GPS and a keep-awake plugin acceptable?
+5. Which of D do you want before v0.4?
+
