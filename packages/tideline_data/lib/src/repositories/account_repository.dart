@@ -225,25 +225,71 @@ class AccountRepository {
     ),
   );
 
-  /// Removes the account, its token and all its local data.
+  /// Renames the account. Throws [ArgumentError] for an empty [label].
+  Future<void> rename(String accountId, String label) {
+    final name = label.trim();
+    if (name.isEmpty) throw ArgumentError.value(label, 'label', 'empty');
+    return (_db.update(_db.accounts)..where((a) => a.id.equals(accountId)))
+        .write(AccountsCompanion(label: Value(name)));
+  }
+
+  /// Removes the account, its token and all its local data: QSOs and their
+  /// sync state, contest sessions (with links and serial numbers),
+  /// activations, the worked-before index, cached stations, and the
+  /// account's settings. Nothing is deleted on the Wavelog server.
+  ///
+  /// This is a purge of this device, not a sync-visible delete, so rows are
+  /// removed rather than tombstoned. Order matters: the foreign keys are on.
   Future<void> remove(String accountId) async {
     await _db.transaction(() async {
-      await (_db.delete(
-        _db.qsoSync,
-      )..where((s) => s.accountId.equals(accountId))).go();
-      await (_db.delete(
-        _db.syncJournal,
-      )..where((s) => s.accountId.equals(accountId))).go();
-      await (_db.delete(
-        _db.qsos,
-      )..where((q) => q.accountId.equals(accountId))).go();
-      await (_db.delete(
-        _db.stationProfiles,
-      )..where((s) => s.accountId.equals(accountId))).go();
-      await (_db.delete(
-        _db.accounts,
-      )..where((a) => a.id.equals(accountId))).go();
+      const sessions = 'SELECT id FROM contest_sessions WHERE account_id = ?';
+      await _db.customStatement(
+        'DELETE FROM contest_links WHERE session_id IN ($sessions) '
+        'OR qso_id IN (SELECT id FROM qsos WHERE account_id = ?)',
+        [accountId, accountId],
+      );
+      await _db.customStatement(
+        'DELETE FROM serial_allocations WHERE session_id IN ($sessions)',
+        [accountId],
+      );
+      for (final table in [
+        'qso_sync',
+        'sync_journal',
+        'qsos',
+        'contest_sessions',
+        'activations',
+        'worked_before',
+        'station_profiles',
+      ]) {
+        await _db.customStatement('DELETE FROM $table WHERE account_id = ?', [
+          accountId,
+        ]);
+      }
+      await _db.customStatement('DELETE FROM accounts WHERE id = ?', [
+        accountId,
+      ]);
+      // Keys are 'account.<id>.…' and 'workedBefore.<id>.…'. '_' and '%'
+      // never occur in a UUID, so LIKE needs no escaping.
+      await _db.customStatement(
+        'DELETE FROM settings WHERE key LIKE ? OR key LIKE ? '
+        "OR (key = 'account.active' AND value = ?)",
+        ['account.$accountId.%', 'workedBefore.$accountId.%', accountId],
+      );
     });
+    // Raw statements do not tell drift's streams that anything changed.
+    _db.markTablesUpdated([
+      _db.contestLinks,
+      _db.serialAllocations,
+      _db.qsoSync,
+      _db.syncJournal,
+      _db.qsos,
+      _db.contestSessions,
+      _db.activations,
+      _db.workedBefore,
+      _db.stationProfiles,
+      _db.accounts,
+      _db.settings,
+    ]);
     await _secrets.delete(SecretKeys.accountToken(accountId));
   }
 
