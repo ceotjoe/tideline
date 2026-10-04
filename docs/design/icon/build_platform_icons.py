@@ -6,6 +6,7 @@ Outputs:
   ios/Runner/AppIcon.icon, macos/Runner/AppIcon.icon   Liquid Glass (Icon Composer format)
   android mipmaps: adaptive foreground/monochrome + legacy PNGs
   windows/runner/resources/app_icon.ico, assets/icon/msix_logo.png
+  ios/Runner/Assets.xcassets/LaunchImage.imageset  the launch screen's centred mark (120 pt)
 
 Run from the repository root: python3 docs/design/icon/build_platform_icons.py
 """
@@ -120,12 +121,30 @@ def windows(tmp, legacy_svg):
     render(legacy_svg, os.path.join(APP, "assets/icon/msix_logo.png"), 512)
 
 
+def ios_launch_image(tmp):
+    """The mark shown centred on the launch screen: the icon with rounded
+    corners, 120 pt. Flutter's IPA validation rejects the 1x1 placeholder of
+    the project template as a "default launch image"."""
+    body = svg_body("flattened-default.svg")
+    svg = os.path.join(tmp, "launch.svg")
+    with open(svg, "w") as f:
+        f.write(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">'
+            '<clipPath id="r"><rect width="1024" height="1024" rx="230"/></clipPath>'
+            f'<g clip-path="url(#r)">{body}</g></svg>\n'
+        )
+    dest = os.path.join(APP, "ios/Runner/Assets.xcassets/LaunchImage.imageset")
+    for name, px in (("LaunchImage.png", 120), ("LaunchImage@2x.png", 240), ("LaunchImage@3x.png", 360)):
+        render(svg, os.path.join(dest, name), px)
+
+
 def main():
     icon_bundle(os.path.join(APP, "ios/Runner/AppIcon.icon"))
     icon_bundle(os.path.join(APP, "macos/Runner/AppIcon.icon"))
     with tempfile.TemporaryDirectory() as tmp:
         legacy = android(tmp)
         windows(tmp, legacy)
+        ios_launch_image(tmp)
     print("platform icons written")
 
 
