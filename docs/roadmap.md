@@ -177,7 +177,7 @@ background work. Open question: what exactly should a "field mode" be? Candidate
 5. Which of D do you want before v0.4?
 
 
-## Phase 6 plan: tester feedback and v0.4 (proposal, awaiting the maintainer's decisions)
+## Phase 6 plan: tester feedback and v0.4 (decided 2026-10-04, awaiting approval to start 6.1)
 
 Written 2026-10-04 from six enhancement requests. It folds them into the v0.4 proposal above (A multi-account UI,
 B FLE, C field modes). Nothing here is built yet.
@@ -200,7 +200,7 @@ B FLE, C field modes). Nothing here is built yet.
 | 6.1 | **Input ergonomics.** Audit every field for its keyboard type (number or decimal for RST, power and serials; no autocorrect on callsigns). The keyboard covers the bottom bar on the phone log screen because `Scaffold` leaves `bottomNavigationBar` at the window bottom, and an iOS number pad has no Done key. Add a "Hide keyboard" action above the keyboard (48 dp, semantics label), dismiss on tap outside and on scroll drag. Do not lift the bar above the keyboard: ADR 0020 gives the form all the height. Tests: `viewInsets` on a phone, Hide works, the bar is tappable afterwards; same for the contest and activation screens. Amend ADR 0020. | v0.3.1 |
 | 6.2 | **Settings structure.** A hub with grouped pages, each its own `go_router` route: Accounts and sync, Logging, Reference data (packs, SCP, contest definitions, worked-before), Appearance and accessibility, Security and backup, About. Search if still cluttered. Goldens, manual, ADR. Done before the other steps, which all add settings. | v0.3.1 |
 | 6.3 | **Multi-account UI** (A above). | v0.4 |
-| 6.4 | **Desktop navigation.** Reading to confirm: macOS and Windows behave the same: menu bar (native on macOS, in window on Windows), no bottom bar, back by Esc or a back button, full Tab and focus navigation, Ctrl/Cmd via the command registry. Layouts stay driven by size class (ADR 0010). | v0.4 |
+| 6.4 | **Desktop navigation.** Decided: macOS and Windows use the navigation desktop software usually has, not the mobile look. A menu bar (native on macOS, in the window on Windows) with the commands from the registry, a sidebar or rail instead of a bottom bar, back by Esc or a back button, full Tab and focus navigation, Ctrl/Cmd via the registry, hover and right-click context menus. Layouts stay driven by size class and input mode, not by platform (ADR 0010). | v0.4 |
 | 6.5 | **Callsign directory and notes.** First verify in the Wavelog docs and source whether API v2 has callsign notes; record it in `wavelog-api.md`. A `callsign_directory` table, derived and rebuildable like `worked_before`: name, QTH, grid, country, zones, IOTA from the latest QSO per call, from local QSOs and the server ADIF pull, with a size cap. Notes are a separate user-owned table (UUID, HLC, origin device, tombstone), in the encrypted backup; local-only if there is no API. The entry form shows a hit and the note beside the worked-before status and only suggests values. Third-party names are personal data: `PRIVACY.md`, threat model, ADR. | v0.4 |
 | 6.6 | **Evict synced local QSOs.** An eviction, never a delete: a tombstone would sync as a delete. A distinct state and an ADR (CLAUDE.md requires tombstones for device sync). Eligible: synced, reconcile-confirmed on the dupe tuple, unchanged since. Pick by age or selection, preview, offer an ADIF export first. Directory and worked-before are filled first, so nothing is lost. Evicted QSOs must not re-import (test). Exclude QSOs that contest sessions or activations still reference. | v0.4 |
 | 6.7 | **FLE** (B above). | v0.4 |
@@ -208,9 +208,9 @@ B FLE, C field modes). Nothing here is built yet.
 
 Every step follows the Definition of Done. Order: 6.1 and 6.2 as v0.3.1, then 6.3 to 6.8. 6.6 comes after 6.5.
 
-### Decisions needed
-1. Request 6: is the reading in 6.4 right, or do you mean something else?
-2. Is v0.3.1 for 6.1 and 6.2 acceptable, or should everything wait for v0.4?
-3. Request 4: eviction only, Wavelog untouched (recommended), or also a delete on Wavelog?
-4. Request 5: are local-only notes acceptable if Wavelog has no notes API?
-5. Request 5: a directory per account (recommended), with a merged lookup on the entry form, or one for all accounts?
+### Decisions (maintainer, 2026-10-04)
+1. Request 6: desktop-style navigation as in 6.4, not mobile-style.
+2. 6.1 and 6.2 ship as v0.3.1.
+3. Request 4: eviction only. Nothing is ever deleted on Wavelog; only local, already synced QSOs can be removed.
+4. Request 5: local-only notes are acceptable if Wavelog has no notes API.
+5. Request 5: a directory per account, with a merged lookup on the entry form.
