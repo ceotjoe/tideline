@@ -19,6 +19,10 @@ String describeChord(
     LogicalKeyboardKey.tab => l10n.keyTab,
     LogicalKeyboardKey.pageUp => l10n.keyPageUp,
     LogicalKeyboardKey.pageDown => l10n.keyPageDown,
+    LogicalKeyboardKey.arrowLeft => '←',
+    LogicalKeyboardKey.arrowRight => '→',
+    LogicalKeyboardKey.arrowUp => '↑',
+    LogicalKeyboardKey.arrowDown => '↓',
     final k => k.keyLabel.toUpperCase(),
   };
   if (platform == ShortcutPlatform.apple) {

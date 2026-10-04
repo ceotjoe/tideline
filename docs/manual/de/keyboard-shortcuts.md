@@ -12,6 +12,7 @@ Diese Tabelle wird aus dem Befehlsverzeichnis der App erzeugt.
 | Zum Log | Überall | `⌘1` | `Strg+1` |
 | Zur Synchronisierung | Überall | `⌘2` | `Strg+2` |
 | Einstellungen öffnen | Überall | `⌘,` | `Strg+,` |
+| Zurück | Überall | `Esc` oder `⌥←` oder `⌘[` | `Esc` oder `Alt+←` oder `Strg+[` |
 | Jetzt synchronisieren | Überall | `⇧⌘S` | `Strg+Umschalt+S` |
 | Contest-Modus öffnen | Überall | `⇧⌘C` | `Strg+Umschalt+C` |
 | Aktivierung starten | Überall | `⇧⌘A` | `Strg+Umschalt+A` |

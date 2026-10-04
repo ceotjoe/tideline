@@ -12,6 +12,7 @@ This table is generated from the app's command registry.
 | Go to log | Everywhere | `⌘1` | `Ctrl+1` |
 | Go to sync | Everywhere | `⌘2` | `Ctrl+2` |
 | Open settings | Everywhere | `⌘,` | `Ctrl+,` |
+| Go back | Everywhere | `Esc` or `⌥←` or `⌘[` | `Esc` or `Alt+←` or `Ctrl+[` |
 | Sync now | Everywhere | `⇧⌘S` | `Ctrl+Shift+S` |
 | Open contest mode | Everywhere | `⇧⌘C` | `Ctrl+Shift+C` |
 | Start an activation | Everywhere | `⇧⌘A` | `Ctrl+Shift+A` |

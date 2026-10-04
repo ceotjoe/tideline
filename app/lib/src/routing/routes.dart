@@ -1,5 +1,14 @@
 /// Route paths.
 abstract final class Routes {
+  /// The page one level up in the path (`/settings/account/x` →
+  /// `/settings/account`), or null for a top-level tab. Pages that belong to
+  /// a tab are nested in its path, so "back" on a desktop is "up".
+  static String? parentOf(Uri location) {
+    final segments = location.pathSegments;
+    if (segments.length < 2) return null;
+    return '/${segments.sublist(0, segments.length - 1).join('/')}';
+  }
+
   static const welcome = '/welcome';
   static const log = '/log';
   static const sync = '/sync';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
@@ -238,6 +238,9 @@ typedef Pumped = ({
   ContestBackend contest,
 });
 
+/// What the app sent to the system menu (macOS), since the last pump.
+final List<MethodCall> menuCalls = [];
+
 /// Pumps the full app with providers that need no database or network.
 Future<Pumped> pumpTideline(
   WidgetTester tester, {
@@ -267,6 +270,22 @@ Future<Pumped> pumpTideline(
         FakeAccessibilityFeatures(disableAnimations: disableAnimations);
   addTearDown(tester.view.reset);
   addTearDown(tester.platformDispatcher.clearAllTestValues);
+
+  // macOS draws the menu bar through the system: accept what the app sends.
+  menuCalls.clear();
+  tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+    SystemChannels.menu,
+    (call) async {
+      menuCalls.add(call);
+      return null;
+    },
+  );
+  addTearDown(
+    () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      SystemChannels.menu,
+      null,
+    ),
+  );
 
   final controller = FakeSettingsController();
   final qsos = FakeQsoRepository();

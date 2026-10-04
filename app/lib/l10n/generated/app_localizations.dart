@@ -3726,6 +3726,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account: {name}'**
   String accountsActsOn(String name);
+
+  /// Command name: leave the current page (settings page, set-up screen).
+  ///
+  /// In en, this message translates to:
+  /// **'Go back'**
+  String get commandGoBack;
+
+  /// Menu bar menu with the navigation commands.
+  ///
+  /// In en, this message translates to:
+  /// **'Go'**
+  String get menuGo;
+
+  /// Menu bar menu: sync, contest and activation commands.
+  ///
+  /// In en, this message translates to:
+  /// **'Operate'**
+  String get menuOperate;
+
+  /// Menu bar menu.
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get menuHelp;
+
+  /// Menu bar menu (macOS).
+  ///
+  /// In en, this message translates to:
+  /// **'Window'**
+  String get menuWindow;
+
+  /// Context menu entry of a log row.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy callsign'**
+  String get actionCopyCallsign;
+
+  /// Context menu entry of a log row.
+  ///
+  /// In en, this message translates to:
+  /// **'Open QSO'**
+  String get actionOpenQso;
+
+  /// Snackbar after copying a callsign.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied {call}'**
+  String callsignCopied(String call);
 }
 
 class _AppLocalizationsDelegate

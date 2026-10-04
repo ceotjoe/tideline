@@ -1,6 +1,7 @@
 @Tags(['golden'])
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tideline/src/settings/app_settings.dart';
@@ -144,6 +145,31 @@ void main() {
         find.byType(MaterialApp),
         matchesGoldenFile('goldens/accounts_$sizeName.png'),
       );
+    });
+  }
+
+  for (final (name, platform, size) in [
+    ('windows', TargetPlatform.windows, TestSizes.desktop),
+    ('macos', TargetPlatform.macOS, TestSizes.desktop),
+    ('windows_narrow', TargetPlatform.windows, TestSizes.phone),
+  ]) {
+    testWidgets('log screen on a desktop, $name', (tester) async {
+      debugDefaultTargetPlatformOverride = platform;
+      try {
+        await pumpTideline(
+          tester,
+          size: size,
+          settings: const AppSettings(theme: ThemeChoice.light),
+          log: sampleLog(6),
+          pending: 4,
+        );
+        await expectLater(
+          find.byType(MaterialApp),
+          matchesGoldenFile('goldens/log_desktop_$name.png'),
+        );
+      } finally {
+        debugDefaultTargetPlatformOverride = null;
+      }
     });
   }
 }

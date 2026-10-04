@@ -210,6 +210,8 @@ _6.2 done 2026-10-04: [ADR 0023](adr/0023-settings-hub.md). The hub has four gro
 
 _6.1 done 2026-10-04 (`7f25482`)._
 
+_6.4 done 2026-10-04: [ADR 0025](adr/0025-desktop-navigation.md). Not done: a minimum window size (native code per OS) and a two-pane settings view on wide windows._
+
 _6.3 done 2026-10-04: [ADR 0024](adr/0024-multiple-accounts.md). Also fixed: removing an account with contest or activation data failed on the foreign keys (found while building 6.3)._
 
 Every step follows the Definition of Done. Order: 6.1 and 6.2 as v0.3.1, then 6.3 to 6.8. 6.6 comes after 6.5.

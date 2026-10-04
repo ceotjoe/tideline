@@ -3023,5 +3023,42 @@
         "type": "String"
       }
     }
+  },
+  "commandGoBack": "Go back",
+  "@commandGoBack": {
+    "description": "Command name: leave the current page (settings page, set-up screen)."
+  },
+  "menuGo": "Go",
+  "@menuGo": {
+    "description": "Menu bar menu with the navigation commands."
+  },
+  "menuOperate": "Operate",
+  "@menuOperate": {
+    "description": "Menu bar menu: sync, contest and activation commands."
+  },
+  "menuHelp": "Help",
+  "@menuHelp": {
+    "description": "Menu bar menu."
+  },
+  "menuWindow": "Window",
+  "@menuWindow": {
+    "description": "Menu bar menu (macOS)."
+  },
+  "actionCopyCallsign": "Copy callsign",
+  "@actionCopyCallsign": {
+    "description": "Context menu entry of a log row."
+  },
+  "actionOpenQso": "Open QSO",
+  "@actionOpenQso": {
+    "description": "Context menu entry of a log row."
+  },
+  "callsignCopied": "Copied {call}",
+  "@callsignCopied": {
+    "description": "Snackbar after copying a callsign.",
+    "placeholders": {
+      "call": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Desktop navigation** on macOS, Windows and Linux (ADR 0025). A sidebar instead of the bottom bar (also in a narrow
+  window), a menu bar (the system menu on macOS, a strip in the window on Windows and Linux) with Go, Operate and Help,
+  built from the same commands as the shortcuts, and a **Go back** command on `Esc`, `Alt+←` and `Ctrl/⌘+[`. A right
+  click on a log row offers *Open QSO* and *Copy callsign*.
 - **Several Wavelog accounts** (ADR 0024). Settings → Wavelog accounts lists them and adds another; each account can be
   renamed, put into use for logging, given a new token or removed. On the log screen an account menu appears from the
   second account on. Switching is refused while a contest session or an activation runs. Sync covers every account, and

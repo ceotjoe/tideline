@@ -110,6 +110,7 @@ class TidelineCommand {
     required this.scope,
     required this.label,
     this.defaults = const [],
+    this.fallback = false,
   });
 
   /// Stable identifier, used for stored overrides. Never rename.
@@ -123,6 +124,11 @@ class TidelineCommand {
 
   /// Default key bindings.
   final List<KeyChord> defaults;
+
+  /// Whether this command only runs when no other command bound to the same
+  /// chord has a handler on the current screen. Escape clears the entry on the
+  /// log screen and goes back everywhere else, without that being a conflict.
+  final bool fallback;
 }
 
 /// Intent dispatched when a command's shortcut is pressed.

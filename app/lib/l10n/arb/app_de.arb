@@ -603,5 +603,13 @@
   "accountsPendingTitle": "Wartend, pro Konto",
   "accountsExportRemove": "Log exportieren, dann entfernen",
   "accountsAddTitle": "Wavelog-Konto hinzufügen",
-  "accountsActsOn": "Konto: {name}"
+  "accountsActsOn": "Konto: {name}",
+  "commandGoBack": "Zurück",
+  "menuGo": "Gehe zu",
+  "menuOperate": "Betrieb",
+  "menuHelp": "Hilfe",
+  "menuWindow": "Fenster",
+  "actionCopyCallsign": "Rufzeichen kopieren",
+  "actionOpenQso": "QSO öffnen",
+  "callsignCopied": "{call} kopiert"
 }

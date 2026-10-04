@@ -8,6 +8,7 @@ abstract final class CommandIds {
   static const goToLog = 'nav.log';
   static const goToSync = 'nav.sync';
   static const goToSettings = 'nav.settings';
+  static const goBack = 'nav.back';
   static const syncNow = 'sync.now';
   static const newQso = 'log.new';
   static const logQso = 'log.save';
@@ -59,6 +60,17 @@ final List<TidelineCommand> tidelineCommands = [
     scope: CommandScope.global,
     label: (l) => l.commandGoToSettings,
     defaults: const [KeyChord(LogicalKeyboardKey.comma, primary: true)],
+  ),
+  TidelineCommand(
+    id: CommandIds.goBack,
+    scope: CommandScope.global,
+    label: (l) => l.commandGoBack,
+    fallback: true,
+    defaults: const [
+      KeyChord(LogicalKeyboardKey.escape),
+      KeyChord(LogicalKeyboardKey.arrowLeft, alt: true),
+      KeyChord(LogicalKeyboardKey.bracketLeft, primary: true),
+    ],
   ),
   TidelineCommand(
     id: CommandIds.syncNow,
@@ -216,7 +228,12 @@ class CommandRegistry {
   /// intent, and whichever has a handler on the current screen runs.
   Map<ShortcutActivator, Intent> shortcutMap(ShortcutPlatform platform) {
     final byChord = <KeyChord, List<String>>{};
-    for (final c in commands) {
+    // Fallback commands go last, so a screen's own command wins.
+    final ordered = [
+      ...commands.where((c) => !c.fallback),
+      ...commands.where((c) => c.fallback),
+    ];
+    for (final c in ordered) {
       for (final chord in bindingsOf(c)) {
         (byChord[chord] ??= []).add(c.id);
       }
@@ -244,6 +261,8 @@ class CommandRegistry {
     for (final MapEntry(key: chord, value: cmds) in byChord.entries) {
       for (var i = 0; i < cmds.length; i++) {
         for (var j = i + 1; j < cmds.length; j++) {
+          // A fallback yields to the other command by design.
+          if (cmds[i].fallback || cmds[j].fallback) continue;
           final a = cmds[i].scope;
           final b = cmds[j].scope;
           if (a == b || a == CommandScope.global || b == CommandScope.global) {

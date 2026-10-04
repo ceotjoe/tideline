@@ -2321,4 +2321,30 @@ class AppLocalizationsDe extends AppLocalizations {
   String accountsActsOn(String name) {
     return 'Konto: $name';
   }
+
+  @override
+  String get commandGoBack => 'Zurück';
+
+  @override
+  String get menuGo => 'Gehe zu';
+
+  @override
+  String get menuOperate => 'Betrieb';
+
+  @override
+  String get menuHelp => 'Hilfe';
+
+  @override
+  String get menuWindow => 'Fenster';
+
+  @override
+  String get actionCopyCallsign => 'Rufzeichen kopieren';
+
+  @override
+  String get actionOpenQso => 'QSO öffnen';
+
+  @override
+  String callsignCopied(String call) {
+    return '$call kopiert';
+  }
 }

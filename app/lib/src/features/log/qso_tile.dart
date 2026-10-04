@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/widgets/callsign_text.dart';
@@ -10,6 +11,8 @@ import 'package:tideline_domain/tideline_domain.dart';
 String utcClock(UtcDateTime t) =>
     '${t.value.hour.toString().padLeft(2, '0')}:'
     '${t.value.minute.toString().padLeft(2, '0')}';
+
+enum _Choice { open, copy }
 
 /// One QSO in the log list.
 class QsoTile extends StatelessWidget {
@@ -45,7 +48,7 @@ class QsoTile extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final stacked = constraints.maxWidth < _sideBySideMinWidth;
-        return ListTile(
+        final tile = ListTile(
           selected: selected,
           selectedTileColor: context.colors.surfaceVariant,
           onTap: onTap,
@@ -62,8 +65,51 @@ class QsoTile extends StatelessWidget {
               : Text(details),
           trailing: stacked ? null : chip,
         );
+        // A right click (or a long press of a trackpad) offers the same two
+        // things a desktop list usually does.
+        return GestureDetector(
+          behavior: HitTestBehavior.deferToChild,
+          // A pointer shortcut only: screen readers use the tile's own tap.
+          excludeFromSemantics: true,
+          onSecondaryTapUp: (d) => _showMenu(context, d.globalPosition),
+          child: tile,
+        );
       },
     );
+  }
+
+  Future<void> _showMenu(BuildContext context, Offset position) async {
+    final l10n = AppLocalizations.of(context);
+    final call = item.qso.call.value;
+    final overlay =
+        Overlay.of(context).context.findRenderObject()! as RenderBox;
+    final choice = await showMenu<_Choice>(
+      context: context,
+      position: RelativeRect.fromRect(
+        position & const Size(1, 1),
+        Offset.zero & overlay.size,
+      ),
+      items: [
+        if (onTap != null)
+          PopupMenuItem(value: _Choice.open, child: Text(l10n.actionOpenQso)),
+        PopupMenuItem(
+          value: _Choice.copy,
+          child: Text(l10n.actionCopyCallsign),
+        ),
+      ],
+    );
+    switch (choice) {
+      case _Choice.open:
+        onTap?.call();
+      case _Choice.copy:
+        await Clipboard.setData(ClipboardData(text: call));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(l10n.callsignCopied(call))));
+        }
+      case null:
+        break;
+    }
   }
 
   /// Below this width the sync chip moves under the details.

@@ -603,5 +603,13 @@
   "accountsPendingTitle": "[Ŵáîţîñĝ, þéŕ áççöûñţ········]",
   "accountsExportRemove": "[Éẋþöŕţ ļöĝ, ţĥéñ ŕéɱöṽé··········]",
   "accountsAddTitle": "[Åðð á Ŵáṽéļöĝ áççöûñţ·········]",
-  "accountsActsOn": "[Åççöûñţ: ····]{name}"
+  "accountsActsOn": "[Åççöûñţ: ····]{name}",
+  "commandGoBack": "[Ĝö ƀáçķ···]",
+  "menuGo": "[Ĝö·]",
+  "menuOperate": "[Öþéŕáţé···]",
+  "menuHelp": "[Ĥéļþ··]",
+  "menuWindow": "[Ŵîñðöŵ···]",
+  "actionCopyCallsign": "[Çöþý çáļļšîĝñ······]",
+  "actionOpenQso": "[Öþéñ ǪŠÖ····]",
+  "callsignCopied": "[Çöþîéð ···]{call}"
 }

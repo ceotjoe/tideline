@@ -11,6 +11,7 @@ _Version 0.3 (Aktivierungen)._
 1. [Contest-Modus](contest-mode.md)
 1. [Einstellungen](settings.md)
 1. [Sicherung und Export](backups.md)
+1. [Mac, Windows und Linux](desktop.md)
 1. [Barrierefreiheit](accessibility.md)
 1. [Tastenkürzel](keyboard-shortcuts.md)
 1. [Fehlerbehebung](troubleshooting.md)

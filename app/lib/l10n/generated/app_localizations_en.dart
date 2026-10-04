@@ -2303,6 +2303,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String accountsActsOn(String name) {
     return 'Account: $name';
   }
+
+  @override
+  String get commandGoBack => 'Go back';
+
+  @override
+  String get menuGo => 'Go';
+
+  @override
+  String get menuOperate => 'Operate';
+
+  @override
+  String get menuHelp => 'Help';
+
+  @override
+  String get menuWindow => 'Window';
+
+  @override
+  String get actionCopyCallsign => 'Copy callsign';
+
+  @override
+  String get actionOpenQso => 'Open QSO';
+
+  @override
+  String callsignCopied(String call) {
+    return 'Copied $call';
+  }
 }
 
 /// The translations for English (`en_XA`).
@@ -4662,5 +4688,31 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String accountsActsOn(String name) {
     return '[Åççöûñţ: ····]$name';
+  }
+
+  @override
+  String get commandGoBack => '[Ĝö ƀáçķ···]';
+
+  @override
+  String get menuGo => '[Ĝö·]';
+
+  @override
+  String get menuOperate => '[Öþéŕáţé···]';
+
+  @override
+  String get menuHelp => '[Ĥéļþ··]';
+
+  @override
+  String get menuWindow => '[Ŵîñðöŵ···]';
+
+  @override
+  String get actionCopyCallsign => '[Çöþý çáļļšîĝñ······]';
+
+  @override
+  String get actionOpenQso => '[Öþéñ ǪŠÖ····]';
+
+  @override
+  String callsignCopied(String call) {
+    return '[Çöþîéð ···]$call';
   }
 }
