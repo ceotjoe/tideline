@@ -3172,5 +3172,201 @@
         "type": "String"
       }
     }
+  },
+  "freeSpaceTitle": "Free up space",
+  "@freeSpaceTitle": {
+    "description": "Page title and account entry."
+  },
+  "freeSpaceEntry": "Remove synced QSOs from this device",
+  "@freeSpaceEntry": {
+    "description": "Entry on the account page."
+  },
+  "freeSpaceEntryHint": "Wavelog keeps them.",
+  "@freeSpaceEntryHint": {
+    "description": "Subtitle of the entry on the account page."
+  },
+  "freeSpaceIntro": "This removes the copies on this device of QSOs that Wavelog already has. Nothing is deleted on Wavelog. Tideline asks Wavelog first and keeps everything it cannot find there. Worked-before hints and station names stay.",
+  "@freeSpaceIntro": {
+    "description": "Explanation at the top of the free-space page."
+  },
+  "freeSpaceScope": "Which QSOs",
+  "@freeSpaceScope": {
+    "description": "Heading above the age choices."
+  },
+  "freeSpaceOlder1": "Older than 1 year",
+  "@freeSpaceOlder1": {
+    "description": "Age choice."
+  },
+  "freeSpaceOlder2": "Older than 2 years",
+  "@freeSpaceOlder2": {
+    "description": "Age choice."
+  },
+  "freeSpaceOlder5": "Older than 5 years",
+  "@freeSpaceOlder5": {
+    "description": "Age choice."
+  },
+  "freeSpaceAll": "All synced QSOs",
+  "@freeSpaceAll": {
+    "description": "Age choice."
+  },
+  "freeSpaceEligible": "{count, plural, =0{No QSOs can be removed} =1{1 QSO can be removed} other{{count} QSOs can be removed}}",
+  "@freeSpaceEligible": {
+    "description": "How many QSOs are eligible on this device.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeSpaceStaying": "Staying on this device",
+  "@freeSpaceStaying": {
+    "description": "Heading above the reasons."
+  },
+  "freeSpaceBlockedNotSynced": "{count, plural, =1{1 QSO is not on Wavelog yet} other{{count} QSOs are not on Wavelog yet}}",
+  "@freeSpaceBlockedNotSynced": {
+    "description": "Reason.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeSpaceBlockedChanged": "{count, plural, =1{1 QSO was changed after it was sent} other{{count} QSOs were changed after they were sent}}",
+  "@freeSpaceBlockedChanged": {
+    "description": "Reason.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeSpaceBlockedContest": "{count, plural, =1{1 QSO belongs to a contest session} other{{count} QSOs belong to contest sessions}}",
+  "@freeSpaceBlockedContest": {
+    "description": "Reason.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeSpaceBlockedActivation": "{count, plural, =1{1 QSO belongs to an activation} other{{count} QSOs belong to activations}}",
+  "@freeSpaceBlockedActivation": {
+    "description": "Reason.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeSpaceCheck": "Check with Wavelog",
+  "@freeSpaceCheck": {
+    "description": "Button."
+  },
+  "freeSpaceChecking": "Asking Wavelog …",
+  "@freeSpaceChecking": {
+    "description": "Progress text."
+  },
+  "freeSpaceConfirmedCount": "{count, plural, =0{Wavelog has none of them} =1{Wavelog has 1 of them} other{Wavelog has {count} of them}}",
+  "@freeSpaceConfirmedCount": {
+    "description": "Result of the check.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeSpaceMissingCount": "{count, plural, =1{1 was not found on Wavelog and stays} other{{count} were not found on Wavelog and stay}}",
+  "@freeSpaceMissingCount": {
+    "description": "Result of the check.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeSpaceOffline": "Wavelog could not be reached. Nothing was removed.",
+  "@freeSpaceOffline": {
+    "description": "Problem."
+  },
+  "freeSpaceUnauthorized": "The token no longer works. Enter a new token first. Nothing was removed.",
+  "@freeSpaceUnauthorized": {
+    "description": "Problem."
+  },
+  "freeSpaceServerProblem": "Wavelog answered with an error. Nothing was removed.",
+  "@freeSpaceServerProblem": {
+    "description": "Problem."
+  },
+  "freeSpaceTooMany": "There are too many QSOs in that period to check at once. Choose a shorter period.",
+  "@freeSpaceTooMany": {
+    "description": "Problem."
+  },
+  "freeSpaceRemoveButton": "{count, plural, =1{Remove 1 QSO from this device} other{Remove {count} QSOs from this device}}",
+  "@freeSpaceRemoveButton": {
+    "description": "Button.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeSpaceConfirmTitle": "Remove from this device?",
+  "@freeSpaceConfirmTitle": {
+    "description": "Dialog title."
+  },
+  "freeSpaceConfirmBody": "{count, plural, =1{1 QSO} other{{count} QSOs}} will be removed from this device. They stay on Wavelog. You can save them as an ADIF file first.",
+  "@freeSpaceConfirmBody": {
+    "description": "Dialog body.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeSpaceExportRemove": "Export, then remove",
+  "@freeSpaceExportRemove": {
+    "description": "Dialog button."
+  },
+  "freeSpaceRemoveOnly": "Remove",
+  "@freeSpaceRemoveOnly": {
+    "description": "Dialog button."
+  },
+  "freeSpaceDone": "{count, plural, =1{Removed 1 QSO from this device. It is still on Wavelog.} other{Removed {count} QSOs from this device. They are still on Wavelog.}}",
+  "@freeSpaceDone": {
+    "description": "Snackbar and message after removing.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeSpaceSoFar": "{count, plural, =0{Nothing removed so far} =1{1 QSO removed so far} other{{count} QSOs removed so far}}",
+  "@freeSpaceSoFar": {
+    "description": "How many QSOs of this account were removed from the device before.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "qsoRemoveFromDevice": "Remove from this device",
+  "@qsoRemoveFromDevice": {
+    "description": "Button on the QSO details of a synced QSO."
+  },
+  "qsoRemoveFromDeviceHint": "Wavelog keeps it. Tideline checks that first.",
+  "@qsoRemoveFromDeviceHint": {
+    "description": "Hint under the button."
+  },
+  "qsoNotRemoved": "Not removed: Wavelog could not confirm this QSO.",
+  "@qsoNotRemoved": {
+    "description": "Snackbar."
+  },
+  "journalEvictedLocally": "{count, plural, =1{1 QSO removed from this device (still on Wavelog)} other{{count} QSOs removed from this device (still on Wavelog)}}",
+  "@journalEvictedLocally": {
+    "description": "Sync history entry.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

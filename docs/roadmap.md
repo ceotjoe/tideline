@@ -210,6 +210,8 @@ _6.2 done 2026-10-04: [ADR 0023](adr/0023-settings-hub.md). The hub has four gro
 
 _6.1 done 2026-10-04 (`7f25482`)._
 
+_6.6 done 2026-10-04: [ADR 0027](adr/0027-evict-synced-qsos.md). Removal is a purge with a record, confirmed by a read-only listing of Wavelog; nothing is deleted there._
+
 _6.5 done 2026-10-04: [ADR 0026](adr/0026-callsign-directory-and-notes.md); Wavelog API v2 has no callsign notes (verified), so notes are local only._
 
 _6.4 done 2026-10-04: [ADR 0025](adr/0025-desktop-navigation.md). Not done: a minimum window size (native code per OS) and a two-pane settings view on wide windows._

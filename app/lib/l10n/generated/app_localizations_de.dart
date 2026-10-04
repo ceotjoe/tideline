@@ -2427,4 +2427,214 @@ class AppLocalizationsDe extends AppLocalizations {
   String callsignZones(String dxcc, String cq, String itu) {
     return 'DXCC $dxcc · CQ $cq · ITU $itu';
   }
+
+  @override
+  String get freeSpaceTitle => 'Speicher freigeben';
+
+  @override
+  String get freeSpaceEntry =>
+      'Synchronisierte QSOs von diesem Gerät entfernen';
+
+  @override
+  String get freeSpaceEntryHint => 'Wavelog behält sie.';
+
+  @override
+  String get freeSpaceIntro =>
+      'Das entfernt die Kopien auf diesem Gerät von QSOs, die Wavelog schon hat. Auf Wavelog wird nichts gelöscht. Tideline fragt zuerst Wavelog und behält alles, was es dort nicht findet. „Schon gearbeitet“-Hinweise und Stationsnamen bleiben.';
+
+  @override
+  String get freeSpaceScope => 'Welche QSOs';
+
+  @override
+  String get freeSpaceOlder1 => 'Älter als 1 Jahr';
+
+  @override
+  String get freeSpaceOlder2 => 'Älter als 2 Jahre';
+
+  @override
+  String get freeSpaceOlder5 => 'Älter als 5 Jahre';
+
+  @override
+  String get freeSpaceAll => 'Alle synchronisierten QSOs';
+
+  @override
+  String freeSpaceEligible(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs können entfernt werden',
+      one: '1 QSO kann entfernt werden',
+      zero: 'Keine QSOs können entfernt werden',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceStaying => 'Bleiben auf diesem Gerät';
+
+  @override
+  String freeSpaceBlockedNotSynced(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs sind noch nicht in Wavelog',
+      one: '1 QSO ist noch nicht in Wavelog',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceBlockedChanged(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs wurden nach dem Senden geändert',
+      one: '1 QSO wurde nach dem Senden geändert',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceBlockedContest(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs gehören zu Contest-Sitzungen',
+      one: '1 QSO gehört zu einer Contest-Sitzung',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceBlockedActivation(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs gehören zu Aktivierungen',
+      one: '1 QSO gehört zu einer Aktivierung',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceCheck => 'Bei Wavelog prüfen';
+
+  @override
+  String get freeSpaceChecking => 'Wavelog wird gefragt …';
+
+  @override
+  String freeSpaceConfirmedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Wavelog hat $count davon',
+      one: 'Wavelog hat 1 davon',
+      zero: 'Wavelog hat keines davon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceMissingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count wurden auf Wavelog nicht gefunden und bleiben',
+      one: '1 wurde auf Wavelog nicht gefunden und bleibt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceOffline =>
+      'Wavelog war nicht erreichbar. Es wurde nichts entfernt.';
+
+  @override
+  String get freeSpaceUnauthorized =>
+      'Der Token funktioniert nicht mehr. Gib zuerst einen neuen Token ein. Es wurde nichts entfernt.';
+
+  @override
+  String get freeSpaceServerProblem =>
+      'Wavelog hat mit einem Fehler geantwortet. Es wurde nichts entfernt.';
+
+  @override
+  String get freeSpaceTooMany =>
+      'In diesem Zeitraum sind zu viele QSOs, um sie auf einmal zu prüfen. Wähle einen kürzeren Zeitraum.';
+
+  @override
+  String freeSpaceRemoveButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs von diesem Gerät entfernen',
+      one: '1 QSO von diesem Gerät entfernen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceConfirmTitle => 'Von diesem Gerät entfernen?';
+
+  @override
+  String freeSpaceConfirmBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs werden',
+      one: '1 QSO wird',
+    );
+    return '$_temp0 von diesem Gerät entfernt. Sie bleiben auf Wavelog. Du kannst sie vorher als ADIF-Datei sichern.';
+  }
+
+  @override
+  String get freeSpaceExportRemove => 'Exportieren, dann entfernen';
+
+  @override
+  String get freeSpaceRemoveOnly => 'Entfernen';
+
+  @override
+  String freeSpaceDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count QSOs von diesem Gerät entfernt. Sie sind noch auf Wavelog.',
+      one: '1 QSO von diesem Gerät entfernt. Es ist noch auf Wavelog.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceSoFar(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Bisher $count QSOs entfernt',
+      one: 'Bisher 1 QSO entfernt',
+      zero: 'Bisher nichts entfernt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get qsoRemoveFromDevice => 'Von diesem Gerät entfernen';
+
+  @override
+  String get qsoRemoveFromDeviceHint =>
+      'Wavelog behält es. Tideline prüft das zuerst.';
+
+  @override
+  String get qsoNotRemoved =>
+      'Nicht entfernt: Wavelog konnte dieses QSO nicht bestätigen.';
+
+  @override
+  String journalEvictedLocally(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs von diesem Gerät entfernt (noch auf Wavelog)',
+      one: '1 QSO von diesem Gerät entfernt (noch auf Wavelog)',
+    );
+    return '$_temp0';
+  }
 }

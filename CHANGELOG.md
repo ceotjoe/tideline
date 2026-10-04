@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Free up space** (ADR 0027). On an account's page, *Remove synced QSOs from this device* removes the local copies of
+  QSOs that Wavelog already has, by age (older than 1, 2 or 5 years, or all). Tideline asks Wavelog first and keeps what
+  it cannot find there; QSOs of contests and activations, and QSOs not yet sent or changed since, stay. Nothing is deleted
+  on Wavelog. **Export, then remove** saves an ADIF file of exactly those QSOs first. A single synced QSO can be removed
+  from its details. Worked-before hints and station names stay; an ADIF import skips QSOs removed this way. Database
+  schema 5.
 - **Offline callsign directory and notes** (ADR 0026). Under the callsign field: what earlier contacts say about the
   station (name, place, locator) with **Fill in** for empty fields, and your own note, with a note button in the field.
   The directory is built from your log and from Wavelog's history; **Settings → Reference data → Browse callsigns and

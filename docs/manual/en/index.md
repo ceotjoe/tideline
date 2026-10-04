@@ -11,6 +11,7 @@ _Version 0.3 (activations)._
 1. [Activations (SOTA, POTA, WWFF)](activations.md)
 1. [Contest mode](contest-mode.md)
 1. [Settings](settings.md)
+1. [Free up space](free-space.md)
 1. [Backups and export](backups.md)
 1. [Mac, Windows and Linux](desktop.md)
 1. [Accessibility features](accessibility.md)

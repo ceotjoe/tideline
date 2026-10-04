@@ -2409,6 +2409,214 @@ class AppLocalizationsEn extends AppLocalizations {
   String callsignZones(String dxcc, String cq, String itu) {
     return 'DXCC $dxcc · CQ $cq · ITU $itu';
   }
+
+  @override
+  String get freeSpaceTitle => 'Free up space';
+
+  @override
+  String get freeSpaceEntry => 'Remove synced QSOs from this device';
+
+  @override
+  String get freeSpaceEntryHint => 'Wavelog keeps them.';
+
+  @override
+  String get freeSpaceIntro =>
+      'This removes the copies on this device of QSOs that Wavelog already has. Nothing is deleted on Wavelog. Tideline asks Wavelog first and keeps everything it cannot find there. Worked-before hints and station names stay.';
+
+  @override
+  String get freeSpaceScope => 'Which QSOs';
+
+  @override
+  String get freeSpaceOlder1 => 'Older than 1 year';
+
+  @override
+  String get freeSpaceOlder2 => 'Older than 2 years';
+
+  @override
+  String get freeSpaceOlder5 => 'Older than 5 years';
+
+  @override
+  String get freeSpaceAll => 'All synced QSOs';
+
+  @override
+  String freeSpaceEligible(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs can be removed',
+      one: '1 QSO can be removed',
+      zero: 'No QSOs can be removed',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceStaying => 'Staying on this device';
+
+  @override
+  String freeSpaceBlockedNotSynced(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs are not on Wavelog yet',
+      one: '1 QSO is not on Wavelog yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceBlockedChanged(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs were changed after they were sent',
+      one: '1 QSO was changed after it was sent',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceBlockedContest(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs belong to contest sessions',
+      one: '1 QSO belongs to a contest session',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceBlockedActivation(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs belong to activations',
+      one: '1 QSO belongs to an activation',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceCheck => 'Check with Wavelog';
+
+  @override
+  String get freeSpaceChecking => 'Asking Wavelog …';
+
+  @override
+  String freeSpaceConfirmedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Wavelog has $count of them',
+      one: 'Wavelog has 1 of them',
+      zero: 'Wavelog has none of them',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceMissingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count were not found on Wavelog and stay',
+      one: '1 was not found on Wavelog and stays',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceOffline =>
+      'Wavelog could not be reached. Nothing was removed.';
+
+  @override
+  String get freeSpaceUnauthorized =>
+      'The token no longer works. Enter a new token first. Nothing was removed.';
+
+  @override
+  String get freeSpaceServerProblem =>
+      'Wavelog answered with an error. Nothing was removed.';
+
+  @override
+  String get freeSpaceTooMany =>
+      'There are too many QSOs in that period to check at once. Choose a shorter period.';
+
+  @override
+  String freeSpaceRemoveButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Remove $count QSOs from this device',
+      one: 'Remove 1 QSO from this device',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceConfirmTitle => 'Remove from this device?';
+
+  @override
+  String freeSpaceConfirmBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs',
+      one: '1 QSO',
+    );
+    return '$_temp0 will be removed from this device. They stay on Wavelog. You can save them as an ADIF file first.';
+  }
+
+  @override
+  String get freeSpaceExportRemove => 'Export, then remove';
+
+  @override
+  String get freeSpaceRemoveOnly => 'Remove';
+
+  @override
+  String freeSpaceDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Removed $count QSOs from this device. They are still on Wavelog.',
+      one: 'Removed 1 QSO from this device. It is still on Wavelog.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceSoFar(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs removed so far',
+      one: '1 QSO removed so far',
+      zero: 'Nothing removed so far',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get qsoRemoveFromDevice => 'Remove from this device';
+
+  @override
+  String get qsoRemoveFromDeviceHint =>
+      'Wavelog keeps it. Tideline checks that first.';
+
+  @override
+  String get qsoNotRemoved =>
+      'Not removed: Wavelog could not confirm this QSO.';
+
+  @override
+  String journalEvictedLocally(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs removed from this device (still on Wavelog)',
+      one: '1 QSO removed from this device (still on Wavelog)',
+    );
+    return '$_temp0';
+  }
 }
 
 /// The translations for English (`en_XA`).
@@ -4875,5 +5083,216 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String callsignZones(String dxcc, String cq, String itu) {
     return '[ÐẊÇÇ ··]$dxcc[ · ÇǪ ···]$cq[ · ÎŢÛ ···]$itu';
+  }
+
+  @override
+  String get freeSpaceTitle => '[Ƒŕéé ûþ šþáçé······]';
+
+  @override
+  String get freeSpaceEntry =>
+      '[Ŕéɱöṽé šýñçéð ǪŠÖš ƒŕöɱ ţĥîš ðéṽîçé··············]';
+
+  @override
+  String get freeSpaceEntryHint => '[Ŵáṽéļöĝ ķééþš ţĥéɱ.········]';
+
+  @override
+  String get freeSpaceIntro =>
+      '[Ţĥîš ŕéɱöṽéš ţĥé çöþîéš öñ ţĥîš ðéṽîçé öƒ ǪŠÖš ţĥáţ Ŵáṽéļöĝ áļŕéáðý ĥáš. Ñöţĥîñĝ îš ðéļéţéð öñ Ŵáṽéļöĝ. Ţîðéļîñé ášķš Ŵáṽéļöĝ ƒîŕšţ áñð ķééþš éṽéŕýţĥîñĝ îţ çáññöţ ƒîñð ţĥéŕé. Ŵöŕķéð-ƀéƒöŕé ĥîñţš áñð šţáţîöñ ñáɱéš šţáý.························································································]';
+
+  @override
+  String get freeSpaceScope => '[Ŵĥîçĥ ǪŠÖš····]';
+
+  @override
+  String get freeSpaceOlder1 => '[Öļðéŕ ţĥáñ 1 ýéáŕ·······]';
+
+  @override
+  String get freeSpaceOlder2 => '[Öļðéŕ ţĥáñ 2 ýéáŕš········]';
+
+  @override
+  String get freeSpaceOlder5 => '[Öļðéŕ ţĥáñ 5 ýéáŕš········]';
+
+  @override
+  String get freeSpaceAll => '[Åļļ šýñçéð ǪŠÖš······]';
+
+  @override
+  String freeSpaceEligible(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš çáñ ƀé ŕéɱöṽéð········]',
+      one: '[1 ǪŠÖ çáñ ƀé ŕéɱöṽéð········]',
+      zero: '[Ñö ǪŠÖš çáñ ƀé ŕéɱöṽéð·········]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceStaying => '[Šţáýîñĝ öñ ţĥîš ðéṽîçé·········]';
+
+  @override
+  String freeSpaceBlockedNotSynced(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš áŕé ñöţ öñ Ŵáṽéļöĝ ýéţ············]',
+      one: '[1 ǪŠÖ îš ñöţ öñ Ŵáṽéļöĝ ýéţ···········]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceBlockedChanged(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš ŵéŕé çĥáñĝéð áƒţéŕ ţĥéý ŵéŕé šéñţ················]',
+      one: '[1 ǪŠÖ ŵáš çĥáñĝéð áƒţéŕ îţ ŵáš šéñţ··············]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceBlockedContest(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš ƀéļöñĝ ţö çöñţéšţ šéššîöñš·············]',
+      one: '[1 ǪŠÖ ƀéļöñĝš ţö á çöñţéšţ šéššîöñ··············]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceBlockedActivation(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš ƀéļöñĝ ţö áçţîṽáţîöñš···········]',
+      one: '[1 ǪŠÖ ƀéļöñĝš ţö áñ áçţîṽáţîöñ············]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceCheck => '[Çĥéçķ ŵîţĥ Ŵáṽéļöĝ········]';
+
+  @override
+  String get freeSpaceChecking => '[Åšķîñĝ Ŵáṽéļöĝ …·······]';
+
+  @override
+  String freeSpaceConfirmedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '[Ŵáṽéļöĝ ĥáš ·····]$count[ öƒ ţĥéɱ····]',
+      one: '[Ŵáṽéļöĝ ĥáš 1 öƒ ţĥéɱ·········]',
+      zero: '[Ŵáṽéļöĝ ĥáš ñöñé öƒ ţĥéɱ··········]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceMissingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ŵéŕé ñöţ ƒöûñð öñ Ŵáṽéļöĝ áñð šţáý··············]',
+      one: '[1 ŵáš ñöţ ƒöûñð öñ Ŵáṽéļöĝ áñð šţáýš···············]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceOffline =>
+      '[Ŵáṽéļöĝ çöûļð ñöţ ƀé ŕéáçĥéð. Ñöţĥîñĝ ŵáš ŕéɱöṽéð.····················]';
+
+  @override
+  String get freeSpaceUnauthorized =>
+      '[Ţĥé ţöķéñ ñö ļöñĝéŕ ŵöŕķš. Éñţéŕ á ñéŵ ţöķéñ ƒîŕšţ. Ñöţĥîñĝ ŵáš ŕéɱöṽéð.·····························]';
+
+  @override
+  String get freeSpaceServerProblem =>
+      '[Ŵáṽéļöĝ áñšŵéŕéð ŵîţĥ áñ éŕŕöŕ. Ñöţĥîñĝ ŵáš ŕéɱöṽéð.·····················]';
+
+  @override
+  String get freeSpaceTooMany =>
+      '[Ţĥéŕé áŕé ţöö ɱáñý ǪŠÖš îñ ţĥáţ þéŕîöð ţö çĥéçķ áţ öñçé. Çĥööšé á šĥöŕţéŕ þéŕîöð.·································]';
+
+  @override
+  String freeSpaceRemoveButton(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '[Ŕéɱöṽé ···]$count[ ǪŠÖš ƒŕöɱ ţĥîš ðéṽîçé·········]',
+      one: '[Ŕéɱöṽé 1 ǪŠÖ ƒŕöɱ ţĥîš ðéṽîçé············]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freeSpaceConfirmTitle => '[Ŕéɱöṽé ƒŕöɱ ţĥîš ðéṽîçé?··········]';
+
+  @override
+  String freeSpaceConfirmBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš··]',
+      one: '[1 ǪŠÖ··]',
+    );
+    return '$_temp0[ ŵîļļ ƀé ŕéɱöṽéð ƒŕöɱ ţĥîš ðéṽîçé. Ţĥéý šţáý öñ Ŵáṽéļöĝ. Ýöû çáñ šáṽé ţĥéɱ áš áñ ÅÐÎƑ ƒîļé ƒîŕšţ.·······································]';
+  }
+
+  @override
+  String get freeSpaceExportRemove => '[Éẋþöŕţ, ţĥéñ ŕéɱöṽé········]';
+
+  @override
+  String get freeSpaceRemoveOnly => '[Ŕéɱöṽé···]';
+
+  @override
+  String freeSpaceDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '[Ŕéɱöṽéð ····]$count[ ǪŠÖš ƒŕöɱ ţĥîš ðéṽîçé. Ţĥéý áŕé šţîļļ öñ Ŵáṽéļöĝ.····················]',
+      one: '[Ŕéɱöṽéð 1 ǪŠÖ ƒŕöɱ ţĥîš ðéṽîçé. Îţ îš šţîļļ öñ Ŵáṽéļöĝ.······················]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String freeSpaceSoFar(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš ŕéɱöṽéð šö ƒáŕ········]',
+      one: '[1 ǪŠÖ ŕéɱöṽéð šö ƒáŕ········]',
+      zero: '[Ñöţĥîñĝ ŕéɱöṽéð šö ƒáŕ·········]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get qsoRemoveFromDevice => '[Ŕéɱöṽé ƒŕöɱ ţĥîš ðéṽîçé··········]';
+
+  @override
+  String get qsoRemoveFromDeviceHint =>
+      '[Ŵáṽéļöĝ ķééþš îţ. Ţîðéļîñé çĥéçķš ţĥáţ ƒîŕšţ.··················]';
+
+  @override
+  String get qsoNotRemoved =>
+      '[Ñöţ ŕéɱöṽéð: Ŵáṽéļöĝ çöûļð ñöţ çöñƒîŕɱ ţĥîš ǪŠÖ.····················]';
+
+  @override
+  String journalEvictedLocally(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count[ ǪŠÖš ŕéɱöṽéð ƒŕöɱ ţĥîš ðéṽîçé (šţîļļ öñ Ŵáṽéļöĝ)····················]',
+      one: '[1 ǪŠÖ ŕéɱöṽéð ƒŕöɱ ţĥîš ðéṽîçé (šţîļļ öñ Ŵáṽéļöĝ)····················]',
+    );
+    return '$_temp0';
   }
 }

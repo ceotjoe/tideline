@@ -168,50 +168,128 @@ class QsoDetail extends ConsumerWidget {
         fact(l10n.fieldCountry, q.field('COUNTRY')),
         fact(l10n.fieldComment, q.field('COMMENT')),
         SizedBox(height: metrics.lg),
-        Align(
-          alignment: AlignmentDirectional.centerStart,
-          child: OutlinedButton.icon(
-            icon: const Icon(Icons.delete_outline),
-            label: Text(l10n.actionDeleteQso),
-            onPressed: () async {
-              final confirmed = await showDialog<bool>(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text(l10n.deleteQsoTitle),
-                  content: Text(
-                    status?.remoteQsoId != null &&
-                            !(account?.canDeleteOnServer ?? false)
-                        ? l10n.deleteQsoLocalOnly
-                        : l10n.deleteQsoBody,
+        Wrap(
+          spacing: metrics.sm,
+          runSpacing: metrics.sm,
+          children: [
+            OutlinedButton.icon(
+              icon: const Icon(Icons.delete_outline),
+              label: Text(l10n.actionDeleteQso),
+              onPressed: () async {
+                final confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(l10n.deleteQsoTitle),
+                    content: Text(
+                      status?.remoteQsoId != null &&
+                              !(account?.canDeleteOnServer ?? false)
+                          ? l10n.deleteQsoLocalOnly
+                          : l10n.deleteQsoBody,
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(l10n.certCancel),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: Text(l10n.actionDeleteQso),
+                      ),
+                    ],
                   ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(false),
-                      child: Text(l10n.certCancel),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      child: Text(l10n.actionDeleteQso),
-                    ),
-                  ],
-                ),
-              );
-              if (confirmed ?? false) {
-                await ref
-                    .read(qsoRepositoryProvider)
-                    .delete(
-                      q.id,
-                      canDeleteOnServer: account?.canDeleteOnServer ?? false,
-                    );
-                onClosed?.call();
-              }
-            },
-          ),
+                );
+                if (confirmed ?? false) {
+                  await ref
+                      .read(qsoRepositoryProvider)
+                      .delete(
+                        q.id,
+                        canDeleteOnServer: account?.canDeleteOnServer ?? false,
+                      );
+                  onClosed?.call();
+                }
+              },
+            ),
+            if (status?.state == SyncState.synced &&
+                status?.remoteQsoId != null &&
+                item.qso.contestSessionId == null &&
+                item.qso.activationId == null)
+              OutlinedButton.icon(
+                icon: const Icon(Icons.cleaning_services_outlined),
+                label: Text(l10n.qsoRemoveFromDevice),
+                onPressed: () => _removeFromDevice(context, ref, item),
+              ),
+          ],
         ),
+        if (status?.state == SyncState.synced)
+          Padding(
+            padding: EdgeInsets.only(top: metrics.xs),
+            child: Text(
+              l10n.qsoRemoveFromDeviceHint,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
         SizedBox(height: metrics.lg),
         _QsoJournal(qsoId: q.id),
       ],
     );
+  }
+
+  /// Removes the local copy of one synced QSO, after Wavelog confirmed it.
+  Future<void> _removeFromDevice(
+    BuildContext context,
+    WidgetRef ref,
+    LoggedQso item,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final account = ref
+        .read(accountsProvider)
+        .value
+        ?.where((a) => a.id == item.qso.accountId)
+        .firstOrNull;
+    if (account == null) return;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.freeSpaceConfirmTitle),
+        content: Text(l10n.freeSpaceConfirmBody(1)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.actionCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.freeSpaceRemoveOnly),
+          ),
+        ],
+      ),
+    );
+    if (!(confirmed ?? false)) return;
+    final service = ref.read(qsoEvictionServiceProvider);
+    try {
+      final plan = await service.plan(account, ids: {item.qso.id});
+      if (plan.confirmed.isEmpty) {
+        messenger.showSnackBar(SnackBar(content: Text(l10n.qsoNotRemoved)));
+        return;
+      }
+      final removed = await service.carryOut(plan);
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.freeSpaceDone(removed))),
+      );
+      onClosed?.call();
+    } on EvictionCheckFailed catch (e) {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(switch (e.problem) {
+            EvictionCheckProblem.offline => l10n.freeSpaceOffline,
+            EvictionCheckProblem.unauthorized => l10n.freeSpaceUnauthorized,
+            EvictionCheckProblem.server => l10n.freeSpaceServerProblem,
+            EvictionCheckProblem.tooMany => l10n.freeSpaceTooMany,
+          }),
+        ),
+      );
+    }
   }
 }
 
@@ -275,6 +353,9 @@ class JournalTile extends StatelessWidget {
       JournalEvent.patched => l10n.journalPatched,
       JournalEvent.deletedOnServer => l10n.journalDeletedOnServer,
       JournalEvent.deletedLocallyOnly => l10n.journalDeletedLocallyOnly,
+      JournalEvent.evictedLocally => l10n.journalEvictedLocally(
+        (entry.detail['count'] as int?) ?? 0,
+      ),
       JournalEvent.verifiedOnServer => l10n.journalVerified,
       JournalEvent.notOnServer => l10n.journalNotOnServer,
       JournalEvent.retryScheduled => l10n.journalRetry,

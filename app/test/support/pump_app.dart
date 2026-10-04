@@ -232,6 +232,87 @@ class FakeCallsignNotes extends Fake implements CallsignNoteRepository {
   }
 }
 
+/// What the free-space screens ask of the repository, answered from memory.
+class FakeEvictionRepository extends Fake implements QsoEvictionRepository {
+  new({this.eligible = const [], this.blocked = const {}, this.evicted = 0});
+
+  /// QSOs that may be removed.
+  final List<LoggedQso> eligible;
+
+  /// QSOs that stay, by reason.
+  final Map<EvictionBlock, int> blocked;
+
+  /// How many were removed before.
+  final int evicted;
+
+  /// The age limits asked for, in order.
+  final List<int?> cutoffs = [];
+
+  @override
+  Future<EvictionCandidates> candidates(
+    String accountId, {
+    int? olderThanMillis,
+    Set<String>? ids,
+  }) async {
+    cutoffs.add(olderThanMillis);
+    return EvictionCandidates(
+      eligible: [
+        for (final i in eligible)
+          if (ids == null || ids.contains(i.qso.id)) i,
+      ],
+      blocked: blocked,
+    );
+  }
+
+  @override
+  Stream<int> watchEvictedCount(String accountId) => Stream.value(evicted);
+
+  @override
+  Future<Set<String>> evictedDupeHashes(String accountId) async => {};
+}
+
+/// Plans and removals answered from memory.
+class FakeEvictionService extends Fake implements QsoEvictionService {
+  new({this.confirmed = const [], this.missing = const [], this.problem});
+
+  /// What Wavelog confirms.
+  final List<LoggedQso> confirmed;
+
+  /// What it does not find.
+  final List<LoggedQso> missing;
+
+  /// If set, the check fails with it.
+  final EvictionCheckProblem? problem;
+
+  /// The ids asked for, per plan.
+  final List<Set<String>?> planned = [];
+
+  /// The plans carried out.
+  final List<EvictionPlan> carried = [];
+
+  @override
+  Future<EvictionPlan> plan(
+    Account account, {
+    int? olderThanMillis,
+    Set<String>? ids,
+  }) async {
+    planned.add(ids);
+    if (problem != null) throw EvictionCheckFailed(problem!);
+    return EvictionPlan(
+      accountId: account.id,
+      confirmed: confirmed,
+      missingOnServer: missing,
+      blocked: const {},
+    );
+  }
+
+  @override
+  Future<int> carryOut(EvictionPlan plan) async {
+    carried.add(plan);
+    return plan.confirmed.length;
+  }
+}
+
 /// A sync controller that never touches the network or plugins.
 class FakeSyncController extends SyncController {
   int runs = 0;
@@ -344,6 +425,8 @@ Future<Pumped> pumpTideline(
   List<StationProfile> stations = const [testStation],
   Map<String, CallsignInfo> callsigns = const {},
   Map<String, String> callsignNotes = const {},
+  FakeEvictionRepository? evictionRepository,
+  FakeEvictionService? evictionService,
   List<Override> overrides = const [],
 }) async {
   tester.view
@@ -442,6 +525,12 @@ Future<Pumped> pumpTideline(
           FakeCallsignDirectory(callsigns),
         ),
         callsignNoteRepositoryProvider.overrideWithValue(notes),
+        qsoEvictionRepositoryProvider.overrideWithValue(
+          evictionRepository ?? FakeEvictionRepository(),
+        ),
+        qsoEvictionServiceProvider.overrideWithValue(
+          evictionService ?? FakeEvictionService(),
+        ),
         databaseProvider.overrideWith(noDb),
         shortcutBindingStoreProvider.overrideWith(noDb),
         settingsStoreProvider.overrideWith(noDb),

@@ -4,6 +4,7 @@ import 'package:tideline/src/features/activation/activation_setup_screen.dart';
 import 'package:tideline/src/features/callsigns/callsigns_page.dart';
 import 'package:tideline/src/features/contest/contest_screen.dart';
 import 'package:tideline/src/features/contest/contest_setup_screen.dart';
+import 'package:tideline/src/features/freespace/free_space_page.dart';
 import 'package:tideline/src/features/log/log_screen.dart';
 import 'package:tideline/src/features/onboarding/onboarding_screen.dart';
 import 'package:tideline/src/features/settings/settings_pages.dart';
@@ -86,6 +87,14 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
                       builder: (context, state) => AccountDetailSettingsPage(
                         accountId: state.pathParameters['id']!,
                       ),
+                      routes: [
+                        GoRoute(
+                          path: 'free-space',
+                          builder: (context, state) => FreeSpacePage(
+                            accountId: state.pathParameters['id']!,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

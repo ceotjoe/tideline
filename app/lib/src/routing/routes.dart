@@ -21,6 +21,10 @@ abstract final class Routes {
   static String settingsAccountDetail(String accountId) =>
       '/settings/account/$accountId';
 
+  /// Removing synced QSOs of one account from this device.
+  static String settingsFreeSpace(String accountId) =>
+      '/settings/account/$accountId/free-space';
+
   /// Connecting another Wavelog account (a full-screen flow above the shell).
   static const addAccount = '/add-account';
   static const settingsAppearance = '/settings/appearance';

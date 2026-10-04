@@ -100,7 +100,7 @@ void main() {
     await client.createQso(stationProfileId: 3, fields: qso());
     await client.createQso(stationProfileId: 3, fields: qso(call: 'G4XYZ'));
     final found = await client.findQsos(
-      since: DateTime.utc(2026, 10, 1),
+      since: DateTime.utc(2026, 10),
       until: DateTime.utc(2026, 10, 3),
     );
     expect(found.map((q) => q.call).toSet(), {'DL1ABC', 'G4XYZ'});

@@ -4,6 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show StreamProviderFamily;
 import 'package:tideline/src/features/contest/contest_seed.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/tls.dart';
@@ -160,6 +161,31 @@ WavelogClient clientForAccount(Account account, String token) {
     ),
   );
 }
+
+/// Removing the local copy of QSOs that Wavelog has (ADR 0027).
+final qsoEvictionRepositoryProvider = Provider<QsoEvictionRepository>(
+  (ref) => QsoEvictionRepository(
+    ref.watch(databaseProvider),
+    ref.watch(journalRepositoryProvider),
+  ),
+);
+
+/// Plans the removal by asking the account's Wavelog first.
+final qsoEvictionServiceProvider = Provider<QsoEvictionService>(
+  (ref) => QsoEvictionService(
+    eviction: ref.watch(qsoEvictionRepositoryProvider),
+    accounts: ref.watch(accountRepositoryProvider),
+    clientFor: clientForAccount,
+  ),
+);
+
+/// How many QSOs of an account were removed from this device so far.
+final StreamProviderFamily<int, String> evictedCountProvider = StreamProvider
+    .autoDispose
+    .family<int, String>(
+      (ref, accountId) =>
+          ref.watch(qsoEvictionRepositoryProvider).watchEvictedCount(accountId),
+    );
 
 /// The sync engine, with the optional steps after the QSO pass: mirroring
 /// contest sessions on Wavelog 3.2+ and pulling the worked-before index.

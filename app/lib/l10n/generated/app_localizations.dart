@@ -3888,6 +3888,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'DXCC {dxcc} · CQ {cq} · ITU {itu}'**
   String callsignZones(String dxcc, String cq, String itu);
+
+  /// Page title and account entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Free up space'**
+  String get freeSpaceTitle;
+
+  /// Entry on the account page.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove synced QSOs from this device'**
+  String get freeSpaceEntry;
+
+  /// Subtitle of the entry on the account page.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog keeps them.'**
+  String get freeSpaceEntryHint;
+
+  /// Explanation at the top of the free-space page.
+  ///
+  /// In en, this message translates to:
+  /// **'This removes the copies on this device of QSOs that Wavelog already has. Nothing is deleted on Wavelog. Tideline asks Wavelog first and keeps everything it cannot find there. Worked-before hints and station names stay.'**
+  String get freeSpaceIntro;
+
+  /// Heading above the age choices.
+  ///
+  /// In en, this message translates to:
+  /// **'Which QSOs'**
+  String get freeSpaceScope;
+
+  /// Age choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Older than 1 year'**
+  String get freeSpaceOlder1;
+
+  /// Age choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Older than 2 years'**
+  String get freeSpaceOlder2;
+
+  /// Age choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Older than 5 years'**
+  String get freeSpaceOlder5;
+
+  /// Age choice.
+  ///
+  /// In en, this message translates to:
+  /// **'All synced QSOs'**
+  String get freeSpaceAll;
+
+  /// How many QSOs are eligible on this device.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No QSOs can be removed} =1{1 QSO can be removed} other{{count} QSOs can be removed}}'**
+  String freeSpaceEligible(int count);
+
+  /// Heading above the reasons.
+  ///
+  /// In en, this message translates to:
+  /// **'Staying on this device'**
+  String get freeSpaceStaying;
+
+  /// Reason.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO is not on Wavelog yet} other{{count} QSOs are not on Wavelog yet}}'**
+  String freeSpaceBlockedNotSynced(int count);
+
+  /// Reason.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO was changed after it was sent} other{{count} QSOs were changed after they were sent}}'**
+  String freeSpaceBlockedChanged(int count);
+
+  /// Reason.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO belongs to a contest session} other{{count} QSOs belong to contest sessions}}'**
+  String freeSpaceBlockedContest(int count);
+
+  /// Reason.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO belongs to an activation} other{{count} QSOs belong to activations}}'**
+  String freeSpaceBlockedActivation(int count);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Check with Wavelog'**
+  String get freeSpaceCheck;
+
+  /// Progress text.
+  ///
+  /// In en, this message translates to:
+  /// **'Asking Wavelog …'**
+  String get freeSpaceChecking;
+
+  /// Result of the check.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Wavelog has none of them} =1{Wavelog has 1 of them} other{Wavelog has {count} of them}}'**
+  String freeSpaceConfirmedCount(int count);
+
+  /// Result of the check.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 was not found on Wavelog and stays} other{{count} were not found on Wavelog and stay}}'**
+  String freeSpaceMissingCount(int count);
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog could not be reached. Nothing was removed.'**
+  String get freeSpaceOffline;
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'The token no longer works. Enter a new token first. Nothing was removed.'**
+  String get freeSpaceUnauthorized;
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog answered with an error. Nothing was removed.'**
+  String get freeSpaceServerProblem;
+
+  /// Problem.
+  ///
+  /// In en, this message translates to:
+  /// **'There are too many QSOs in that period to check at once. Choose a shorter period.'**
+  String get freeSpaceTooMany;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Remove 1 QSO from this device} other{Remove {count} QSOs from this device}}'**
+  String freeSpaceRemoveButton(int count);
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from this device?'**
+  String get freeSpaceConfirmTitle;
+
+  /// Dialog body.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO} other{{count} QSOs}} will be removed from this device. They stay on Wavelog. You can save them as an ADIF file first.'**
+  String freeSpaceConfirmBody(int count);
+
+  /// Dialog button.
+  ///
+  /// In en, this message translates to:
+  /// **'Export, then remove'**
+  String get freeSpaceExportRemove;
+
+  /// Dialog button.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get freeSpaceRemoveOnly;
+
+  /// Snackbar and message after removing.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Removed 1 QSO from this device. It is still on Wavelog.} other{Removed {count} QSOs from this device. They are still on Wavelog.}}'**
+  String freeSpaceDone(int count);
+
+  /// How many QSOs of this account were removed from the device before.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing removed so far} =1{1 QSO removed so far} other{{count} QSOs removed so far}}'**
+  String freeSpaceSoFar(int count);
+
+  /// Button on the QSO details of a synced QSO.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from this device'**
+  String get qsoRemoveFromDevice;
+
+  /// Hint under the button.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog keeps it. Tideline checks that first.'**
+  String get qsoRemoveFromDeviceHint;
+
+  /// Snackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Not removed: Wavelog could not confirm this QSO.'**
+  String get qsoNotRemoved;
+
+  /// Sync history entry.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO removed from this device (still on Wavelog)} other{{count} QSOs removed from this device (still on Wavelog)}}'**
+  String journalEvictedLocally(int count);
 }
 
 class _AppLocalizationsDelegate

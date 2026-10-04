@@ -399,10 +399,7 @@ void main() {
       final record = (await h.db.select(h.db.evictedQsos).get()).single;
       expect('$record', isNot(contains('DL1ABC')));
       // Another QSO, or the same one on another station, differs.
-      expect(
-        QsoEvictionRepository.dupeHash(h.qso()),
-        isNot(hashes.single),
-      );
+      expect(QsoEvictionRepository.dupeHash(h.qso()), isNot(hashes.single));
       expect(
         QsoEvictionRepository.dupeHash(q.copyWith(stationProfileId: 'other')),
         isNot(hashes.single),

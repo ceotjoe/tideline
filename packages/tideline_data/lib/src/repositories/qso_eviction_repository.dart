@@ -201,9 +201,8 @@ class QsoEvictionRepository {
     final text =
         '${k.call}|${k.minuteMillis}|${k.band}|${k.mode}|${q.stationProfileId}';
     final digest = const DartSha256().hashSync(text.codeUnits);
-    return [
-      for (final b in digest.bytes) b.toRadixString(16).padLeft(2, '0'),
-    ].join();
+    return [for (final b in digest.bytes) b.toRadixString(16).padLeft(2, '0')]
+        .join();
   }
 
   /// The fingerprints of the QSOs of [accountId] removed from this device.

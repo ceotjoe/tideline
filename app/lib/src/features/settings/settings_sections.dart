@@ -68,6 +68,12 @@ class AccountSection extends ConsumerWidget {
           ),
         ],
         ListTile(
+          leading: const Icon(Icons.cleaning_services_outlined),
+          title: Text(l10n.freeSpaceEntry),
+          subtitle: Text(l10n.freeSpaceEntryHint),
+          onTap: () => context.go(Routes.settingsFreeSpace(account.id)),
+        ),
+        ListTile(
           leading: const Icon(Icons.edit_outlined),
           title: Text(l10n.accountsRename),
           onTap: () => _rename(context, ref, account),

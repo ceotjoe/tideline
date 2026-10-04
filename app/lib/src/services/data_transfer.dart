@@ -66,6 +66,11 @@ class DataTransfer {
       for (final q in await _ref.read(logProvider.future))
         (q.qso.dupeKey, q.qso.stationProfileId),
     };
+    // QSOs removed from this device to free space are on Wavelog already:
+    // importing them again would only upload duplicates it rejects.
+    final removed = await _ref
+        .read(qsoEvictionRepositoryProvider)
+        .evictedDupeHashes(account.id);
     final toImport = <Qso>[];
     var duplicates = 0;
     var rejected = 0;
@@ -80,7 +85,8 @@ class DataTransfer {
         case AdifRejected():
           rejected++;
         case AdifImported(:final qso):
-          if (existing.add((qso.dupeKey, qso.stationProfileId))) {
+          if (!removed.contains(QsoEvictionRepository.dupeHash(qso)) &&
+              existing.add((qso.dupeKey, qso.stationProfileId))) {
             toImport.add(qso);
           } else {
             duplicates++;
@@ -93,6 +99,20 @@ class DataTransfer {
       duplicates: duplicates,
       rejected: rejected,
       warnings: doc.warnings.length,
+    );
+  }
+
+  /// [qsos] as an ADIF file, oldest first (for example the QSOs about to be
+  /// removed from this device).
+  Uint8List exportAdifOf(Iterable<Qso> qsos) {
+    final sorted = [...qsos]..sort((a, b) => a.timeOn.compareTo(b.timeOn));
+    const writer = AdiWriter(programVersion: appVersion);
+    return Uint8List.fromList(
+      utf8.encode(
+        writer.document([
+          for (final q in sorted) AdifQsoMapping.toRecord(q),
+        ], createdUtc: DateTime.now().toUtc()),
+      ),
     );
   }
 

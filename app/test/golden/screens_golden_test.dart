@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tideline/src/settings/app_settings.dart';
-import 'package:tideline_data/tideline_data.dart' show Account, CallsignInfo;
+import 'package:tideline_data/tideline_data.dart'
+    show Account, CallsignInfo, EvictionBlock, LoggedQso;
+import 'package:tideline_domain/tideline_domain.dart';
 
 import '../support/pump_app.dart';
 
@@ -235,4 +237,59 @@ void main() {
       matchesGoldenFile('goldens/callsigns_phone.png'),
     );
   });
+
+  for (final MapEntry(key: sizeName, value: size) in {
+    'phone': TestSizes.phone,
+    'tablet_portrait': TestSizes.tabletPortrait,
+  }.entries) {
+    testWidgets('free up space, checked, $sizeName', (tester) async {
+      final synced = [
+        for (var i = 0; i < 3; i++)
+          LoggedQso(
+            Qso(
+              id: 'e$i',
+              accountId: 'acc-1',
+              call: Callsign.tryParse('DL1ABC')!,
+              timeOn: UtcDateTime(DateTime.utc(2020, 1, 1, 12, i)),
+              band: Band.tryParse('20m')!,
+              mode: Mode.tryParse('CW')!,
+            ),
+            SyncStatus(state: SyncState.synced, remoteQsoId: 100 + i),
+          ),
+      ];
+      await pumpTideline(
+        tester,
+        size: size,
+        settings: const AppSettings(theme: ThemeChoice.light),
+        evictionRepository: FakeEvictionRepository(
+          eligible: synced,
+          blocked: const {
+            EvictionBlock.notSynced: 4,
+            EvictionBlock.inActivation: 1,
+          },
+          evicted: 12,
+        ),
+        evictionService: FakeEvictionService(
+          confirmed: synced.take(2).toList(),
+          missing: synced.skip(2).toList(),
+        ),
+      );
+      GoRouter.of(tester.element(find.byType(Scaffold).first))
+          .go('/settings/account/acc-1/free-space');
+      await tester.pumpAndSettle();
+      await tester.scrollUntilVisible(
+        find.text('Check with Wavelog'),
+        100,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.ensureVisible(find.text('Check with Wavelog'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Check with Wavelog'));
+      await tester.pumpAndSettle();
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('goldens/free_space_$sizeName.png'),
+      );
+    });
+  }
 }

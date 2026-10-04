@@ -20,6 +20,7 @@ reporting service and no third-party tracker. The developers never receive your 
 | Worked-before index (calls, bands and modes from your log and your Wavelog server) | "Worked before" hints | Encrypted database; rebuildable from settings |
 | Callsign directory (name, place, locator and zones of the stations you worked, from your QSO history) | Showing what you know about a station while you log, offline | Encrypted database; rebuildable from settings; never sent anywhere |
 | Callsign notes (text you write about a station) | Your own memory aid | Encrypted database; included in encrypted backups; never sent to Wavelog or exported to ADIF |
+| Records of QSOs removed from this device to free space (local id, Wavelog id, time and a hash of the QSO's duplicate key; no callsign) | Not uploading or importing them again | Encrypted database; not part of backups or exports |
 | Activations (programme, reference, your grid square, start and end) | Activation logging and progress | Encrypted database |
 | Contest definitions you import | Contest rules and scoring | Encrypted database |
 | Device location (only while you ask for it) | Computing your Maidenhead grid locator | Used on device, stored only as the grid in your QSO / activation |
