@@ -186,6 +186,17 @@ class ActivationRepository {
         return stored;
       });
 
+  /// Like [logQso] for several QSOs in **one** transaction: all or none.
+  /// Returns the stored QSOs.
+  Future<List<Qso>> logQsos(List<Qso> qsos, {required String activationId}) =>
+      _db.transaction(() async {
+        final stored = <Qso>[];
+        for (final qso in qsos) {
+          stored.add(await logQso(qso, activationId: activationId));
+        }
+        return stored;
+      });
+
   /// The live QSOs of an activation, oldest first.
   Stream<List<Qso>> watchQsos(String activationId) =>
       (_db.select(_db.qsos)

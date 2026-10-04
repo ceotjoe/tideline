@@ -39,6 +39,15 @@ class QsoRepository {
   /// Logs a new QSO.
   Future<void> log(Qso qso) => _insert(qso, JournalEvent.logged);
 
+  /// Logs several new QSOs in **one** transaction: all or none (Fast Log
+  /// Entry). Returns how many were added.
+  Future<int> logAll(List<Qso> qsos) => _db.transaction(() async {
+    for (final q in qsos) {
+      await _insert(q, JournalEvent.logged);
+    }
+    return qsos.length;
+  });
+
   /// Imports QSOs in one transaction. Returns how many were added.
   Future<int> importAll(List<Qso> qsos) => _db.transaction(() async {
     for (final q in qsos) {
