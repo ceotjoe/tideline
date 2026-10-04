@@ -129,3 +129,47 @@ Without `key.properties` the build is signed with the debug key and Play will re
 Not automated yet: the upload. The release workflow builds the AAB; uploading through the Play Developer API needs a
 service account (step 5.4).
 
+## macOS: Mac App Store and TestFlight
+
+Prepared on 2026-10-04: privacy manifest, languages, category `public.app-category.utilities` (change it in
+`app/macos/Runner/Info.plist` if you prefer another), the local-network text (macOS asks for it too) and
+`app/macos/ExportOptions.plist`. `flutter build macos --release` works (60.2 MB, universal, sandbox with
+network client and user-selected files; `sqlite3mc` imports the same APIs as on iOS, so the manifest is the same).
+**Not done:** a signed archive, an upload, and a run of the signed app. The project has **no development team** on
+purpose: CI builds the Mac app without certificates, and a team with automatic signing would make those builds fail.
+
+### In the Apple Developer account (once)
+1. Register the App ID for iOS **and macOS** (no capabilities; see the Android and iOS notes above), or add macOS to the
+   existing one.
+2. Certificates: **Apple Distribution** and **Mac Installer Distribution** (Xcode creates them with *Manage
+   Certificates*). The Mac App Store needs a provisioning profile for the app ("Mac App Store Connect" type); automatic
+   signing in Xcode creates it.
+3. In App Store Connect, add the macOS platform to the app record.
+
+### Build and upload
+1. `cd app && flutter build macos --release --build-name 0.3.0 --build-number <N>`.
+2. Open `app/macos/Runner.xcworkspace` in Xcode → target **Runner** → *Signing & Capabilities*: choose the team for
+   **Release** (this writes the team into the project; do not commit that change, or CI builds break).
+3. *Product → Archive* (destination *Any Mac*), then *Distribute App → App Store Connect → Upload*. Xcode signs with the
+   distribution certificates and creates the package.
+4. Command line alternative, not run yet:
+   `xcodebuild -workspace app/macos/Runner.xcworkspace -scheme Runner -configuration Release archive -archivePath build/Tideline.xcarchive DEVELOPMENT_TEAM=Q486NF4XF6 -allowProvisioningUpdates`
+   and then `xcodebuild -exportArchive -archivePath build/Tideline.xcarchive -exportOptionsPlist app/macos/ExportOptions.plist -exportPath build/mac-export -allowProvisioningUpdates`.
+5. In TestFlight, install the build from the Mac **TestFlight** app. External macOS testers need Beta App Review like on iOS.
+
+### What to check on the first signed run
+- **The keychain.** macOS uses the legacy file-based keychain (`usesDataProtectionKeychain: false`, ADR 0006) because the
+  data-protection keychain needs a provisioning profile with a keychain access group. Test: set up an account, quit,
+  start again. The token and the database must still unlock, with no keychain password prompt. A build signed
+  differently from an earlier one (development vs distribution) cannot read items of the other: expect to enter the
+  token again on a Mac where you ran a development build before, and, if the database key is lost, "Your log can't be
+  unlocked" (see the troubleshooting chapter). Use a clean Mac user or move `tideline.sqlite` aside first.
+  If the legacy keychain does not work in the sandbox of the store build, switch to the data-protection keychain (a
+  `keychain-access-groups` entitlement and the profile) and record it in ADR 0006.
+- ADIF import and export and backups still work through the system pickers (sandbox).
+- Connecting to a server in your own network (the local-network prompt) and to HTTPS servers.
+
+### Not needed for the Mac App Store
+Notarization and the hardened runtime are for direct downloads outside the store. If you later distribute a `.dmg`,
+that is a separate runbook.
+

@@ -18,6 +18,8 @@ logging and sync) and 0.2 (contest mode) were never released on their own.
   and the Face ID text in both languages.
   The launch screen shows the Tideline mark instead of the template's empty placeholder image, which Flutter's IPA
   validation rejects. The system's local-network prompt now explains why (Wavelog servers in your own network).
+- **macOS release preparation.** The same privacy manifest, the declared languages and local-network text, and the App
+  Store category (Utilities). A Mac App Store export options file and a runbook (`docs/release.md`).
 - **SOTA, POTA and WWFF activations** (ADR 0021).
   - Reference lists you download yourself from the official source, only when you press Download (HTTPS only, size
     caps, streamed to disk, cancellable). The installed list is replaced in one step only after the whole file was read,

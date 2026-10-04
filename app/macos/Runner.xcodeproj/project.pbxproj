@@ -29,6 +29,8 @@
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
+		B1B2C3D4E5F60718293A4C02 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B1B2C3D4E5F60718293A4C01 /* PrivacyInfo.xcprivacy */; };
+		B1B2C3D4E5F60718293A4C06 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1B2C3D4E5F60718293A4C03 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +84,9 @@
 		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		B1B2C3D4E5F60718293A4C01 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Runner/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		B1B2C3D4E5F60718293A4C04 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Runner/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B1B2C3D4E5F60718293A4C05 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Runner/de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +154,8 @@
 				402C8AA6C19F0FCB8A0FE856 /* AppIcon.icon */,
 				33CC10F42044A3C60003C045 /* MainMenu.xib */,
 				33CC10F72044A3C60003C045 /* Info.plist */,
+				B1B2C3D4E5F60718293A4C03 /* InfoPlist.strings */,
+				B1B2C3D4E5F60718293A4C01 /* PrivacyInfo.xcprivacy */,
 			);
 			name = Resources;
 			path = ..;
@@ -267,6 +274,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				de,
 				Base,
 			);
 			mainGroup = 33CC10E42044A3C60003C045;
@@ -299,6 +307,8 @@
 				33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */,
 				07585991AB79E209C4F30BCA /* AppIcon.icon in Resources */,
 				33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */,
+				B1B2C3D4E5F60718293A4C02 /* PrivacyInfo.xcprivacy in Resources */,
+				B1B2C3D4E5F60718293A4C06 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +397,15 @@
 			);
 			name = MainMenu.xib;
 			path = Runner;
+			sourceTree = "<group>";
+		};
+		B1B2C3D4E5F60718293A4C03 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B1B2C3D4E5F60718293A4C04 /* en */,
+				B1B2C3D4E5F60718293A4C05 /* de */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -55,19 +55,24 @@ void main() {
     expect(msix, '$appVersion.0');
   });
 
-  test('the iOS privacy manifest declares no tracking and no collection', () {
-    final manifest = File('ios/Runner/PrivacyInfo.xcprivacy')
-        .readAsStringSync();
-    expect(
-      manifest,
-      matches(RegExp(r'<key>NSPrivacyTracking</key>\s*<false/>')),
+  for (final platform in ['ios', 'macos']) {
+    test(
+      'the $platform privacy manifest declares no tracking or collection',
+      () {
+        final manifest = File('$platform/Runner/PrivacyInfo.xcprivacy')
+            .readAsStringSync();
+        expect(
+          manifest,
+          matches(RegExp(r'<key>NSPrivacyTracking</key>\s*<false/>')),
+        );
+        expect(
+          manifest,
+          matches(RegExp(r'<key>NSPrivacyCollectedDataTypes</key>\s*<array/>')),
+        );
+        // What the bundled SQLite uses: file timestamps and disk space.
+        expect(manifest, contains('NSPrivacyAccessedAPICategoryFileTimestamp'));
+        expect(manifest, contains('NSPrivacyAccessedAPICategoryDiskSpace'));
+      },
     );
-    expect(
-      manifest,
-      matches(RegExp(r'<key>NSPrivacyCollectedDataTypes</key>\s*<array/>')),
-    );
-    // What the bundled SQLite uses: file timestamps and disk space.
-    expect(manifest, contains('NSPrivacyAccessedAPICategoryFileTimestamp'));
-    expect(manifest, contains('NSPrivacyAccessedAPICategoryDiskSpace'));
-  });
+  }
 }
