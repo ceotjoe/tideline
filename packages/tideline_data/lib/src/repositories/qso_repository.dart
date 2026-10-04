@@ -325,6 +325,30 @@ class QsoRepository {
     return out;
   }
 
+  /// The duplicate keys (call, minute, band, mode, station) of the live QSOs
+  /// of [accountId] that started between [fromMillis] and [toMillis]
+  /// (inclusive): what a batch of new QSOs is compared with.
+  Future<Set<(String, int, String, String, String?)>> dupeKeysBetween(
+    String accountId,
+    int fromMillis,
+    int toMillis,
+  ) async {
+    final rows =
+        await (_db.select(_db.qsos)..where(
+              (q) =>
+                  q.accountId.equals(accountId) &
+                  q.deletedAt.isNull() &
+                  q.timeOn.isBetweenValues(fromMillis, toMillis),
+            ))
+            .get();
+    final keys = <(String, int, String, String, String?)>{};
+    for (final r in rows) {
+      final k = qsoFromRow(r).dupeKey;
+      keys.add((k.call, k.minuteMillis, k.band, k.mode, r.stationProfileId));
+    }
+    return keys;
+  }
+
   /// Synced QSOs of [accountId] whose duplicate key matches one of [keys].
   Future<int> countSyncedMatching(
     String accountId,

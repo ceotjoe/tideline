@@ -60,6 +60,17 @@ void main() {
     });
   });
 
+  test('dupeKeysBetween lists the live QSOs of the span, as keys', () async {
+    final a = testQso(timeOn: 60000 * 10);
+    final b = testQso(call: 'G4XYZ', timeOn: 60000 * 20);
+    final c = testQso(call: 'W1AW', timeOn: 60000 * 90);
+    await h.qsos.logAll([a, b, c]);
+    await h.qsos.delete(b.id, canDeleteOnServer: false);
+    final keys = await h.qsos.dupeKeysBetween('acc', 0, 60000 * 60);
+    expect(keys, {('DL1ABC', 60000 * 10, '20m', 'CW', null)});
+    expect(a.dupeKey.call, 'DL1ABC');
+  });
+
   group('activation logQsos', () {
     Future<Activation> start() => activations.start(
       accountId: 'acc',
