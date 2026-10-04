@@ -75,4 +75,18 @@ void main() {
       },
     );
   }
+
+  test(
+    'the macOS project has no signing team (CI builds without certificates)',
+    () {
+      final project = File('macos/Runner.xcodeproj/project.pbxproj');
+      expect(
+        project.readAsStringSync(),
+        isNot(contains('DEVELOPMENT_TEAM')),
+        reason:
+            'Set the team in macos/Runner/Configs/Signing.local.xcconfig '
+            '(git-ignored), not in Xcode. See docs/release.md.',
+      );
+    },
+  );
 }

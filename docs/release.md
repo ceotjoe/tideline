@@ -136,7 +136,8 @@ Prepared on 2026-10-04: privacy manifest, languages, category `public.app-catego
 `app/macos/ExportOptions.plist`. `flutter build macos --release` works (60.2 MB, universal, sandbox with
 network client and user-selected files; `sqlite3mc` imports the same APIs as on iOS, so the manifest is the same).
 **Not done:** a signed archive, an upload, and a run of the signed app. The project has **no development team** on
-purpose: CI builds the Mac app without certificates, and a team with automatic signing would make those builds fail.
+purpose: CI builds the Mac app without certificates, and a team with automatic signing would make those builds fail. The
+team comes from a git-ignored file instead (see below).
 
 ### In the Apple Developer account (once)
 1. Register the App ID for iOS **and macOS** (no capabilities; see the Android and iOS notes above), or add macOS to the
@@ -148,8 +149,11 @@ purpose: CI builds the Mac app without certificates, and a team with automatic s
 
 ### Build and upload
 1. `cd app && flutter build macos --release --build-name 0.3.0 --build-number <N>`.
-2. Open `app/macos/Runner.xcworkspace` in Xcode → target **Runner** → *Signing & Capabilities*: choose the team for
-   **Release** (this writes the team into the project; do not commit that change, or CI builds break).
+2. Set your team **outside the tracked project**: copy `app/macos/Runner/Configs/Signing.local.xcconfig.example` to
+   `Signing.local.xcconfig` in the same folder (git-ignored) and put your team ID in it. The Release configuration reads it
+   when it exists. Do not choose the team in Xcode's *Signing & Capabilities* tab: that writes `DEVELOPMENT_TEAM` into
+   `project.pbxproj`, and a team with automatic signing makes CI's certificate-less `flutter build macos` fail. A test
+   (`app/test/contest/cabrillo_categories_test.dart`) fails if the team ever reaches the project file.
 3. *Product → Archive* (destination *Any Mac*), then *Distribute App → App Store Connect → Upload*. Xcode signs with the
    distribution certificates and creates the package.
 4. Command line alternative, not run yet:

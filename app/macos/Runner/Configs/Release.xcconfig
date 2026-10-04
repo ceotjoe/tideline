@@ -1,2 +1,5 @@
 #include "../../Flutter/Flutter-Release.xcconfig"
 #include "Warnings.xcconfig"
+// Your signing team for Mac App Store builds. The file is optional and
+// git-ignored (docs/release.md), so CI builds without certificates.
+#include? "Signing.local.xcconfig"
