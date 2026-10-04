@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-04
+
+Feedback from the first test round: the keyboard on phones and a less cluttered settings screen. Build number 3 (0.3.0
+had builds 1 and 2).
+
 ### Added
 - **Hide keyboard on phones.** While the on-screen keyboard is up, a **Hide keyboard** bar sits above it and replaces
   the bottom navigation, which the keyboard used to cover. Tapping empty space or dragging the log list or settings

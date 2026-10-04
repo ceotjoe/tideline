@@ -48,10 +48,11 @@ Encode a file with: `base64 -i file.jks | pbcopy` (macOS).
 Prerequisites, all in the maintainer's Apple account: an app record for `com.ITWebService.tideline` in App Store
 Connect, and the privacy manifest and export-compliance answer from step 5.1 of the roadmap in the build.
 
-1. Choose the version and build number. The version stays `0.3.0` for the first round; the build number grows with
-   every upload (`1`, `2`, …). Keep `app/pubspec.yaml`, `app/lib/src/app_version.dart` (`appVersion`) and
-   `msix_version` in step.
-2. From `app/`: `flutter build ipa --release --build-name 0.3.0 --build-number <N>`. The IPA lands in
+1. Choose the version and build number. The version is `0.3.1` for this round (`0.3.0` had builds 1 and 2). The build
+   number keeps growing across versions (`3` for 0.3.1, then `4`, …), which also keeps the Play `versionCode` and the
+   Mac builds in order. Keep `app/pubspec.yaml`, `app/lib/src/app_version.dart` (`appVersion`) and `msix_version` in
+   step.
+2. From `app/`: `flutter build ipa --release --build-name 0.3.1 --build-number <N>`. The IPA lands in
    `app/build/ios/ipa/`.
 3. Upload it with the Transporter app (drag the IPA in, **Deliver**).
 4. In App Store Connect → TestFlight: wait for processing, answer any compliance question, add an **internal** testing
@@ -105,7 +106,7 @@ Checked on 2026-10-04: `flutter build appbundle --release` succeeds (69.4 MB, de
 
 ### 2. A signed build for your own device (TalkBack tests, no Play needed)
 ```bash
-cd app && flutter build apk --release --build-name 0.3.0 --build-number 1
+cd app && flutter build apk --release --build-name 0.3.1 --build-number 3
 adb install -r build/app/outputs/flutter-apk/app-release.apk
 ```
 Without `key.properties` the build is signed with the debug key and Play will refuse it, but it installs for testing.
@@ -117,7 +118,7 @@ Without `key.properties` the build is signed with the debug key and Play will re
    questionnaire, target audience (not for children), and the **Data safety** form. From `PRIVACY.md`: no data collected
    or shared, no tracking. The merged manifest of the release build (checked 2026-10-04) has `INTERNET`, `ACCESS_NETWORK_STATE`
    (connectivity check), `USE_BIOMETRIC` and `USE_FINGERPRINT` (app lock), minSdk 24 and targetSdk 36.
-3. Build the bundle: `cd app && flutter build appbundle --release --build-name 0.3.0 --build-number <N>`.
+3. Build the bundle: `cd app && flutter build appbundle --release --build-name 0.3.1 --build-number <N>`.
    The `versionCode` is the build number and must grow with every upload. Output:
    `build/app/outputs/bundle/release/app-release.aab`.
 4. **Testing → Internal testing** → create a release → upload the AAB, accept Play App Signing → add testers by email

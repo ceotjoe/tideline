@@ -3,7 +3,7 @@
 For the maintainer and any tester of a TestFlight build (ADR 0022). Work through the sections that fit your device;
 none of them needs to be done in one sitting. Tick what works and write down what does not.
 
-**Build under test:** Tideline 0.3.0, build ____ · **Device:** ____ · **iOS/iPadOS:** ____ · **Wavelog:** ____ ·
+**Build under test:** Tideline 0.3.1, build ____ · **Device:** ____ · **iOS/iPadOS:** ____ · **Wavelog:** ____ ·
 **Language:** EN / DE
 
 ## 0. Before you start
