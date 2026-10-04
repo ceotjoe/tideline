@@ -10,7 +10,7 @@ auf. Alles funktioniert offline.
 Die Listen der Gipfel, Parks und Gebiete gehören nicht zu Tideline: Du lädst jede Liste selbst herunter, direkt von der
 offiziellen Quelle. Es wird nichts geladen, bevor Du es auslöst.
 
-1. Öffne die **Einstellungen** und gehe zu **Referenzlisten (SOTA, POTA, WWFF)**.
+1. Öffne **Einstellungen → Referenzdaten** und gehe zu **Referenzlisten (SOTA, POTA, WWFF)**.
 2. Prüfe die Adresse der Liste. Sie beginnt mit der offiziellen Datei und lässt sich ändern. Es funktionieren nur
    `https`-Adressen.
 3. Tippe auf **Herunterladen**. Jede Liste ist 10 bis 25 MB groß, nimm also WLAN. Ein Fortschrittsbalken und ein Text

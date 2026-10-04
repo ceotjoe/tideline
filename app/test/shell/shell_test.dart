@@ -45,7 +45,7 @@ void main() {
       tester.view.physicalSize =
           TestSizes.tabletLandscape * tester.view.devicePixelRatio;
       await tester.pumpAndSettle();
-      expect(find.text('Appearance'), findsOneWidget);
+      expect(find.text('Appearance and language'), findsOneWidget);
     });
   });
 
@@ -74,6 +74,8 @@ void main() {
         settings: const AppSettings(density: TidelineDensity.glove),
       );
       await tester.tap(find.text('Settings').last);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Appearance and language'));
       await tester.pumpAndSettle();
       final tile = tester.getSize(
         find.byType(RadioListTile<ThemeChoice>).first,

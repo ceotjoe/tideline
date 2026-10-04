@@ -2916,5 +2916,33 @@
   "commandEndActivation": "End the running activation",
   "@commandEndActivation": {
     "description": "Command name."
+  },
+  "settingsAppearanceAndLanguage": "Appearance and language",
+  "@settingsAppearanceAndLanguage": {
+    "description": "Settings page title and the hub entry for theme, touch targets, text and language."
+  },
+  "settingsAppearanceHint": "Theme, text and language",
+  "@settingsAppearanceHint": {
+    "description": "Hub entry subtitle."
+  },
+  "settingsAccountHint": "Server and access token",
+  "@settingsAccountHint": {
+    "description": "Hub entry subtitle under Wavelog account."
+  },
+  "settingsReferenceData": "Reference data",
+  "@settingsReferenceData": {
+    "description": "Settings page title and hub entry for the downloaded lists and indexes."
+  },
+  "settingsReferenceDataHint": "Lists and indexes you download",
+  "@settingsReferenceDataHint": {
+    "description": "Hub entry subtitle."
+  },
+  "settingsSecurityAndBackup": "Security and backup",
+  "@settingsSecurityAndBackup": {
+    "description": "Settings page title and hub entry for app lock, import, export and backup."
+  },
+  "settingsSecurityAndBackupHint": "App lock, ADIF and backup",
+  "@settingsSecurityAndBackupHint": {
+    "description": "Hub entry subtitle."
   }
 }

@@ -132,7 +132,7 @@ class _ActivationSetupScreenState extends ConsumerState<ActivationSetupScreen> {
                 Note(
                   l10n.activationNoPack(program.code),
                   action: TextButton(
-                    onPressed: () => context.go(Routes.settings),
+                    onPressed: () => context.go(Routes.settingsReferenceData),
                     child: Text(l10n.activationOpenSettings),
                   ),
                 ),

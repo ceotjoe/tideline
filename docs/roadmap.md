@@ -206,6 +206,10 @@ B FLE, C field modes). Nothing here is built yet.
 | 6.7 | **FLE** (B above). | v0.4 |
 | 6.8 | **Field modes** (C above), including the keyboard behaviour of 6.1. | v0.4 |
 
+_6.2 done 2026-10-04: [ADR 0023](adr/0023-settings-hub.md). The hub has four groups plus the shortcuts entry; the "Logging" group was not created because nothing belongs in it yet._
+
+_6.1 done 2026-10-04 (`7f25482`)._
+
 Every step follows the Definition of Done. Order: 6.1 and 6.2 as v0.3.1, then 6.3 to 6.8. 6.6 comes after 6.5.
 
 ### Decisions (maintainer, 2026-10-04)

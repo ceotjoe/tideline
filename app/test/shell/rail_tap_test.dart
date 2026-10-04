@@ -7,6 +7,9 @@ void main() {
     await pumpTideline(tester, size: TestSizes.tabletPortrait);
     await tester.tap(find.text('Settings').last);
     await tester.pumpAndSettle();
+    expect(find.text('Appearance and language'), findsOneWidget);
+    await tester.tap(find.text('Appearance and language'));
+    await tester.pumpAndSettle();
     expect(find.text('Appearance'), findsOneWidget);
     // Each radio group has a visible title, not only a semantics label.
     expect(find.text('Theme'), findsOneWidget);

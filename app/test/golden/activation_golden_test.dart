@@ -128,6 +128,8 @@ void main() {
       await pumpTideline(tester, size: size, referencePacks: store);
       await tester.tap(find.text('Settings').last);
       await tester.pumpAndSettle();
+      await tester.tap(find.text('Reference data'));
+      await tester.pumpAndSettle();
       await tester.scrollUntilVisible(
         find.text('Parks on the Air (POTA)'),
         200,

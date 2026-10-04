@@ -22,5 +22,6 @@
 - [0020](0020-landscape-entry-strip.md) Entry strip for the log screen in landscape
 - [0021](0021-reference-packs-and-activations.md) Reference packs and activation sessions
 - [0022](0022-testflight-first-distribution.md) Distribution: TestFlight first, stores later
+- [0023](0023-settings-hub.md) Settings as a hub of pages
 
 New ADRs start from [0000-template.md](0000-template.md).

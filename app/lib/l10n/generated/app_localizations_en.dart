@@ -2219,6 +2219,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commandEndActivation => 'End the running activation';
+
+  @override
+  String get settingsAppearanceAndLanguage => 'Appearance and language';
+
+  @override
+  String get settingsAppearanceHint => 'Theme, text and language';
+
+  @override
+  String get settingsAccountHint => 'Server and access token';
+
+  @override
+  String get settingsReferenceData => 'Reference data';
+
+  @override
+  String get settingsReferenceDataHint => 'Lists and indexes you download';
+
+  @override
+  String get settingsSecurityAndBackup => 'Security and backup';
+
+  @override
+  String get settingsSecurityAndBackupHint => 'App lock, ADIF and backup';
 }
 
 /// The translations for English (`en_XA`).
@@ -4491,4 +4512,28 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get commandEndActivation => '[Éñð ţĥé ŕûññîñĝ áçţîṽáţîöñ···········]';
+
+  @override
+  String get settingsAppearanceAndLanguage =>
+      '[Åþþéáŕáñçé áñð ļáñĝûáĝé··········]';
+
+  @override
+  String get settingsAppearanceHint => '[Ţĥéɱé, ţéẋţ áñð ļáñĝûáĝé··········]';
+
+  @override
+  String get settingsAccountHint => '[Šéŕṽéŕ áñð áççéšš ţöķéñ··········]';
+
+  @override
+  String get settingsReferenceData => '[Ŕéƒéŕéñçé ðáţá······]';
+
+  @override
+  String get settingsReferenceDataHint =>
+      '[Ļîšţš áñð îñðéẋéš ýöû ðöŵñļöáð············]';
+
+  @override
+  String get settingsSecurityAndBackup => '[Šéçûŕîţý áñð ƀáçķûþ········]';
+
+  @override
+  String get settingsSecurityAndBackupHint =>
+      '[Åþþ ļöçķ, ÅÐÎƑ áñð ƀáçķûþ··········]';
 }

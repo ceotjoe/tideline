@@ -12,8 +12,8 @@ Synchronisierung läuft getrennt davon und lässt dich nie warten.
    - Außerdem siehst du, ob du die Station **schon gearbeitet** hast: neues Rufzeichen, neues Band, neue Betriebsart,
      neue Kombination aus Band und Betriebsart oder schon gearbeitet (mit dem Datum des ersten QSOs). Das kommt aus dem
      Index „Schon gearbeitet“, der dein Log und nach einer Synchronisierung auch die QSOs auf deinem Wavelog-Server
-     enthält. Wirkt er falsch (zum Beispiel nachdem du QSOs in Wavelog gelöscht hast), nutze **Einstellungen → Index
-     „Schon gearbeitet“ → Index „Schon gearbeitet“ neu aufbauen**.
+     enthält. Wirkt er falsch (zum Beispiel nachdem du QSOs in Wavelog gelöscht hast), nutze **Einstellungen → Referenzdaten →
+     Index „Schon gearbeitet“ → Index „Schon gearbeitet“ neu aufbauen**.
 2. **Band, Betriebsart und Frequenz.**
    - Wähle Band und Betriebsart oder gib einfach eine Frequenz ein; das Band wird automatisch gewählt. Unter dem Feld
      zeigt Tideline, wie es deine Eingabe verstanden hat, zum Beispiel „14.205 MHz · 20 m“.

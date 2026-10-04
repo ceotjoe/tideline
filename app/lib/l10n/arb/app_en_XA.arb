@@ -580,5 +580,12 @@
   "activationTheirReferenceWwff": "[Ţĥéîŕ áŕéá (ŴŴƑƑ)·······]",
   "activationIssueTheirReference": "[Ţĥîš îš ñöţ á ṽáļîð ŕéƒéŕéñçé.············]",
   "commandStartActivation": "[Šţáŕţ áñ áçţîṽáţîöñ········]",
-  "commandEndActivation": "[Éñð ţĥé ŕûññîñĝ áçţîṽáţîöñ···········]"
+  "commandEndActivation": "[Éñð ţĥé ŕûññîñĝ áçţîṽáţîöñ···········]",
+  "settingsAppearanceAndLanguage": "[Åþþéáŕáñçé áñð ļáñĝûáĝé··········]",
+  "settingsAppearanceHint": "[Ţĥéɱé, ţéẋţ áñð ļáñĝûáĝé··········]",
+  "settingsAccountHint": "[Šéŕṽéŕ áñð áççéšš ţöķéñ··········]",
+  "settingsReferenceData": "[Ŕéƒéŕéñçé ðáţá······]",
+  "settingsReferenceDataHint": "[Ļîšţš áñð îñðéẋéš ýöû ðöŵñļöáð············]",
+  "settingsSecurityAndBackup": "[Šéçûŕîţý áñð ƀáçķûþ········]",
+  "settingsSecurityAndBackupHint": "[Åþþ ļöçķ, ÅÐÎƑ áñð ƀáçķûþ··········]"
 }

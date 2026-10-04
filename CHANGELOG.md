@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   also closes the keyboard. Tablets and computers are unchanged (ADR 0020).
 
 ### Changed
+- **Settings are a hub of pages** (ADR 0023): Wavelog account, Appearance and language, Reference data, Security and
+  backup, each on its own page, with the keyboard shortcuts one tap away. Nothing about what the settings do changed.
 - RST fields in the log form open a signed number keyboard (frequency and the contest exchange already had number
   keyboards).
 

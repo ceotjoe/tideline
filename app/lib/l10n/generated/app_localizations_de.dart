@@ -2236,4 +2236,26 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get commandEndActivation => 'Laufende Aktivierung beenden';
+
+  @override
+  String get settingsAppearanceAndLanguage => 'Darstellung und Sprache';
+
+  @override
+  String get settingsAppearanceHint => 'Farbschema, Text und Sprache';
+
+  @override
+  String get settingsAccountHint => 'Server und Zugangstoken';
+
+  @override
+  String get settingsReferenceData => 'Referenzdaten';
+
+  @override
+  String get settingsReferenceDataHint =>
+      'Listen und Indizes zum Herunterladen';
+
+  @override
+  String get settingsSecurityAndBackup => 'Sicherheit und Backup';
+
+  @override
+  String get settingsSecurityAndBackupHint => 'App-Sperre, ADIF und Backup';
 }

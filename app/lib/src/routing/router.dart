@@ -5,6 +5,7 @@ import 'package:tideline/src/features/contest/contest_screen.dart';
 import 'package:tideline/src/features/contest/contest_setup_screen.dart';
 import 'package:tideline/src/features/log/log_screen.dart';
 import 'package:tideline/src/features/onboarding/onboarding_screen.dart';
+import 'package:tideline/src/features/settings/settings_pages.dart';
 import 'package:tideline/src/features/settings/settings_screen.dart';
 import 'package:tideline/src/features/sync/sync_screen.dart';
 import 'package:tideline/src/layout/adaptive_shell.dart';
@@ -70,6 +71,29 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
             GoRoute(
               path: Routes.settings,
               builder: (context, state) => const SettingsScreen(),
+              routes: [
+                GoRoute(
+                  path: 'account',
+                  builder: (context, state) => const AccountSettingsPage(),
+                ),
+                GoRoute(
+                  path: 'appearance',
+                  builder: (context, state) => const AppearanceSettingsPage(),
+                ),
+                GoRoute(
+                  path: 'reference-data',
+                  builder: (context, state) =>
+                      const ReferenceDataSettingsPage(),
+                ),
+                GoRoute(
+                  path: 'security',
+                  builder: (context, state) => const SecuritySettingsPage(),
+                ),
+                GoRoute(
+                  path: 'developer',
+                  builder: (context, state) => const DeveloperSettingsPage(),
+                ),
+              ],
             ),
           ],
         ),

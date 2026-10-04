@@ -9,7 +9,7 @@ the other station's reference for park-to-park and summit-to-summit contacts. Al
 The lists of summits, parks and areas are not part of Tideline: you download each one yourself, directly from its
 official source. Nothing is downloaded until you ask.
 
-1. Open **Settings** and go to **Reference lists (SOTA, POTA, WWFF)**.
+1. Open **Settings → Reference data** and go to **Reference lists (SOTA, POTA, WWFF)**.
 2. Check the address of the list. It starts as the official file and you can change it. Only `https` addresses work.
 3. Press **Download**. Each list is 10 to 25 MB, so use Wi-Fi. A progress bar and a text show how far it is. **Cancel**
    stops it and leaves any installed list as it was.

@@ -5,7 +5,7 @@
   - Every logged QSO is announced.
   - The sync level is spoken as text.
 - **Large text.** Tideline follows your system text size up to 200 %.
-- **Easy-to-read font.** **Settings → Easy-to-read font** switches to Atkinson Hyperlegible, a typeface designed so that
+- **Easy-to-read font.** **Settings → Appearance and language → Easy-to-read font** switches to Atkinson Hyperlegible, a typeface designed so that
   characters such as 0 and O, or 1, l and I, can't be confused.
 - **Extra text spacing.** Wider letter, word and line spacing.
 - **Themes.**

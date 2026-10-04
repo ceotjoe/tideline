@@ -580,5 +580,12 @@
   "activationTheirReferenceWwff": "Ihr Gebiet (WWFF)",
   "activationIssueTheirReference": "Das ist keine gültige Referenz.",
   "commandStartActivation": "Aktivierung starten",
-  "commandEndActivation": "Laufende Aktivierung beenden"
+  "commandEndActivation": "Laufende Aktivierung beenden",
+  "settingsAppearanceAndLanguage": "Darstellung und Sprache",
+  "settingsAppearanceHint": "Farbschema, Text und Sprache",
+  "settingsAccountHint": "Server und Zugangstoken",
+  "settingsReferenceData": "Referenzdaten",
+  "settingsReferenceDataHint": "Listen und Indizes zum Herunterladen",
+  "settingsSecurityAndBackup": "Sicherheit und Backup",
+  "settingsSecurityAndBackupHint": "App-Sperre, ADIF und Backup"
 }

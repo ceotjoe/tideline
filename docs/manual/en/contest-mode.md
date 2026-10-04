@@ -63,8 +63,8 @@ Under the callsign, Tideline shows what it knows, always as an icon with text:
 
 ### The super check partial list (MASTER.SCP)
 
-Tideline does not include the list, because it is not ours to distribute. Install it in **Settings → Super check
-partial**:
+Tideline does not include the list, because it is not ours to distribute. Install it in **Settings → Reference data →
+Super check partial**:
 
 - **Download** fetches the list from the address shown. The default is `https://www.supercheckpartial.com/MASTER.SCP`,
   and you can change it. Only `https` addresses are allowed, and the file may be at most 8 MiB. Tideline contacts this
@@ -150,7 +150,7 @@ The bundled rules were checked against the sponsors' rules on 2026-10-02. Rules 
 contest. Known simplifications are listed in `app/assets/contests/README.md`, for example that WAE-only countries are not
 separate multipliers.
 
-In **Settings → Contest definitions** you can **Import definition** from a JSON file of up to 256 KiB, and delete
+In **Settings → Reference data → Contest definitions** you can **Import definition** from a JSON file of up to 256 KiB, and delete
 definitions you imported. A definition that a session uses cannot be deleted. Tideline checks an imported file strictly
 and says what is wrong if it rejects it. The file format is described in
 [contest-definitions.md](../../architecture/contest-definitions.md).

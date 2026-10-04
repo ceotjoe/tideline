@@ -4,7 +4,7 @@ Your log is never locked in.
 
 ## ADIF export
 
-**Settings → Import, export and backup → Export log as ADIF** saves your whole log as an ADIF file. Every logging
+**Settings → Security and backup → Export log as ADIF** saves your whole log as an ADIF file. Every logging
 program can read it.
 
 ADIF files are **not encrypted**, so keep them somewhere safe.
@@ -24,8 +24,8 @@ ADIF files are **not encrypted**, so keep them somewhere safe.
 - **Keep the passphrase safe.** Without it, the backup cannot be opened, not even by us.
 - **Restoring:** **Restore a backup** brings everything back on the same or a new device.
 - **No duplicates:** QSOs that were already in Wavelog stay linked to their Wavelog entries and are not uploaded again.
-- **Your token is not in the backup.** After restoring on a new device, enter a new token under **Settings → Enter a new
-  token**.
+- **Your token is not in the backup.** After restoring on a new device, enter a new token under **Settings → Wavelog account → Enter a
+  new token**.
 
 ### Why Android doesn't back Tideline up to the cloud
 

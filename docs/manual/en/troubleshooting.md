@@ -4,7 +4,7 @@
 |---|---|
 | "Your Wavelog isn't reachable right now" | Nothing is lost. Tideline syncs when the app is opened again, when the connection returns, or when you choose **Sync now**. |
 | QSOs show **Checking** | A previous attempt was interrupted. Tideline asks your Wavelog whether the QSO arrived before sending it again, so nothing is duplicated. |
-| **Token problem** | The token expired or was revoked. Create a new one in Wavelog and enter it under **Settings → Enter a new token**. Waiting QSOs then sync. |
+| **Token problem** | The token expired or was revoked. Create a new one in Wavelog and enter it under **Settings → Wavelog account → Enter a new token**. Waiting QSOs then sync. |
 | **Rejected** | Open the QSO: it explains the problem and shows Wavelog's own message. Correct the QSO and it is sent again. |
 | **Needs decision** after changing time, mode, frequency or station | Wavelog can't change these fields on an uploaded QSO. Choose **Replace in Wavelog** (needs the qso:delete permission) or **I'll fix it in Wavelog**. |
 | "Another QSO with the same callsign … in the same minute" | Wavelog stores only one QSO per callsign, band, mode and minute. Correct the time if it was a separate contact, or delete one of them. |

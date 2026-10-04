@@ -43,6 +43,22 @@ void main() {
         matchesGoldenFile('goldens/settings_$sizeName.png'),
       );
     });
+
+    testWidgets('settings appearance page, $sizeName', (tester) async {
+      await pumpTideline(
+        tester,
+        size: size,
+        settings: const AppSettings(theme: ThemeChoice.light),
+      );
+      await tester.tap(find.text('Settings').last);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Appearance and language'));
+      await tester.pumpAndSettle();
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('goldens/settings_appearance_$sizeName.png'),
+      );
+    });
   }
 
   testWidgets('log screen, tablet landscape with the keyboard up', (

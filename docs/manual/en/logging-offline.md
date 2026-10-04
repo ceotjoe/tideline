@@ -11,7 +11,7 @@ never makes you wait.
    - It also shows whether you **worked the station before**: a new call, a new band, a new mode, a new combination of
      band and mode, or already worked (with the date of the first contact). This comes from the worked-before index,
      which holds your log and, after a sync, the QSOs on your Wavelog server. If it looks wrong (for example after you
-     deleted QSOs in Wavelog), use **Settings → Worked-before index → Rebuild worked-before index**.
+     deleted QSOs in Wavelog), use **Settings → Reference data → Worked-before index → Rebuild worked-before index**.
 2. **Band, mode and frequency.**
    - Choose the band and mode, or just type a frequency, and the band is chosen for you. Under the field, Tideline
      shows how it read your entry, for example "14.205 MHz · 20 m".

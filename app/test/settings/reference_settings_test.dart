@@ -154,6 +154,15 @@ class _RebuildableWorkedBefore extends Fake implements WorkedBeforeRepository {
 Future<void> _openSettings(WidgetTester tester) async {
   await tester.tap(find.text('Settings').last);
   await tester.pumpAndSettle();
+  await tester.scrollUntilVisible(
+    find.text('Reference data'),
+    100,
+    scrollable: find.byType(Scrollable).first,
+  );
+  await tester.ensureVisible(find.text('Reference data'));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Reference data'));
+  await tester.pumpAndSettle();
 }
 
 Future<void> _show(WidgetTester tester, Finder finder) async {

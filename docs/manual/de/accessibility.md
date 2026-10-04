@@ -5,7 +5,7 @@
   - Jedes geloggte QSO wird angesagt.
   - Der Synchronisierungsstand wird als Text vorgelesen.
 - **Große Schrift.** Tideline folgt der Systemschriftgröße bis 200 %.
-- **Gut lesbare Schrift.** **Einstellungen → Gut lesbare Schrift** wechselt zu Atkinson Hyperlegible, einer Schrift, in
+- **Gut lesbare Schrift.** **Einstellungen → Darstellung und Sprache → Gut lesbare Schrift** wechselt zu Atkinson Hyperlegible, einer Schrift, in
   der sich Zeichen wie 0 und O oder 1, l und I nicht verwechseln lassen.
 - **Größerer Textabstand.** Breitere Buchstaben-, Wort- und Zeilenabstände.
 - **Farbschemata.**

@@ -66,7 +66,7 @@ Unter dem Rufzeichen zeigt Tideline, was es weiß, immer als Symbol mit Text:
 ### Die Super-Check-Partial-Liste (MASTER.SCP)
 
 Tideline liefert die Liste nicht mit, weil wir sie nicht verbreiten dürfen. Du installierst sie unter **Einstellungen →
-Super Check Partial**:
+Referenzdaten → Super Check Partial**:
 
 - **Herunterladen** lädt die Liste von der angezeigten Adresse. Voreingestellt ist
   `https://www.supercheckpartial.com/MASTER.SCP`; du kannst sie ändern. Es sind nur `https`-Adressen erlaubt, und die
@@ -155,7 +155,7 @@ Die mitgelieferten Regeln wurden am 2026-10-02 mit den Regeln der Veranstalter a
 also vor einem Contest. Bekannte Vereinfachungen stehen in `app/assets/contests/README.md`, zum Beispiel dass reine
 WAE-Länder keine eigenen Multiplikatoren sind.
 
-Unter **Einstellungen → Contest-Definitionen** kannst du mit **Definition importieren** eine JSON-Datei bis 256 KiB
+Unter **Einstellungen → Referenzdaten → Contest-Definitionen** kannst du mit **Definition importieren** eine JSON-Datei bis 256 KiB
 hinzufügen und von dir importierte Definitionen löschen. Eine Definition, die eine Sitzung verwendet, lässt sich nicht
 löschen. Tideline prüft eine importierte Datei streng und sagt, was nicht stimmt, wenn es sie ablehnt. Das Dateiformat
 ist in [contest-definitions.md](../../architecture/contest-definitions.md) beschrieben (Englisch).

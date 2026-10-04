@@ -3588,6 +3588,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'End the running activation'**
   String get commandEndActivation;
+
+  /// Settings page title and the hub entry for theme, touch targets, text and language.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance and language'**
+  String get settingsAppearanceAndLanguage;
+
+  /// Hub entry subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme, text and language'**
+  String get settingsAppearanceHint;
+
+  /// Hub entry subtitle under Wavelog account.
+  ///
+  /// In en, this message translates to:
+  /// **'Server and access token'**
+  String get settingsAccountHint;
+
+  /// Settings page title and hub entry for the downloaded lists and indexes.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference data'**
+  String get settingsReferenceData;
+
+  /// Hub entry subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lists and indexes you download'**
+  String get settingsReferenceDataHint;
+
+  /// Settings page title and hub entry for app lock, import, export and backup.
+  ///
+  /// In en, this message translates to:
+  /// **'Security and backup'**
+  String get settingsSecurityAndBackup;
+
+  /// Hub entry subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock, ADIF and backup'**
+  String get settingsSecurityAndBackupHint;
 }
 
 class _AppLocalizationsDelegate

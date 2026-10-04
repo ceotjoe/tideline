@@ -8,6 +8,7 @@ _Version 0.3 (Aktivierungen)._
 1. [Synchronisierung und Konflikte](sync-and-conflicts.md)
 1. [Aktivierungen (SOTA, POTA, WWFF)](activations.md)
 1. [Contest-Modus](contest-mode.md)
+1. [Einstellungen](settings.md)
 1. [Sicherung und Export](backups.md)
 1. [Barrierefreiheit](accessibility.md)
 1. [Tastenkürzel](keyboard-shortcuts.md)
