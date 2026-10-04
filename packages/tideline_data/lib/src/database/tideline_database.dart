@@ -27,6 +27,8 @@ part 'tideline_database.g.dart';
     ProgramReferences,
     ScpCalls,
     WorkedBefore,
+    CallsignDirectory,
+    CallsignNotes,
     Devices,
     PeerCursors,
     Settings,
@@ -40,7 +42,7 @@ class TidelineDatabase extends _$TidelineDatabase {
   /// Current schema version. Every change bumps it, adds a schema dump
   /// (`tool/dump_schema.sh`) and a tested migration step.
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -70,6 +72,13 @@ class TidelineDatabase extends _$TidelineDatabase {
           schema.programReferences.active,
         );
         await m.createIndex(schema.programReferencesPosition);
+      },
+      from3To4: (m, schema) async {
+        // The callsign directory (derived from QSOs) and the user's own
+        // callsign notes. The directory fills on the next worked-before
+        // build or sync.
+        await m.createTable(schema.callsignDirectory);
+        await m.createTable(schema.callsignNotes);
       },
     ),
     beforeOpen: (details) async {

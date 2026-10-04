@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:meta/meta.dart';
 import 'package:tideline_adif/tideline_adif.dart';
 import 'package:tideline_data/src/database/tideline_database.dart';
+import 'package:tideline_data/src/repositories/callsign_directory_repository.dart';
 import 'package:tideline_data/src/repositories/settings_store.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
@@ -73,10 +74,13 @@ class WorkedSummary {
 /// pull. Rebuildable at any time.
 class WorkedBeforeRepository {
   /// Creates the repository.
-  new(this._db) : _settings = SettingsStore(_db);
+  new(this._db)
+    : _settings = SettingsStore(_db),
+      _directory = CallsignDirectoryRepository(_db);
 
   final TidelineDatabase _db;
   final SettingsStore _settings;
+  final CallsignDirectoryRepository _directory;
 
   static const String _upsert =
       'INSERT INTO worked_before '
@@ -97,9 +101,11 @@ class WorkedBeforeRepository {
   /// the earliest time. Called inside the transaction that stores the QSO,
   /// so index and log never disagree. Deleting a QSO never removes a row
   /// (only a rebuild does).
-  Future<void> noteQso(Qso qso) {
+  Future<void> noteQso(Qso qso) async {
     final grid = (qso.field('GRIDSQUARE') ?? '').trim().toUpperCase();
-    return _db.customStatement(_upsert, [
+    // The callsign directory learns what the QSO says about the station.
+    await _directory.noteQso(qso);
+    await _db.customStatement(_upsert, [
       qso.accountId,
       qso.call.value.toUpperCase(),
       qso.band.name,
@@ -130,6 +136,7 @@ class WorkedBeforeRepository {
   /// Entries that came from the server stay (their time is lowered when a
   /// local QSO is older).
   Future<void> rebuildLocal(String accountId) => _db.transaction(() async {
+    await _directory.rebuildLocal(accountId);
     await _db.customStatement(
       "DELETE FROM worked_before WHERE account_id = ? AND source = 'local'",
       [accountId],
@@ -169,6 +176,7 @@ class WorkedBeforeRepository {
     final doc = const AdiParser().parse(utf8.encode(adif));
     var merged = 0;
     final args = <List<Object?>>[];
+    final observations = <DirectoryObservation>[];
     for (final r in doc.records) {
       final call = r['CALL']?.trim().toUpperCase();
       final rawMode = r['MODE']?.trim().toUpperCase();
@@ -191,6 +199,12 @@ class WorkedBeforeRepository {
       final gridValue = grid == null || grid.isEmpty
           ? null
           : grid.toUpperCase();
+      final observation = CallsignDirectoryRepository.observe(
+        call,
+        time.millis,
+        r,
+      );
+      if (observation != null) observations.add(observation);
       args.add([
         accountId,
         call,
@@ -211,6 +225,7 @@ class WorkedBeforeRepository {
         }
       });
     });
+    await _directory.mergeServer(accountId, observations);
     return (merged: merged, skipped: doc.records.length - merged);
   }
 
@@ -238,6 +253,7 @@ class WorkedBeforeRepository {
     await (_db.delete(
       _db.workedBefore,
     )..where((w) => w.accountId.equals(accountId))).go();
+    await _directory.clear(accountId);
     await setLastFetchedId(accountId, null);
     await _settings.write(_builtKey(accountId), null);
   });

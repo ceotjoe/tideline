@@ -11990,6 +11990,1195 @@ class WorkedBeforeCompanion extends UpdateCompanion<WorkedBeforeRow> {
   }
 }
 
+class $CallsignDirectoryTable extends CallsignDirectory
+    with TableInfo<$CallsignDirectoryTable, CallsignDirectoryRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CallsignDirectoryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _accountIdMeta = const VerificationMeta(
+    'accountId',
+  );
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES accounts (id)',
+    ),
+  );
+  static const VerificationMeta _callMeta = const VerificationMeta('call');
+  @override
+  late final GeneratedColumn<String> call = GeneratedColumn<String>(
+    'call',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _qthMeta = const VerificationMeta('qth');
+  @override
+  late final GeneratedColumn<String> qth = GeneratedColumn<String>(
+    'qth',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _gridsquareMeta = const VerificationMeta(
+    'gridsquare',
+  );
+  @override
+  late final GeneratedColumn<String> gridsquare = GeneratedColumn<String>(
+    'gridsquare',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _countryMeta = const VerificationMeta(
+    'country',
+  );
+  @override
+  late final GeneratedColumn<String> country = GeneratedColumn<String>(
+    'country',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _stateMeta = const VerificationMeta('state');
+  @override
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+    'state',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dxccMeta = const VerificationMeta('dxcc');
+  @override
+  late final GeneratedColumn<int> dxcc = GeneratedColumn<int>(
+    'dxcc',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _cqzMeta = const VerificationMeta('cqz');
+  @override
+  late final GeneratedColumn<int> cqz = GeneratedColumn<int>(
+    'cqz',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _ituzMeta = const VerificationMeta('ituz');
+  @override
+  late final GeneratedColumn<int> ituz = GeneratedColumn<int>(
+    'ituz',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _lastTimeMeta = const VerificationMeta(
+    'lastTime',
+  );
+  @override
+  late final GeneratedColumn<int> lastTime = GeneratedColumn<int>(
+    'last_time',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    accountId,
+    call,
+    name,
+    qth,
+    gridsquare,
+    country,
+    state,
+    dxcc,
+    cqz,
+    ituz,
+    lastTime,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'callsign_directory';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<CallsignDirectoryRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('account_id')) {
+      context.handle(
+        _accountIdMeta,
+        accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_accountIdMeta);
+    }
+    if (data.containsKey('call')) {
+      context.handle(
+        _callMeta,
+        call.isAcceptableOrUnknown(data['call']!, _callMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_callMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    }
+    if (data.containsKey('qth')) {
+      context.handle(
+        _qthMeta,
+        qth.isAcceptableOrUnknown(data['qth']!, _qthMeta),
+      );
+    }
+    if (data.containsKey('gridsquare')) {
+      context.handle(
+        _gridsquareMeta,
+        gridsquare.isAcceptableOrUnknown(data['gridsquare']!, _gridsquareMeta),
+      );
+    }
+    if (data.containsKey('country')) {
+      context.handle(
+        _countryMeta,
+        country.isAcceptableOrUnknown(data['country']!, _countryMeta),
+      );
+    }
+    if (data.containsKey('state')) {
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
+    }
+    if (data.containsKey('dxcc')) {
+      context.handle(
+        _dxccMeta,
+        dxcc.isAcceptableOrUnknown(data['dxcc']!, _dxccMeta),
+      );
+    }
+    if (data.containsKey('cqz')) {
+      context.handle(
+        _cqzMeta,
+        cqz.isAcceptableOrUnknown(data['cqz']!, _cqzMeta),
+      );
+    }
+    if (data.containsKey('ituz')) {
+      context.handle(
+        _ituzMeta,
+        ituz.isAcceptableOrUnknown(data['ituz']!, _ituzMeta),
+      );
+    }
+    if (data.containsKey('last_time')) {
+      context.handle(
+        _lastTimeMeta,
+        lastTime.isAcceptableOrUnknown(data['last_time']!, _lastTimeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lastTimeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {accountId, call};
+  @override
+  CallsignDirectoryRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CallsignDirectoryRow(
+      accountId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_id'],
+      )!,
+      call: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}call'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      ),
+      qth: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}qth'],
+      ),
+      gridsquare: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}gridsquare'],
+      ),
+      country: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}country'],
+      ),
+      state: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}state'],
+      ),
+      dxcc: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}dxcc'],
+      ),
+      cqz: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}cqz'],
+      ),
+      ituz: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}ituz'],
+      ),
+      lastTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}last_time'],
+      )!,
+    );
+  }
+
+  @override
+  $CallsignDirectoryTable createAlias(String alias) {
+    return $CallsignDirectoryTable(attachedDatabase, alias);
+  }
+}
+
+class CallsignDirectoryRow extends DataClass
+    implements Insertable<CallsignDirectoryRow> {
+  final String accountId;
+
+  /// The home callsign, upper case.
+  final String call;
+  final String? name;
+  final String? qth;
+  final String? gridsquare;
+  final String? country;
+  final String? state;
+  final int? dxcc;
+  final int? cqz;
+  final int? ituz;
+
+  /// Start of the newest QSO the row was built from (UTC millis).
+  final int lastTime;
+  const CallsignDirectoryRow({
+    required this.accountId,
+    required this.call,
+    this.name,
+    this.qth,
+    this.gridsquare,
+    this.country,
+    this.state,
+    this.dxcc,
+    this.cqz,
+    this.ituz,
+    required this.lastTime,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['account_id'] = Variable<String>(accountId);
+    map['call'] = Variable<String>(call);
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || qth != null) {
+      map['qth'] = Variable<String>(qth);
+    }
+    if (!nullToAbsent || gridsquare != null) {
+      map['gridsquare'] = Variable<String>(gridsquare);
+    }
+    if (!nullToAbsent || country != null) {
+      map['country'] = Variable<String>(country);
+    }
+    if (!nullToAbsent || state != null) {
+      map['state'] = Variable<String>(state);
+    }
+    if (!nullToAbsent || dxcc != null) {
+      map['dxcc'] = Variable<int>(dxcc);
+    }
+    if (!nullToAbsent || cqz != null) {
+      map['cqz'] = Variable<int>(cqz);
+    }
+    if (!nullToAbsent || ituz != null) {
+      map['ituz'] = Variable<int>(ituz);
+    }
+    map['last_time'] = Variable<int>(lastTime);
+    return map;
+  }
+
+  CallsignDirectoryCompanion toCompanion(bool nullToAbsent) {
+    return CallsignDirectoryCompanion(
+      accountId: Value(accountId),
+      call: Value(call),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      qth: qth == null && nullToAbsent ? const Value.absent() : Value(qth),
+      gridsquare: gridsquare == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gridsquare),
+      country: country == null && nullToAbsent
+          ? const Value.absent()
+          : Value(country),
+      state: state == null && nullToAbsent
+          ? const Value.absent()
+          : Value(state),
+      dxcc: dxcc == null && nullToAbsent ? const Value.absent() : Value(dxcc),
+      cqz: cqz == null && nullToAbsent ? const Value.absent() : Value(cqz),
+      ituz: ituz == null && nullToAbsent ? const Value.absent() : Value(ituz),
+      lastTime: Value(lastTime),
+    );
+  }
+
+  factory CallsignDirectoryRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CallsignDirectoryRow(
+      accountId: serializer.fromJson<String>(json['accountId']),
+      call: serializer.fromJson<String>(json['call']),
+      name: serializer.fromJson<String?>(json['name']),
+      qth: serializer.fromJson<String?>(json['qth']),
+      gridsquare: serializer.fromJson<String?>(json['gridsquare']),
+      country: serializer.fromJson<String?>(json['country']),
+      state: serializer.fromJson<String?>(json['state']),
+      dxcc: serializer.fromJson<int?>(json['dxcc']),
+      cqz: serializer.fromJson<int?>(json['cqz']),
+      ituz: serializer.fromJson<int?>(json['ituz']),
+      lastTime: serializer.fromJson<int>(json['lastTime']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'accountId': serializer.toJson<String>(accountId),
+      'call': serializer.toJson<String>(call),
+      'name': serializer.toJson<String?>(name),
+      'qth': serializer.toJson<String?>(qth),
+      'gridsquare': serializer.toJson<String?>(gridsquare),
+      'country': serializer.toJson<String?>(country),
+      'state': serializer.toJson<String?>(state),
+      'dxcc': serializer.toJson<int?>(dxcc),
+      'cqz': serializer.toJson<int?>(cqz),
+      'ituz': serializer.toJson<int?>(ituz),
+      'lastTime': serializer.toJson<int>(lastTime),
+    };
+  }
+
+  CallsignDirectoryRow copyWith({
+    String? accountId,
+    String? call,
+    Value<String?> name = const Value.absent(),
+    Value<String?> qth = const Value.absent(),
+    Value<String?> gridsquare = const Value.absent(),
+    Value<String?> country = const Value.absent(),
+    Value<String?> state = const Value.absent(),
+    Value<int?> dxcc = const Value.absent(),
+    Value<int?> cqz = const Value.absent(),
+    Value<int?> ituz = const Value.absent(),
+    int? lastTime,
+  }) => CallsignDirectoryRow(
+    accountId: accountId ?? this.accountId,
+    call: call ?? this.call,
+    name: name.present ? name.value : this.name,
+    qth: qth.present ? qth.value : this.qth,
+    gridsquare: gridsquare.present ? gridsquare.value : this.gridsquare,
+    country: country.present ? country.value : this.country,
+    state: state.present ? state.value : this.state,
+    dxcc: dxcc.present ? dxcc.value : this.dxcc,
+    cqz: cqz.present ? cqz.value : this.cqz,
+    ituz: ituz.present ? ituz.value : this.ituz,
+    lastTime: lastTime ?? this.lastTime,
+  );
+  CallsignDirectoryRow copyWithCompanion(CallsignDirectoryCompanion data) {
+    return CallsignDirectoryRow(
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      call: data.call.present ? data.call.value : this.call,
+      name: data.name.present ? data.name.value : this.name,
+      qth: data.qth.present ? data.qth.value : this.qth,
+      gridsquare: data.gridsquare.present
+          ? data.gridsquare.value
+          : this.gridsquare,
+      country: data.country.present ? data.country.value : this.country,
+      state: data.state.present ? data.state.value : this.state,
+      dxcc: data.dxcc.present ? data.dxcc.value : this.dxcc,
+      cqz: data.cqz.present ? data.cqz.value : this.cqz,
+      ituz: data.ituz.present ? data.ituz.value : this.ituz,
+      lastTime: data.lastTime.present ? data.lastTime.value : this.lastTime,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CallsignDirectoryRow(')
+          ..write('accountId: $accountId, ')
+          ..write('call: $call, ')
+          ..write('name: $name, ')
+          ..write('qth: $qth, ')
+          ..write('gridsquare: $gridsquare, ')
+          ..write('country: $country, ')
+          ..write('state: $state, ')
+          ..write('dxcc: $dxcc, ')
+          ..write('cqz: $cqz, ')
+          ..write('ituz: $ituz, ')
+          ..write('lastTime: $lastTime')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    accountId,
+    call,
+    name,
+    qth,
+    gridsquare,
+    country,
+    state,
+    dxcc,
+    cqz,
+    ituz,
+    lastTime,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CallsignDirectoryRow &&
+          other.accountId == this.accountId &&
+          other.call == this.call &&
+          other.name == this.name &&
+          other.qth == this.qth &&
+          other.gridsquare == this.gridsquare &&
+          other.country == this.country &&
+          other.state == this.state &&
+          other.dxcc == this.dxcc &&
+          other.cqz == this.cqz &&
+          other.ituz == this.ituz &&
+          other.lastTime == this.lastTime);
+}
+
+class CallsignDirectoryCompanion extends UpdateCompanion<CallsignDirectoryRow> {
+  final Value<String> accountId;
+  final Value<String> call;
+  final Value<String?> name;
+  final Value<String?> qth;
+  final Value<String?> gridsquare;
+  final Value<String?> country;
+  final Value<String?> state;
+  final Value<int?> dxcc;
+  final Value<int?> cqz;
+  final Value<int?> ituz;
+  final Value<int> lastTime;
+  final Value<int> rowid;
+  const CallsignDirectoryCompanion({
+    this.accountId = const Value.absent(),
+    this.call = const Value.absent(),
+    this.name = const Value.absent(),
+    this.qth = const Value.absent(),
+    this.gridsquare = const Value.absent(),
+    this.country = const Value.absent(),
+    this.state = const Value.absent(),
+    this.dxcc = const Value.absent(),
+    this.cqz = const Value.absent(),
+    this.ituz = const Value.absent(),
+    this.lastTime = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CallsignDirectoryCompanion.insert({
+    required String accountId,
+    required String call,
+    this.name = const Value.absent(),
+    this.qth = const Value.absent(),
+    this.gridsquare = const Value.absent(),
+    this.country = const Value.absent(),
+    this.state = const Value.absent(),
+    this.dxcc = const Value.absent(),
+    this.cqz = const Value.absent(),
+    this.ituz = const Value.absent(),
+    required int lastTime,
+    this.rowid = const Value.absent(),
+  }) : accountId = Value(accountId),
+       call = Value(call),
+       lastTime = Value(lastTime);
+  static Insertable<CallsignDirectoryRow> custom({
+    Expression<String>? accountId,
+    Expression<String>? call,
+    Expression<String>? name,
+    Expression<String>? qth,
+    Expression<String>? gridsquare,
+    Expression<String>? country,
+    Expression<String>? state,
+    Expression<int>? dxcc,
+    Expression<int>? cqz,
+    Expression<int>? ituz,
+    Expression<int>? lastTime,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (accountId != null) 'account_id': accountId,
+      if (call != null) 'call': call,
+      if (name != null) 'name': name,
+      if (qth != null) 'qth': qth,
+      if (gridsquare != null) 'gridsquare': gridsquare,
+      if (country != null) 'country': country,
+      if (state != null) 'state': state,
+      if (dxcc != null) 'dxcc': dxcc,
+      if (cqz != null) 'cqz': cqz,
+      if (ituz != null) 'ituz': ituz,
+      if (lastTime != null) 'last_time': lastTime,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CallsignDirectoryCompanion copyWith({
+    Value<String>? accountId,
+    Value<String>? call,
+    Value<String?>? name,
+    Value<String?>? qth,
+    Value<String?>? gridsquare,
+    Value<String?>? country,
+    Value<String?>? state,
+    Value<int?>? dxcc,
+    Value<int?>? cqz,
+    Value<int?>? ituz,
+    Value<int>? lastTime,
+    Value<int>? rowid,
+  }) {
+    return CallsignDirectoryCompanion(
+      accountId: accountId ?? this.accountId,
+      call: call ?? this.call,
+      name: name ?? this.name,
+      qth: qth ?? this.qth,
+      gridsquare: gridsquare ?? this.gridsquare,
+      country: country ?? this.country,
+      state: state ?? this.state,
+      dxcc: dxcc ?? this.dxcc,
+      cqz: cqz ?? this.cqz,
+      ituz: ituz ?? this.ituz,
+      lastTime: lastTime ?? this.lastTime,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (call.present) {
+      map['call'] = Variable<String>(call.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (qth.present) {
+      map['qth'] = Variable<String>(qth.value);
+    }
+    if (gridsquare.present) {
+      map['gridsquare'] = Variable<String>(gridsquare.value);
+    }
+    if (country.present) {
+      map['country'] = Variable<String>(country.value);
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (dxcc.present) {
+      map['dxcc'] = Variable<int>(dxcc.value);
+    }
+    if (cqz.present) {
+      map['cqz'] = Variable<int>(cqz.value);
+    }
+    if (ituz.present) {
+      map['ituz'] = Variable<int>(ituz.value);
+    }
+    if (lastTime.present) {
+      map['last_time'] = Variable<int>(lastTime.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CallsignDirectoryCompanion(')
+          ..write('accountId: $accountId, ')
+          ..write('call: $call, ')
+          ..write('name: $name, ')
+          ..write('qth: $qth, ')
+          ..write('gridsquare: $gridsquare, ')
+          ..write('country: $country, ')
+          ..write('state: $state, ')
+          ..write('dxcc: $dxcc, ')
+          ..write('cqz: $cqz, ')
+          ..write('ituz: $ituz, ')
+          ..write('lastTime: $lastTime, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $CallsignNotesTable extends CallsignNotes
+    with TableInfo<$CallsignNotesTable, CallsignNoteRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CallsignNotesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _originDeviceIdMeta = const VerificationMeta(
+    'originDeviceId',
+  );
+  @override
+  late final GeneratedColumn<String> originDeviceId = GeneratedColumn<String>(
+    'origin_device_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hlcCreatedMeta = const VerificationMeta(
+    'hlcCreated',
+  );
+  @override
+  late final GeneratedColumn<String> hlcCreated = GeneratedColumn<String>(
+    'hlc_created',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hlcModifiedMeta = const VerificationMeta(
+    'hlcModified',
+  );
+  @override
+  late final GeneratedColumn<String> hlcModified = GeneratedColumn<String>(
+    'hlc_modified',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _revMeta = const VerificationMeta('rev');
+  @override
+  late final GeneratedColumn<int> rev = GeneratedColumn<int>(
+    'rev',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<int> deletedAt = GeneratedColumn<int>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _callMeta = const VerificationMeta('call');
+  @override
+  late final GeneratedColumn<String> call = GeneratedColumn<String>(
+    'call',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
+  @override
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
+    'body',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    originDeviceId,
+    hlcCreated,
+    hlcModified,
+    rev,
+    deletedAt,
+    id,
+    call,
+    body,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'callsign_notes';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<CallsignNoteRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('origin_device_id')) {
+      context.handle(
+        _originDeviceIdMeta,
+        originDeviceId.isAcceptableOrUnknown(
+          data['origin_device_id']!,
+          _originDeviceIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_originDeviceIdMeta);
+    }
+    if (data.containsKey('hlc_created')) {
+      context.handle(
+        _hlcCreatedMeta,
+        hlcCreated.isAcceptableOrUnknown(data['hlc_created']!, _hlcCreatedMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_hlcCreatedMeta);
+    }
+    if (data.containsKey('hlc_modified')) {
+      context.handle(
+        _hlcModifiedMeta,
+        hlcModified.isAcceptableOrUnknown(
+          data['hlc_modified']!,
+          _hlcModifiedMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_hlcModifiedMeta);
+    }
+    if (data.containsKey('rev')) {
+      context.handle(
+        _revMeta,
+        rev.isAcceptableOrUnknown(data['rev']!, _revMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('call')) {
+      context.handle(
+        _callMeta,
+        call.isAcceptableOrUnknown(data['call']!, _callMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_callMeta);
+    }
+    if (data.containsKey('body')) {
+      context.handle(
+        _bodyMeta,
+        body.isAcceptableOrUnknown(data['body']!, _bodyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_bodyMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {call},
+  ];
+  @override
+  CallsignNoteRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CallsignNoteRow(
+      originDeviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}origin_device_id'],
+      )!,
+      hlcCreated: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hlc_created'],
+      )!,
+      hlcModified: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}hlc_modified'],
+      )!,
+      rev: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}rev'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      call: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}call'],
+      )!,
+      body: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}body'],
+      )!,
+    );
+  }
+
+  @override
+  $CallsignNotesTable createAlias(String alias) {
+    return $CallsignNotesTable(attachedDatabase, alias);
+  }
+}
+
+class CallsignNoteRow extends DataClass implements Insertable<CallsignNoteRow> {
+  /// Device that created the row.
+  final String originDeviceId;
+
+  /// Hybrid logical clock timestamp of creation.
+  final String hlcCreated;
+
+  /// Hybrid logical clock timestamp of the last change.
+  final String hlcModified;
+
+  /// Local revision counter, incremented on every change.
+  final int rev;
+
+  /// Tombstone: UTC millis of deletion, or null while the row is alive.
+  final int? deletedAt;
+  final String id;
+
+  /// The home callsign, upper case. One note per station, across accounts.
+  final String call;
+
+  /// The text; never empty on a live row (an empty note is a delete).
+  final String body;
+  const CallsignNoteRow({
+    required this.originDeviceId,
+    required this.hlcCreated,
+    required this.hlcModified,
+    required this.rev,
+    this.deletedAt,
+    required this.id,
+    required this.call,
+    required this.body,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['origin_device_id'] = Variable<String>(originDeviceId);
+    map['hlc_created'] = Variable<String>(hlcCreated);
+    map['hlc_modified'] = Variable<String>(hlcModified);
+    map['rev'] = Variable<int>(rev);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<int>(deletedAt);
+    }
+    map['id'] = Variable<String>(id);
+    map['call'] = Variable<String>(call);
+    map['body'] = Variable<String>(body);
+    return map;
+  }
+
+  CallsignNotesCompanion toCompanion(bool nullToAbsent) {
+    return CallsignNotesCompanion(
+      originDeviceId: Value(originDeviceId),
+      hlcCreated: Value(hlcCreated),
+      hlcModified: Value(hlcModified),
+      rev: Value(rev),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      id: Value(id),
+      call: Value(call),
+      body: Value(body),
+    );
+  }
+
+  factory CallsignNoteRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CallsignNoteRow(
+      originDeviceId: serializer.fromJson<String>(json['originDeviceId']),
+      hlcCreated: serializer.fromJson<String>(json['hlcCreated']),
+      hlcModified: serializer.fromJson<String>(json['hlcModified']),
+      rev: serializer.fromJson<int>(json['rev']),
+      deletedAt: serializer.fromJson<int?>(json['deletedAt']),
+      id: serializer.fromJson<String>(json['id']),
+      call: serializer.fromJson<String>(json['call']),
+      body: serializer.fromJson<String>(json['body']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'originDeviceId': serializer.toJson<String>(originDeviceId),
+      'hlcCreated': serializer.toJson<String>(hlcCreated),
+      'hlcModified': serializer.toJson<String>(hlcModified),
+      'rev': serializer.toJson<int>(rev),
+      'deletedAt': serializer.toJson<int?>(deletedAt),
+      'id': serializer.toJson<String>(id),
+      'call': serializer.toJson<String>(call),
+      'body': serializer.toJson<String>(body),
+    };
+  }
+
+  CallsignNoteRow copyWith({
+    String? originDeviceId,
+    String? hlcCreated,
+    String? hlcModified,
+    int? rev,
+    Value<int?> deletedAt = const Value.absent(),
+    String? id,
+    String? call,
+    String? body,
+  }) => CallsignNoteRow(
+    originDeviceId: originDeviceId ?? this.originDeviceId,
+    hlcCreated: hlcCreated ?? this.hlcCreated,
+    hlcModified: hlcModified ?? this.hlcModified,
+    rev: rev ?? this.rev,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    id: id ?? this.id,
+    call: call ?? this.call,
+    body: body ?? this.body,
+  );
+  CallsignNoteRow copyWithCompanion(CallsignNotesCompanion data) {
+    return CallsignNoteRow(
+      originDeviceId: data.originDeviceId.present
+          ? data.originDeviceId.value
+          : this.originDeviceId,
+      hlcCreated: data.hlcCreated.present
+          ? data.hlcCreated.value
+          : this.hlcCreated,
+      hlcModified: data.hlcModified.present
+          ? data.hlcModified.value
+          : this.hlcModified,
+      rev: data.rev.present ? data.rev.value : this.rev,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      id: data.id.present ? data.id.value : this.id,
+      call: data.call.present ? data.call.value : this.call,
+      body: data.body.present ? data.body.value : this.body,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CallsignNoteRow(')
+          ..write('originDeviceId: $originDeviceId, ')
+          ..write('hlcCreated: $hlcCreated, ')
+          ..write('hlcModified: $hlcModified, ')
+          ..write('rev: $rev, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('call: $call, ')
+          ..write('body: $body')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    originDeviceId,
+    hlcCreated,
+    hlcModified,
+    rev,
+    deletedAt,
+    id,
+    call,
+    body,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CallsignNoteRow &&
+          other.originDeviceId == this.originDeviceId &&
+          other.hlcCreated == this.hlcCreated &&
+          other.hlcModified == this.hlcModified &&
+          other.rev == this.rev &&
+          other.deletedAt == this.deletedAt &&
+          other.id == this.id &&
+          other.call == this.call &&
+          other.body == this.body);
+}
+
+class CallsignNotesCompanion extends UpdateCompanion<CallsignNoteRow> {
+  final Value<String> originDeviceId;
+  final Value<String> hlcCreated;
+  final Value<String> hlcModified;
+  final Value<int> rev;
+  final Value<int?> deletedAt;
+  final Value<String> id;
+  final Value<String> call;
+  final Value<String> body;
+  final Value<int> rowid;
+  const CallsignNotesCompanion({
+    this.originDeviceId = const Value.absent(),
+    this.hlcCreated = const Value.absent(),
+    this.hlcModified = const Value.absent(),
+    this.rev = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.id = const Value.absent(),
+    this.call = const Value.absent(),
+    this.body = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CallsignNotesCompanion.insert({
+    required String originDeviceId,
+    required String hlcCreated,
+    required String hlcModified,
+    this.rev = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String id,
+    required String call,
+    required String body,
+    this.rowid = const Value.absent(),
+  }) : originDeviceId = Value(originDeviceId),
+       hlcCreated = Value(hlcCreated),
+       hlcModified = Value(hlcModified),
+       id = Value(id),
+       call = Value(call),
+       body = Value(body);
+  static Insertable<CallsignNoteRow> custom({
+    Expression<String>? originDeviceId,
+    Expression<String>? hlcCreated,
+    Expression<String>? hlcModified,
+    Expression<int>? rev,
+    Expression<int>? deletedAt,
+    Expression<String>? id,
+    Expression<String>? call,
+    Expression<String>? body,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (originDeviceId != null) 'origin_device_id': originDeviceId,
+      if (hlcCreated != null) 'hlc_created': hlcCreated,
+      if (hlcModified != null) 'hlc_modified': hlcModified,
+      if (rev != null) 'rev': rev,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (id != null) 'id': id,
+      if (call != null) 'call': call,
+      if (body != null) 'body': body,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CallsignNotesCompanion copyWith({
+    Value<String>? originDeviceId,
+    Value<String>? hlcCreated,
+    Value<String>? hlcModified,
+    Value<int>? rev,
+    Value<int?>? deletedAt,
+    Value<String>? id,
+    Value<String>? call,
+    Value<String>? body,
+    Value<int>? rowid,
+  }) {
+    return CallsignNotesCompanion(
+      originDeviceId: originDeviceId ?? this.originDeviceId,
+      hlcCreated: hlcCreated ?? this.hlcCreated,
+      hlcModified: hlcModified ?? this.hlcModified,
+      rev: rev ?? this.rev,
+      deletedAt: deletedAt ?? this.deletedAt,
+      id: id ?? this.id,
+      call: call ?? this.call,
+      body: body ?? this.body,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (originDeviceId.present) {
+      map['origin_device_id'] = Variable<String>(originDeviceId.value);
+    }
+    if (hlcCreated.present) {
+      map['hlc_created'] = Variable<String>(hlcCreated.value);
+    }
+    if (hlcModified.present) {
+      map['hlc_modified'] = Variable<String>(hlcModified.value);
+    }
+    if (rev.present) {
+      map['rev'] = Variable<int>(rev.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<int>(deletedAt.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (call.present) {
+      map['call'] = Variable<String>(call.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CallsignNotesCompanion(')
+          ..write('originDeviceId: $originDeviceId, ')
+          ..write('hlcCreated: $hlcCreated, ')
+          ..write('hlcModified: $hlcModified, ')
+          ..write('rev: $rev, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('id: $id, ')
+          ..write('call: $call, ')
+          ..write('body: $body, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $DevicesTable extends Devices with TableInfo<$DevicesTable, DeviceRow> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -13079,6 +14268,9 @@ abstract class _$TidelineDatabase extends GeneratedDatabase {
       $ProgramReferencesTable(this);
   late final $ScpCallsTable scpCalls = $ScpCallsTable(this);
   late final $WorkedBeforeTable workedBefore = $WorkedBeforeTable(this);
+  late final $CallsignDirectoryTable callsignDirectory =
+      $CallsignDirectoryTable(this);
+  late final $CallsignNotesTable callsignNotes = $CallsignNotesTable(this);
   late final $DevicesTable devices = $DevicesTable(this);
   late final $PeerCursorsTable peerCursors = $PeerCursorsTable(this);
   late final $SettingsTable settings = $SettingsTable(this);
@@ -13131,6 +14323,8 @@ abstract class _$TidelineDatabase extends GeneratedDatabase {
     programReferences,
     scpCalls,
     workedBefore,
+    callsignDirectory,
+    callsignNotes,
     devices,
     peerCursors,
     settings,
@@ -13305,6 +14499,30 @@ final class $$AccountsTableReferences
     ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_workedBeforeRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $CallsignDirectoryTable,
+    List<CallsignDirectoryRow>
+  >
+  _callsignDirectoryRefsTable(_$TidelineDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.callsignDirectory,
+        aliasName: 'accounts__id__callsign_directory__account_id',
+      );
+
+  $$CallsignDirectoryTableProcessedTableManager get callsignDirectoryRefs {
+    final manager = $$CallsignDirectoryTableTableManager(
+      $_db,
+      $_db.callsignDirectory,
+    ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _callsignDirectoryRefsTable($_db),
+    );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -13536,6 +14754,31 @@ class $$AccountsTableFilterComposer
           }) => $$WorkedBeforeTableFilterComposer(
             $db: $db,
             $table: $db.workedBefore,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> callsignDirectoryRefs(
+    Expression<bool> Function($$CallsignDirectoryTableFilterComposer f) f,
+  ) {
+    final $$CallsignDirectoryTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.callsignDirectory,
+      getReferencedColumn: (t) => t.accountId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CallsignDirectoryTableFilterComposer(
+            $db: $db,
+            $table: $db.callsignDirectory,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -13829,6 +15072,32 @@ class $$AccountsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> callsignDirectoryRefs<T extends Object>(
+    Expression<T> Function($$CallsignDirectoryTableAnnotationComposer a) f,
+  ) {
+    final $$CallsignDirectoryTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.callsignDirectory,
+          getReferencedColumn: (t) => t.accountId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$CallsignDirectoryTableAnnotationComposer(
+                $db: $db,
+                $table: $db.callsignDirectory,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$AccountsTableTableManager
@@ -13852,6 +15121,7 @@ class $$AccountsTableTableManager
             bool qsoSyncRefs,
             bool syncJournalRefs,
             bool workedBeforeRefs,
+            bool callsignDirectoryRefs,
           })
         > {
   $$AccountsTableTableManager(_$TidelineDatabase db, $AccountsTable table)
@@ -13934,6 +15204,7 @@ class $$AccountsTableTableManager
                 qsoSyncRefs = false,
                 syncJournalRefs = false,
                 workedBeforeRefs = false,
+                callsignDirectoryRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -13945,6 +15216,7 @@ class $$AccountsTableTableManager
                     if (qsoSyncRefs) db.qsoSync,
                     if (syncJournalRefs) db.syncJournal,
                     if (workedBeforeRefs) db.workedBefore,
+                    if (callsignDirectoryRefs) db.callsignDirectory,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -14092,6 +15364,27 @@ class $$AccountsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (callsignDirectoryRefs)
+                        await $_getPrefetchedData<
+                          AccountRow,
+                          $AccountsTable,
+                          CallsignDirectoryRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$AccountsTableReferences
+                              ._callsignDirectoryRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$AccountsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).callsignDirectoryRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.accountId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -14120,6 +15413,7 @@ typedef $$AccountsTableProcessedTableManager =
         bool qsoSyncRefs,
         bool syncJournalRefs,
         bool workedBeforeRefs,
+        bool callsignDirectoryRefs,
       })
     >;
 typedef $$StationProfilesTableCreateCompanionBuilder =
@@ -22525,6 +23819,735 @@ typedef $$WorkedBeforeTableProcessedTableManager =
       WorkedBeforeRow,
       PrefetchHooks Function({bool accountId})
     >;
+typedef $$CallsignDirectoryTableCreateCompanionBuilder =
+    CallsignDirectoryCompanion Function({
+      required String accountId,
+      required String call,
+      Value<String?> name,
+      Value<String?> qth,
+      Value<String?> gridsquare,
+      Value<String?> country,
+      Value<String?> state,
+      Value<int?> dxcc,
+      Value<int?> cqz,
+      Value<int?> ituz,
+      required int lastTime,
+      Value<int> rowid,
+    });
+typedef $$CallsignDirectoryTableUpdateCompanionBuilder =
+    CallsignDirectoryCompanion Function({
+      Value<String> accountId,
+      Value<String> call,
+      Value<String?> name,
+      Value<String?> qth,
+      Value<String?> gridsquare,
+      Value<String?> country,
+      Value<String?> state,
+      Value<int?> dxcc,
+      Value<int?> cqz,
+      Value<int?> ituz,
+      Value<int> lastTime,
+      Value<int> rowid,
+    });
+
+final class $$CallsignDirectoryTableReferences
+    extends
+        BaseReferences<
+          _$TidelineDatabase,
+          $CallsignDirectoryTable,
+          CallsignDirectoryRow
+        > {
+  $$CallsignDirectoryTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $AccountsTable _accountIdTable(_$TidelineDatabase db) =>
+      db.accounts.createAlias('callsign_directory__account_id__accounts__id');
+
+  $$AccountsTableProcessedTableManager get accountId {
+    final $_column = $_itemColumn<String>('account_id')!;
+
+    final manager = $$AccountsTableTableManager(
+      $_db,
+      $_db.accounts,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_accountIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$CallsignDirectoryTableFilterComposer
+    extends Composer<_$TidelineDatabase, $CallsignDirectoryTable> {
+  $$CallsignDirectoryTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get call => $composableBuilder(
+    column: $table.call,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get qth => $composableBuilder(
+    column: $table.qth,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get gridsquare => $composableBuilder(
+    column: $table.gridsquare,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get country => $composableBuilder(
+    column: $table.country,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get dxcc => $composableBuilder(
+    column: $table.dxcc,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get cqz => $composableBuilder(
+    column: $table.cqz,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get ituz => $composableBuilder(
+    column: $table.ituz,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get lastTime => $composableBuilder(
+    column: $table.lastTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$AccountsTableFilterComposer get accountId {
+    final $$AccountsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AccountsTableFilterComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$CallsignDirectoryTableOrderingComposer
+    extends Composer<_$TidelineDatabase, $CallsignDirectoryTable> {
+  $$CallsignDirectoryTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get call => $composableBuilder(
+    column: $table.call,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get qth => $composableBuilder(
+    column: $table.qth,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get gridsquare => $composableBuilder(
+    column: $table.gridsquare,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get country => $composableBuilder(
+    column: $table.country,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get dxcc => $composableBuilder(
+    column: $table.dxcc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get cqz => $composableBuilder(
+    column: $table.cqz,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get ituz => $composableBuilder(
+    column: $table.ituz,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get lastTime => $composableBuilder(
+    column: $table.lastTime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$AccountsTableOrderingComposer get accountId {
+    final $$AccountsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AccountsTableOrderingComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$CallsignDirectoryTableAnnotationComposer
+    extends Composer<_$TidelineDatabase, $CallsignDirectoryTable> {
+  $$CallsignDirectoryTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get call =>
+      $composableBuilder(column: $table.call, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get qth =>
+      $composableBuilder(column: $table.qth, builder: (column) => column);
+
+  GeneratedColumn<String> get gridsquare => $composableBuilder(
+    column: $table.gridsquare,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get country =>
+      $composableBuilder(column: $table.country, builder: (column) => column);
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumn<int> get dxcc =>
+      $composableBuilder(column: $table.dxcc, builder: (column) => column);
+
+  GeneratedColumn<int> get cqz =>
+      $composableBuilder(column: $table.cqz, builder: (column) => column);
+
+  GeneratedColumn<int> get ituz =>
+      $composableBuilder(column: $table.ituz, builder: (column) => column);
+
+  GeneratedColumn<int> get lastTime =>
+      $composableBuilder(column: $table.lastTime, builder: (column) => column);
+
+  $$AccountsTableAnnotationComposer get accountId {
+    final $$AccountsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AccountsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$CallsignDirectoryTableTableManager
+    extends
+        RootTableManager<
+          _$TidelineDatabase,
+          $CallsignDirectoryTable,
+          CallsignDirectoryRow,
+          $$CallsignDirectoryTableFilterComposer,
+          $$CallsignDirectoryTableOrderingComposer,
+          $$CallsignDirectoryTableAnnotationComposer,
+          $$CallsignDirectoryTableCreateCompanionBuilder,
+          $$CallsignDirectoryTableUpdateCompanionBuilder,
+          (CallsignDirectoryRow, $$CallsignDirectoryTableReferences),
+          CallsignDirectoryRow,
+          PrefetchHooks Function({bool accountId})
+        > {
+  $$CallsignDirectoryTableTableManager(
+    _$TidelineDatabase db,
+    $CallsignDirectoryTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CallsignDirectoryTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CallsignDirectoryTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CallsignDirectoryTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> accountId = const Value.absent(),
+                Value<String> call = const Value.absent(),
+                Value<String?> name = const Value.absent(),
+                Value<String?> qth = const Value.absent(),
+                Value<String?> gridsquare = const Value.absent(),
+                Value<String?> country = const Value.absent(),
+                Value<String?> state = const Value.absent(),
+                Value<int?> dxcc = const Value.absent(),
+                Value<int?> cqz = const Value.absent(),
+                Value<int?> ituz = const Value.absent(),
+                Value<int> lastTime = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CallsignDirectoryCompanion(
+                accountId: accountId,
+                call: call,
+                name: name,
+                qth: qth,
+                gridsquare: gridsquare,
+                country: country,
+                state: state,
+                dxcc: dxcc,
+                cqz: cqz,
+                ituz: ituz,
+                lastTime: lastTime,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String accountId,
+                required String call,
+                Value<String?> name = const Value.absent(),
+                Value<String?> qth = const Value.absent(),
+                Value<String?> gridsquare = const Value.absent(),
+                Value<String?> country = const Value.absent(),
+                Value<String?> state = const Value.absent(),
+                Value<int?> dxcc = const Value.absent(),
+                Value<int?> cqz = const Value.absent(),
+                Value<int?> ituz = const Value.absent(),
+                required int lastTime,
+                Value<int> rowid = const Value.absent(),
+              }) => CallsignDirectoryCompanion.insert(
+                accountId: accountId,
+                call: call,
+                name: name,
+                qth: qth,
+                gridsquare: gridsquare,
+                country: country,
+                state: state,
+                dxcc: dxcc,
+                cqz: cqz,
+                ituz: ituz,
+                lastTime: lastTime,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$CallsignDirectoryTable, CallsignDirectoryRow>(
+                    table,
+                  ),
+                  $$CallsignDirectoryTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({accountId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (accountId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.accountId,
+                        referencedTable: $$CallsignDirectoryTableReferences
+                            ._accountIdTable(db),
+                        referencedColumn: $$CallsignDirectoryTableReferences
+                            ._accountIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$CallsignDirectoryTableProcessedTableManager =
+    ProcessedTableManager<
+      _$TidelineDatabase,
+      $CallsignDirectoryTable,
+      CallsignDirectoryRow,
+      $$CallsignDirectoryTableFilterComposer,
+      $$CallsignDirectoryTableOrderingComposer,
+      $$CallsignDirectoryTableAnnotationComposer,
+      $$CallsignDirectoryTableCreateCompanionBuilder,
+      $$CallsignDirectoryTableUpdateCompanionBuilder,
+      (CallsignDirectoryRow, $$CallsignDirectoryTableReferences),
+      CallsignDirectoryRow,
+      PrefetchHooks Function({bool accountId})
+    >;
+typedef $$CallsignNotesTableCreateCompanionBuilder =
+    CallsignNotesCompanion Function({
+      required String originDeviceId,
+      required String hlcCreated,
+      required String hlcModified,
+      Value<int> rev,
+      Value<int?> deletedAt,
+      required String id,
+      required String call,
+      required String body,
+      Value<int> rowid,
+    });
+typedef $$CallsignNotesTableUpdateCompanionBuilder =
+    CallsignNotesCompanion Function({
+      Value<String> originDeviceId,
+      Value<String> hlcCreated,
+      Value<String> hlcModified,
+      Value<int> rev,
+      Value<int?> deletedAt,
+      Value<String> id,
+      Value<String> call,
+      Value<String> body,
+      Value<int> rowid,
+    });
+
+class $$CallsignNotesTableFilterComposer
+    extends Composer<_$TidelineDatabase, $CallsignNotesTable> {
+  $$CallsignNotesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get originDeviceId => $composableBuilder(
+    column: $table.originDeviceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hlcCreated => $composableBuilder(
+    column: $table.hlcCreated,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get hlcModified => $composableBuilder(
+    column: $table.hlcModified,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rev => $composableBuilder(
+    column: $table.rev,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get call => $composableBuilder(
+    column: $table.call,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$CallsignNotesTableOrderingComposer
+    extends Composer<_$TidelineDatabase, $CallsignNotesTable> {
+  $$CallsignNotesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get originDeviceId => $composableBuilder(
+    column: $table.originDeviceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hlcCreated => $composableBuilder(
+    column: $table.hlcCreated,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get hlcModified => $composableBuilder(
+    column: $table.hlcModified,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rev => $composableBuilder(
+    column: $table.rev,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get call => $composableBuilder(
+    column: $table.call,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$CallsignNotesTableAnnotationComposer
+    extends Composer<_$TidelineDatabase, $CallsignNotesTable> {
+  $$CallsignNotesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get originDeviceId => $composableBuilder(
+    column: $table.originDeviceId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get hlcCreated => $composableBuilder(
+    column: $table.hlcCreated,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get hlcModified => $composableBuilder(
+    column: $table.hlcModified,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get rev =>
+      $composableBuilder(column: $table.rev, builder: (column) => column);
+
+  GeneratedColumn<int> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get call =>
+      $composableBuilder(column: $table.call, builder: (column) => column);
+
+  GeneratedColumn<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => column);
+}
+
+class $$CallsignNotesTableTableManager
+    extends
+        RootTableManager<
+          _$TidelineDatabase,
+          $CallsignNotesTable,
+          CallsignNoteRow,
+          $$CallsignNotesTableFilterComposer,
+          $$CallsignNotesTableOrderingComposer,
+          $$CallsignNotesTableAnnotationComposer,
+          $$CallsignNotesTableCreateCompanionBuilder,
+          $$CallsignNotesTableUpdateCompanionBuilder,
+          (
+            CallsignNoteRow,
+            BaseReferences<
+              _$TidelineDatabase,
+              $CallsignNotesTable,
+              CallsignNoteRow
+            >,
+          ),
+          CallsignNoteRow,
+          PrefetchHooks Function()
+        > {
+  $$CallsignNotesTableTableManager(
+    _$TidelineDatabase db,
+    $CallsignNotesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CallsignNotesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CallsignNotesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CallsignNotesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> originDeviceId = const Value.absent(),
+                Value<String> hlcCreated = const Value.absent(),
+                Value<String> hlcModified = const Value.absent(),
+                Value<int> rev = const Value.absent(),
+                Value<int?> deletedAt = const Value.absent(),
+                Value<String> id = const Value.absent(),
+                Value<String> call = const Value.absent(),
+                Value<String> body = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CallsignNotesCompanion(
+                originDeviceId: originDeviceId,
+                hlcCreated: hlcCreated,
+                hlcModified: hlcModified,
+                rev: rev,
+                deletedAt: deletedAt,
+                id: id,
+                call: call,
+                body: body,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String originDeviceId,
+                required String hlcCreated,
+                required String hlcModified,
+                Value<int> rev = const Value.absent(),
+                Value<int?> deletedAt = const Value.absent(),
+                required String id,
+                required String call,
+                required String body,
+                Value<int> rowid = const Value.absent(),
+              }) => CallsignNotesCompanion.insert(
+                originDeviceId: originDeviceId,
+                hlcCreated: hlcCreated,
+                hlcModified: hlcModified,
+                rev: rev,
+                deletedAt: deletedAt,
+                id: id,
+                call: call,
+                body: body,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$CallsignNotesTable, CallsignNoteRow>(table),
+                  BaseReferences<
+                    _$TidelineDatabase,
+                    $CallsignNotesTable,
+                    CallsignNoteRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$CallsignNotesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$TidelineDatabase,
+      $CallsignNotesTable,
+      CallsignNoteRow,
+      $$CallsignNotesTableFilterComposer,
+      $$CallsignNotesTableOrderingComposer,
+      $$CallsignNotesTableAnnotationComposer,
+      $$CallsignNotesTableCreateCompanionBuilder,
+      $$CallsignNotesTableUpdateCompanionBuilder,
+      (
+        CallsignNoteRow,
+        BaseReferences<
+          _$TidelineDatabase,
+          $CallsignNotesTable,
+          CallsignNoteRow
+        >,
+      ),
+      CallsignNoteRow,
+      PrefetchHooks Function()
+    >;
 typedef $$DevicesTableCreateCompanionBuilder = DevicesCompanion Function({
   required String id,
   required String name,
@@ -23442,6 +25465,10 @@ class $TidelineDatabaseManager {
       $$ScpCallsTableTableManager(_db, _db.scpCalls);
   $$WorkedBeforeTableTableManager get workedBefore =>
       $$WorkedBeforeTableTableManager(_db, _db.workedBefore);
+  $$CallsignDirectoryTableTableManager get callsignDirectory =>
+      $$CallsignDirectoryTableTableManager(_db, _db.callsignDirectory);
+  $$CallsignNotesTableTableManager get callsignNotes =>
+      $$CallsignNotesTableTableManager(_db, _db.callsignNotes);
   $$DevicesTableTableManager get devices =>
       $$DevicesTableTableManager(_db, _db.devices);
   $$PeerCursorsTableTableManager get peerCursors =>

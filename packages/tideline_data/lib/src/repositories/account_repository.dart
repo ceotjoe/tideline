@@ -259,6 +259,7 @@ class AccountRepository {
         'contest_sessions',
         'activations',
         'worked_before',
+        'callsign_directory',
         'station_profiles',
       ]) {
         await _db.customStatement('DELETE FROM $table WHERE account_id = ?', [
@@ -286,6 +287,7 @@ class AccountRepository {
       _db.contestSessions,
       _db.activations,
       _db.workedBefore,
+      _db.callsignDirectory,
       _db.stationProfiles,
       _db.accounts,
       _db.settings,

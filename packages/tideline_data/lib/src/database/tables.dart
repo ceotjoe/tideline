@@ -450,6 +450,56 @@ class WorkedBefore extends Table {
   Set<Column<Object>> get primaryKey => {accountId, call, band, mode};
 }
 
+/// What is known about a station from the QSO history of an account:
+/// derived data, rebuildable at any time (`CallsignDirectoryRepository`).
+///
+/// One row per home call (`EA8/DL1ABC/P` and `DL1ABC` share one). Each value
+/// comes from the newest QSO that has it. Names and places of other people
+/// are personal data; the database is encrypted at rest.
+@DataClassName('CallsignDirectoryRow')
+class CallsignDirectory extends Table {
+  TextColumn get accountId => text().references(Accounts, #id)();
+
+  /// The home callsign, upper case.
+  TextColumn get call => text()();
+  TextColumn get name => text().nullable()();
+  TextColumn get qth => text().nullable()();
+  TextColumn get gridsquare => text().nullable()();
+  TextColumn get country => text().nullable()();
+  TextColumn get state => text().nullable()();
+  IntColumn get dxcc => integer().nullable()();
+  IntColumn get cqz => integer().nullable()();
+  IntColumn get ituz => integer().nullable()();
+
+  /// Start of the newest QSO the row was built from (UTC millis).
+  IntColumn get lastTime => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {accountId, call};
+}
+
+/// The user's own note about a station. Local only: Wavelog's API v2 has no
+/// notes resource (docs/architecture/wavelog-api.md), so notes are never sent
+/// anywhere, and they are not part of any ADIF export.
+@DataClassName('CallsignNoteRow')
+class CallsignNotes extends Table with SyncedRow {
+  TextColumn get id => text()();
+
+  /// The home callsign, upper case. One note per station, across accounts.
+  TextColumn get call => text()();
+
+  /// The text; never empty on a live row (an empty note is a delete).
+  TextColumn get body => text()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+
+  @override
+  List<Set<Column<Object>>> get uniqueKeys => [
+    {call},
+  ];
+}
+
 /// Paired Tideline devices (device-to-device sync, later milestone).
 @DataClassName('DeviceRow')
 class Devices extends Table {

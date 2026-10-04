@@ -2789,9 +2789,608 @@ i1.GeneratedColumn<int> _column_155(String aliasedName) =>
       $customConstraints: 'NOT NULL DEFAULT 1 CHECK (active IN (0, 1))',
       defaultValue: const i1.CustomExpression('1'),
     );
+
+final class Schema4 extends i0.VersionedSchema {
+  Schema4({required super.database}) : super(version: 4);
+  @override
+  late final List<i1.DatabaseSchemaEntity> entities = [
+    accounts,
+    stationProfiles,
+    contestDefinitions,
+    contestSessions,
+    activations,
+    qsos,
+    qsoSync,
+    syncJournal,
+    contestLinks,
+    serialAllocations,
+    programRules,
+    referencePacks,
+    dxccEntities,
+    dxccPrefixes,
+    programReferences,
+    scpCalls,
+    workedBefore,
+    callsignDirectory,
+    callsignNotes,
+    devices,
+    peerCursors,
+    settings,
+    shortcutBindings,
+    qsosAccountTime,
+    qsosCall,
+    qsosContestSession,
+    qsoSyncAccountState,
+    syncJournalAccountAt,
+    programReferencesPosition,
+  ];
+  late final Shape0 accounts = Shape0(
+    source: i0.VersionedTable(
+      entityName: 'accounts',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_6,
+        _column_7,
+        _column_8,
+        _column_9,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape1 stationProfiles = Shape1(
+    source: i0.VersionedTable(
+      entityName: 'station_profiles',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)', 'UNIQUE(account_id, remote_id)'],
+      columns: [
+        _column_0,
+        _column_10,
+        _column_11,
+        _column_12,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_18,
+        _column_19,
+        _column_20,
+        _column_21,
+        _column_22,
+        _column_23,
+        _column_24,
+        _column_25,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape2 contestDefinitions = Shape2(
+    source: i0.VersionedTable(
+      entityName: 'contest_definitions',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_12,
+        _column_26,
+        _column_27,
+        _column_28,
+        _column_29,
+        _column_30,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape3 contestSessions = Shape3(
+    source: i0.VersionedTable(
+      entityName: 'contest_sessions',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_31,
+        _column_32,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_0,
+        _column_36,
+        _column_10,
+        _column_37,
+        _column_38,
+        _column_39,
+        _column_40,
+        _column_41,
+        _column_42,
+        _column_43,
+        _column_44,
+        _column_45,
+        _column_46,
+        _column_47,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape4 activations = Shape4(
+    source: i0.VersionedTable(
+      entityName: 'activations',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_31,
+        _column_32,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_0,
+        _column_10,
+        _column_48,
+        _column_49,
+        _column_50,
+        _column_37,
+        _column_38,
+        _column_39,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape5 qsos = Shape5(
+    source: i0.VersionedTable(
+      entityName: 'qsos',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_31,
+        _column_32,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_0,
+        _column_10,
+        _column_37,
+        _column_51,
+        _column_52,
+        _column_53,
+        _column_54,
+        _column_55,
+        _column_56,
+        _column_57,
+        _column_58,
+        _column_59,
+        _column_60,
+        _column_61,
+        _column_62,
+        _column_63,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_64,
+        _column_65,
+        _column_66,
+        _column_67,
+        _column_68,
+        _column_21,
+        _column_18,
+        _column_19,
+        _column_20,
+        _column_22,
+        _column_23,
+        _column_69,
+        _column_70,
+        _column_71,
+        _column_72,
+        _column_73,
+        _column_74,
+        _column_75,
+        _column_50,
+        _column_76,
+        _column_77,
+        _column_78,
+        _column_79,
+        _column_80,
+        _column_81,
+        _column_82,
+        _column_83,
+        _column_84,
+        _column_85,
+        _column_86,
+        _column_87,
+        _column_88,
+        _column_89,
+        _column_90,
+        _column_91,
+        _column_92,
+        _column_93,
+        _column_94,
+        _column_95,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape6 qsoSync = Shape6(
+    source: i0.VersionedTable(
+      entityName: 'qso_sync',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(qso_id, account_id)'],
+      columns: [
+        _column_96,
+        _column_10,
+        _column_97,
+        _column_98,
+        _column_99,
+        _column_100,
+        _column_101,
+        _column_102,
+        _column_103,
+        _column_104,
+        _column_105,
+        _column_106,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape7 syncJournal = Shape7(
+    source: i0.VersionedTable(
+      entityName: 'sync_journal',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [],
+      columns: [
+        _column_107,
+        _column_10,
+        _column_108,
+        _column_109,
+        _column_110,
+        _column_111,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape8 contestLinks = Shape8(
+    source: i0.VersionedTable(
+      entityName: 'contest_links',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(session_id, qso_id)'],
+      columns: [_column_112, _column_96, _column_113, _column_114],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape9 serialAllocations = Shape9(
+    source: i0.VersionedTable(
+      entityName: 'serial_allocations',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(session_id, serial)'],
+      columns: [_column_112, _column_115, _column_108, _column_116],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape10 programRules = Shape10(
+    source: i0.VersionedTable(
+      entityName: 'program_rules',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(program)'],
+      columns: [_column_48, _column_28, _column_117],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape11 referencePacks = Shape11(
+    source: i0.VersionedTable(
+      entityName: 'reference_packs',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_118,
+        _column_119,
+        _column_120,
+        _column_121,
+        _column_25,
+        _column_122,
+        _column_123,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape12 dxccEntities = Shape12(
+    source: i0.VersionedTable(
+      entityName: 'dxcc_entities',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(dxcc)'],
+      columns: [
+        _column_124,
+        _column_12,
+        _column_125,
+        _column_126,
+        _column_127,
+        _column_128,
+        _column_129,
+        _column_130,
+        _column_131,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape13 dxccPrefixes = Shape13(
+    source: i0.VersionedTable(
+      entityName: 'dxcc_prefixes',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(prefix_or_call, exact)'],
+      columns: [
+        _column_132,
+        _column_133,
+        _column_134,
+        _column_135,
+        _column_136,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape21 programReferences = Shape21(
+    source: i0.VersionedTable(
+      entityName: 'program_references',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(program, ref)'],
+      columns: [
+        _column_48,
+        _column_137,
+        _column_12,
+        _column_138,
+        _column_139,
+        _column_140,
+        _column_141,
+        _column_142,
+        _column_155,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape15 scpCalls = Shape15(
+    source: i0.VersionedTable(
+      entityName: 'scp_calls',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(call)'],
+      columns: [_column_51],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape16 workedBefore = Shape16(
+    source: i0.VersionedTable(
+      entityName: 'worked_before',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(account_id, call, band, mode)'],
+      columns: [
+        _column_10,
+        _column_51,
+        _column_54,
+        _column_56,
+        _column_15,
+        _column_14,
+        _column_143,
+        _column_144,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape22 callsignDirectory = Shape22(
+    source: i0.VersionedTable(
+      entityName: 'callsign_directory',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(account_id, call)'],
+      columns: [
+        _column_10,
+        _column_51,
+        _column_62,
+        _column_63,
+        _column_14,
+        _column_66,
+        _column_64,
+        _column_15,
+        _column_16,
+        _column_17,
+        _column_156,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape23 callsignNotes = Shape23(
+    source: i0.VersionedTable(
+      entityName: 'callsign_notes',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)', 'UNIQUE(call)'],
+      columns: [
+        _column_31,
+        _column_32,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_0,
+        _column_51,
+        _column_157,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape17 devices = Shape17(
+    source: i0.VersionedTable(
+      entityName: 'devices',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [_column_0, _column_12, _column_145, _column_146, _column_147],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape18 peerCursors = Shape18(
+    source: i0.VersionedTable(
+      entityName: 'peer_cursors',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(device_id)'],
+      columns: [_column_148, _column_149],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape19 settings = Shape19(
+    source: i0.VersionedTable(
+      entityName: 'settings',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY("key")'],
+      columns: [_column_150, _column_151],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape20 shortcutBindings = Shape20(
+    source: i0.VersionedTable(
+      entityName: 'shortcut_bindings',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(command_id, platform)'],
+      columns: [_column_152, _column_153, _column_154],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  final i1.Index qsosAccountTime = i1.Index(
+    'qsos_account_time',
+    'CREATE INDEX qsos_account_time ON qsos (account_id, time_on)',
+  );
+  final i1.Index qsosCall = i1.Index(
+    'qsos_call',
+    'CREATE INDEX qsos_call ON qsos (call)',
+  );
+  final i1.Index qsosContestSession = i1.Index(
+    'qsos_contest_session',
+    'CREATE INDEX qsos_contest_session ON qsos (contest_session_id)',
+  );
+  final i1.Index qsoSyncAccountState = i1.Index(
+    'qso_sync_account_state',
+    'CREATE INDEX qso_sync_account_state ON qso_sync (account_id, state)',
+  );
+  final i1.Index syncJournalAccountAt = i1.Index(
+    'sync_journal_account_at',
+    'CREATE INDEX sync_journal_account_at ON sync_journal (account_id, at)',
+  );
+  final i1.Index programReferencesPosition = i1.Index(
+    'program_references_position',
+    'CREATE INDEX program_references_position ON program_references (program, lat, lon)',
+  );
+}
+
+class Shape22 extends i0.VersionedTable {
+  Shape22({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<String> get accountId =>
+      columnsByName['account_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get call =>
+      columnsByName['call']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get name =>
+      columnsByName['name']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get qth =>
+      columnsByName['qth']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get gridsquare =>
+      columnsByName['gridsquare']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get country =>
+      columnsByName['country']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get state =>
+      columnsByName['state']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get dxcc =>
+      columnsByName['dxcc']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get cqz =>
+      columnsByName['cqz']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get ituz =>
+      columnsByName['ituz']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get lastTime =>
+      columnsByName['last_time']! as i1.GeneratedColumn<int>;
+}
+
+i1.GeneratedColumn<int> _column_156(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'last_time',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.int,
+      $customConstraints: 'NOT NULL',
+    );
+
+class Shape23 extends i0.VersionedTable {
+  Shape23({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<String> get originDeviceId =>
+      columnsByName['origin_device_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get hlcCreated =>
+      columnsByName['hlc_created']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get hlcModified =>
+      columnsByName['hlc_modified']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get rev =>
+      columnsByName['rev']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get deletedAt =>
+      columnsByName['deleted_at']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get id =>
+      columnsByName['id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get call =>
+      columnsByName['call']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get body =>
+      columnsByName['body']! as i1.GeneratedColumn<String>;
+}
+
+i1.GeneratedColumn<String> _column_157(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'body',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
 i0.MigrationStepWithVersion migrationSteps({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
   required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
+  required Future<void> Function(i1.Migrator m, Schema4 schema) from3To4,
 }) {
   return (currentVersion, database) async {
     switch (currentVersion) {
@@ -2805,6 +3404,11 @@ i0.MigrationStepWithVersion migrationSteps({
         final migrator = i1.Migrator(database, schema);
         await from2To3(migrator, schema);
         return 3;
+      case 3:
+        final schema = Schema4(database: database);
+        final migrator = i1.Migrator(database, schema);
+        await from3To4(migrator, schema);
+        return 4;
       default:
         throw ArgumentError.value('Unknown migration from $currentVersion');
     }
@@ -2814,6 +3418,11 @@ i0.MigrationStepWithVersion migrationSteps({
 i1.OnUpgrade stepByStep({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
   required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
+  required Future<void> Function(i1.Migrator m, Schema4 schema) from3To4,
 }) => i0.VersionedSchema.stepByStepHelper(
-  step: migrationSteps(from1To2: from1To2, from2To3: from2To3),
+  step: migrationSteps(
+    from1To2: from1To2,
+    from2To3: from2To3,
+    from3To4: from3To4,
+  ),
 );

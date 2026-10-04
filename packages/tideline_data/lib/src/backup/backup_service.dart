@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:tideline_adif/tideline_adif.dart';
 import 'package:tideline_data/src/backup/backup_codec.dart';
 import 'package:tideline_data/src/database/tideline_database.dart';
+import 'package:tideline_data/src/repositories/callsign_note_repository.dart';
 import 'package:tideline_data/src/repositories/qso_repository.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
@@ -16,6 +17,7 @@ class RestoreReport {
     required this.accountsAdded,
     required this.qsosAdded,
     required this.qsosSkipped,
+    this.notesAdded = 0,
   });
 
   /// Accounts created (they need a token before they can sync).
@@ -26,6 +28,9 @@ class RestoreReport {
 
   /// QSOs already present (same id), left unchanged.
   final int qsosSkipped;
+
+  /// Callsign notes restored (a station that has a note keeps it).
+  final int notesAdded;
 }
 
 /// Creates and restores encrypted backups of the whole log.
@@ -50,6 +55,9 @@ class BackupService {
     final accounts = await _db.select(_db.accounts).get();
     final stations = await _db.select(_db.stationProfiles).get();
     final qsos = await _qsos.all();
+    final notes = await (_db.select(
+      _db.callsignNotes,
+    )..where((n) => n.deletedAt.isNull())).get();
     final payload = {
       'format': _format,
       'version': _version,
@@ -78,6 +86,18 @@ class BackupService {
             'callsign': s.callsign,
             'gridsquare': s.gridsquare,
             'active': s.active,
+          },
+      ],
+      // Local only (Wavelog has no notes API), so the backup is their only
+      // second copy.
+      'callsignNotes': [
+        for (final n in notes)
+          {
+            'id': n.id,
+            'call': n.call,
+            'body': n.body,
+            'originDeviceId': n.originDeviceId,
+            'modifiedAt': n.hlcModified,
           },
       ],
       'qsos': [
@@ -211,10 +231,19 @@ class BackupService {
             skipped++;
           }
         }
+        // Notes (absent in older backups). A station that already has a
+        // note keeps it.
+        var notesAdded = 0;
+        for (final n
+            in ((payload['callsignNotes'] as List?) ?? const [])
+                .cast<Map<String, dynamic>>()) {
+          if (await _restoreNote(n)) notesAdded++;
+        }
         return RestoreReport(
           accountsAdded: accountsAdded,
           qsosAdded: added,
           qsosSkipped: skipped,
+          notesAdded: notesAdded,
         );
       });
       // The payload is untrusted: a wrong type or value anywhere in it
@@ -227,5 +256,36 @@ class BackupService {
     } on ArgumentError {
       throw const BackupFormatException('unexpected value');
     }
+  }
+
+  /// Adds a note from a backup unless the station already has one. The text is
+  /// untrusted: it is limited like a typed note.
+  Future<bool> _restoreNote(Map<String, dynamic> n) async {
+    final call = CallsignNoteRepository.keyOf(n['call'] as String);
+    final body = (n['body'] as String).trim();
+    if (call == null ||
+        body.isEmpty ||
+        body.length > CallsignNoteRepository.maxLength) {
+      return false;
+    }
+    final id = n['id'] as String;
+    final taken = await (_db.select(
+      _db.callsignNotes,
+    )..where((x) => x.call.equals(call) | x.id.equals(id))).get();
+    if (taken.isNotEmpty) return false;
+    final at = n['modifiedAt'] as String;
+    await _db
+        .into(_db.callsignNotes)
+        .insert(
+          CallsignNotesCompanion.insert(
+            id: id,
+            call: call,
+            body: body,
+            originDeviceId: n['originDeviceId'] as String,
+            hlcCreated: at,
+            hlcModified: at,
+          ),
+        );
+    return true;
   }
 }

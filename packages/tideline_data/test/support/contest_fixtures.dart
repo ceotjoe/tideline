@@ -92,14 +92,21 @@ class ContestHarness {
 
 int _n = 0;
 
-Qso testQso({String call = 'DL1ABC', int? timeOn, String band = '20m'}) {
+Qso testQso({
+  String call = 'DL1ABC',
+  int? timeOn,
+  String band = '20m',
+  Map<String, String> fields = const {},
+  String accountId = 'acc',
+}) {
   _n++;
   return Qso(
     id: 'q-$_n-${Random().nextInt(1 << 30)}',
-    accountId: 'acc',
+    accountId: accountId,
     call: Callsign.tryParse(call)!,
     timeOn: UtcDateTime.fromMillis(timeOn ?? 1000000 + _n * 60000),
     band: Band.tryParse(band)!,
     mode: Mode.tryParse('CW')!,
+    fields: fields,
   );
 }

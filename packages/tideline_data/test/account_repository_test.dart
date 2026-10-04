@@ -77,6 +77,7 @@ void main() {
       "VALUES ('act', 'acc', 'pota', 'DL-0001', 1, 'dev', 'h', 'h')",
     );
     await h.qsos.log(testQso());
+    await h.qsos.log(testQso(call: 'DL9XYZ', fields: {'NAME': 'Anna'}));
     await WorkedBeforeRepository(h.db).rebuildLocal('acc');
     // The other account keeps its data.
     await h.db.customStatement(
@@ -97,6 +98,7 @@ void main() {
       'contest_sessions',
       'activations',
       'worked_before',
+      'callsign_directory',
     ]) {
       expect(await count(table, 'acc'), 0, reason: table);
     }

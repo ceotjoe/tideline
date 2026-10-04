@@ -118,6 +118,10 @@ void main() {
         const SyncStatus(state: SyncState.synced, remoteQsoId: 77),
       );
       await qsos.log(waiting);
+      final notes = CallsignNoteRepository(db, HlcClock('a'));
+      await notes.save('DL1ABC', 'Calls on 40 m');
+      await notes.save('G4XYZ', 'Gone');
+      await notes.delete('G4XYZ');
       final file = await BackupService(
         db,
         qsos,
@@ -135,6 +139,12 @@ void main() {
       final service2 = BackupService(db2, qsos2, codec: _codec);
       final report = await service2.restore(file, 'pw', nowMillis: 2);
       expect((report.accountsAdded, report.qsosAdded), (1, 2));
+      // Notes come back; a deleted one does not, and its text is not in the
+      // file.
+      expect(report.notesAdded, 1);
+      final notes2 = CallsignNoteRepository(db2, HlcClock('b'));
+      expect(await notes2.find('DL1ABC'), 'Calls on 40 m');
+      expect(await notes2.find('G4XYZ'), isNull);
 
       final restored = await qsos2.find(synced.id);
       expect(restored!.status!.remoteQsoId, 77); // never uploaded again
@@ -151,6 +161,12 @@ void main() {
       // Restoring again adds nothing.
       final again = await service2.restore(file, 'pw', nowMillis: 3);
       expect((again.qsosAdded, again.qsosSkipped), (0, 2));
+      expect(again.notesAdded, 0);
+
+      // A note typed on the new device is not overwritten by a restore.
+      await notes2.save('DL1ABC', 'newer');
+      await service2.restore(file, 'pw', nowMillis: 4);
+      expect(await notes2.find('DL1ABC'), 'newer');
     });
   });
 }
