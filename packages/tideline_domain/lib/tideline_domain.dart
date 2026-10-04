@@ -15,6 +15,7 @@ export 'src/contest/exchange.dart';
 export 'src/contest/mode_category.dart';
 export 'src/contest/wpx_prefix.dart';
 export 'src/dxcc/dxcc.dart';
+export 'src/fle/fle_parser.dart';
 export 'src/ids/hlc.dart';
 export 'src/ids/uuid.dart';
 export 'src/ports/secret_store.dart';

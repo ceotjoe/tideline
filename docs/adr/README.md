@@ -27,5 +27,6 @@
 - [0025](0025-desktop-navigation.md) Desktop navigation on macOS, Windows and Linux
 - [0026](0026-callsign-directory-and-notes.md) Offline callsign directory and local callsign notes
 - [0027](0027-evict-synced-qsos.md) Removing synced QSOs from the device (eviction)
+- [0028](0028-fast-log-entry.md) Fast Log Entry (FLE) in the normal log
 
 New ADRs start from [0000-template.md](0000-template.md).
