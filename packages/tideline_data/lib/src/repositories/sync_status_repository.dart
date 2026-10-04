@@ -18,4 +18,20 @@ class SyncStatusRepository {
       ..where(_db.qsoSync.state.equals(SyncState.synced.name).not());
     return query.watchSingle().map((row) => row.read(count) ?? 0);
   }
+
+  /// Number of QSOs not yet [SyncState.synced], per account id. Accounts
+  /// with nothing waiting are absent. Their sum is [watchPendingCount].
+  Stream<Map<String, int>> watchPendingByAccount() {
+    final count = _db.qsoSync.qsoId.count();
+    final query = _db.selectOnly(_db.qsoSync)
+      ..addColumns([_db.qsoSync.accountId, count])
+      ..where(_db.qsoSync.state.equals(SyncState.synced.name).not())
+      ..groupBy([_db.qsoSync.accountId]);
+    return query.watch().map(
+      (rows) => {
+        for (final r in rows)
+          r.read(_db.qsoSync.accountId)!: r.read(count) ?? 0,
+      },
+    );
+  }
 }

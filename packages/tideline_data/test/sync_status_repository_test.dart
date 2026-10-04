@@ -49,4 +49,58 @@ void main() {
       SyncState.values.length - 1,
     );
   });
+
+  test('counts the waiting QSOs per account', () async {
+    final db = await openTestDatabase();
+    const hlc = '000000000000000-0000-dev';
+    for (final id in ['a', 'b', 'c']) {
+      await db
+          .into(db.accounts)
+          .insert(
+            AccountsCompanion.insert(
+              id: id,
+              label: id,
+              baseUrl: 'https://$id.example.org',
+              createdAt: 0,
+            ),
+          );
+    }
+    var n = 0;
+    Future<void> qso(String account, SyncState state) async {
+      n++;
+      await db
+          .into(db.qsos)
+          .insert(
+            QsosCompanion.insert(
+              id: 'q$n',
+              accountId: account,
+              call: 'DL$n',
+              timeOn: n,
+              band: '20m',
+              mode: 'CW',
+              originDeviceId: 'dev',
+              hlcCreated: hlc,
+              hlcModified: hlc,
+            ),
+          );
+      await db
+          .into(db.qsoSync)
+          .insert(
+            QsoSyncCompanion.insert(
+              qsoId: 'q$n',
+              accountId: account,
+              state: state.name,
+            ),
+          );
+    }
+
+    await qso('a', SyncState.queued);
+    await qso('a', SyncState.queued);
+    await qso('a', SyncState.synced);
+    await qso('b', SyncState.queued);
+    await qso('c', SyncState.synced);
+    final repo = SyncStatusRepository(db);
+    expect(await repo.watchPendingByAccount().first, {'a': 2, 'b': 1});
+    expect(await repo.watchPendingCount().first, 3);
+  });
 }
