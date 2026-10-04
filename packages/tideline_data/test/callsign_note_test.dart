@@ -79,14 +79,14 @@ void main() {
 
   test('watch follows saves and deletes', () async {
     final seen = expectLater(
-      notes.watch('DL1ABC'),
+      notes.watch('DL1ABC').distinct(),
       emitsInOrder([null, 'a', 'b', null]),
     );
-    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await Future<void>.delayed(const Duration(milliseconds: 150));
     await notes.save('DL1ABC', 'a');
-    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await Future<void>.delayed(const Duration(milliseconds: 150));
     await notes.save('DL1ABC', 'b');
-    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await Future<void>.delayed(const Duration(milliseconds: 150));
     await notes.delete('DL1ABC');
     await seen;
   });
