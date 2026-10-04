@@ -1,6 +1,6 @@
 # 0022. Distribution: TestFlight first, stores later
 
-- Status: proposed
+- Status: accepted
 - Date: 2026-10-04
 
 ## Context
@@ -11,7 +11,8 @@ Verified from the repository (2026-10-04):
 - Bundle ID `com.ITWebService.tideline` and an Apple development team are set in the iOS project, with automatic signing
   (ADR 0015, `app/ios/Runner.xcodeproj`). `docs/release.md` said the team still had to be configured; that was out of
   date.
-- Version `0.0.1+1` in `app/pubspec.yaml`; `appVersion` in `app/lib/src/app_version.dart` is kept equal by a test.
+- Version `0.0.1+1` in `app/pubspec.yaml` (now `0.3.0+1`); `appVersion` in `app/lib/src/app_version.dart` and
+  `msix_version` are kept equal by tests.
 - `.github/workflows/release.yml` builds an unsigned or signed IPA but does not upload and has no provisioning or
   App Store Connect credentials.
 - There is no `PrivacyInfo.xcprivacy` and no `ITSAppUsesNonExemptEncryption` key in `Info.plist`.
@@ -35,10 +36,15 @@ Verified from Apple's public documentation and forums (not from our code):
    `msix_version` stay in step.
 3. **Nothing is added to the app for diagnostics.** No telemetry, no crash reporter (CLAUDE.md). Testers can use
    TestFlight's own feedback and crash sharing, which is Apple's and opt-in for the tester.
-4. **Privacy manifest and export compliance are part of the build**, not of the store listing:
-   `app/ios/Runner/PrivacyInfo.xcprivacy` (no tracking, no collected data, the required-reason APIs found in the
-   Xcode privacy report of a real archive) and the `ITSAppUsesNonExemptEncryption` value the maintainer decides.
-5. **Uploads start manual** (Xcode or Transporter) and get automated with an App Store Connect API key once the first
+4. **Privacy manifest in the build, export compliance by hand for now.**
+   `app/ios/Runner/PrivacyInfo.xcprivacy` declares no tracking, no collected data and the required-reason APIs of the
+   bundled SQLite (file timestamps `C617.1`, disk space `E174.1`). `ITSAppUsesNonExemptEncryption` is **not** set for
+   the TestFlight rounds: App Store Connect asks the export-compliance question per build and the maintainer answers it.
+   The classification is decided, from Apple's export-compliance documentation, before the first store release.
+5. **Android follows iOS.** A signed release APK for TalkBack tests on the maintainer's device needs no Play account;
+   Play internal testing and, for a personal account created after 2023-11-13, a closed test with at least 12 testers
+   for 14 days (a Google requirement for production access) start as early as the account exists.
+6. **Uploads start manual** (Xcode or Transporter) and get automated with an App Store Connect API key once the first
    build has passed. The key is a repository secret and never enters the repository.
 
 ## Consequences

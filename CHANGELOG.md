@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-04
+
+The first test build (TestFlight, internal testers). It holds everything developed so far: the versions 0.1 (offline
+logging and sync) and 0.2 (contest mode) were never released on their own.
+
 ### Added
+- **iOS release preparation** (ADR 0022). A privacy manifest (no tracking, no data collected; the file-timestamp and
+  disk-space reasons for the bundled SQLite), the languages the app supports (English, German) declared to the system,
+  and the Face ID text in both languages.
 - **SOTA, POTA and WWFF activations** (ADR 0021).
   - Reference lists you download yourself from the official source, only when you press Download (HTTPS only, size
     caps, streamed to disk, cancellable). The installed list is replaced in one step only after the whole file was read,

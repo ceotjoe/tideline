@@ -2,7 +2,7 @@ name: tideline
 description: "Tideline — the offline logger for Wavelog."
 publish_to: none
 
-version: 0.0.1+1
+version: 0.3.0+1
 
 environment:
   sdk: ^3.13.0
@@ -68,7 +68,7 @@ msix_config:
   display_name: Tideline
   publisher_display_name: Jörg Holzapfel (DO1HOZ)
   identity_name: com.ITWebService.tideline
-  msix_version: 0.0.1.0
+  msix_version: 0.3.0.0
   # Wavelog on the internet and on the local network.
   capabilities: internetClient,privateNetworkClientServer
   store: false

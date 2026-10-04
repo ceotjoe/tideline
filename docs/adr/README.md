@@ -21,6 +21,6 @@
 - [0019](0019-cabrillo-export.md) Cabrillo export of contest sessions
 - [0020](0020-landscape-entry-strip.md) Entry strip for the log screen in landscape
 - [0021](0021-reference-packs-and-activations.md) Reference packs and activation sessions
-- [0022](0022-testflight-first-distribution.md) Distribution: TestFlight first, stores later (proposed)
+- [0022](0022-testflight-first-distribution.md) Distribution: TestFlight first, stores later
 
 New ADRs start from [0000-template.md](0000-template.md).

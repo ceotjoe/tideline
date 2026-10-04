@@ -94,9 +94,10 @@ proposal.
 
 | Step | Work | Needs from the maintainer |
 |---|---|---|
-| 5.1 | **Release readiness.** `PrivacyInfo.xcprivacy` for the app (no tracking, no collected data; required-reason APIs verified in Xcode's privacy report, see below). `ITSAppUsesNonExemptEncryption` in `Info.plist`. Version 0.3.0+1 with the tests that keep it in step. CHANGELOG section for 0.3.0. Check the Info.plist strings, orientations and entitlements. A signed archive installed on a real iPhone and iPad. | Export-compliance decision; confirm the Apple team |
-| 5.2 | **Getting past onboarding.** A solution for testers and for Beta App Review (decision below). | Choose option A or B |
+| 5.1 | **Release readiness (iOS).** Done 2026-10-04: `PrivacyInfo.xcprivacy` (no tracking, no collection, file timestamps and disk space for the bundled SQLite), version 0.3.0+1 with tests that keep it in step, CHANGELOG section 0.3.0, `CFBundleLocalizations` and a German Face ID text, an unsigned release build checked. Not done: the signed archive and the install on a real iPhone and iPad (needs the app record and signing in the maintainer's account, see `docs/release.md`). Export compliance stays a per-build answer in App Store Connect (ADR 0022). | App record in App Store Connect; signed archive on a device |
+| 5.2 | **Getting past onboarding.** Decided: option A, a demo Wavelog server with a limited token in the review notes. No app change. | The demo server and token |
 | 5.3 | **Runbook and test checklist.** `docs/release.md` first-build section (done), `docs/testing/testflight.md` with what to test (VoiceOver, TalkBack later, contest, activation, offline, sync problems) and how to report. App Store Connect text for the beta description (EN, DE). | App record in App Store Connect |
+| 5.3b | **Android for TalkBack.** A signed release APK for `adb install` (upload key, `key.properties`), then a Play Console account, the internal track and, if the account needs it, the closed test of 12 testers for 14 days. | Play Console account, upload key |
 | 5.4 | **Automate the upload.** CI job on a manual trigger: build number from the run number, signing, upload with an App Store Connect API key (secrets documented in `docs/release.md`). | API key as repository secrets |
 | 5.5 | **First test round.** Triage findings, fix, upload the next build. | Test results |
 | 5.6+ | FLE, field modes (glove, battery saver), multi-account UI → v0.4; store listing and release for v1.0. Scope proposals after 5.5. | |

@@ -45,4 +45,29 @@ void main() {
     ).firstMatch(pubspec)![1];
     expect(appVersion, version);
   });
+
+  test('msix_version is the app version with a fourth part of 0', () {
+    final pubspec = File('pubspec.yaml').readAsStringSync();
+    final msix = RegExp(
+      r'^\s*msix_version:\s*([0-9.]+)',
+      multiLine: true,
+    ).firstMatch(pubspec)![1];
+    expect(msix, '$appVersion.0');
+  });
+
+  test('the iOS privacy manifest declares no tracking and no collection', () {
+    final manifest = File('ios/Runner/PrivacyInfo.xcprivacy')
+        .readAsStringSync();
+    expect(
+      manifest,
+      matches(RegExp(r'<key>NSPrivacyTracking</key>\s*<false/>')),
+    );
+    expect(
+      manifest,
+      matches(RegExp(r'<key>NSPrivacyCollectedDataTypes</key>\s*<array/>')),
+    );
+    // What the bundled SQLite uses: file timestamps and disk space.
+    expect(manifest, contains('NSPrivacyAccessedAPICategoryFileTimestamp'));
+    expect(manifest, contains('NSPrivacyAccessedAPICategoryDiskSpace'));
+  });
 }

@@ -61,3 +61,20 @@ Connect, and the privacy manifest and export-compliance answer from step 5.1 of 
 
 Checked on 2026-10-04: `flutter build ios --release --no-codesign` succeeds (29.8 MB, minimum iOS 16.0) and contains
 `sqlite3mc.framework`, which has no privacy manifest of its own.
+
+## Privacy manifest (iOS)
+
+`app/ios/Runner/PrivacyInfo.xcprivacy` declares no tracking, no tracking domains and no collected data, plus the
+"required reason" APIs that code in the app uses without a manifest of its own. Plugins and Flutter bring their own
+manifests; `sqlite3mc.framework` does not. Checked with `nm -u` on the release build of 2026-10-04: it imports `stat`,
+`fstat`, `lstat`, `utimes` and `futimes` (file timestamps) and `statfs` and `fstatfs` (disk space).
+
+- File timestamps: `C617.1`, files inside the app's own container (the database and its journal).
+- Disk space: `E174.1` is the closest approved reason. SQLite does not check free space for its own sake: it calls
+  `statfs` to recognise the file system when it chooses a locking method. If Apple's validation or a review objects,
+  change the reason here and in the manifest; nothing else depends on it.
+
+After every dependency update, repeat the check: build for release, then `nm -u` on each framework in
+`Runner.app/Frameworks` and compare with the manifest. In Xcode, *Product → Archive → Generate Privacy Report* gives
+the combined report.
+
