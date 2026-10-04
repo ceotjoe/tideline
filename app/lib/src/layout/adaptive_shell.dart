@@ -10,6 +10,7 @@ import 'package:tideline/src/layout/size_class.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/routing/routes.dart';
 import 'package:tideline/src/services/app_services.dart';
+import 'package:tideline/src/widgets/keyboard_dock.dart';
 import 'package:tideline/src/widgets/tide_gauge.dart';
 
 /// Window width from which the navigation rail shows its labels beside the
@@ -92,18 +93,20 @@ class AdaptiveShell extends ConsumerWidget {
         child: sizeClass == SizeClass.compact
             ? Scaffold(
                 body: content,
-                bottomNavigationBar: NavigationBar(
-                  selectedIndex: navigationShell.currentIndex,
-                  onDestinationSelected: goTo,
-                  destinations: [
-                    for (final d in destinations)
-                      NavigationDestination(
-                        icon: Icon(d.icon),
-                        selectedIcon: Icon(d.selected),
-                        label: d.label,
+                bottomNavigationBar: KeyboardDock.isDocked(context)
+                    ? null
+                    : NavigationBar(
+                        selectedIndex: navigationShell.currentIndex,
+                        onDestinationSelected: goTo,
+                        destinations: [
+                          for (final d in destinations)
+                            NavigationDestination(
+                              icon: Icon(d.icon),
+                              selectedIcon: Icon(d.selected),
+                              label: d.label,
+                            ),
+                        ],
                       ),
-                  ],
-                ),
               )
             : Scaffold(
                 body: Row(

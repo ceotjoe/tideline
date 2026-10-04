@@ -3,6 +3,7 @@
   "appTitle": "Tideline",
   "appTagline": "Der Offline-Logger für Wavelog",
   "navLog": "Log",
+  "actionHideKeyboard": "Tastatur ausblenden",
   "navSync": "Sync",
   "navSettings": "Einstellungen",
   "logEmptyTitle": "Noch keine QSOs",

@@ -65,4 +65,22 @@ void main() {
       matchesGoldenFile('goldens/log_tablet_landscape_keyboard.png'),
     );
   });
+
+  testWidgets('log screen, phone with the keyboard up', (tester) async {
+    await pumpTideline(
+      tester,
+      settings: const AppSettings(theme: ThemeChoice.light),
+      log: sampleLog(6),
+      pending: 4,
+    );
+    tester.view.viewInsets = FakeViewPadding(
+      bottom: 300 * tester.view.devicePixelRatio,
+    );
+    addTearDown(tester.view.resetViewInsets);
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/log_phone_keyboard.png'),
+    );
+  });
 }

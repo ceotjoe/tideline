@@ -12,6 +12,10 @@
   "@navLog": {
     "description": "Navigation destination: the QSO log."
   },
+  "actionHideKeyboard": "Hide keyboard",
+  "@actionHideKeyboard": {
+    "description": "Button above the on-screen keyboard on phones. Closes the keyboard so the navigation bar is reachable."
+  },
   "navSync": "Sync",
   "@navSync": {
     "description": "Navigation destination: sync status and history."

@@ -37,6 +37,15 @@ never makes you wait.
 
 See [Keyboard shortcuts](keyboard-shortcuts.md) for the full list.
 
+## The on-screen keyboard (phones)
+
+- Report fields (RST) open a number keyboard that also has the minus sign. Frequency opens a number keyboard with a
+  decimal point. Callsign, name and locator open the letter keyboard.
+- While the keyboard is up, **Hide keyboard** sits directly above it. Tap it to close the keyboard; the navigation bar
+  (Log, Sync, Settings) is back as soon as the keyboard is gone. Tapping an empty area, or dragging the list, closes
+  the keyboard too.
+- On tablets and computers nothing changes: the keyboard has its own close key, and the form keeps all the height.
+
 ## Tablets and desktop
 
 - **Landscape:** the fields form three rows across the whole width, with your log underneath. With the on-screen

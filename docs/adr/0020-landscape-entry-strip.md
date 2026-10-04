@@ -52,6 +52,13 @@
   any scroll view) with a 430 dp keyboard and the contest banner present; a first version that only compared
   positions let clipped rows pass. At text scales of 1.1 and above the hints scroll below the fields instead of sitting
   beside the buttons, because the time row and two hint lines grow tall.
+- **Phones: a Hide keyboard bar** (added 2026-10-04, tester feedback). The keyboard covered the bottom navigation, and
+  an iOS number pad has no Done key. In a compact window, `KeyboardDock` (wrapping the whole app) spends the keyboard
+  inset itself, puts a 48 dp "Hide keyboard" bar between the app and the keyboard, and hides the navigation bar while
+  it shows, so the form keeps its height and the navigation is one tap away. Tapping empty space closes the keyboard;
+  the log list and settings close it on drag (not the entry form or contest screens, where scrolling to a field must
+  not lose it). Tablets and desktops are not docked: their keyboards have a close key and the height belongs to the
+  entry form. Layouts still follow the window size class, not the device.
 - **Buttons stay pinned in the fallback** (added 2026-10-03). In the strip, the grid and the contest strip alike, the
   rows and hints scroll when the keyboard leaves too little height, while Clear and Log stay below them and never sit
   inside a scrollable (test, down to a 520 dp keyboard and at 2× text).

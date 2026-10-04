@@ -40,6 +40,7 @@ class SettingsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.navSettings)),
       body: ListView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: EdgeInsets.symmetric(vertical: context.metrics.sm),
         children: [
           _SectionHeader(l10n.settingsAccount),

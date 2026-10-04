@@ -13,6 +13,7 @@ import 'package:tideline/src/routing/router.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline/src/widgets/app_lock.dart';
+import 'package:tideline/src/widgets/keyboard_dock.dart';
 import 'package:tideline/src/widgets/phone_orientation_lock.dart';
 
 /// Family name of the bundled reading font (pubspec.yaml).
@@ -94,11 +95,13 @@ class _TidelineAppState extends ConsumerState<TidelineApp> {
       builder: (context, child) {
         Widget result = PhoneOrientationLock(
           child: AppLock(
-            child: Shortcuts(
-              shortcuts: registry.shortcutMap(
-                ShortcutPlatform.of(Theme.of(context).platform),
+            child: KeyboardDock(
+              child: Shortcuts(
+                shortcuts: registry.shortcutMap(
+                  ShortcutPlatform.of(Theme.of(context).platform),
+                ),
+                child: child ?? const SizedBox.shrink(),
               ),
-              child: child ?? const SizedBox.shrink(),
             ),
           ),
         );

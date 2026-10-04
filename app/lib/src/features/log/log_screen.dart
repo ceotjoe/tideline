@@ -108,6 +108,7 @@ class _LogScreenState extends ConsumerState<LogScreen>
     switch (size) {
       case SizeClass.compact:
         body = ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: EdgeInsets.all(metrics.md),
           children: [
             formCard(),

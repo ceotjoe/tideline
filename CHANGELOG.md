@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Hide keyboard on phones.** While the on-screen keyboard is up, a **Hide keyboard** bar sits above it and replaces
+  the bottom navigation, which the keyboard used to cover. Tapping empty space or dragging the log list or settings
+  also closes the keyboard. Tablets and computers are unchanged (ADR 0020).
+
+### Changed
+- RST fields in the log form open a signed number keyboard (frequency and the contest exchange already had number
+  keyboards).
+
 ## [0.3.0] - 2026-10-04
 
 The first test build (TestFlight, internal testers). It holds everything developed so far: the versions 0.1 (offline

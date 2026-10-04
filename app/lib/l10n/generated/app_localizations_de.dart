@@ -19,6 +19,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get navLog => 'Log';
 
   @override
+  String get actionHideKeyboard => 'Tastatur ausblenden';
+
+  @override
   String get navSync => 'Sync';
 
   @override

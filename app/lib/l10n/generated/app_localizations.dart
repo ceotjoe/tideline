@@ -117,6 +117,12 @@ abstract class AppLocalizations {
   /// **'Log'**
   String get navLog;
 
+  /// Button above the on-screen keyboard on phones. Closes the keyboard so the navigation bar is reachable.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide keyboard'**
+  String get actionHideKeyboard;
+
   /// Navigation destination: sync status and history.
   ///
   /// In en, this message translates to:

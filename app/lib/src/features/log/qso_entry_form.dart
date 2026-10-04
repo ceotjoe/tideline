@@ -38,6 +38,11 @@ enum QsoEntryLayout {
   grid,
 }
 
+/// Reports are numbers ("59", "599") and, in digital modes, signed ("-12").
+/// A signed number keyboard keeps both reachable; the system keyboard still
+/// offers the letters for the odd report such as "5NN".
+const _reportKeyboard = TextInputType.numberWithOptions(signed: true);
+
 /// The QSO entry form. Logging is local and instant: it never waits for the
 /// network.
 class QsoEntryForm extends ConsumerStatefulWidget {
@@ -288,6 +293,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
     );
     final rstSentField = TextField(
       controller: _rstSent,
+      keyboardType: _reportKeyboard,
       decoration: InputDecoration(
         labelText: l10n.fieldRstSent,
         hintText: mode?.defaultReport,
@@ -296,6 +302,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
     );
     final rstRcvdField = TextField(
       controller: _rstRcvd,
+      keyboardType: _reportKeyboard,
       decoration: InputDecoration(
         labelText: l10n.fieldRstRcvd,
         hintText: mode?.defaultReport,

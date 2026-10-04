@@ -19,6 +19,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navLog => 'Log';
 
   @override
+  String get actionHideKeyboard => 'Hide keyboard';
+
+  @override
   String get navSync => 'Sync';
 
   @override
@@ -2230,6 +2233,9 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get navLog => '[Ļöĝ··]';
+
+  @override
+  String get actionHideKeyboard => '[Ĥîðé ķéýƀöáŕð······]';
 
   @override
   String get navSync => '[Šýñç··]';
