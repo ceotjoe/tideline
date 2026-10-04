@@ -10,6 +10,7 @@ import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
 import 'generated/schema_v4.dart' as v4;
+import 'generated/schema_v5.dart' as v5;
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -194,4 +195,51 @@ void main() {
       },
     );
   });
+
+  test(
+    'migration from v4 to v5 keeps the log and adds the eviction records',
+    () async {
+      const hlc = '000000000000001-0000-dev';
+      const account = v4.AccountsData(
+        id: 'acc',
+        label: 'Home',
+        baseUrl: 'https://log.example.org',
+        usesIndexPhp: 1,
+        allowHttpLan: 0,
+        serverCaps: '{}',
+        scopes: '[]',
+        createdAt: 1,
+      );
+      const qso = v4.QsosData(
+        originDeviceId: 'dev',
+        hlcCreated: hlc,
+        hlcModified: hlc,
+        rev: 1,
+        id: 'q1',
+        accountId: 'acc',
+        call: 'DL1ABC',
+        timeOn: 1000,
+        band: '20m',
+        mode: 'CW',
+        adifExtra: '{}',
+        source: 'manual',
+      );
+      await verifier.testWithDataIntegrity(
+        oldVersion: 4,
+        newVersion: 5,
+        createOld: v4.DatabaseAtV4.new,
+        createNew: v5.DatabaseAtV5.new,
+        openTestedDatabase: TidelineDatabase.new,
+        createItems: (batch, oldDb) {
+          batch
+            ..insert(oldDb.accounts, account)
+            ..insert(oldDb.qsos, qso);
+        },
+        validateItems: (newDb) async {
+          expect((await newDb.select(newDb.qsos).get()).single.call, 'DL1ABC');
+          expect(await newDb.select(newDb.evictedQsos).get(), isEmpty);
+        },
+      );
+    },
+  );
 }

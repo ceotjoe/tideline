@@ -13179,6 +13179,337 @@ class CallsignNotesCompanion extends UpdateCompanion<CallsignNoteRow> {
   }
 }
 
+class $EvictedQsosTable extends EvictedQsos
+    with TableInfo<$EvictedQsosTable, EvictedQsoRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EvictedQsosTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _qsoIdMeta = const VerificationMeta('qsoId');
+  @override
+  late final GeneratedColumn<String> qsoId = GeneratedColumn<String>(
+    'qso_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _accountIdMeta = const VerificationMeta(
+    'accountId',
+  );
+  @override
+  late final GeneratedColumn<String> accountId = GeneratedColumn<String>(
+    'account_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES accounts (id)',
+    ),
+  );
+  static const VerificationMeta _remoteQsoIdMeta = const VerificationMeta(
+    'remoteQsoId',
+  );
+  @override
+  late final GeneratedColumn<int> remoteQsoId = GeneratedColumn<int>(
+    'remote_qso_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _evictedAtMeta = const VerificationMeta(
+    'evictedAt',
+  );
+  @override
+  late final GeneratedColumn<int> evictedAt = GeneratedColumn<int>(
+    'evicted_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    qsoId,
+    accountId,
+    remoteQsoId,
+    evictedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'evicted_qsos';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<EvictedQsoRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('qso_id')) {
+      context.handle(
+        _qsoIdMeta,
+        qsoId.isAcceptableOrUnknown(data['qso_id']!, _qsoIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_qsoIdMeta);
+    }
+    if (data.containsKey('account_id')) {
+      context.handle(
+        _accountIdMeta,
+        accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_accountIdMeta);
+    }
+    if (data.containsKey('remote_qso_id')) {
+      context.handle(
+        _remoteQsoIdMeta,
+        remoteQsoId.isAcceptableOrUnknown(
+          data['remote_qso_id']!,
+          _remoteQsoIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_remoteQsoIdMeta);
+    }
+    if (data.containsKey('evicted_at')) {
+      context.handle(
+        _evictedAtMeta,
+        evictedAt.isAcceptableOrUnknown(data['evicted_at']!, _evictedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_evictedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {qsoId};
+  @override
+  EvictedQsoRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EvictedQsoRow(
+      qsoId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}qso_id'],
+      )!,
+      accountId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_id'],
+      )!,
+      remoteQsoId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}remote_qso_id'],
+      )!,
+      evictedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}evicted_at'],
+      )!,
+    );
+  }
+
+  @override
+  $EvictedQsosTable createAlias(String alias) {
+    return $EvictedQsosTable(attachedDatabase, alias);
+  }
+}
+
+class EvictedQsoRow extends DataClass implements Insertable<EvictedQsoRow> {
+  /// The local id the QSO had. No foreign key: the row is gone.
+  final String qsoId;
+  final String accountId;
+
+  /// The Wavelog QSO id the server keeps.
+  final int remoteQsoId;
+
+  /// When the local copy was removed (UTC millis).
+  final int evictedAt;
+  const EvictedQsoRow({
+    required this.qsoId,
+    required this.accountId,
+    required this.remoteQsoId,
+    required this.evictedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['qso_id'] = Variable<String>(qsoId);
+    map['account_id'] = Variable<String>(accountId);
+    map['remote_qso_id'] = Variable<int>(remoteQsoId);
+    map['evicted_at'] = Variable<int>(evictedAt);
+    return map;
+  }
+
+  EvictedQsosCompanion toCompanion(bool nullToAbsent) {
+    return EvictedQsosCompanion(
+      qsoId: Value(qsoId),
+      accountId: Value(accountId),
+      remoteQsoId: Value(remoteQsoId),
+      evictedAt: Value(evictedAt),
+    );
+  }
+
+  factory EvictedQsoRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EvictedQsoRow(
+      qsoId: serializer.fromJson<String>(json['qsoId']),
+      accountId: serializer.fromJson<String>(json['accountId']),
+      remoteQsoId: serializer.fromJson<int>(json['remoteQsoId']),
+      evictedAt: serializer.fromJson<int>(json['evictedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'qsoId': serializer.toJson<String>(qsoId),
+      'accountId': serializer.toJson<String>(accountId),
+      'remoteQsoId': serializer.toJson<int>(remoteQsoId),
+      'evictedAt': serializer.toJson<int>(evictedAt),
+    };
+  }
+
+  EvictedQsoRow copyWith({
+    String? qsoId,
+    String? accountId,
+    int? remoteQsoId,
+    int? evictedAt,
+  }) => EvictedQsoRow(
+    qsoId: qsoId ?? this.qsoId,
+    accountId: accountId ?? this.accountId,
+    remoteQsoId: remoteQsoId ?? this.remoteQsoId,
+    evictedAt: evictedAt ?? this.evictedAt,
+  );
+  EvictedQsoRow copyWithCompanion(EvictedQsosCompanion data) {
+    return EvictedQsoRow(
+      qsoId: data.qsoId.present ? data.qsoId.value : this.qsoId,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      remoteQsoId: data.remoteQsoId.present
+          ? data.remoteQsoId.value
+          : this.remoteQsoId,
+      evictedAt: data.evictedAt.present ? data.evictedAt.value : this.evictedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EvictedQsoRow(')
+          ..write('qsoId: $qsoId, ')
+          ..write('accountId: $accountId, ')
+          ..write('remoteQsoId: $remoteQsoId, ')
+          ..write('evictedAt: $evictedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(qsoId, accountId, remoteQsoId, evictedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EvictedQsoRow &&
+          other.qsoId == this.qsoId &&
+          other.accountId == this.accountId &&
+          other.remoteQsoId == this.remoteQsoId &&
+          other.evictedAt == this.evictedAt);
+}
+
+class EvictedQsosCompanion extends UpdateCompanion<EvictedQsoRow> {
+  final Value<String> qsoId;
+  final Value<String> accountId;
+  final Value<int> remoteQsoId;
+  final Value<int> evictedAt;
+  final Value<int> rowid;
+  const EvictedQsosCompanion({
+    this.qsoId = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.remoteQsoId = const Value.absent(),
+    this.evictedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  EvictedQsosCompanion.insert({
+    required String qsoId,
+    required String accountId,
+    required int remoteQsoId,
+    required int evictedAt,
+    this.rowid = const Value.absent(),
+  }) : qsoId = Value(qsoId),
+       accountId = Value(accountId),
+       remoteQsoId = Value(remoteQsoId),
+       evictedAt = Value(evictedAt);
+  static Insertable<EvictedQsoRow> custom({
+    Expression<String>? qsoId,
+    Expression<String>? accountId,
+    Expression<int>? remoteQsoId,
+    Expression<int>? evictedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (qsoId != null) 'qso_id': qsoId,
+      if (accountId != null) 'account_id': accountId,
+      if (remoteQsoId != null) 'remote_qso_id': remoteQsoId,
+      if (evictedAt != null) 'evicted_at': evictedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  EvictedQsosCompanion copyWith({
+    Value<String>? qsoId,
+    Value<String>? accountId,
+    Value<int>? remoteQsoId,
+    Value<int>? evictedAt,
+    Value<int>? rowid,
+  }) {
+    return EvictedQsosCompanion(
+      qsoId: qsoId ?? this.qsoId,
+      accountId: accountId ?? this.accountId,
+      remoteQsoId: remoteQsoId ?? this.remoteQsoId,
+      evictedAt: evictedAt ?? this.evictedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (qsoId.present) {
+      map['qso_id'] = Variable<String>(qsoId.value);
+    }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(accountId.value);
+    }
+    if (remoteQsoId.present) {
+      map['remote_qso_id'] = Variable<int>(remoteQsoId.value);
+    }
+    if (evictedAt.present) {
+      map['evicted_at'] = Variable<int>(evictedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EvictedQsosCompanion(')
+          ..write('qsoId: $qsoId, ')
+          ..write('accountId: $accountId, ')
+          ..write('remoteQsoId: $remoteQsoId, ')
+          ..write('evictedAt: $evictedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $DevicesTable extends Devices with TableInfo<$DevicesTable, DeviceRow> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -14271,6 +14602,7 @@ abstract class _$TidelineDatabase extends GeneratedDatabase {
   late final $CallsignDirectoryTable callsignDirectory =
       $CallsignDirectoryTable(this);
   late final $CallsignNotesTable callsignNotes = $CallsignNotesTable(this);
+  late final $EvictedQsosTable evictedQsos = $EvictedQsosTable(this);
   late final $DevicesTable devices = $DevicesTable(this);
   late final $PeerCursorsTable peerCursors = $PeerCursorsTable(this);
   late final $SettingsTable settings = $SettingsTable(this);
@@ -14325,6 +14657,7 @@ abstract class _$TidelineDatabase extends GeneratedDatabase {
     workedBefore,
     callsignDirectory,
     callsignNotes,
+    evictedQsos,
     devices,
     peerCursors,
     settings,
@@ -14523,6 +14856,24 @@ final class $$AccountsTableReferences
     final cache = $_typedResult.readTableOrNull(
       _callsignDirectoryRefsTable($_db),
     );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$EvictedQsosTable, List<EvictedQsoRow>>
+  _evictedQsosRefsTable(_$TidelineDatabase db) => MultiTypedResultKey.fromTable(
+    db.evictedQsos,
+    aliasName: 'accounts__id__evicted_qsos__account_id',
+  );
+
+  $$EvictedQsosTableProcessedTableManager get evictedQsosRefs {
+    final manager = $$EvictedQsosTableTableManager(
+      $_db,
+      $_db.evictedQsos,
+    ).filter((f) => f.accountId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_evictedQsosRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -14779,6 +15130,31 @@ class $$AccountsTableFilterComposer
           }) => $$CallsignDirectoryTableFilterComposer(
             $db: $db,
             $table: $db.callsignDirectory,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> evictedQsosRefs(
+    Expression<bool> Function($$EvictedQsosTableFilterComposer f) f,
+  ) {
+    final $$EvictedQsosTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.evictedQsos,
+      getReferencedColumn: (t) => t.accountId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EvictedQsosTableFilterComposer(
+            $db: $db,
+            $table: $db.evictedQsos,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -15098,6 +15474,31 @@ class $$AccountsTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> evictedQsosRefs<T extends Object>(
+    Expression<T> Function($$EvictedQsosTableAnnotationComposer a) f,
+  ) {
+    final $$EvictedQsosTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.evictedQsos,
+      getReferencedColumn: (t) => t.accountId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EvictedQsosTableAnnotationComposer(
+            $db: $db,
+            $table: $db.evictedQsos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$AccountsTableTableManager
@@ -15122,6 +15523,7 @@ class $$AccountsTableTableManager
             bool syncJournalRefs,
             bool workedBeforeRefs,
             bool callsignDirectoryRefs,
+            bool evictedQsosRefs,
           })
         > {
   $$AccountsTableTableManager(_$TidelineDatabase db, $AccountsTable table)
@@ -15205,6 +15607,7 @@ class $$AccountsTableTableManager
                 syncJournalRefs = false,
                 workedBeforeRefs = false,
                 callsignDirectoryRefs = false,
+                evictedQsosRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -15217,6 +15620,7 @@ class $$AccountsTableTableManager
                     if (syncJournalRefs) db.syncJournal,
                     if (workedBeforeRefs) db.workedBefore,
                     if (callsignDirectoryRefs) db.callsignDirectory,
+                    if (evictedQsosRefs) db.evictedQsos,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -15385,6 +15789,27 @@ class $$AccountsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (evictedQsosRefs)
+                        await $_getPrefetchedData<
+                          AccountRow,
+                          $AccountsTable,
+                          EvictedQsoRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$AccountsTableReferences
+                              ._evictedQsosRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$AccountsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).evictedQsosRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.accountId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -15414,6 +15839,7 @@ typedef $$AccountsTableProcessedTableManager =
         bool syncJournalRefs,
         bool workedBeforeRefs,
         bool callsignDirectoryRefs,
+        bool evictedQsosRefs,
       })
     >;
 typedef $$StationProfilesTableCreateCompanionBuilder =
@@ -24548,6 +24974,305 @@ typedef $$CallsignNotesTableProcessedTableManager =
       CallsignNoteRow,
       PrefetchHooks Function()
     >;
+typedef $$EvictedQsosTableCreateCompanionBuilder =
+    EvictedQsosCompanion Function({
+      required String qsoId,
+      required String accountId,
+      required int remoteQsoId,
+      required int evictedAt,
+      Value<int> rowid,
+    });
+typedef $$EvictedQsosTableUpdateCompanionBuilder =
+    EvictedQsosCompanion Function({
+      Value<String> qsoId,
+      Value<String> accountId,
+      Value<int> remoteQsoId,
+      Value<int> evictedAt,
+      Value<int> rowid,
+    });
+
+final class $$EvictedQsosTableReferences
+    extends
+        BaseReferences<_$TidelineDatabase, $EvictedQsosTable, EvictedQsoRow> {
+  $$EvictedQsosTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $AccountsTable _accountIdTable(_$TidelineDatabase db) =>
+      db.accounts.createAlias('evicted_qsos__account_id__accounts__id');
+
+  $$AccountsTableProcessedTableManager get accountId {
+    final $_column = $_itemColumn<String>('account_id')!;
+
+    final manager = $$AccountsTableTableManager(
+      $_db,
+      $_db.accounts,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_accountIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$EvictedQsosTableFilterComposer
+    extends Composer<_$TidelineDatabase, $EvictedQsosTable> {
+  $$EvictedQsosTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get qsoId => $composableBuilder(
+    column: $table.qsoId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get remoteQsoId => $composableBuilder(
+    column: $table.remoteQsoId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get evictedAt => $composableBuilder(
+    column: $table.evictedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$AccountsTableFilterComposer get accountId {
+    final $$AccountsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AccountsTableFilterComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$EvictedQsosTableOrderingComposer
+    extends Composer<_$TidelineDatabase, $EvictedQsosTable> {
+  $$EvictedQsosTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get qsoId => $composableBuilder(
+    column: $table.qsoId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get remoteQsoId => $composableBuilder(
+    column: $table.remoteQsoId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get evictedAt => $composableBuilder(
+    column: $table.evictedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$AccountsTableOrderingComposer get accountId {
+    final $$AccountsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AccountsTableOrderingComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$EvictedQsosTableAnnotationComposer
+    extends Composer<_$TidelineDatabase, $EvictedQsosTable> {
+  $$EvictedQsosTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get qsoId =>
+      $composableBuilder(column: $table.qsoId, builder: (column) => column);
+
+  GeneratedColumn<int> get remoteQsoId => $composableBuilder(
+    column: $table.remoteQsoId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get evictedAt =>
+      $composableBuilder(column: $table.evictedAt, builder: (column) => column);
+
+  $$AccountsTableAnnotationComposer get accountId {
+    final $$AccountsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.accountId,
+      referencedTable: $db.accounts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$AccountsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.accounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$EvictedQsosTableTableManager
+    extends
+        RootTableManager<
+          _$TidelineDatabase,
+          $EvictedQsosTable,
+          EvictedQsoRow,
+          $$EvictedQsosTableFilterComposer,
+          $$EvictedQsosTableOrderingComposer,
+          $$EvictedQsosTableAnnotationComposer,
+          $$EvictedQsosTableCreateCompanionBuilder,
+          $$EvictedQsosTableUpdateCompanionBuilder,
+          (EvictedQsoRow, $$EvictedQsosTableReferences),
+          EvictedQsoRow,
+          PrefetchHooks Function({bool accountId})
+        > {
+  $$EvictedQsosTableTableManager(_$TidelineDatabase db, $EvictedQsosTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$EvictedQsosTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$EvictedQsosTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$EvictedQsosTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> qsoId = const Value.absent(),
+                Value<String> accountId = const Value.absent(),
+                Value<int> remoteQsoId = const Value.absent(),
+                Value<int> evictedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => EvictedQsosCompanion(
+                qsoId: qsoId,
+                accountId: accountId,
+                remoteQsoId: remoteQsoId,
+                evictedAt: evictedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String qsoId,
+                required String accountId,
+                required int remoteQsoId,
+                required int evictedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => EvictedQsosCompanion.insert(
+                qsoId: qsoId,
+                accountId: accountId,
+                remoteQsoId: remoteQsoId,
+                evictedAt: evictedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$EvictedQsosTable, EvictedQsoRow>(table),
+                  $$EvictedQsosTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({accountId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (accountId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.accountId,
+                        referencedTable: $$EvictedQsosTableReferences
+                            ._accountIdTable(db),
+                        referencedColumn: $$EvictedQsosTableReferences
+                            ._accountIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$EvictedQsosTableProcessedTableManager =
+    ProcessedTableManager<
+      _$TidelineDatabase,
+      $EvictedQsosTable,
+      EvictedQsoRow,
+      $$EvictedQsosTableFilterComposer,
+      $$EvictedQsosTableOrderingComposer,
+      $$EvictedQsosTableAnnotationComposer,
+      $$EvictedQsosTableCreateCompanionBuilder,
+      $$EvictedQsosTableUpdateCompanionBuilder,
+      (EvictedQsoRow, $$EvictedQsosTableReferences),
+      EvictedQsoRow,
+      PrefetchHooks Function({bool accountId})
+    >;
 typedef $$DevicesTableCreateCompanionBuilder = DevicesCompanion Function({
   required String id,
   required String name,
@@ -25469,6 +26194,8 @@ class $TidelineDatabaseManager {
       $$CallsignDirectoryTableTableManager(_db, _db.callsignDirectory);
   $$CallsignNotesTableTableManager get callsignNotes =>
       $$CallsignNotesTableTableManager(_db, _db.callsignNotes);
+  $$EvictedQsosTableTableManager get evictedQsos =>
+      $$EvictedQsosTableTableManager(_db, _db.evictedQsos);
   $$DevicesTableTableManager get devices =>
       $$DevicesTableTableManager(_db, _db.devices);
   $$PeerCursorsTableTableManager get peerCursors =>

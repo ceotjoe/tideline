@@ -96,6 +96,51 @@ void main() {
     expect(found.map((q) => q.band).toSet(), {'20m'});
   });
 
+  test('lists a date range without a callsign', () async {
+    await client.createQso(stationProfileId: 3, fields: qso());
+    await client.createQso(stationProfileId: 3, fields: qso(call: 'G4XYZ'));
+    final found = await client.findQsos(
+      since: DateTime.utc(2026, 10, 1),
+      until: DateTime.utc(2026, 10, 3),
+    );
+    expect(found.map((q) => q.call).toSet(), {'DL1ABC', 'G4XYZ'});
+    expect(
+      await client.findQsos(
+        since: DateTime.utc(2026, 11),
+        until: DateTime.utc(2026, 11, 2),
+      ),
+      isEmpty,
+    );
+  });
+
+  test('a list that does not fit the page limit is refused, not cut', () async {
+    for (var m = 0; m < 3; m++) {
+      await client.createQso(
+        stationProfileId: 3,
+        fields: qso(time: '14:0$m:00'),
+      );
+    }
+    await expectLater(
+      client.findQsos(
+        since: DateTime.utc(2026, 10, 2),
+        until: DateTime.utc(2026, 10, 2),
+        maxPages: 2,
+        perPage: 1,
+      ),
+      throwsA(isA<WavelogMalformedResponse>()),
+    );
+    // The same list fits when the limit allows.
+    expect(
+      await client.findQsos(
+        since: DateTime.utc(2026, 10, 2),
+        until: DateTime.utc(2026, 10, 2),
+        maxPages: 3,
+        perPage: 1,
+      ),
+      hasLength(3),
+    );
+  });
+
   test('patches editable fields and deletes', () async {
     final id = await client.createQso(stationProfileId: 3, fields: qso());
     await client.patchQso(id, {'rst_rcvd': '57', 'name': 'Anna'});

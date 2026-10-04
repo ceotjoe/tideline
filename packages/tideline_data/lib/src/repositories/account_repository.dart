@@ -255,6 +255,7 @@ class AccountRepository {
       for (final table in [
         'qso_sync',
         'sync_journal',
+        'evicted_qsos',
         'qsos',
         'contest_sessions',
         'activations',
@@ -283,6 +284,7 @@ class AccountRepository {
       _db.serialAllocations,
       _db.qsoSync,
       _db.syncJournal,
+      _db.evictedQsos,
       _db.qsos,
       _db.contestSessions,
       _db.activations,

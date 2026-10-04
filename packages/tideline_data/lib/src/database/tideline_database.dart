@@ -29,6 +29,7 @@ part 'tideline_database.g.dart';
     WorkedBefore,
     CallsignDirectory,
     CallsignNotes,
+    EvictedQsos,
     Devices,
     PeerCursors,
     Settings,
@@ -42,7 +43,7 @@ class TidelineDatabase extends _$TidelineDatabase {
   /// Current schema version. Every change bumps it, adds a schema dump
   /// (`tool/dump_schema.sh`) and a tested migration step.
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -79,6 +80,10 @@ class TidelineDatabase extends _$TidelineDatabase {
         // build or sync.
         await m.createTable(schema.callsignDirectory);
         await m.createTable(schema.callsignNotes);
+      },
+      from4To5: (m, schema) async {
+        // Records of QSOs whose local copy was removed to free space.
+        await m.createTable(schema.evictedQsos);
       },
     ),
     beforeOpen: (details) async {

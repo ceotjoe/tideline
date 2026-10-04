@@ -93,13 +93,19 @@ class WavelogClient {
     return id;
   }
 
-  /// `GET /qso` filtered by callsign, date range (inclusive, UTC dates) and
-  /// station: used to reconcile uncertain uploads. Follows pagination.
+  /// `GET /qso` filtered by date range (inclusive, UTC dates), and optionally
+  /// by callsign and station. Used to reconcile uncertain uploads (with
+  /// [callsign]) and to check that QSOs are on the server (without it).
+  /// Follows pagination, at most [maxPages] pages of [perPage] (500 to 5000);
+  /// throws [WavelogMalformedResponse] if the server has more than that, so a
+  /// partial list is never mistaken for the whole.
   Future<List<WavelogQso>> findQsos({
-    required String callsign,
     required DateTime since,
     required DateTime until,
+    String? callsign,
     int? stationId,
+    int maxPages = 50,
+    int perPage = 500,
   }) async {
     String day(DateTime d) {
       final u = d.toUtc();
@@ -109,16 +115,16 @@ class WavelogClient {
     }
 
     final out = <WavelogQso>[];
-    for (var page = 1; page <= 50; page++) {
+    for (var page = 1; page <= maxPages; page++) {
       final body = await _get(
         'qso',
         query: {
-          'callsign': callsign,
+          'callsign': ?callsign,
           'qso_since': day(since),
           'qso_until': day(until),
           'station_id': ?stationId?.toString(),
           'page': '$page',
-          'per_page': '500',
+          'per_page': '$perPage',
         },
       );
       final data = body['data'];
@@ -137,9 +143,9 @@ class WavelogClient {
         ),
       );
       final meta = body['meta'];
-      if (meta is! Map || meta['has_more'] != true) break;
+      if (meta is! Map || meta['has_more'] != true) return out;
     }
-    return out;
+    throw const WavelogMalformedResponse('qso list: too many pages');
   }
 
   /// `PATCH /qso/{id}` with editable fields only.

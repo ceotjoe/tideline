@@ -30,6 +30,9 @@ enum JournalEvent {
   /// The QSO was deleted locally only (no `qso:delete` permission).
   deletedLocallyOnly,
 
+  /// The local copy was removed to free space; Wavelog keeps the QSO.
+  evictedLocally,
+
   /// A reconcile query found the QSO on the server.
   verifiedOnServer,
 

@@ -450,6 +450,25 @@ class WorkedBefore extends Table {
   Set<Column<Object>> get primaryKey => {accountId, call, band, mode};
 }
 
+/// A QSO whose local copy was removed to free space, because Wavelog has it
+/// (`QsoEvictionRepository`). It is a record, not a delete: nothing is sent
+/// to the server, and the row holds ids only (no callsign, no personal data).
+@DataClassName('EvictedQsoRow')
+class EvictedQsos extends Table {
+  /// The local id the QSO had. No foreign key: the row is gone.
+  TextColumn get qsoId => text()();
+  TextColumn get accountId => text().references(Accounts, #id)();
+
+  /// The Wavelog QSO id the server keeps.
+  IntColumn get remoteQsoId => integer()();
+
+  /// When the local copy was removed (UTC millis).
+  IntColumn get evictedAt => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {qsoId};
+}
+
 /// What is known about a station from the QSO history of an account:
 /// derived data, rebuildable at any time (`CallsignDirectoryRepository`).
 ///
