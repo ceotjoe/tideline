@@ -1,3 +1,7 @@
 // Copy to Signing.local.xcconfig (git-ignored) and fill in your team.
-// Used by the Release configuration for Mac App Store builds only.
+// Only tool/macos_archive.sh reads it, through `xcodebuild -xcconfig`: the
+// project file sets CODE_SIGN_IDENTITY = "-" (ad hoc), which an included
+// xcconfig cannot override, so the team must not be wired into the project
+// (CI builds without certificates).
 DEVELOPMENT_TEAM = Q486NF4XF6
+CODE_SIGN_IDENTITY = Apple Development

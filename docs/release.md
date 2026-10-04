@@ -148,17 +148,23 @@ team comes from a git-ignored file instead (see below).
 3. In App Store Connect, add the macOS platform to the app record.
 
 ### Build and upload
-1. `cd app && flutter build macos --release --build-name 0.3.0 --build-number <N>`.
-2. Set your team **outside the tracked project**: copy `app/macos/Runner/Configs/Signing.local.xcconfig.example` to
-   `Signing.local.xcconfig` in the same folder (git-ignored) and put your team ID in it. The Release configuration reads it
-   when it exists. Do not choose the team in Xcode's *Signing & Capabilities* tab: that writes `DEVELOPMENT_TEAM` into
-   `project.pbxproj`, and a team with automatic signing makes CI's certificate-less `flutter build macos` fail. A test
-   (`app/test/contest/cabrillo_categories_test.dart`) fails if the team ever reaches the project file.
-3. *Product → Archive* (destination *Any Mac*), then *Distribute App → App Store Connect → Upload*. Xcode signs with the
-   distribution certificates and creates the package.
-4. Command line alternative, not run yet:
-   `xcodebuild -workspace app/macos/Runner.xcworkspace -scheme Runner -configuration Release archive -archivePath build/Tideline.xcarchive DEVELOPMENT_TEAM=Q486NF4XF6 -allowProvisioningUpdates`
-   and then `xcodebuild -exportArchive -archivePath build/Tideline.xcarchive -exportOptionsPlist app/macos/ExportOptions.plist -exportPath build/mac-export -allowProvisioningUpdates`.
+Use the script. It reads your team from a git-ignored file and passes it to `xcodebuild`, because the project file sets
+the ad hoc signing identity `-` that an `#include`d xcconfig cannot override (an archive made in Xcode with only the team
+set comes out ad hoc and the Organizer says "No Team Found in Archive"; verified 2026-10-04).
+
+1. Once: `cp app/macos/Runner/Configs/Signing.local.xcconfig.example app/macos/Runner/Configs/Signing.local.xcconfig`
+   (git-ignored; set your team ID inside). Do not choose the team in Xcode's *Signing & Capabilities* tab: that writes
+   `DEVELOPMENT_TEAM` into `project.pbxproj`, and a team with automatic signing makes CI's certificate-less
+   `flutter build macos` fail. A test (`app/test/contest/cabrillo_categories_test.dart`) fails if it ever reaches the file.
+2. `tool/macos_archive.sh <build-number>` builds with Flutter (version and build number), archives with the team and
+   checks that the archive really is signed by it. The archive is `app/build/macos/Tideline.xcarchive`. Checked on
+   2026-10-04: it archives and is signed by team `Q486NF4XF6`.
+3. Upload either with the script, `tool/macos_archive.sh <build-number> --upload` (exports with
+   `app/macos/ExportOptions.plist`; **Xcode may create certificates and the provisioning profile in your Apple Developer
+   account**, which is why this is an explicit flag; not run yet), or in Xcode: double-click the `.xcarchive`, then
+   *Distribute App → App Store Connect → Upload*.
+4. If git shows changes in `app/macos/Runner.xcodeproj` afterwards, newer Xcode only upgraded the file:
+   `git checkout app/macos/Runner.xcodeproj`.
 5. In TestFlight, install the build from the Mac **TestFlight** app. External macOS testers need Beta App Review like on iOS.
 
 ### What to check on the first signed run
