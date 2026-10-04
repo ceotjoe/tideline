@@ -244,6 +244,24 @@ _Verified 2026-10-03 on `wavelog/wavelog@dev` (latest release 3.2.3):
 - Wavelog itself downloads DXCC data from Club Log (key required), and SCP, SOTA, WWFF and POTA lists from their official
   URLs. ✔ `Update_model`
 
+## Callsign notes (verified 2026-10-04)
+- Wavelog has **callsign notes** in its web UI: a *Callsign Notes* section in the live QSO window, and a *Contacts*
+  category on the Notes page (the title must be a core callsign). The feature is switched on per user ("Show notes in the
+  main menu"). ✔ docs `user-guide/features/notes`
+- Callsign notes **are not exported to ADIF or to external services**. ✔ docs
+- **API v2 has no notes resource.** The documented resources are `qso`, `station`, `logbook`, `radio`, `statistic`,
+  `confirmation`, `contest`, `lookup`, `club`, `catalog`, `token`; `Api_v2.php` dispatches by convention to
+  `application/libraries/api_v2/<Resource>_resource.php`, and that directory holds exactly `Catalog`, `Club`,
+  `Confirmation`, `Contest`, `Logbook`, `Lookup`, `Qso`, `Radio`, `Station`, `Statistic` and `Token` (plus the base
+  classes). ✔ docs + source (`wavelog/wavelog`, branch `dev`)
+- `Notes.php` (the web controller) authenticates with the **session** (`user_model->authorize(2)`), not with an API
+  token. ✔ source
+- **Consequence:** Tideline's callsign notes are **local only**: they are never sent to Wavelog and never read from it
+  ([ADR 0026](../adr/0026-callsign-directory-and-notes.md)). The QSO `notes` field is something else (a note on one QSO)
+  and is already part of the QSO data.
+- **The directory's data comes from QSOs.** `GET /qso?format=adif` returns the full field set (name, QTH, grid, country,
+  zones, state), which the worked-before pull already reads; no extra request or scope is needed. ✔
+
 ## Rate limits
 - Off by default; an admin can enable them. ✔ docs
 - Limits use a sliding window per token per resource (the docs' example: `api_v2_qso` 120/60 s, default 60/60 s).
