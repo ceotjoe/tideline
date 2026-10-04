@@ -3774,6 +3774,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copied {call}'**
   String callsignCopied(String call);
+
+  /// Button: copy the name and locator known from earlier contacts into the empty fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in'**
+  String get callsignFillIn;
+
+  /// Accessibility label of the Fill in button.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in name and locator from earlier contacts'**
+  String get callsignFillInLabel;
+
+  /// Line under the callsign field. Details are name, place and locator.
+  ///
+  /// In en, this message translates to:
+  /// **'Known from earlier contacts: {details}'**
+  String callsignKnown(String details);
+
+  /// Tooltip of the note button next to the callsign field.
+  ///
+  /// In en, this message translates to:
+  /// **'Callsign note'**
+  String get callsignNoteTooltip;
+
+  /// Tooltip of the note button when a note exists.
+  ///
+  /// In en, this message translates to:
+  /// **'Callsign note (there is one)'**
+  String get callsignNoteTooltipHas;
+
+  /// Title of the note dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for {call}'**
+  String callsignNoteTitle(String call);
+
+  /// Explains where a callsign note is kept.
+  ///
+  /// In en, this message translates to:
+  /// **'Only on this device (and in your backup). Not sent to Wavelog.'**
+  String get callsignNoteHint;
+
+  /// Label of the note field.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get callsignNoteField;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete note'**
+  String get callsignNoteDelete;
+
+  /// Line under the callsign field showing the start of the note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: {text}'**
+  String callsignNoteLine(String text);
+
+  /// Settings section and page title.
+  ///
+  /// In en, this message translates to:
+  /// **'Callsign directory'**
+  String get callsignDirectoryTitle;
+
+  /// Explanation in settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Names, places and locators from your QSO history, kept on this device, so they are there offline. It is part of the worked-before index and is rebuilt with it.'**
+  String get callsignDirectoryBody;
+
+  /// Number of stations in the directory (of the account in use).
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No stations yet} =1{1 station} other{{count} stations}}'**
+  String callsignDirectoryCount(int count);
+
+  /// Settings entry that opens the directory page.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse callsigns and notes'**
+  String get callsignBrowse;
+
+  /// Label of the search field.
+  ///
+  /// In en, this message translates to:
+  /// **'Search call, name or place'**
+  String get callsignSearch;
+
+  /// Empty state of the directory page.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found. Stations appear here as you log and sync.'**
+  String get callsignEmpty;
+
+  /// Text next to the note icon in the directory list.
+  ///
+  /// In en, this message translates to:
+  /// **'Has a note'**
+  String get callsignHasNote;
+
+  /// Detail line of a station in the directory.
+  ///
+  /// In en, this message translates to:
+  /// **'Last worked {date}'**
+  String callsignLastWorked(String date);
+
+  /// Entity and zones of a station.
+  ///
+  /// In en, this message translates to:
+  /// **'DXCC {dxcc} · CQ {cq} · ITU {itu}'**
+  String callsignZones(String dxcc, String cq, String itu);
 }
 
 class _AppLocalizationsDelegate

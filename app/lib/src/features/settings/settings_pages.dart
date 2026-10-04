@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
+import 'package:tideline/src/features/settings/callsign_directory_section.dart';
 import 'package:tideline/src/features/settings/contest_definitions_section.dart';
 import 'package:tideline/src/features/settings/reference_packs_section.dart';
 import 'package:tideline/src/features/settings/scp_section.dart';
@@ -181,6 +182,8 @@ class ReferenceDataSettingsPage extends StatelessWidget {
         const ContestDefinitionsSection(),
         SettingsSectionHeader(l10n.settingsWorkedBefore),
         const WorkedBeforeSection(),
+        SettingsSectionHeader(l10n.callsignDirectoryTitle),
+        const CallsignDirectorySection(),
       ],
     );
   }

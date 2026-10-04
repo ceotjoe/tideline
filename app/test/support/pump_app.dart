@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tideline/src/app.dart';
 import 'package:tideline/src/features/activation/activation_providers.dart';
+import 'package:tideline/src/features/callsigns/callsign_providers.dart';
 import 'package:tideline/src/features/contest/contest_providers.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
@@ -152,6 +154,84 @@ class FakeActivationRepository extends Fake implements ActivationRepository {
       ActivationRules.defaultFor(program);
 }
 
+/// A callsign directory held in memory.
+class FakeCallsignDirectory extends Fake
+    implements CallsignDirectoryRepository {
+  new([this.infos = const {}]);
+
+  /// What is known, by home call.
+  final Map<String, CallsignInfo> infos;
+
+  @override
+  Future<CallsignInfo?> lookup(String call) async =>
+      infos[Callsign.tryParse(call)?.baseCall];
+
+  @override
+  Future<List<CallsignInfo>> search(String query, {int limit = 100}) async {
+    final q = query.trim().toLowerCase();
+    return [
+      for (final i in infos.values)
+        if (q.isEmpty ||
+            i.call.toLowerCase().startsWith(q) ||
+            (i.name ?? '').toLowerCase().contains(q) ||
+            (i.qth ?? '').toLowerCase().contains(q))
+          i,
+    ].take(limit).toList();
+  }
+
+  @override
+  Stream<int> watchCount(String accountId) => Stream.value(infos.length);
+
+  @override
+  Future<int> count(String accountId) async => infos.length;
+}
+
+/// Callsign notes held in memory.
+class FakeCallsignNotes extends Fake implements CallsignNoteRepository {
+  new([Map<String, String> initial = const {}]) : notes = {...initial};
+
+  /// The notes by home call.
+  final Map<String, String> notes;
+  final _changes = StreamController<void>.broadcast();
+
+  @override
+  Future<String?> find(String call) async =>
+      notes[CallsignNoteRepository.keyOf(call)];
+
+  @override
+  Stream<String?> watch(String call) async* {
+    yield await find(call);
+    await for (final _ in _changes.stream) {
+      yield await find(call);
+    }
+  }
+
+  @override
+  Stream<Set<String>> watchCalls() async* {
+    yield {...notes.keys};
+    await for (final _ in _changes.stream) {
+      yield {...notes.keys};
+    }
+  }
+
+  @override
+  Future<void> save(String call, String body) async {
+    final key = CallsignNoteRepository.keyOf(call)!;
+    if (body.trim().isEmpty) {
+      notes.remove(key);
+    } else {
+      notes[key] = body.trim();
+    }
+    _changes.add(null);
+  }
+
+  @override
+  Future<void> delete(String call) async {
+    notes.remove(CallsignNoteRepository.keyOf(call));
+    _changes.add(null);
+  }
+}
+
 /// A sync controller that never touches the network or plugins.
 class FakeSyncController extends SyncController {
   int runs = 0;
@@ -236,6 +316,7 @@ typedef Pumped = ({
   FakeQsoRepository qsos,
   FakeSyncController sync,
   ContestBackend contest,
+  FakeCallsignNotes notes,
 });
 
 /// What the app sent to the system menu (macOS), since the last pump.
@@ -261,6 +342,8 @@ Future<Pumped> pumpTideline(
   ActivationProgress? activationProgress,
   ActivationRepository? activations,
   List<StationProfile> stations = const [testStation],
+  Map<String, CallsignInfo> callsigns = const {},
+  Map<String, String> callsignNotes = const {},
   List<Override> overrides = const [],
 }) async {
   tester.view
@@ -291,6 +374,7 @@ Future<Pumped> pumpTideline(
   final qsos = FakeQsoRepository();
   final backend = contest ?? ContestBackend(definitions: const []);
   final sync = FakeSyncController();
+  final notes = FakeCallsignNotes(callsignNotes);
   Never noDb(Ref ref) => throw StateError('no database in widget tests');
   await tester.pumpWidget(
     ProviderScope(
@@ -354,6 +438,10 @@ Future<Pumped> pumpTideline(
         scpDatabaseProvider.overrideWith((ref) async => backend.scp),
         dxccProvider.overrideWith((ref) async => testDxcc),
         syncControllerProvider.overrideWith(() => sync),
+        callsignDirectoryRepositoryProvider.overrideWithValue(
+          FakeCallsignDirectory(callsigns),
+        ),
+        callsignNoteRepositoryProvider.overrideWithValue(notes),
         databaseProvider.overrideWith(noDb),
         shortcutBindingStoreProvider.overrideWith(noDb),
         settingsStoreProvider.overrideWith(noDb),
@@ -363,5 +451,11 @@ Future<Pumped> pumpTideline(
     ),
   );
   await tester.pumpAndSettle();
-  return (settings: controller, qsos: qsos, sync: sync, contest: backend);
+  return (
+    settings: controller,
+    qsos: qsos,
+    sync: sync,
+    contest: backend,
+    notes: notes,
+  );
 }

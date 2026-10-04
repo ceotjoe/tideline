@@ -28,6 +28,9 @@ abstract final class Routes {
   static const settingsSecurity = '/settings/security';
   static const settingsDeveloper = '/settings/developer';
 
+  /// The offline callsign directory and its notes.
+  static const settingsCallsigns = '/settings/callsigns';
+
   /// Contest mode: the entry screen, or the setup when no session runs.
   static const contest = '/contest';
 

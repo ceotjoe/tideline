@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Offline callsign directory and notes** (ADR 0026). Under the callsign field: what earlier contacts say about the
+  station (name, place, locator) with **Fill in** for empty fields, and your own note, with a note button in the field.
+  The directory is built from your log and from Wavelog's history; **Settings → Reference data → Browse callsigns and
+  notes** searches it. Notes are local only (Wavelog's API v2 has no notes), are in the encrypted backup and in no
+  export. Database schema 4.
 - **Desktop navigation** on macOS, Windows and Linux (ADR 0025). A sidebar instead of the bottom bar (also in a narrow
   window), a menu bar (the system menu on macOS, a strip in the window on Windows and Linux) with Go, Operate and Help,
   built from the same commands as the shortcuts, and a **Go back** command on `Esc`, `Alt+←` and `Ctrl/⌘+[`. A right

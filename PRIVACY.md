@@ -18,6 +18,8 @@ reporting service and no third-party tracker. The developers never receive your 
 | Pinned server certificate fingerprints | Trusting your self-hosted server | Encrypted database |
 | Downloaded reference data (DXCC, SOTA, POTA, WWFF, call history, MASTER.SCP) | Offline lookups | Encrypted database (during installation a list is briefly held in a temporary table; it contains only public reference data) |
 | Worked-before index (calls, bands and modes from your log and your Wavelog server) | "Worked before" hints | Encrypted database; rebuildable from settings |
+| Callsign directory (name, place, locator and zones of the stations you worked, from your QSO history) | Showing what you know about a station while you log, offline | Encrypted database; rebuildable from settings; never sent anywhere |
+| Callsign notes (text you write about a station) | Your own memory aid | Encrypted database; included in encrypted backups; never sent to Wavelog or exported to ADIF |
 | Activations (programme, reference, your grid square, start and end) | Activation logging and progress | Encrypted database |
 | Contest definitions you import | Contest rules and scoring | Encrypted database |
 | Device location (only while you ask for it) | Computing your Maidenhead grid locator | Used on device, stored only as the grid in your QSO / activation |

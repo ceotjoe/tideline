@@ -26,4 +26,5 @@
 - [0024](0024-multiple-accounts.md) Multiple Wavelog accounts: one active account for logging
 - [0025](0025-desktop-navigation.md) Desktop navigation on macOS, Windows and Linux
 
+- [0026](0026-callsign-directory-and-notes.md) Offline callsign directory and local callsign notes
 New ADRs start from [0000-template.md](0000-template.md).

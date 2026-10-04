@@ -210,6 +210,8 @@ _6.2 done 2026-10-04: [ADR 0023](adr/0023-settings-hub.md). The hub has four gro
 
 _6.1 done 2026-10-04 (`7f25482`)._
 
+_6.5 done 2026-10-04: [ADR 0026](adr/0026-callsign-directory-and-notes.md); Wavelog API v2 has no callsign notes (verified), so notes are local only._
+
 _6.4 done 2026-10-04: [ADR 0025](adr/0025-desktop-navigation.md). Not done: a minimum window size (native code per OS) and a two-pane settings view on wide windows._
 
 _6.3 done 2026-10-04: [ADR 0024](adr/0024-multiple-accounts.md). Also fixed: removing an account with contest or activation data failed on the foreign keys (found while building 6.3)._

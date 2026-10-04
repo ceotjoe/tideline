@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tideline/src/features/activation/activation_setup_screen.dart';
+import 'package:tideline/src/features/callsigns/callsigns_page.dart';
 import 'package:tideline/src/features/contest/contest_screen.dart';
 import 'package:tideline/src/features/contest/contest_setup_screen.dart';
 import 'package:tideline/src/features/log/log_screen.dart';
@@ -96,6 +97,10 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
                   path: 'reference-data',
                   builder: (context, state) =>
                       const ReferenceDataSettingsPage(),
+                ),
+                GoRoute(
+                  path: 'callsigns',
+                  builder: (context, state) => const CallsignsPage(),
                 ),
                 GoRoute(
                   path: 'security',

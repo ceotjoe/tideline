@@ -6,6 +6,7 @@ _Version 0.3 (activations)._
 1. [Creating a Wavelog API token](api-token.md)
 1. [Logging offline](logging-offline.md)
 1. [Several accounts](accounts.md)
+1. [Callsign directory and notes](callsigns.md)
 1. [Sync and conflicts](sync-and-conflicts.md)
 1. [Activations (SOTA, POTA, WWFF)](activations.md)
 1. [Contest mode](contest-mode.md)

@@ -2347,4 +2347,84 @@ class AppLocalizationsDe extends AppLocalizations {
   String callsignCopied(String call) {
     return '$call kopiert';
   }
+
+  @override
+  String get callsignFillIn => 'Übernehmen';
+
+  @override
+  String get callsignFillInLabel =>
+      'Name und Locator aus früheren Kontakten übernehmen';
+
+  @override
+  String callsignKnown(String details) {
+    return 'Aus früheren Kontakten bekannt: $details';
+  }
+
+  @override
+  String get callsignNoteTooltip => 'Rufzeichen-Notiz';
+
+  @override
+  String get callsignNoteTooltipHas => 'Rufzeichen-Notiz (vorhanden)';
+
+  @override
+  String callsignNoteTitle(String call) {
+    return 'Notiz für $call';
+  }
+
+  @override
+  String get callsignNoteHint =>
+      'Nur auf diesem Gerät (und in deinem Backup). Wird nicht an Wavelog gesendet.';
+
+  @override
+  String get callsignNoteField => 'Notiz';
+
+  @override
+  String get callsignNoteDelete => 'Notiz löschen';
+
+  @override
+  String callsignNoteLine(String text) {
+    return 'Notiz: $text';
+  }
+
+  @override
+  String get callsignDirectoryTitle => 'Rufzeichen-Verzeichnis';
+
+  @override
+  String get callsignDirectoryBody =>
+      'Namen, Orte und Locator aus deinem QSO-Verlauf, auf diesem Gerät gespeichert, damit sie offline da sind. Es gehört zum Index „Schon gearbeitet“ und wird mit ihm neu aufgebaut.';
+
+  @override
+  String callsignDirectoryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Stationen',
+      one: '1 Station',
+      zero: 'Noch keine Stationen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get callsignBrowse => 'Rufzeichen und Notizen durchsuchen';
+
+  @override
+  String get callsignSearch => 'Rufzeichen, Name oder Ort suchen';
+
+  @override
+  String get callsignEmpty =>
+      'Nichts gefunden. Stationen erscheinen hier, wenn du loggst und synchronisierst.';
+
+  @override
+  String get callsignHasNote => 'Hat eine Notiz';
+
+  @override
+  String callsignLastWorked(String date) {
+    return 'Zuletzt gearbeitet am $date';
+  }
+
+  @override
+  String callsignZones(String dxcc, String cq, String itu) {
+    return 'DXCC $dxcc · CQ $cq · ITU $itu';
+  }
 }

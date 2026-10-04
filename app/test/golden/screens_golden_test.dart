@@ -4,8 +4,9 @@ library;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tideline/src/settings/app_settings.dart';
-import 'package:tideline_data/tideline_data.dart' show Account;
+import 'package:tideline_data/tideline_data.dart' show Account, CallsignInfo;
 
 import '../support/pump_app.dart';
 
@@ -172,4 +173,66 @@ void main() {
       }
     });
   }
+
+  const anna = CallsignInfo(
+    call: 'DL1ABC',
+    lastTime: 1_700_000_000_000,
+    name: 'Anna',
+    qth: 'Berlin',
+    gridsquare: 'JO62',
+    dxcc: 230,
+    cqz: 14,
+    ituz: 28,
+  );
+
+  for (final MapEntry(key: sizeName, value: size) in {
+    'phone': TestSizes.phone,
+    'tablet_landscape': TestSizes.tabletLandscape,
+  }.entries) {
+    testWidgets('log screen with what is known about the call, $sizeName', (
+      tester,
+    ) async {
+      await pumpTideline(
+        tester,
+        size: size,
+        settings: const AppSettings(theme: ThemeChoice.light),
+        log: sampleLog(3),
+        callsigns: const {'DL1ABC': anna},
+        callsignNotes: const {'DL1ABC': 'Calls on 40 m around 06 UTC'},
+      );
+      await tester.enterText(
+        find.widgetWithText(TextField, 'Callsign'),
+        'DL1ABC',
+      );
+      await tester.pumpAndSettle();
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('goldens/log_callsign_context_$sizeName.png'),
+      );
+    });
+  }
+
+  testWidgets('callsign directory page, phone', (tester) async {
+    await pumpTideline(
+      tester,
+      settings: const AppSettings(theme: ThemeChoice.light),
+      callsigns: const {
+        'DL1ABC': anna,
+        'G4XYZ': CallsignInfo(
+          call: 'G4XYZ',
+          lastTime: 1_600_000_000_000,
+          name: 'Bob',
+          qth: 'Leeds',
+        ),
+      },
+      callsignNotes: const {'DL1ABC': 'x'},
+    );
+    GoRouter.of(tester.element(find.byType(Scaffold).first))
+        .go('/settings/callsigns');
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/callsigns_phone.png'),
+    );
+  });
 }

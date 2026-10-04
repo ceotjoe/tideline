@@ -46,6 +46,7 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 | T22 | Cabrillo export used for header injection (CR/LF in soapbox, name or address) | T | A3 | The writer replaces control characters and line separators with spaces and writes pure ASCII; tested with injection attempts. | Implemented |
 | T23 | Activation data sent to Wavelog is not what the user expects (own park or grid silently replaced by the station location's values) | T | A2 | Own references and grid are kept on every QSO and in ADIF exports. Wavelog ignores them in an upload and uses its station location (verified 2026-10-03, `wavelog-api.md`), so the setup screen shows whether the chosen location carries the reference and warns when none does. Tideline never edits Wavelog station locations (ADR 0021, option A). | Implemented |
 | T24 | Unencrypted copy of a reference list in SQLite's temporary storage while a list is installed | I | A5 | The list is public data (reference, name, region, position). It is collected in a SQLite temporary table, which lives in memory or in SQLite's temp file and is dropped when the install ends, also on failure. No QSO, callsign or other personal data is ever written there. | Accepted |
+| T25 | Personal data of third parties (names and places of the stations you worked, your own notes about them) leaks from the device or a backup | I | A4, A5 | The directory and the notes live in the encrypted database (T3); notes travel only in encrypted backups; neither is part of any ADIF or Cabrillo export or sent to Wavelog (it has no notes API, `wavelog-api.md`). Text from untrusted ADIF (server pull, restored backup) is cleaned (control characters removed, length limited), the directory is capped at 500,000 stations per account for server pulls, and notes are limited to 2,000 characters. | Implemented (ADR 0026) |
 
 ## Residual risks
 - **Compromised OS (jailbreak/root):** an attacker who controls the OS can read the secure store. This is out of scope,
@@ -76,6 +77,11 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
   during installation (T24).
 - **Not changed:** the set of hosts the app talks to grows only by the three official list sources, each contacted only
   when the user presses Download. PRIVACY.md lists them.
+
+## Changes in version 5 (callsign directory and notes, step 6.5)
+- **New inputs:** the same server ADIF pull as the worked-before index (T20), now also read for name, place, locator,
+  country, state and zones (T25); notes typed by the user; the `callsignNotes` list of a restored backup.
+- **New stored data:** the directory (derived, per account) and the notes (local only). No new host, scope or request.
 
 ## Changes in version 5 (multiple accounts, step 6.3)
 - **No new inputs and no new hosts.** Several Wavelog servers can be connected, each through the same onboarding checks

@@ -3060,5 +3060,117 @@
         "type": "String"
       }
     }
+  },
+  "callsignFillIn": "Fill in",
+  "@callsignFillIn": {
+    "description": "Button: copy the name and locator known from earlier contacts into the empty fields."
+  },
+  "callsignFillInLabel": "Fill in name and locator from earlier contacts",
+  "@callsignFillInLabel": {
+    "description": "Accessibility label of the Fill in button."
+  },
+  "callsignKnown": "Known from earlier contacts: {details}",
+  "@callsignKnown": {
+    "description": "Line under the callsign field. Details are name, place and locator.",
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "callsignNoteTooltip": "Callsign note",
+  "@callsignNoteTooltip": {
+    "description": "Tooltip of the note button next to the callsign field."
+  },
+  "callsignNoteTooltipHas": "Callsign note (there is one)",
+  "@callsignNoteTooltipHas": {
+    "description": "Tooltip of the note button when a note exists."
+  },
+  "callsignNoteTitle": "Note for {call}",
+  "@callsignNoteTitle": {
+    "description": "Title of the note dialog.",
+    "placeholders": {
+      "call": {
+        "type": "String"
+      }
+    }
+  },
+  "callsignNoteHint": "Only on this device (and in your backup). Not sent to Wavelog.",
+  "@callsignNoteHint": {
+    "description": "Explains where a callsign note is kept."
+  },
+  "callsignNoteField": "Note",
+  "@callsignNoteField": {
+    "description": "Label of the note field."
+  },
+  "callsignNoteDelete": "Delete note",
+  "@callsignNoteDelete": {
+    "description": "Button."
+  },
+  "callsignNoteLine": "Note: {text}",
+  "@callsignNoteLine": {
+    "description": "Line under the callsign field showing the start of the note.",
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "callsignDirectoryTitle": "Callsign directory",
+  "@callsignDirectoryTitle": {
+    "description": "Settings section and page title."
+  },
+  "callsignDirectoryBody": "Names, places and locators from your QSO history, kept on this device, so they are there offline. It is part of the worked-before index and is rebuilt with it.",
+  "@callsignDirectoryBody": {
+    "description": "Explanation in settings."
+  },
+  "callsignDirectoryCount": "{count, plural, =0{No stations yet} =1{1 station} other{{count} stations}}",
+  "@callsignDirectoryCount": {
+    "description": "Number of stations in the directory (of the account in use).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "callsignBrowse": "Browse callsigns and notes",
+  "@callsignBrowse": {
+    "description": "Settings entry that opens the directory page."
+  },
+  "callsignSearch": "Search call, name or place",
+  "@callsignSearch": {
+    "description": "Label of the search field."
+  },
+  "callsignEmpty": "Nothing found. Stations appear here as you log and sync.",
+  "@callsignEmpty": {
+    "description": "Empty state of the directory page."
+  },
+  "callsignHasNote": "Has a note",
+  "@callsignHasNote": {
+    "description": "Text next to the note icon in the directory list."
+  },
+  "callsignLastWorked": "Last worked {date}",
+  "@callsignLastWorked": {
+    "description": "Detail line of a station in the directory.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "callsignZones": "DXCC {dxcc} · CQ {cq} · ITU {itu}",
+  "@callsignZones": {
+    "description": "Entity and zones of a station.",
+    "placeholders": {
+      "dxcc": {
+        "type": "String"
+      },
+      "cq": {
+        "type": "String"
+      },
+      "itu": {
+        "type": "String"
+      }
+    }
   }
 }

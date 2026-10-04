@@ -9,12 +9,16 @@ import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 import 'package:tideline/src/features/activation/activation_labels.dart';
 import 'package:tideline/src/features/activation/activation_providers.dart';
+import 'package:tideline/src/features/callsigns/callsign_context.dart';
+import 'package:tideline/src/features/callsigns/callsign_note_dialog.dart';
+import 'package:tideline/src/features/callsigns/callsign_providers.dart';
 import 'package:tideline/src/features/log/qso_entry_controller.dart';
 import 'package:tideline/src/features/log/qso_tile.dart';
 import 'package:tideline/src/features/log/worked_hint.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/frequency_field.dart';
 import 'package:tideline/src/widgets/upper_case_formatter.dart';
+import 'package:tideline_data/tideline_data.dart' show CallsignInfo;
 import 'package:tideline_domain/tideline_domain.dart';
 
 /// Focus of the callsign field, shared with the log screen's commands.
@@ -111,6 +115,18 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
     _grid.text = e.grid;
     _comment.text = e.comment;
     _theirRef.text = e.theirReference;
+  }
+
+  /// Copies what earlier contacts say into the empty name and locator fields;
+  /// typed text is never replaced.
+  void _fillFrom(CallsignInfo info) {
+    final name = _name.text.trim().isEmpty ? info.name : null;
+    final grid = _grid.text.trim().isEmpty ? info.gridsquare : null;
+    if (name != null) _name.text = name;
+    if (grid != null) _grid.text = grid;
+    ref
+        .read(qsoEntryProvider.notifier)
+        .edit((e) => e.copyWith(name: name, grid: grid));
   }
 
   /// Logs the entry. Announces the result for screen readers.
@@ -227,6 +243,16 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
             ),
     );
 
+    final contextLine = CallsignContextLine(
+      call: entry.call,
+      nameEmpty: entry.name.trim().isEmpty,
+      gridEmpty: entry.grid.trim().isEmpty,
+      onFill: _fillFrom,
+    );
+    final typedCall = entry.call.trim();
+    final callValid = Callsign.tryParse(typedCall) != null;
+    final hasNote =
+        callValid && ref.watch(callsignNoteProvider(typedCall)).value != null;
     final callField = TextField(
       controller: _call,
       focusNode: ref.watch(callsignFocusProvider),
@@ -247,6 +273,18 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
       decoration: InputDecoration(
         labelText: l10n.fieldCallsign,
         errorText: errorFor(EntryIssue.invalidCall, l10n.issueInvalidCall),
+        // The note of this station: filled when there is one.
+        suffixIcon: IconButton(
+          tooltip: hasNote
+              ? l10n.callsignNoteTooltipHas
+              : l10n.callsignNoteTooltip,
+          icon: Icon(
+            hasNote ? Icons.sticky_note_2 : Icons.sticky_note_2_outlined,
+          ),
+          onPressed: callValid
+              ? () => showCallsignNoteDialog(context, ref, typedCall)
+              : null,
+        ),
       ),
       onChanged: (v) => controller.edit((e) => e.copyWith(call: v)),
     );
@@ -425,6 +463,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
               band: entry.band,
               mode: entry.mode,
             ),
+            contextLine,
             ?issueText,
           ],
         ),
@@ -458,6 +497,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
               band: entry.band,
               mode: entry.mode,
             ),
+            contextLine,
             ?issueText,
           ],
         ),
@@ -472,6 +512,7 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
           callField,
           _DxccHint(call: entry.call),
           WorkedHintLine(call: entry.call, band: entry.band, mode: entry.mode),
+          contextLine,
           gap,
           row([bandField, modeField]),
           gap,

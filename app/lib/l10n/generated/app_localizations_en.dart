@@ -2329,6 +2329,86 @@ class AppLocalizationsEn extends AppLocalizations {
   String callsignCopied(String call) {
     return 'Copied $call';
   }
+
+  @override
+  String get callsignFillIn => 'Fill in';
+
+  @override
+  String get callsignFillInLabel =>
+      'Fill in name and locator from earlier contacts';
+
+  @override
+  String callsignKnown(String details) {
+    return 'Known from earlier contacts: $details';
+  }
+
+  @override
+  String get callsignNoteTooltip => 'Callsign note';
+
+  @override
+  String get callsignNoteTooltipHas => 'Callsign note (there is one)';
+
+  @override
+  String callsignNoteTitle(String call) {
+    return 'Note for $call';
+  }
+
+  @override
+  String get callsignNoteHint =>
+      'Only on this device (and in your backup). Not sent to Wavelog.';
+
+  @override
+  String get callsignNoteField => 'Note';
+
+  @override
+  String get callsignNoteDelete => 'Delete note';
+
+  @override
+  String callsignNoteLine(String text) {
+    return 'Note: $text';
+  }
+
+  @override
+  String get callsignDirectoryTitle => 'Callsign directory';
+
+  @override
+  String get callsignDirectoryBody =>
+      'Names, places and locators from your QSO history, kept on this device, so they are there offline. It is part of the worked-before index and is rebuilt with it.';
+
+  @override
+  String callsignDirectoryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stations',
+      one: '1 station',
+      zero: 'No stations yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get callsignBrowse => 'Browse callsigns and notes';
+
+  @override
+  String get callsignSearch => 'Search call, name or place';
+
+  @override
+  String get callsignEmpty =>
+      'Nothing found. Stations appear here as you log and sync.';
+
+  @override
+  String get callsignHasNote => 'Has a note';
+
+  @override
+  String callsignLastWorked(String date) {
+    return 'Last worked $date';
+  }
+
+  @override
+  String callsignZones(String dxcc, String cq, String itu) {
+    return 'DXCC $dxcc · CQ $cq · ITU $itu';
+  }
 }
 
 /// The translations for English (`en_XA`).
@@ -4714,5 +4794,86 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String callsignCopied(String call) {
     return '[Çöþîéð ···]$call';
+  }
+
+  @override
+  String get callsignFillIn => '[Ƒîļļ îñ···]';
+
+  @override
+  String get callsignFillInLabel =>
+      '[Ƒîļļ îñ ñáɱé áñð ļöçáţöŕ ƒŕöɱ éáŕļîéŕ çöñţáçţš···················]';
+
+  @override
+  String callsignKnown(String details) {
+    return '[Ķñöŵñ ƒŕöɱ éáŕļîéŕ çöñţáçţš: ············]$details';
+  }
+
+  @override
+  String get callsignNoteTooltip => '[Çáļļšîĝñ ñöţé······]';
+
+  @override
+  String get callsignNoteTooltipHas =>
+      '[Çáļļšîĝñ ñöţé (ţĥéŕé îš öñé)············]';
+
+  @override
+  String callsignNoteTitle(String call) {
+    return '[Ñöţé ƒöŕ ····]$call';
+  }
+
+  @override
+  String get callsignNoteHint =>
+      '[Öñļý öñ ţĥîš ðéṽîçé (áñð îñ ýöûŕ ƀáçķûþ). Ñöţ šéñţ ţö Ŵáṽéļöĝ.·························]';
+
+  @override
+  String get callsignNoteField => '[Ñöţé··]';
+
+  @override
+  String get callsignNoteDelete => '[Ðéļéţé ñöţé·····]';
+
+  @override
+  String callsignNoteLine(String text) {
+    return '[Ñöţé: ···]$text';
+  }
+
+  @override
+  String get callsignDirectoryTitle => '[Çáļļšîĝñ ðîŕéçţöŕý········]';
+
+  @override
+  String get callsignDirectoryBody =>
+      '[Ñáɱéš, þļáçéš áñð ļöçáţöŕš ƒŕöɱ ýöûŕ ǪŠÖ ĥîšţöŕý, ķéþţ öñ ţĥîš ðéṽîçé, šö ţĥéý áŕé ţĥéŕé öƒƒļîñé. Îţ îš þáŕţ öƒ ţĥé ŵöŕķéð-ƀéƒöŕé îñðéẋ áñð îš ŕéƀûîļţ ŵîţĥ îţ.································································]';
+
+  @override
+  String callsignDirectoryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ šţáţîöñš····]',
+      one: '[1 šţáţîöñ····]',
+      zero: '[Ñö šţáţîöñš ýéţ······]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get callsignBrowse => '[Ɓŕöŵšé çáļļšîĝñš áñð ñöţéš···········]';
+
+  @override
+  String get callsignSearch => '[Šéáŕçĥ çáļļ, ñáɱé öŕ þļáçé···········]';
+
+  @override
+  String get callsignEmpty =>
+      '[Ñöţĥîñĝ ƒöûñð. Šţáţîöñš áþþéáŕ ĥéŕé áš ýöû ļöĝ áñð šýñç.·······················]';
+
+  @override
+  String get callsignHasNote => '[Ĥáš á ñöţé····]';
+
+  @override
+  String callsignLastWorked(String date) {
+    return '[Ļášţ ŵöŕķéð ·····]$date';
+  }
+
+  @override
+  String callsignZones(String dxcc, String cq, String itu) {
+    return '[ÐẊÇÇ ··]$dxcc[ · ÇǪ ···]$cq[ · ÎŢÛ ···]$itu';
   }
 }
