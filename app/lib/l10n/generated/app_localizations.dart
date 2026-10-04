@@ -3601,12 +3601,6 @@ abstract class AppLocalizations {
   /// **'Theme, text and language'**
   String get settingsAppearanceHint;
 
-  /// Hub entry subtitle under Wavelog account.
-  ///
-  /// In en, this message translates to:
-  /// **'Server and access token'**
-  String get settingsAccountHint;
-
   /// Settings page title and hub entry for the downloaded lists and indexes.
   ///
   /// In en, this message translates to:
@@ -3630,6 +3624,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'App lock, ADIF and backup'**
   String get settingsSecurityAndBackupHint;
+
+  /// Settings page title and hub entry for the list of accounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog accounts'**
+  String get settingsAccounts;
+
+  /// Hub entry subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Servers, tokens and the account you log to'**
+  String get accountsHint;
+
+  /// Status text of the active account (always paired with an icon).
+  ///
+  /// In en, this message translates to:
+  /// **'In use for logging'**
+  String get accountsInUse;
+
+  /// Per-account count of QSOs that have not reached Wavelog.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing waiting} =1{1 QSO waiting} other{{count} QSOs waiting}}'**
+  String accountsPending(int count);
+
+  /// List entry and screen title: connect another Wavelog.
+  ///
+  /// In en, this message translates to:
+  /// **'Add account'**
+  String get accountsAdd;
+
+  /// Button: make this account the active one.
+  ///
+  /// In en, this message translates to:
+  /// **'Use for logging'**
+  String get accountsUseForLogging;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get accountsRename;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename this account'**
+  String get accountsRenameTitle;
+
+  /// Tooltip of the account menu on the log screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch account'**
+  String get accountsSwitch;
+
+  /// Entry of the account menu that opens the settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage accounts'**
+  String get accountsManage;
+
+  /// Snackbar after switching the account.
+  ///
+  /// In en, this message translates to:
+  /// **'Logging to {name}'**
+  String accountsSwitchedTo(String name);
+
+  /// Why the account cannot be switched.
+  ///
+  /// In en, this message translates to:
+  /// **'A contest session is running. End it before you switch accounts.'**
+  String get accountsBlockedContest;
+
+  /// Why the account cannot be switched.
+  ///
+  /// In en, this message translates to:
+  /// **'An activation is running. End it before you switch accounts.'**
+  String get accountsBlockedActivation;
+
+  /// Heading on the sync screen above the per-account counts.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting, per account'**
+  String get accountsPendingTitle;
+
+  /// Button in the remove-account dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Export log, then remove'**
+  String get accountsExportRemove;
+
+  /// Title of the add-account screen's app bar.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a Wavelog account'**
+  String get accountsAddTitle;
+
+  /// Second line of the import and export entries when there are several accounts: which one they act on.
+  ///
+  /// In en, this message translates to:
+  /// **'Account: {name}'**
+  String accountsActsOn(String name);
 }
 
 class _AppLocalizationsDelegate

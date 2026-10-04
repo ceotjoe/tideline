@@ -2227,9 +2227,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAppearanceHint => 'Theme, text and language';
 
   @override
-  String get settingsAccountHint => 'Server and access token';
-
-  @override
   String get settingsReferenceData => 'Reference data';
 
   @override
@@ -2240,6 +2237,72 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsSecurityAndBackupHint => 'App lock, ADIF and backup';
+
+  @override
+  String get settingsAccounts => 'Wavelog accounts';
+
+  @override
+  String get accountsHint => 'Servers, tokens and the account you log to';
+
+  @override
+  String get accountsInUse => 'In use for logging';
+
+  @override
+  String accountsPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs waiting',
+      one: '1 QSO waiting',
+      zero: 'Nothing waiting',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accountsAdd => 'Add account';
+
+  @override
+  String get accountsUseForLogging => 'Use for logging';
+
+  @override
+  String get accountsRename => 'Rename';
+
+  @override
+  String get accountsRenameTitle => 'Rename this account';
+
+  @override
+  String get accountsSwitch => 'Switch account';
+
+  @override
+  String get accountsManage => 'Manage accounts';
+
+  @override
+  String accountsSwitchedTo(String name) {
+    return 'Logging to $name';
+  }
+
+  @override
+  String get accountsBlockedContest =>
+      'A contest session is running. End it before you switch accounts.';
+
+  @override
+  String get accountsBlockedActivation =>
+      'An activation is running. End it before you switch accounts.';
+
+  @override
+  String get accountsPendingTitle => 'Waiting, per account';
+
+  @override
+  String get accountsExportRemove => 'Export log, then remove';
+
+  @override
+  String get accountsAddTitle => 'Add a Wavelog account';
+
+  @override
+  String accountsActsOn(String name) {
+    return 'Account: $name';
+  }
 }
 
 /// The translations for English (`en_XA`).
@@ -4521,9 +4584,6 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   String get settingsAppearanceHint => '[Ţĥéɱé, ţéẋţ áñð ļáñĝûáĝé··········]';
 
   @override
-  String get settingsAccountHint => '[Šéŕṽéŕ áñð áççéšš ţöķéñ··········]';
-
-  @override
   String get settingsReferenceData => '[Ŕéƒéŕéñçé ðáţá······]';
 
   @override
@@ -4536,4 +4596,71 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String get settingsSecurityAndBackupHint =>
       '[Åþþ ļöçķ, ÅÐÎƑ áñð ƀáçķûþ··········]';
+
+  @override
+  String get settingsAccounts => '[Ŵáṽéļöĝ áççöûñţš·······]';
+
+  @override
+  String get accountsHint =>
+      '[Šéŕṽéŕš, ţöķéñš áñð ţĥé áççöûñţ ýöû ļöĝ ţö·················]';
+
+  @override
+  String get accountsInUse => '[Îñ ûšé ƒöŕ ļöĝĝîñĝ········]';
+
+  @override
+  String accountsPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš ŵáîţîñĝ······]',
+      one: '[1 ǪŠÖ ŵáîţîñĝ······]',
+      zero: '[Ñöţĥîñĝ ŵáîţîñĝ······]',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accountsAdd => '[Åðð áççöûñţ·····]';
+
+  @override
+  String get accountsUseForLogging => '[Ûšé ƒöŕ ļöĝĝîñĝ······]';
+
+  @override
+  String get accountsRename => '[Ŕéñáɱé···]';
+
+  @override
+  String get accountsRenameTitle => '[Ŕéñáɱé ţĥîš áççöûñţ········]';
+
+  @override
+  String get accountsSwitch => '[Šŵîţçĥ áççöûñţ······]';
+
+  @override
+  String get accountsManage => '[Ṁáñáĝé áççöûñţš······]';
+
+  @override
+  String accountsSwitchedTo(String name) {
+    return '[Ļöĝĝîñĝ ţö ·····]$name';
+  }
+
+  @override
+  String get accountsBlockedContest =>
+      '[Å çöñţéšţ šéššîöñ îš ŕûññîñĝ. Éñð îţ ƀéƒöŕé ýöû šŵîţçĥ áççöûñţš.··························]';
+
+  @override
+  String get accountsBlockedActivation =>
+      '[Åñ áçţîṽáţîöñ îš ŕûññîñĝ. Éñð îţ ƀéƒöŕé ýöû šŵîţçĥ áççöûñţš.························]';
+
+  @override
+  String get accountsPendingTitle => '[Ŵáîţîñĝ, þéŕ áççöûñţ········]';
+
+  @override
+  String get accountsExportRemove => '[Éẋþöŕţ ļöĝ, ţĥéñ ŕéɱöṽé··········]';
+
+  @override
+  String get accountsAddTitle => '[Åðð á Ŵáṽéļöĝ áççöûñţ·········]';
+
+  @override
+  String accountsActsOn(String name) {
+    return '[Åççöûñţ: ····]$name';
+  }
 }

@@ -28,7 +28,7 @@ void main() {
     await pumpTideline(tester, size: TestSizes.tabletPortrait);
     await openSettings(tester);
     for (final title in [
-      'Wavelog account',
+      'Wavelog accounts',
       'Appearance and language',
       'Reference data',
       'Security and backup',
@@ -46,9 +46,11 @@ void main() {
   ) async {
     await pumpTideline(tester, size: TestSizes.tabletPortrait);
     await openSettings(tester);
-    await openPage(tester, 'Wavelog account');
-    expect(find.text('Home'), findsOneWidget);
+    await openPage(tester, 'Wavelog accounts');
+    await openPage(tester, 'Home');
     expect(find.text('Enter a new token'), findsOneWidget);
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
     expect(find.text('Appearance and language'), findsOneWidget);
@@ -94,7 +96,7 @@ void main() {
     await openSettings(tester);
     for (final page in [
       null,
-      'Wavelog account',
+      'Wavelog accounts',
       'Appearance and language',
       'Reference data',
       'Security and backup',

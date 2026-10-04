@@ -41,6 +41,10 @@ class SyncScreen extends ConsumerWidget {
     final pending = ref.watch(pendingSyncCountProvider).value ?? 0;
     final activity = ref.watch(syncControllerProvider);
     final journal = ref.watch(accountJournalProvider).value ?? const [];
+    final accounts = ref.watch(accountsProvider).value ?? const <Account>[];
+    final activeAccount = ref.watch(activeAccountProvider);
+    final pendingByAccount =
+        ref.watch(pendingByAccountProvider).value ?? const {};
     final status = describeRun(l10n, activity);
     final textTheme = Theme.of(context).textTheme;
 
@@ -84,6 +88,35 @@ class SyncScreen extends ConsumerWidget {
                   ),
             ],
           ),
+          if (accounts.length > 1) ...[
+            SizedBox(height: metrics.md),
+            Semantics(
+              header: true,
+              child: Text(
+                l10n.accountsPendingTitle,
+                style: textTheme.titleMedium,
+              ),
+            ),
+            for (final a in accounts)
+              MergeSemantics(
+                child: ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(
+                    a.id == activeAccount?.id
+                        ? Icons.check_circle_outline
+                        : Icons.dns_outlined,
+                  ),
+                  title: Text(a.label),
+                  subtitle: Text(
+                    [
+                      if (a.id == activeAccount?.id) l10n.accountsInUse,
+                      l10n.accountsPending(pendingByAccount[a.id] ?? 0),
+                    ].join(' · '),
+                  ),
+                ),
+              ),
+          ],
           SizedBox(height: metrics.md),
           if (status != null)
             Semantics(
@@ -132,9 +165,12 @@ class SyncScreen extends ConsumerWidget {
 /// Shows the dry-run preview and, on confirmation, uploads.
 Future<void> showUploadPreview(BuildContext context, WidgetRef ref) async {
   final l10n = AppLocalizations.of(context);
-  final account = ref.read(activeAccountProvider);
-  if (account == null) return;
-  final preview = ref.read(syncEngineProvider).preview(account.id);
+  final waiting = ref.read(syncControllerProvider);
+  final accountId = waiting is SyncNeedsReview
+      ? waiting.accountId
+      : ref.read(activeAccountProvider)?.id;
+  if (accountId == null) return;
+  final preview = ref.read(syncEngineProvider).preview(accountId);
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
@@ -188,6 +224,8 @@ Future<void> showUploadPreview(BuildContext context, WidgetRef ref) async {
     ),
   );
   if (confirmed ?? false) {
-    await ref.read(syncControllerProvider.notifier).syncNow(reviewed: true);
+    await ref
+        .read(syncControllerProvider.notifier)
+        .syncNow(reviewed: true, accountId: accountId);
   }
 }

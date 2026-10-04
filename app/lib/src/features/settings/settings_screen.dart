@@ -27,8 +27,8 @@ class SettingsScreen extends StatelessWidget {
     final entries = <_Entry>[
       (
         icon: Icons.cloud_outlined,
-        title: l10n.settingsAccount,
-        hint: l10n.settingsAccountHint,
+        title: l10n.settingsAccounts,
+        hint: l10n.accountsHint,
         route: Routes.settingsAccount,
       ),
       (

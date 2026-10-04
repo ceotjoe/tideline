@@ -5,6 +5,7 @@ _Version 0.3 (Aktivierungen)._
 1. [Ersteinrichtung](first-setup.md)
 1. [Wavelog-API-Token erstellen](api-token.md)
 1. [Offline loggen](logging-offline.md)
+1. [Mehrere Konten](accounts.md)
 1. [Synchronisierung und Konflikte](sync-and-conflicts.md)
 1. [Aktivierungen (SOTA, POTA, WWFF)](activations.md)
 1. [Contest-Modus](contest-mode.md)

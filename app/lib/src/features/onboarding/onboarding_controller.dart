@@ -2,7 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/services/tls.dart';
-import 'package:tideline_data/tideline_data.dart' show stationReferences;
+import 'package:tideline_data/tideline_data.dart'
+    show Account, stationReferences;
 import 'package:wavelog_client/wavelog_client.dart';
 
 /// Onboarding steps.
@@ -141,6 +142,13 @@ class OnboardingController extends Notifier<OnboardingState> {
   @override
   OnboardingState build() => const OnboardingState();
 
+  /// Starts over at the server step, for adding an account to a working app.
+  void startAddingAccount() =>
+      state = const OnboardingState(step: OnboardingStep.server);
+
+  /// Forgets everything entered so far (cancelling).
+  void reset() => state = const OnboardingState();
+
   /// Moves to [step] (back navigation).
   void goTo(OnboardingStep step) =>
       state = state.copyWith(step: step, clearProblem: true);
@@ -268,7 +276,11 @@ class OnboardingController extends Notifier<OnboardingState> {
 
   /// Saves the account with [stationId] as default station. Returns the
   /// new account id.
-  Future<String?> finish(int stationId) async {
+  ///
+  /// The account becomes the active one when [makeActive] is true (the
+  /// first account always does). The name is made unique among the existing
+  /// accounts, so two accounts on one server stay tellable apart.
+  Future<String?> finish(int stationId, {bool makeActive = true}) async {
     final endpoint = state.endpoint;
     final caps = state.capabilities;
     final token = state.token;
@@ -276,8 +288,16 @@ class OnboardingController extends Notifier<OnboardingState> {
     state = state.copyWith(busy: true);
     final accounts = ref.read(accountRepositoryProvider);
     final now = DateTime.now().toUtc().millisecondsSinceEpoch;
+    final taken = {
+      for (final a in ref.read(accountsProvider).value ?? const <Account>[])
+        a.label,
+    };
+    var label = state.label;
+    for (var n = 2; taken.contains(label); n++) {
+      label = '${state.label} $n';
+    }
     final id = await accounts.add(
-      label: state.label,
+      label: label,
       baseUrl: endpoint.baseUri.toString(),
       usesIndexPhp: caps.usesIndexPhp,
       token: token,
@@ -304,7 +324,7 @@ class OnboardingController extends Notifier<OnboardingState> {
       references: stationReferences(state.stations),
     );
     final settings = ref.read(settingsStoreProvider);
-    await settings.write('account.active', id);
+    if (makeActive) await settings.write('account.active', id);
     await settings.write('account.$id.defaultStation', '$stationId');
     state = const OnboardingState();
     return id;

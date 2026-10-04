@@ -7,6 +7,13 @@ abstract final class Routes {
 
   /// Pages of the settings hub.
   static const settingsAccount = '/settings/account';
+
+  /// The page of one account.
+  static String settingsAccountDetail(String accountId) =>
+      '/settings/account/$accountId';
+
+  /// Connecting another Wavelog account (a full-screen flow above the shell).
+  static const addAccount = '/add-account';
   static const settingsAppearance = '/settings/appearance';
   static const settingsReferenceData = '/settings/reference-data';
   static const settingsSecurity = '/settings/security';

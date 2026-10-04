@@ -20,6 +20,13 @@ import 'contest_fakes.dart';
 class FakeSettingsController implements SettingsController {
   final List<AppSettings> saved = [];
 
+  /// Account ids chosen with [setActiveAccount], in order.
+  final List<String> activeAccounts = [];
+
+  @override
+  Future<void> setActiveAccount(String accountId) async =>
+      activeAccounts.add(accountId);
+
   @override
   Future<void> save(AppSettings settings) async => saved.add(settings);
 }
@@ -153,7 +160,10 @@ class FakeSyncController extends SyncController {
   SyncActivity build() => const SyncIdle();
 
   @override
-  Future<SyncRunResult?> syncNow({bool reviewed = false}) async {
+  Future<SyncRunResult?> syncNow({
+    bool reviewed = false,
+    String? accountId,
+  }) async {
     runs++;
     return null;
   }
@@ -234,6 +244,7 @@ Future<Pumped> pumpTideline(
   Size size = TestSizes.phone,
   AppSettings settings = const AppSettings(),
   int pending = 0,
+  Map<String, int> pendingByAccount = const {},
   double textScale = 1,
   bool disableAnimations = true,
   List<Account> accounts = const [testAccount],
@@ -273,6 +284,9 @@ Future<Pumped> pumpTideline(
           }),
         ),
         pendingSyncCountProvider.overrideWith((ref) => Stream.value(pending)),
+        pendingByAccountProvider.overrideWith(
+          (ref) => Stream.value(pendingByAccount),
+        ),
         bindingOverridesProvider.overrideWith((ref) => Stream.value(const [])),
         settingsControllerProvider.overrideWithValue(controller),
         accountsProvider.overrideWith((ref) => Stream.value(accounts)),

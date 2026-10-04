@@ -76,3 +76,14 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
   during installation (T24).
 - **Not changed:** the set of hosts the app talks to grows only by the three official list sources, each contacted only
   when the user presses Download. PRIVACY.md lists them.
+
+## Changes in version 5 (multiple accounts, step 6.3)
+- **No new inputs and no new hosts.** Several Wavelog servers can be connected, each through the same onboarding checks
+  (T1, T5, T8, T9). Each token has its own secure-store key (`account.<id>.token`).
+- **Account removal is a purge of this device** and now deletes everything of the account: QSOs and their sync state,
+  contest sessions with links and serials, activations, the worked-before index, cached stations, the account's
+  settings and the token. Nothing is deleted on a server. It used to fail on the foreign keys when contest data existed,
+  which left the account (and its token) in place.
+- **New residual risk:** with several accounts a QSO can be logged to the wrong one. Mitigations: the active account is
+  named on the log screen and in the settings, switching is refused while a contest session or an activation runs, and a
+  newly added account is never made active automatically.

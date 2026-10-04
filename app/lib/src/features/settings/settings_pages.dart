@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 import 'package:tideline/src/features/settings/contest_definitions_section.dart';
@@ -11,19 +12,74 @@ import 'package:tideline/src/features/settings/settings_sections.dart';
 import 'package:tideline/src/features/settings/settings_widgets.dart';
 import 'package:tideline/src/features/settings/worked_before_section.dart';
 import 'package:tideline/src/providers.dart';
+import 'package:tideline/src/routing/routes.dart';
+import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline/src/settings/language_names.dart';
+import 'package:tideline_data/tideline_data.dart' show Account;
 
-/// The Wavelog account: server, token and removal.
-class AccountSettingsPage extends StatelessWidget {
+/// The Wavelog accounts: which one logging uses, and a way to add more.
+class AccountsSettingsPage extends ConsumerWidget {
   /// Creates the page.
   const new({super.key});
 
   @override
-  Widget build(BuildContext context) => SettingsPage(
-    title: AppLocalizations.of(context).settingsAccount,
-    children: const [AccountSection()],
-  );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final accounts = ref.watch(accountsProvider).value ?? const <Account>[];
+    final active = ref.watch(activeAccountProvider);
+    final pending = ref.watch(pendingByAccountProvider).value ?? const {};
+    return SettingsPage(
+      title: l10n.settingsAccounts,
+      children: [
+        for (final a in accounts)
+          ListTile(
+            leading: Icon(
+              a.id == active?.id
+                  ? Icons.check_circle_outline
+                  : Icons.dns_outlined,
+            ),
+            title: Text(a.label),
+            subtitle: Text(
+              [
+                a.baseUrl,
+                if (a.id == active?.id) l10n.accountsInUse,
+                l10n.accountsPending(pending[a.id] ?? 0),
+              ].join('\n'),
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.go(Routes.settingsAccountDetail(a.id)),
+          ),
+        ListTile(
+          leading: const Icon(Icons.add),
+          title: Text(l10n.accountsAdd),
+          onTap: () => context.push(Routes.addAccount),
+        ),
+      ],
+    );
+  }
+}
+
+/// One account: server, token, rename, use for logging, remove.
+class AccountDetailSettingsPage extends ConsumerWidget {
+  /// Creates the page for the account with [accountId].
+  const new({required this.accountId, super.key});
+
+  /// The account shown.
+  final String accountId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final account = ref
+        .watch(accountsProvider)
+        .value
+        ?.where((a) => a.id == accountId)
+        .firstOrNull;
+    return SettingsPage(
+      title: account?.label ?? AppLocalizations.of(context).settingsAccount,
+      children: [if (account != null) AccountSection(account: account)],
+    );
+  }
 }
 
 /// Theme, touch targets, text options and language.

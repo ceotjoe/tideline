@@ -57,6 +57,12 @@ final accountsProvider = StreamProvider<List<Account>>(
   (ref) => ref.watch(accountRepositoryProvider).watchAll(),
 );
 
+/// QSOs waiting to sync, per account id (accounts with none are absent).
+final pendingByAccountProvider = StreamProvider<Map<String, int>>(
+  (ref) =>
+      SyncStatusRepository(ref.watch(databaseProvider)).watchPendingByAccount(),
+);
+
 /// The account in use: the one chosen in settings, else the first.
 final activeAccountProvider = Provider<Account?>((ref) {
   final accounts = ref.watch(accountsProvider).value ?? const [];
@@ -209,11 +215,15 @@ final class SyncRunning extends SyncActivity {
 
 /// Many new QSOs are waiting; the user should review the upload first.
 final class SyncNeedsReview extends SyncActivity {
-  /// Creates the state for [count] waiting QSOs.
-  const new(this.count);
+  /// Creates the state for [count] QSOs of [accountId] waiting for their
+  /// first upload.
+  const new(this.count, {required this.accountId});
 
   /// QSOs waiting for their first upload.
   final int count;
+
+  /// The account whose upload waits for review.
+  final String accountId;
 }
 
 /// Uploads larger than this wait for the user's review (dry-run preview).
@@ -224,7 +234,7 @@ const int previewThreshold = 50;
 class SyncController extends Notifier<SyncActivity> {
   StreamSubscription<List<ConnectivityResult>>? _connectivity;
   AppLifecycleListener? _lifecycle;
-  bool _recovered = false;
+  final _recovered = <String>{};
 
   @override
   SyncActivity build() {
@@ -240,32 +250,63 @@ class SyncController extends Notifier<SyncActivity> {
     return const SyncIdle();
   }
 
-  /// Starts a run for the active account unless one is running. Large
-  /// first uploads wait for review unless [reviewed] is true.
-  Future<SyncRunResult?> syncNow({bool reviewed = false}) async {
-    final account = ref.read(activeAccountProvider);
-    if (account == null || state is SyncRunning) return null;
+  /// Starts a run unless one is running. It covers every account, the
+  /// active one first, so QSOs of an account you switched away from still
+  /// reach their server. With [accountId] it covers that account only (the
+  /// confirmed upload of a review).
+  ///
+  /// A large first upload waits for the user's review unless [reviewed] is
+  /// true: the other accounts still sync, and the state becomes
+  /// [SyncNeedsReview] for the first account that waits. The result is that
+  /// of the active account (or of the first account that ran).
+  Future<SyncRunResult?> syncNow({
+    bool reviewed = false,
+    String? accountId,
+  }) async {
+    if (state is SyncRunning) return null;
+    final active = ref.read(activeAccountProvider);
+    final all = ref.read(accountsProvider).value ?? const <Account>[];
+    final accounts = [
+      ?active,
+      for (final a in all)
+        if (a.id != active?.id) a,
+    ].where((a) => accountId == null || a.id == accountId).toList();
+    if (accounts.isEmpty) return null;
+
     final engine = ref.read(syncEngineProvider);
-    if (!reviewed) {
-      final waiting =
-          (await ref.read(qsoRepositoryProvider).pendingCreates(account.id))
-              .length;
-      if (waiting > previewThreshold) {
-        state = SyncNeedsReview(waiting);
-        return null;
+    SyncNeedsReview? review;
+    final toRun = <Account>[];
+    for (final account in accounts) {
+      if (!reviewed) {
+        final waiting =
+            (await ref.read(qsoRepositoryProvider).pendingCreates(account.id))
+                .length;
+        if (waiting > previewThreshold) {
+          review ??= SyncNeedsReview(waiting, accountId: account.id);
+          continue;
+        }
       }
+      toRun.add(account);
     }
+    if (toRun.isEmpty) {
+      state = review ?? const SyncIdle();
+      return null;
+    }
+
     state = const SyncRunning();
+    SyncRunResult? result;
     try {
-      if (!_recovered) {
-        await engine.recoverAfterRestart(account.id);
-        _recovered = true;
+      for (final account in toRun) {
+        if (_recovered.add(account.id)) {
+          await engine.recoverAfterRestart(account.id);
+        }
+        final r = await engine.sync(account.id);
+        result ??= r;
       }
-      final result = await engine.sync(account.id);
-      state = SyncIdle(last: result);
+      state = review ?? SyncIdle(last: result);
       return result;
     } on Object {
-      state = const SyncIdle();
+      state = review ?? const SyncIdle();
       rethrow;
     }
   }

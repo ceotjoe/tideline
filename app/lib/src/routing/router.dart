@@ -36,6 +36,10 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
     // Contest mode is a focused full-screen mode above the shell, so the
     // log screen (and its state) stays underneath and Back returns to it.
     GoRoute(
+      path: Routes.addAccount,
+      builder: (context, state) => const OnboardingScreen(addAccount: true),
+    ),
+    GoRoute(
       path: Routes.contest,
       builder: (context, state) => const ContestRoute(),
     ),
@@ -74,7 +78,15 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
               routes: [
                 GoRoute(
                   path: 'account',
-                  builder: (context, state) => const AccountSettingsPage(),
+                  builder: (context, state) => const AccountsSettingsPage(),
+                  routes: [
+                    GoRoute(
+                      path: ':id',
+                      builder: (context, state) => AccountDetailSettingsPage(
+                        accountId: state.pathParameters['id']!,
+                      ),
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: 'appearance',

@@ -43,6 +43,11 @@ class SettingsController {
       await _store.write(entry.key, entry.value);
     }
   }
+
+  /// Makes [accountId] the account that logging, the log and the sync
+  /// screen use.
+  Future<void> setActiveAccount(String accountId) =>
+      _store.write('account.active', accountId);
 }
 
 /// User shortcut overrides, parsed. Malformed rows are ignored.

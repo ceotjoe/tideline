@@ -2,17 +2,24 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/features/onboarding/onboarding_controller.dart';
+import 'package:tideline/src/routing/routes.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/tide_gauge.dart';
 
-/// First-run setup: connect a Wavelog account.
+/// First-run setup: connect a Wavelog account. With [addAccount] it adds
+/// another account to a working app: no welcome page, a way to cancel, and
+/// the new account is not made the active one (it could interrupt a contest).
 class OnboardingScreen extends ConsumerStatefulWidget {
   /// Creates the screen.
-  const new({super.key});
+  const new({this.addAccount = false, super.key});
+
+  /// Whether this adds an account to an app that already has one.
+  final bool addAccount;
 
   @override
   ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -24,6 +31,17 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _token = TextEditingController();
   bool _allowHttp = false;
   int? _station;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.addAccount) {
+      // Never leave half-entered data of an earlier attempt behind.
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ref.read(onboardingProvider.notifier).startAddingAccount(),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -56,6 +74,19 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     };
 
     return Scaffold(
+      appBar: widget.addAccount
+          ? AppBar(
+              title: Text(l10n.accountsAddTitle),
+              leading: IconButton(
+                tooltip: l10n.actionCancel,
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  controller.reset();
+                  context.pop();
+                },
+              ),
+            )
+          : null,
       body: SafeArea(
         child: Column(
           children: [
@@ -318,8 +349,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   // Read before awaiting: saving the account navigates away
                   // and unmounts this screen.
                   final sync = ref.read(syncControllerProvider.notifier);
-                  final id = await c.finish(_station!);
-                  if (id != null) unawaited(sync.syncNow());
+                  final router = GoRouter.of(context);
+                  final id = await c.finish(
+                    _station!,
+                    makeActive: !widget.addAccount,
+                  );
+                  if (id == null) return;
+                  unawaited(sync.syncNow());
+                  // Adding: land on the new account, where it can be put
+                  // into use.
+                  if (widget.addAccount) {
+                    router.go(Routes.settingsAccountDetail(id));
+                  }
                 },
           continueLabel: stations.isEmpty
               ? l10n.actionCheckToken

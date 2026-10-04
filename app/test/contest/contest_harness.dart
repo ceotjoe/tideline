@@ -26,6 +26,7 @@ Future<Pumped> pumpContest(
   Map<String, String> ownExchange = const {},
   bool open = true,
   List<LoggedQso> log = const [],
+  List<Account> accounts = const [testAccount],
   List<Override> overrides = const [],
 }) async {
   final contest = backend ?? ContestBackend();
@@ -48,6 +49,7 @@ Future<Pumped> pumpContest(
     textScale: textScale,
     contest: contest,
     log: log,
+    accounts: accounts,
     overrides: overrides,
   );
   if (open) {

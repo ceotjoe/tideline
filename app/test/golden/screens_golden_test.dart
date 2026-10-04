@@ -4,6 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tideline/src/settings/app_settings.dart';
+import 'package:tideline_data/tideline_data.dart' show Account;
 
 import '../support/pump_app.dart';
 
@@ -99,4 +100,50 @@ void main() {
       matchesGoldenFile('goldens/log_phone_keyboard.png'),
     );
   });
+
+  const club = Account(
+    id: 'acc-2',
+    label: 'Club station',
+    baseUrl: 'https://club.example.org',
+    usesIndexPhp: true,
+    allowHttpLan: false,
+    scopes: {'qso:write'},
+    hasContestSessions: false,
+  );
+
+  testWidgets('log screen with two accounts, phone', (tester) async {
+    await pumpTideline(
+      tester,
+      settings: const AppSettings(theme: ThemeChoice.light),
+      accounts: const [testAccount, club],
+      log: sampleLog(3),
+    );
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/log_phone_two_accounts.png'),
+    );
+  });
+
+  for (final MapEntry(key: sizeName, value: size) in {
+    'phone': TestSizes.phone,
+    'tablet_portrait': TestSizes.tabletPortrait,
+  }.entries) {
+    testWidgets('accounts page, $sizeName', (tester) async {
+      await pumpTideline(
+        tester,
+        size: size,
+        settings: const AppSettings(theme: ThemeChoice.light),
+        accounts: const [testAccount, club],
+        pendingByAccount: const {'acc-1': 2, 'acc-2': 5},
+      );
+      await tester.tap(find.text('Settings').last);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Wavelog accounts'));
+      await tester.pumpAndSettle();
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('goldens/accounts_$sizeName.png'),
+      );
+    });
+  }
 }

@@ -2244,9 +2244,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsAppearanceHint => 'Farbschema, Text und Sprache';
 
   @override
-  String get settingsAccountHint => 'Server und Zugangstoken';
-
-  @override
   String get settingsReferenceData => 'Referenzdaten';
 
   @override
@@ -2258,4 +2255,70 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsSecurityAndBackupHint => 'App-Sperre, ADIF und Backup';
+
+  @override
+  String get settingsAccounts => 'Wavelog-Konten';
+
+  @override
+  String get accountsHint => 'Server, Token und das Konto, in das du loggst';
+
+  @override
+  String get accountsInUse => 'Zum Loggen in Verwendung';
+
+  @override
+  String accountsPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs warten',
+      one: '1 QSO wartet',
+      zero: 'Nichts wartet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accountsAdd => 'Konto hinzufügen';
+
+  @override
+  String get accountsUseForLogging => 'Zum Loggen verwenden';
+
+  @override
+  String get accountsRename => 'Umbenennen';
+
+  @override
+  String get accountsRenameTitle => 'Dieses Konto umbenennen';
+
+  @override
+  String get accountsSwitch => 'Konto wechseln';
+
+  @override
+  String get accountsManage => 'Konten verwalten';
+
+  @override
+  String accountsSwitchedTo(String name) {
+    return 'Es wird in $name geloggt';
+  }
+
+  @override
+  String get accountsBlockedContest =>
+      'Eine Contest-Sitzung läuft. Beende sie, bevor du das Konto wechselst.';
+
+  @override
+  String get accountsBlockedActivation =>
+      'Eine Aktivierung läuft. Beende sie, bevor du das Konto wechselst.';
+
+  @override
+  String get accountsPendingTitle => 'Wartend, pro Konto';
+
+  @override
+  String get accountsExportRemove => 'Log exportieren, dann entfernen';
+
+  @override
+  String get accountsAddTitle => 'Wavelog-Konto hinzufügen';
+
+  @override
+  String accountsActsOn(String name) {
+    return 'Konto: $name';
+  }
 }

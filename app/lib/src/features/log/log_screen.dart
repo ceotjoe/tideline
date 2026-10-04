@@ -7,6 +7,7 @@ import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/commands/command_handlers.dart';
 import 'package:tideline/src/commands/command_registry.dart';
 import 'package:tideline/src/design/theme.dart';
+import 'package:tideline/src/features/accounts/account_switcher.dart';
 import 'package:tideline/src/features/activation/activation_banner.dart';
 import 'package:tideline/src/features/activation/activation_providers.dart';
 import 'package:tideline/src/features/contest/contest_banner.dart';
@@ -194,6 +195,7 @@ class _LogScreenState extends ConsumerState<LogScreen>
             : AppBar(
                 title: Text(l10n.navLog),
                 actions: [
+                  const AccountSwitcher(),
                   IconButton(
                     tooltip: l10n.activationOpenAction,
                     icon: const Icon(Icons.terrain_outlined),

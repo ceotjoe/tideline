@@ -2925,10 +2925,6 @@
   "@settingsAppearanceHint": {
     "description": "Hub entry subtitle."
   },
-  "settingsAccountHint": "Server and access token",
-  "@settingsAccountHint": {
-    "description": "Hub entry subtitle under Wavelog account."
-  },
   "settingsReferenceData": "Reference data",
   "@settingsReferenceData": {
     "description": "Settings page title and hub entry for the downloaded lists and indexes."
@@ -2944,5 +2940,88 @@
   "settingsSecurityAndBackupHint": "App lock, ADIF and backup",
   "@settingsSecurityAndBackupHint": {
     "description": "Hub entry subtitle."
+  },
+  "settingsAccounts": "Wavelog accounts",
+  "@settingsAccounts": {
+    "description": "Settings page title and hub entry for the list of accounts."
+  },
+  "accountsHint": "Servers, tokens and the account you log to",
+  "@accountsHint": {
+    "description": "Hub entry subtitle."
+  },
+  "accountsInUse": "In use for logging",
+  "@accountsInUse": {
+    "description": "Status text of the active account (always paired with an icon)."
+  },
+  "accountsPending": "{count, plural, =0{Nothing waiting} =1{1 QSO waiting} other{{count} QSOs waiting}}",
+  "@accountsPending": {
+    "description": "Per-account count of QSOs that have not reached Wavelog.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accountsAdd": "Add account",
+  "@accountsAdd": {
+    "description": "List entry and screen title: connect another Wavelog."
+  },
+  "accountsUseForLogging": "Use for logging",
+  "@accountsUseForLogging": {
+    "description": "Button: make this account the active one."
+  },
+  "accountsRename": "Rename",
+  "@accountsRename": {
+    "description": "Button."
+  },
+  "accountsRenameTitle": "Rename this account",
+  "@accountsRenameTitle": {
+    "description": "Dialog title."
+  },
+  "accountsSwitch": "Switch account",
+  "@accountsSwitch": {
+    "description": "Tooltip of the account menu on the log screen."
+  },
+  "accountsManage": "Manage accounts",
+  "@accountsManage": {
+    "description": "Entry of the account menu that opens the settings page."
+  },
+  "accountsSwitchedTo": "Logging to {name}",
+  "@accountsSwitchedTo": {
+    "description": "Snackbar after switching the account.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountsBlockedContest": "A contest session is running. End it before you switch accounts.",
+  "@accountsBlockedContest": {
+    "description": "Why the account cannot be switched."
+  },
+  "accountsBlockedActivation": "An activation is running. End it before you switch accounts.",
+  "@accountsBlockedActivation": {
+    "description": "Why the account cannot be switched."
+  },
+  "accountsPendingTitle": "Waiting, per account",
+  "@accountsPendingTitle": {
+    "description": "Heading on the sync screen above the per-account counts."
+  },
+  "accountsExportRemove": "Export log, then remove",
+  "@accountsExportRemove": {
+    "description": "Button in the remove-account dialog."
+  },
+  "accountsAddTitle": "Add a Wavelog account",
+  "@accountsAddTitle": {
+    "description": "Title of the add-account screen's app bar."
+  },
+  "accountsActsOn": "Account: {name}",
+  "@accountsActsOn": {
+    "description": "Second line of the import and export entries when there are several accounts: which one they act on.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Several Wavelog accounts** (ADR 0024). Settings → Wavelog accounts lists them and adds another; each account can be
+  renamed, put into use for logging, given a new token or removed. On the log screen an account menu appears from the
+  second account on. Switching is refused while a contest session or an activation runs. Sync covers every account, and
+  the sync screen shows the waiting QSOs per account. Import and export say which account they act on.
+
+### Fixed
+- Removing an account that had contest sessions, activations or a worked-before index failed on the database's foreign
+  keys and left the account in place. The removal now deletes all of the account's local data, its settings and its
+  token (nothing on the server), and updates the screens.
+
 ## [0.3.1] - 2026-10-04
 
 Feedback from the first test round: the keyboard on phones and a less cluttered settings screen. Build number 3 (0.3.0
