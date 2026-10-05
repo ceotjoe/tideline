@@ -110,8 +110,9 @@ With the certificate in your keychain (with its private key) and the downloaded 
 `tool/ios_archive.sh --profile ~/Downloads/Tideline_App_Store.mobileprovision [build-number]` archives without signing and
 exports with the profile, then checks the IPA (team, distribution certificate, embedded profile). It never uploads.
 The IPA is `app/build/ios/export/Tideline.ipa`. It copies the profile into Xcode's profile folders, like Xcode does.
-*Checked 2026-10-05:* the archive step works and the script refuses an Xcode-managed profile with an explanation; the
-export itself has not been run with a portal profile yet.
+*Checked 2026-10-05:* the script refuses an Xcode-managed profile with an explanation, and a manual workflow run built
+and verified the signed IPA with the portal profile `Tideline App Store` (team Q486NF4XF6, version 0.4.0, build 5).
+The upload itself has not been run yet.
 
 ### Export compliance
 `ITSAppUsesNonExemptEncryption` is not set (ADR 0022, point 4), so every uploaded build waits in App Store Connect with
