@@ -575,6 +575,7 @@
   "activationWindowDay": "[Çöûñţéð þéŕ ÛŢÇ ðáý.········]",
   "activationWindowSession": "[Çöûñţéð öṽéŕ ţĥé ŵĥöļé áçţîṽáţîöñ.··············]",
   "activationDuplicates": "{count, plural, =1{[1 ǪŠÖ··]} other{{count}[ ǪŠÖš··]}}[ ñöţ çöûñţéð (šáɱé çáļļ, ƀáñð áñð ɱöðé).················]",
+  "activationDuplicatesCall": "{count, plural, =1{[1 ǪŠÖ··]} other{{count}[ ǪŠÖš··]}}[ ñöţ çöûñţéð (šáɱé šţáţîöñ áĝáîñ).··············]",
   "activationEnd": "[Éñð áçţîṽáţîöñ······]",
   "activationEndTitle": "[Éñð ··]{reference}[?·]",
   "activationEndBody": "[Ñéŵ ǪŠÖš áŕé ñö ļöñĝéŕ áððéð ţö ţĥîš áçţîṽáţîöñ. Ļöĝĝéð ǪŠÖš šţáý áš ţĥéý áŕé.································]",

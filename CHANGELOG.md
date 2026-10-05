@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`tool/ios_archive.sh`), and so does the signed macOS package (`tool/macos_package.sh`).
 
 ### Changed
+- Activation counting follows the programmes' rules (ADR 0021 update): SOTA needs 4 QSOs with different stations on one UTC
+  day (the same station on another band no longer counts), WWFF counts the same station again on another UTC day and
+  adds the days of a session up. Counting across several activations is not tracked.
 - iOS and macOS `Info.plist` declare `ITSAppUsesNonExemptEncryption` as `true`, so builds no longer wait for the
   per-build encryption question (ADR 0022).
 

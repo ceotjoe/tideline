@@ -2202,6 +2202,17 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String activationDuplicatesCall(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs',
+      one: '1 QSO',
+    );
+    return '$_temp0 not counted (same station again).';
+  }
+
+  @override
   String get activationEnd => 'End activation';
 
   @override
@@ -5139,6 +5150,17 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
       one: '[1 ǪŠÖ··]',
     );
     return '$_temp0[ ñöţ çöûñţéð (šáɱé çáļļ, ƀáñð áñð ɱöðé).················]';
+  }
+
+  @override
+  String activationDuplicatesCall(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count[ ǪŠÖš··]',
+      one: '[1 ǪŠÖ··]',
+    );
+    return '$_temp0[ ñöţ çöûñţéð (šáɱé šţáţîöñ áĝáîñ).··············]';
   }
 
   @override

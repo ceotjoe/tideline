@@ -76,9 +76,9 @@ class ActivationBanner extends ConsumerWidget {
             activation.reference,
             place.name,
           );
-    final window = progress == null
+    final rules = progress == null
         ? null
-        : ref.watch(activationRulesProvider(activation.program)).value?.window;
+        : ref.watch(activationRulesProvider(activation.program)).value;
     return Semantics(
       container: true,
       liveRegion: true,
@@ -146,16 +146,18 @@ class ActivationBanner extends ConsumerWidget {
                   ),
                 ],
               ),
-              if (window != null)
+              if (rules != null)
                 Text(
-                  window == ActivationWindow.utcDay
+                  rules.window == ActivationWindow.utcDay
                       ? l10n.activationWindowDay
                       : l10n.activationWindowSession,
                   style: theme.textTheme.bodySmall,
                 ),
               if (progress.duplicates > 0)
                 Text(
-                  l10n.activationDuplicates(progress.duplicates),
+                  rules?.repeat == ActivationRepeat.call
+                      ? l10n.activationDuplicatesCall(progress.duplicates)
+                      : l10n.activationDuplicates(progress.duplicates),
                   style: theme.textTheme.bodySmall,
                 ),
             ],

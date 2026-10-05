@@ -46,11 +46,15 @@ sie Rufzeichen, Band und Betriebsart wiederholen.
 | Programm | Nötige QSOs | Gezählt |
 |---|---|---|
 | POTA | 10 | innerhalb eines UTC-Tages |
-| SOTA | 4 | über die ganze Aktivierung |
-| WWFF | 44 | über die ganze Aktivierung |
+| SOTA | 4, jedes mit einer anderen Station | innerhalb eines UTC-Tages |
+| WWFF | 44 | über die ganze Aktivierung, eine Wiederholung zählt an einem anderen Tag erneut |
 
-Das sind die Voreinstellungen von Tideline. Ein QSO mit derselben Station auf einem anderen Band oder in einer anderen
-Betriebsart zählt erneut. Prüfe die Regeln Deines Awards, wenn es auf die genaue Zählung ankommt.
+Das sind die Voreinstellungen von Tideline, am 05.10.2026 mit den Regeln der Programme abgeglichen. POTA und WWFF zählen
+eine Station auf einem anderen Band oder in einer anderen Betriebsart erneut, SOTA nicht (jedes QSO braucht eine andere
+Station). WWFF zählt dieselbe Station auch an einem anderen UTC-Tag erneut. Tideline zählt immer eine Aktivierung für
+sich: bei WWFF addieren sich die QSOs mehrerer Besuche zu 44, und SOTA vergibt Punkte einmal pro Gipfel und Kalenderjahr;
+beides verfolgt Tideline nicht über mehrere Aktivierungen. Prüfe die Regeln Deines Awards, wenn es auf die genaue
+Zählung ankommt.
 
 Logge wie gewohnt. Das Formular hat ein Feld mehr, **Ihr Park (P2P)** (**Ihr Gipfel (S2S)**, **Ihr Gebiet (WWFF)**): Trage
 die Referenz der Gegenstation ein, wenn sie ebenfalls aktiviert. Sonst lass es leer.

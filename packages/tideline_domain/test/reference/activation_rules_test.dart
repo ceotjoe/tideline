@@ -58,9 +58,9 @@ void main() {
   });
 
   test(
-    'same call, band and mode is a duplicate; other band or mode counts',
+    'POTA: same call, band and mode is a duplicate; other band or mode counts',
     () {
-      final p = ActivationProgress.evaluate(sota, [
+      final p = ActivationProgress.evaluate(pota, [
         q('DL1ABC'),
         q('dl1abc'),
         q('DL1ABC', band: '40m'),
@@ -69,13 +69,55 @@ void main() {
       expect(p.counted, 3);
       expect(p.duplicates, 1);
       expect(p.total, 4);
-      expect(p.isValid, isFalse);
-      expect(p.remaining, 1);
+      expect(p.remaining, 7);
     },
   );
 
-  test('a session rule counts across days', () {
+  test('SOTA: every QSO needs a different station, on one UTC day', () {
+    expect(sota.window, ActivationWindow.utcDay);
     final p = ActivationProgress.evaluate(sota, [
+      q('DL1ABC'),
+      q('DL1ABC', band: '40m'),
+      q('DL1ABC', mode: 'CW'),
+      q('G4XYZ'),
+    ]);
+    expect(p.counted, 2);
+    expect(p.duplicates, 2);
+    expect(p.isValid, isFalse);
+    expect(p.remaining, 2);
+  });
+
+  test('SOTA: QSOs split across midnight UTC do not add up', () {
+    final p = ActivationProgress.evaluate(sota, [
+      q('A1A', hour: 23),
+      q('A2A', hour: 23),
+      q('A3A', day: 4, hour: 0),
+      q('A4A', day: 4, hour: 1),
+    ]);
+    expect(p.counted, 2);
+    expect(p.isValid, isFalse);
+  });
+
+  test('WWFF: days add up, and a call on another day counts again', () {
+    final wwff = ActivationRules.defaultFor(ReferenceProgram.wwff);
+    final p = ActivationProgress.evaluate(wwff, [
+      q('DL1ABC'),
+      q('DL1ABC'),
+      q('DL1ABC', day: 4),
+      q('G4XYZ', day: 4),
+    ]);
+    expect(p.counted, 3);
+    expect(p.duplicates, 1);
+    expect(p.countedByDay, {'2026-10-03': 1, '2026-10-04': 2});
+  });
+
+  test('a session rule counts across days', () {
+    const session = ActivationRules(
+      program: ReferenceProgram.sota,
+      minQsos: 4,
+      window: ActivationWindow.session,
+    );
+    final p = ActivationProgress.evaluate(session, [
       q('A1A'),
       q('A2A', day: 4),
       q('A3A', day: 5),
@@ -100,6 +142,7 @@ void rulesJsonTests() {
         program: ReferenceProgram.sota,
         minQsos: 6,
         window: ActivationWindow.utcDay,
+        repeat: ActivationRepeat.call,
       );
       final back = ActivationRules.tryFromJson(
         ReferenceProgram.sota,
@@ -107,6 +150,15 @@ void rulesJsonTests() {
       )!;
       expect(back.minQsos, 6);
       expect(back.window, ActivationWindow.utcDay);
+      expect(back.repeat, ActivationRepeat.call);
+      // Rules stored before `repeat` existed still load.
+      expect(
+        ActivationRules.tryFromJson(ReferenceProgram.sota, {
+          'minQsos': 4,
+          'window': 'session',
+        })!.repeat,
+        ActivationRepeat.callBandMode,
+      );
       for (final bad in <Object?>[
         null,
         'text',

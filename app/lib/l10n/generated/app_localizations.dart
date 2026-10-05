@@ -3553,6 +3553,12 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 QSO} other{{count} QSOs}} not counted (same call, band and mode).'**
   String activationDuplicates(int count);
 
+  /// Duplicates note when every QSO needs a different station (SOTA).
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 QSO} other{{count} QSOs}} not counted (same station again).'**
+  String activationDuplicatesCall(int count);
+
   /// Button.
   ///
   /// In en, this message translates to:

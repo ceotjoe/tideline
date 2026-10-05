@@ -47,3 +47,15 @@ Verified on 2026-10-03 with `curl` (headers and the first lines only):
   configuration, so it needs no `station:write` scope. Updating or creating locations (options B and C) remains a possible
   opt-in feature with its own consent step.
 - Open: whether the 4 QSO SOTA rule also needs the "same summit, once per UTC day" handling.
+
+## Update 2026-10-05 (counting rules checked, step 7.4)
+Checked against the programmes' texts: the WWFF Global Rules V5.10 (sections 4.6 and 4.7, read in the PDF) and the SOTA
+General Rules as quoted in the SOTA Reflector and club summaries (the official rules page could not be fetched, so the
+SOTA points are less certain and worth a second look by the maintainer).
+- **WWFF:** 44 QSOs; the same call on another band, mode or date is a separate QSO; the QSOs of several visits add up.
+  New window `sessionByDay`: all days of a session add up, a repeat counts once per UTC day.
+- **SOTA:** 4 QSOs, each with a different station, on one UTC day (an activation does not span midnight UTC); points are
+  once per summit and calendar year. New setting `repeat: call`, and the window is `utcDay`.
+- **Not built:** adding up WWFF QSOs across sessions of the same reference, and SOTA's once-per-year points. Both need a
+  per-reference history; the manual says so. This closes the open question about the SOTA window above.
+- Rules stored before this change have no `repeat` and read as `callBandMode`. Nothing stores rules unless a user did.

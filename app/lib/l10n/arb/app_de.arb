@@ -575,6 +575,7 @@
   "activationWindowDay": "Gezählt pro UTC-Tag.",
   "activationWindowSession": "Gezählt über die ganze Aktivierung.",
   "activationDuplicates": "{count, plural, =1{1 QSO} other{{count} QSOs}} nicht gezählt (gleiches Rufzeichen, Band und Betriebsart).",
+  "activationDuplicatesCall": "{count, plural, =1{1 QSO} other{{count} QSOs}} nicht gezählt (dieselbe Station nochmals).",
   "activationEnd": "Aktivierung beenden",
   "activationEndTitle": "{reference} beenden?",
   "activationEndBody": "Neue QSOs werden dieser Aktivierung nicht mehr zugeordnet. Geloggte QSOs bleiben unverändert.",

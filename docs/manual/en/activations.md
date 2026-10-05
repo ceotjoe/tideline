@@ -38,16 +38,19 @@ Only one activation runs at a time. Starting another ends the running one.
 
 The log screen shows a banner with the reference, the place name and your progress, as a bar and as a sentence:
 "3 of 10 QSOs · 7 to go", then "Valid activation: 12 QSOs (needs 10)". Below it you see how QSOs are counted and how
-many were not counted because they repeat call, band and mode.
+many were not counted because they repeat a station (call, band and mode; for SOTA the call alone).
 
 | Program | QSOs needed | Counted |
 |---|---|---|
 | POTA | 10 | within one UTC day |
-| SOTA | 4 | over the whole activation |
-| WWFF | 44 | over the whole activation |
+| SOTA | 4, each with a different station | within one UTC day |
+| WWFF | 44 | over the whole activation, a repeat counts again on another day |
 
-These are Tideline's defaults. A QSO with the same station on another band or in another mode counts again. Check the
-rules of your award if the exact counting matters to you.
+These are Tideline's defaults, checked against the programmes' rules on 2026-10-05. POTA and WWFF count a QSO with the same
+station on another band or in another mode again; SOTA does not (each QSO needs a different station). WWFF also counts
+the same station again on another UTC day. Tideline counts one activation at a time: WWFF lets the QSOs of several visits
+add up to 44 and SOTA gives points once per summit and calendar year, which Tideline does not track across activations.
+Check the rules of your award if the exact counting matters to you.
 
 Log as usual. The form has one more field, **Their park (P2P)** (**Their summit (S2S)**, **Their area (WWFF)**): enter
 the other station's reference when it is also activating. Leave it empty otherwise.

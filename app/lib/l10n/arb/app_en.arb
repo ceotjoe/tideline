@@ -2888,6 +2888,15 @@
       }
     }
   },
+  "activationDuplicatesCall": "{count, plural, =1{1 QSO} other{{count} QSOs}} not counted (same station again).",
+  "@activationDuplicatesCall": {
+    "description": "Duplicates note when every QSO needs a different station (SOTA).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "activationEnd": "End activation",
   "@activationEnd": {
     "description": "Button."

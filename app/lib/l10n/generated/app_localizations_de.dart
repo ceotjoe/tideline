@@ -2219,6 +2219,17 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String activationDuplicatesCall(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count QSOs',
+      one: '1 QSO',
+    );
+    return '$_temp0 nicht gezählt (dieselbe Station nochmals).';
+  }
+
+  @override
   String get activationEnd => 'Aktivierung beenden';
 
   @override
