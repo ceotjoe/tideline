@@ -186,7 +186,7 @@ Checked on 2026-10-04: `flutter build appbundle --release` succeeds (69.4 MB, de
 
 ### 2. A signed build for your own device (TalkBack tests, no Play needed)
 ```bash
-cd app && flutter build apk --release --build-name 0.4.0 --build-number 5
+cd app && flutter build apk --release --build-name 0.4.0 --build-number 6
 adb install -r build/app/outputs/flutter-apk/app-release.apk
 ```
 Without `key.properties` the build is signed with the debug key and Play will refuse it, but it installs for testing.

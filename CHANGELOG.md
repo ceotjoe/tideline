@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.4.0] - 2026-10-05
 
-Tester feedback turned into features, plus Fast Log Entry and field modes. Build number 5 (0.3.1 had builds 3 and 4). Database schema 5 (the
+Tester feedback turned into features, plus Fast Log Entry and field modes. Build number 6 (0.3.1 had builds 3 and 4, an earlier 0.4.0 upload was build 5). Database schema 5 (the
 update migrates in place, nothing to do). Highlights: several Wavelog accounts, an offline callsign directory with notes,
 freeing up space by removing QSOs Wavelog already has, desktop navigation, Fast Log Entry, and a field mode.
 
