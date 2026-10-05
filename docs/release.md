@@ -1,7 +1,11 @@
 # Releasing Tideline
 
 Releases follow [Semantic Versioning](https://semver.org). Pushing a tag `vX.Y.Z` runs
-`.github/workflows/release.yml`, which builds release artifacts for every platform plus an SBOM (SPDX).
+`.github/workflows/release.yml`, which builds release artifacts for every platform plus an SBOM (SPDX) and, once all builds
+have passed, creates the GitHub release ([ADR 0030](adr/0030-release-automation.md)): Windows portable zip and MSIX, the
+experimental Linux tarball, the SBOM and `SHA256SUMS.txt`, with the version's `CHANGELOG.md` section as notes (`0.x` is
+marked as a pre-release). The tag must be `v` plus the `app/pubspec.yaml` version or the run fails. *Run workflow* on any
+branch is a dry run: it builds but publishes nothing.
 
 ## Required repository secrets
 
@@ -40,8 +44,8 @@ Encode a file with: `base64 -i file.jks | pbcopy` (macOS).
 
 1. `CHANGELOG.md`: move *Unreleased* items into a new version section.
 2. Bump `version:` in `app/pubspec.yaml` (and `msix_version`).
-3. Tag `vX.Y.Z` and push.
-4. Attach artifacts and the SBOM to the GitHub release.
+3. Tag `vX.Y.Z` and push. The workflow creates the GitHub release; check its files and notes afterwards. A bad release is
+   removed with `gh release delete vX.Y.Z --cleanup-tag --yes`, then fixed and tagged again.
 
 ## First TestFlight build (iOS and iPadOS, manual)
 

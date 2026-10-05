@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Release workflow: a tag creates a GitHub release with a Windows portable zip and MSIX, an experimental Linux tarball,
+  the SBOM and checksums (ADR 0030).
+
 ### Fixed
 - `tool/macos_archive.sh`: the Mac App Store upload was rejected with ITMS-90284 because the plugins' resource bundles
   kept the development signature. The script now strips it and re-seals the app (`docs/release.md`).

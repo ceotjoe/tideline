@@ -55,7 +55,10 @@ Tideline is built around four ideas:
 
 ## Install
 
-Not yet released. Store links will appear here (App Store, Mac App Store, Google Play, Microsoft Store / MSIX).
+Store links will appear here (App Store, Mac App Store, Google Play).
+
+Windows (portable zip, MSIX) and an experimental Linux tarball are attached to each
+[GitHub release](https://github.com/ceotjoe/tideline/releases) with checksums.
 
 ## Quick start (developers)
 

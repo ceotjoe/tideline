@@ -12,7 +12,7 @@
 | Android | 7.0 (API 24)+; flutter_secure_storage 11 requires it |
 | macOS | 12+ |
 | Windows | 10 1903+; needed by the mDNS plugins |
-| Linux | Scaffolded and built in CI, but **unofficial**: no releases, no support promise |
+| Linux | Scaffolded and built in CI, but **unofficial**: no support promise. Since ADR 0030 an experimental tarball is attached to GitHub releases. |
 | iPad windows | Single window. Flutter does not yet support multiple scenes. All window sizes are supported. |
 
 ## Consequences
