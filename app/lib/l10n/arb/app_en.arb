@@ -3667,5 +3667,49 @@
   "fleNoStation": "Choose a station location first.",
   "@fleNoStation": {
     "description": "Shown when the account has no station location to log to."
+  },
+  "settingsFieldMode": "Field mode",
+  "@settingsFieldMode": {
+    "description": "Settings page title and hub entry for operating outdoors."
+  },
+  "settingsFieldModeHint": "Sunlight, big buttons, less battery use",
+  "@settingsFieldModeHint": {
+    "description": "Hub hint for the field mode page."
+  },
+  "fieldModeIntro": "For operating outdoors: one switch sets the sunlight theme, glove mode, the battery saver and keeps the screen on. Switching it off puts your theme and button size back. You can also set each part on its own below.",
+  "@fieldModeIntro": {
+    "description": "Introduction of the field mode page."
+  },
+  "fieldModeSwitch": "Field mode",
+  "@fieldModeSwitch": {
+    "description": "Main switch of the field mode page."
+  },
+  "fieldModeSwitchHint": "Sets the four options below together",
+  "@fieldModeSwitchHint": {
+    "description": "Hint under the field mode switch."
+  },
+  "fieldModeParts": "The parts",
+  "@fieldModeParts": {
+    "description": "Section header above the single options of field mode."
+  },
+  "fieldModeSunlight": "Sunlight theme (maximum contrast)",
+  "@fieldModeSunlight": {
+    "description": "Switch label: the sunlight theme."
+  },
+  "fieldModeBatterySaver": "Battery saver",
+  "@fieldModeBatterySaver": {
+    "description": "Switch label for the battery saver."
+  },
+  "fieldModeBatterySaverHint": "The tide stands still and the clock updates once a minute. Sync still runs when you open the app, when the network returns and when you ask.",
+  "@fieldModeBatterySaverHint": {
+    "description": "Hint under the battery saver switch."
+  },
+  "fieldModeKeepScreenOn": "Keep the screen on while logging",
+  "@fieldModeKeepScreenOn": {
+    "description": "Switch label: keep the display on."
+  },
+  "fieldModeKeepScreenOnHint": "Only while the log, Fast Log Entry or the contest screen is open. This uses more battery.",
+  "@fieldModeKeepScreenOnHint": {
+    "description": "Hint under the keep screen on switch."
   }
 }

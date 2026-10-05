@@ -43,6 +43,9 @@ class AppSettings {
     this.localeOverride,
     this.forceRtl = false,
     this.readingFont = false,
+    this.batterySaver = false,
+    this.keepScreenOn = false,
+    this.fieldModeRestore,
   });
 
   /// Parses stored key/value settings, ignoring unknown or invalid values.
@@ -58,6 +61,9 @@ class AppSettings {
     },
     forceRtl: values[_forceRtl] == 'true',
     readingFont: values[_readingFont] == 'atkinson',
+    batterySaver: values[_batterySaver] == 'true',
+    keepScreenOn: values[_keepScreenOn] == 'true',
+    fieldModeRestore: _validRestore(values[_fieldRestore]),
   );
 
   static const _theme = 'ui.theme';
@@ -66,6 +72,9 @@ class AppSettings {
   static const _locale = 'ui.locale';
   static const _forceRtl = 'debug.forceRtl';
   static const _readingFont = 'ui.readingFont';
+  static const _batterySaver = 'ui.batterySaver';
+  static const _keepScreenOn = 'ui.keepScreenOn';
+  static const _fieldRestore = 'ui.fieldModeRestore';
 
   /// Theme choice.
   final ThemeChoice theme;
@@ -85,6 +94,61 @@ class AppSettings {
   /// Use the Atkinson Hyperlegible reading font.
   final bool readingFont;
 
+  /// Less periodic work: no animated tide, a clock that ticks once a minute.
+  final bool batterySaver;
+
+  /// Keep the screen on while the log or Fast Log Entry is open.
+  final bool keepScreenOn;
+
+  /// The theme and density from before field mode was switched on, as
+  /// `theme|density`, so that switching it off puts them back.
+  final String? fieldModeRestore;
+
+  /// Whether field mode is on: the sunlight theme, glove mode, the battery
+  /// saver and the screen kept on, all at once. Derived, so changing one of
+  /// the four by hand turns the switch off by itself.
+  bool get fieldMode =>
+      theme == ThemeChoice.sunlight &&
+      density == TidelineDensity.glove &&
+      batterySaver &&
+      keepScreenOn;
+
+  /// These settings with field mode switched [on] or off. Switching it on
+  /// remembers the theme and density to come back to.
+  AppSettings withFieldMode({required bool on}) {
+    if (on) {
+      if (fieldMode) return this;
+      // A theme or density that already is the field one has nothing to
+      // come back to; the defaults stand in.
+      final back = theme == ThemeChoice.sunlight ? ThemeChoice.system : theme;
+      final backDensity = density == TidelineDensity.glove
+          ? TidelineDensity.comfortable
+          : density;
+      return AppSettings(
+        theme: ThemeChoice.sunlight,
+        density: TidelineDensity.glove,
+        relaxedTextSpacing: relaxedTextSpacing,
+        localeOverride: localeOverride,
+        forceRtl: forceRtl,
+        readingFont: readingFont,
+        batterySaver: true,
+        keepScreenOn: true,
+        fieldModeRestore: '${back.name}|${backDensity.name}',
+      );
+    }
+    final restore = _validRestore(fieldModeRestore)?.split('|');
+    return AppSettings(
+      theme: _byName(ThemeChoice.values, restore?.first) ?? ThemeChoice.system,
+      density:
+          _byName(TidelineDensity.values, restore?.last) ??
+          TidelineDensity.comfortable,
+      relaxedTextSpacing: relaxedTextSpacing,
+      localeOverride: localeOverride,
+      forceRtl: forceRtl,
+      readingFont: readingFont,
+    );
+  }
+
   /// Text spacing to apply.
   TextSpacing get textSpacing =>
       relaxedTextSpacing ? TextSpacing.relaxed : TextSpacing.normal;
@@ -97,6 +161,9 @@ class AppSettings {
     _locale: localeOverride?.toLanguageTag(),
     _forceRtl: forceRtl ? 'true' : null,
     _readingFont: readingFont ? 'atkinson' : null,
+    _batterySaver: batterySaver ? 'true' : null,
+    _keepScreenOn: keepScreenOn ? 'true' : null,
+    _fieldRestore: fieldModeRestore,
   };
 
   /// A copy with the given fields replaced. Pass [clearLocale] to go back
@@ -109,6 +176,8 @@ class AppSettings {
     bool clearLocale = false,
     bool? forceRtl,
     bool? readingFont,
+    bool? batterySaver,
+    bool? keepScreenOn,
   }) => AppSettings(
     theme: theme ?? this.theme,
     density: density ?? this.density,
@@ -118,6 +187,9 @@ class AppSettings {
         : (localeOverride ?? this.localeOverride),
     forceRtl: forceRtl ?? this.forceRtl,
     readingFont: readingFont ?? this.readingFont,
+    batterySaver: batterySaver ?? this.batterySaver,
+    keepScreenOn: keepScreenOn ?? this.keepScreenOn,
+    fieldModeRestore: fieldModeRestore,
   );
 
   @override
@@ -128,7 +200,10 @@ class AppSettings {
       other.relaxedTextSpacing == relaxedTextSpacing &&
       other.localeOverride == localeOverride &&
       other.forceRtl == forceRtl &&
-      other.readingFont == readingFont;
+      other.readingFont == readingFont &&
+      other.batterySaver == batterySaver &&
+      other.keepScreenOn == keepScreenOn &&
+      other.fieldModeRestore == fieldModeRestore;
 
   @override
   int get hashCode => Object.hash(
@@ -138,7 +213,19 @@ class AppSettings {
     localeOverride,
     forceRtl,
     readingFont,
+    batterySaver,
+    keepScreenOn,
+    fieldModeRestore,
   );
+}
+
+/// A stored restore value if it names a theme and a density, else null.
+String? _validRestore(String? value) {
+  final parts = value?.split('|');
+  if (parts == null || parts.length != 2) return null;
+  if (_byName(ThemeChoice.values, parts[0]) == null) return null;
+  if (_byName(TidelineDensity.values, parts[1]) == null) return null;
+  return value;
 }
 
 T? _byName<T extends Enum>(List<T> values, String? name) {

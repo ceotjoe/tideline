@@ -49,6 +49,7 @@ class AdaptiveShell extends ConsumerWidget {
     final isApple = Theme.of(context).platform == TargetPlatform.macOS;
     final registry = ref.watch(commandRegistryProvider);
     final pending = ref.watch(pendingSyncCountProvider).value ?? 0;
+    final saver = ref.watch(appSettingsProvider).value?.batterySaver ?? false;
 
     void goTo(int index) => navigationShell.goBranch(
       index,
@@ -71,7 +72,10 @@ class AdaptiveShell extends ConsumerWidget {
 
     final content = Column(
       children: [
-        SafeArea(bottom: false, child: TideGauge(pendingCount: pending)),
+        SafeArea(
+          bottom: false,
+          child: TideGauge(pendingCount: pending, animate: !saver),
+        ),
         Expanded(child: navigationShell),
       ],
     );

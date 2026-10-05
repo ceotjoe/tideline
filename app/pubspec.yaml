@@ -30,6 +30,7 @@ dependencies:
     path: ../packages/tideline_data
   tideline_domain:
     path: ../packages/tideline_domain
+  wakelock_plus: ^1.8.1
   wavelog_client:
     path: ../packages/wavelog_client
 

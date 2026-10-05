@@ -4368,6 +4368,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose a station location first.'**
   String get fleNoStation;
+
+  /// Settings page title and hub entry for operating outdoors.
+  ///
+  /// In en, this message translates to:
+  /// **'Field mode'**
+  String get settingsFieldMode;
+
+  /// Hub hint for the field mode page.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunlight, big buttons, less battery use'**
+  String get settingsFieldModeHint;
+
+  /// Introduction of the field mode page.
+  ///
+  /// In en, this message translates to:
+  /// **'For operating outdoors: one switch sets the sunlight theme, glove mode, the battery saver and keeps the screen on. Switching it off puts your theme and button size back. You can also set each part on its own below.'**
+  String get fieldModeIntro;
+
+  /// Main switch of the field mode page.
+  ///
+  /// In en, this message translates to:
+  /// **'Field mode'**
+  String get fieldModeSwitch;
+
+  /// Hint under the field mode switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets the four options below together'**
+  String get fieldModeSwitchHint;
+
+  /// Section header above the single options of field mode.
+  ///
+  /// In en, this message translates to:
+  /// **'The parts'**
+  String get fieldModeParts;
+
+  /// Switch label: the sunlight theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunlight theme (maximum contrast)'**
+  String get fieldModeSunlight;
+
+  /// Switch label for the battery saver.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery saver'**
+  String get fieldModeBatterySaver;
+
+  /// Hint under the battery saver switch.
+  ///
+  /// In en, this message translates to:
+  /// **'The tide stands still and the clock updates once a minute. Sync still runs when you open the app, when the network returns and when you ask.'**
+  String get fieldModeBatterySaverHint;
+
+  /// Switch label: keep the display on.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the screen on while logging'**
+  String get fieldModeKeepScreenOn;
+
+  /// Hint under the keep screen on switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Only while the log, Fast Log Entry or the contest screen is open. This uses more battery.'**
+  String get fieldModeKeepScreenOnHint;
 }
 
 class _AppLocalizationsDelegate

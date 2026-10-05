@@ -12,6 +12,7 @@ import 'package:tideline/src/features/contest/contest_providers.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/services/pack_download.dart';
+import 'package:tideline/src/services/screen_wake.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -439,6 +440,10 @@ typedef Pumped = ({
   FakeCallsignNotes notes,
 });
 
+/// Every on/off the app asked of the platform's screen lock, since the last
+/// pump.
+final List<bool> wakeCalls = [];
+
 /// What the app sent to the system menu (macOS), since the last pump.
 final List<MethodCall> menuCalls = [];
 
@@ -478,6 +483,7 @@ Future<Pumped> pumpTideline(
 
   // macOS draws the menu bar through the system: accept what the app sends.
   menuCalls.clear();
+  wakeCalls.clear();
   tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
     SystemChannels.menu,
     (call) async {
@@ -573,6 +579,9 @@ Future<Pumped> pumpTideline(
         databaseProvider.overrideWith(noDb),
         shortcutBindingStoreProvider.overrideWith(noDb),
         settingsStoreProvider.overrideWith(noDb),
+        screenWakeProvider.overrideWithValue(
+          ScreenWake(apply: ({required on}) async => wakeCalls.add(on)),
+        ),
         ...overrides,
       ],
       child: const TidelineApp(),

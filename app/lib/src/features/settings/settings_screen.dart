@@ -38,6 +38,12 @@ class SettingsScreen extends StatelessWidget {
         route: Routes.settingsAppearance,
       ),
       (
+        icon: Icons.terrain_outlined,
+        title: l10n.settingsFieldMode,
+        hint: l10n.settingsFieldModeHint,
+        route: Routes.settingsFieldMode,
+      ),
+      (
         icon: Icons.menu_book_outlined,
         title: l10n.settingsReferenceData,
         hint: l10n.settingsReferenceDataHint,

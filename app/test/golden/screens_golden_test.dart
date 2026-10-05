@@ -307,13 +307,34 @@ void main() {
       await tester.pumpAndSettle();
       await tester.enterText(
         find.byType(TextField).first,
-        '20m cw\n1734 DL1ABC 599 579 @Anna\n5 G4XYZ blah\n1800 F5ABC jn18',
+        'date 2020-01-02\n20m cw\n1734 DL1ABC 599 579 @Anna\n'
+        '5 G4XYZ blah\n1800 F5ABC jn18',
       );
       await tester.pump(const Duration(milliseconds: 400));
       await tester.pumpAndSettle();
       await expectLater(
         find.byType(MaterialApp),
         matchesGoldenFile('goldens/fle_$sizeName.png'),
+      );
+    });
+  }
+
+  for (final MapEntry(key: sizeName, value: size) in {
+    'phone': TestSizes.phone,
+    'tablet_portrait': TestSizes.tabletPortrait,
+  }.entries) {
+    testWidgets('field mode page, on, $sizeName', (tester) async {
+      await pumpTideline(
+        tester,
+        size: size,
+        settings: const AppSettings().withFieldMode(on: true),
+      );
+      GoRouter.of(tester.element(find.byType(Scaffold).first))
+          .go('/settings/field-mode');
+      await tester.pumpAndSettle();
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('goldens/field_mode_$sizeName.png'),
       );
     });
   }

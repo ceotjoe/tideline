@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
+import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 import 'package:tideline/src/features/settings/callsign_directory_section.dart';
 import 'package:tideline/src/features/settings/contest_definitions_section.dart';
@@ -230,6 +231,68 @@ class DeveloperSettingsPage extends ConsumerWidget {
                 .read(settingsControllerProvider)
                 .save(settings.copyWith(forceRtl: v)),
           ),
+      ],
+    );
+  }
+}
+
+/// One switch for operating away from home, and the three things it sets.
+class FieldModeSettingsPage extends ConsumerWidget {
+  /// Creates the page.
+  const new({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final settings =
+        ref.watch(appSettingsProvider).value ?? const AppSettings();
+    final controller = ref.read(settingsControllerProvider);
+    void save(AppSettings s) => controller.save(s);
+
+    return SettingsPage(
+      title: l10n.settingsFieldMode,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(context.metrics.md),
+          child: Text(l10n.fieldModeIntro),
+        ),
+        SwitchListTile(
+          title: Text(l10n.fieldModeSwitch),
+          subtitle: Text(l10n.fieldModeSwitchHint),
+          value: settings.fieldMode,
+          onChanged: (on) => save(settings.withFieldMode(on: on)),
+        ),
+        SettingsSectionHeader(l10n.fieldModeParts),
+        SwitchListTile(
+          title: Text(l10n.fieldModeSunlight),
+          value: settings.theme == ThemeChoice.sunlight,
+          onChanged: (on) => save(
+            settings.copyWith(
+              theme: on ? ThemeChoice.sunlight : ThemeChoice.system,
+            ),
+          ),
+        ),
+        SwitchListTile(
+          title: Text(l10n.densityGlove),
+          value: settings.density == TidelineDensity.glove,
+          onChanged: (on) => save(
+            settings.copyWith(
+              density: on ? TidelineDensity.glove : TidelineDensity.comfortable,
+            ),
+          ),
+        ),
+        SwitchListTile(
+          title: Text(l10n.fieldModeBatterySaver),
+          subtitle: Text(l10n.fieldModeBatterySaverHint),
+          value: settings.batterySaver,
+          onChanged: (on) => save(settings.copyWith(batterySaver: on)),
+        ),
+        SwitchListTile(
+          title: Text(l10n.fieldModeKeepScreenOn),
+          subtitle: Text(l10n.fieldModeKeepScreenOnHint),
+          value: settings.keepScreenOn,
+          onChanged: (on) => save(settings.copyWith(keepScreenOn: on)),
+        ),
       ],
     );
   }

@@ -28,6 +28,7 @@ abstract final class Routes {
   /// Connecting another Wavelog account (a full-screen flow above the shell).
   static const addAccount = '/add-account';
   static const settingsAppearance = '/settings/appearance';
+  static const settingsFieldMode = '/settings/field-mode';
   static const settingsReferenceData = '/settings/reference-data';
   static const settingsSecurity = '/settings/security';
   static const settingsDeveloper = '/settings/developer';

@@ -18,12 +18,17 @@ class TideGauge extends StatelessWidget {
     required this.pendingCount,
     this.height = 56,
     this.showLabel = true,
+    this.animate = true,
     super.key,
   });
 
   /// Whether to show the count as text inside the band. When false the
   /// gauge is purely decorative and hidden from screen readers.
   final bool showLabel;
+
+  /// Whether the wave may move. Reduced motion and the battery saver turn
+  /// this off; the level and the text stay.
+  final bool animate;
 
   /// QSOs not yet synced.
   final int pendingCount;
@@ -79,7 +84,7 @@ class TideGauge extends StatelessWidget {
                 level: level,
                 water: colors.tideWater,
                 line: colors.tideLine,
-                animate: !reduceMotion && pendingCount > 0,
+                animate: animate && !reduceMotion && pendingCount > 0,
               ),
             ),
             Align(

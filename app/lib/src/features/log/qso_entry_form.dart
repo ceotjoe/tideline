@@ -15,6 +15,7 @@ import 'package:tideline/src/features/callsigns/callsign_providers.dart';
 import 'package:tideline/src/features/log/qso_entry_controller.dart';
 import 'package:tideline/src/features/log/qso_tile.dart';
 import 'package:tideline/src/features/log/worked_hint.dart';
+import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/frequency_field.dart';
 import 'package:tideline/src/widgets/upper_case_formatter.dart';
@@ -78,11 +79,24 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
   @override
   void initState() {
     super.initState();
-    // Keep the displayed UTC time current.
-    _clock = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (mounted && ref.read(qsoEntryProvider).manualTime == null) {
-        setState(() {});
-      }
+    _tick();
+  }
+
+  /// Keeps the displayed UTC time current. The display shows minutes, so the
+  /// battery saver wakes once a minute, just after the minute changes,
+  /// instead of every second (ADR 0029).
+  void _tick() {
+    final saver = ref.read(appSettingsProvider).value?.batterySaver ?? false;
+    final wait = saver
+        ? Duration(
+            milliseconds:
+                60000 - DateTime.now().millisecondsSinceEpoch % 60000 + 50,
+          )
+        : const Duration(seconds: 1);
+    _clock = Timer(wait, () {
+      if (!mounted) return;
+      if (ref.read(qsoEntryProvider).manualTime == null) setState(() {});
+      _tick();
     });
   }
 

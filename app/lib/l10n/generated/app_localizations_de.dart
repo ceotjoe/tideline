@@ -2857,4 +2857,42 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get fleNoStation => 'Wähle zuerst einen Stationsstandort.';
+
+  @override
+  String get settingsFieldMode => 'Feldmodus';
+
+  @override
+  String get settingsFieldModeHint =>
+      'Sonnenlicht, große Tasten, weniger Akkuverbrauch';
+
+  @override
+  String get fieldModeIntro =>
+      'Für den Betrieb im Freien: Ein Schalter stellt das Sonnenlicht-Design und den Handschuhmodus ein, aktiviert den Akkusparmodus und hält den Bildschirm an. Beim Ausschalten kommen Ihr Design und Ihre Tastengröße zurück. Jeden Teil können Sie unten auch einzeln einstellen.';
+
+  @override
+  String get fieldModeSwitch => 'Feldmodus';
+
+  @override
+  String get fieldModeSwitchHint =>
+      'Stellt die vier Optionen darunter gemeinsam ein';
+
+  @override
+  String get fieldModeParts => 'Die einzelnen Teile';
+
+  @override
+  String get fieldModeSunlight => 'Sonnenlicht-Design (maximaler Kontrast)';
+
+  @override
+  String get fieldModeBatterySaver => 'Akkusparmodus';
+
+  @override
+  String get fieldModeBatterySaverHint =>
+      'Die Flut bleibt stehen und die Uhr wird einmal pro Minute aktualisiert. Synchronisiert wird weiterhin beim Öffnen der App, wenn das Netz zurückkehrt und auf Wunsch.';
+
+  @override
+  String get fieldModeKeepScreenOn => 'Bildschirm beim Loggen anlassen';
+
+  @override
+  String get fieldModeKeepScreenOnHint =>
+      'Nur solange das Log, die Schnelleingabe oder der Contest-Bildschirm geöffnet ist. Das kostet Akku.';
 }

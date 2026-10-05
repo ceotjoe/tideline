@@ -9,12 +9,16 @@ import 'package:tideline/src/features/contest/contest_engine.dart';
 import 'package:tideline/src/features/contest/contest_labels.dart';
 import 'package:tideline/src/features/contest/contest_providers.dart';
 import 'package:tideline/src/features/log/qso_tile.dart';
+import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/widgets/frequency_field.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
 /// How often the time-based rates are recomputed while the panel is
 /// visible. Rates are per hour, so a few seconds is plenty.
 const Duration ratesTick = Duration(seconds: 5);
+
+/// The same with the battery saver on (ADR 0029).
+const Duration ratesTickSaver = Duration(seconds: 30);
 
 /// The rates derived from QSO times at one moment.
 @immutable
@@ -114,7 +118,12 @@ class _ContestRatesPanelState extends ConsumerState<ContestRatesPanel>
   void _updateTimer() {
     final shouldRun = _foreground && _tickerEnabled;
     if (shouldRun && _timer == null) {
-      _timer = Timer.periodic(ratesTick, (_) => _refresh());
+      _timer = Timer.periodic(
+        (ref.read(appSettingsProvider).value?.batterySaver ?? false)
+            ? ratesTickSaver
+            : ratesTick,
+        (_) => _refresh(),
+      );
       ContestRatesPanel.activeTickers++;
     } else if (!shouldRun && _timer != null) {
       _stopTimer();

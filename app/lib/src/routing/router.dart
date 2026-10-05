@@ -13,6 +13,7 @@ import 'package:tideline/src/features/settings/settings_screen.dart';
 import 'package:tideline/src/features/sync/sync_screen.dart';
 import 'package:tideline/src/layout/adaptive_shell.dart';
 import 'package:tideline/src/routing/routes.dart';
+import 'package:tideline/src/services/screen_wake.dart';
 
 export 'package:tideline/src/routing/routes.dart';
 
@@ -44,13 +45,16 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
     ),
     GoRoute(
       path: Routes.contest,
-      builder: (context, state) => const ContestRoute(),
+      builder: (context, state) => const KeepScreenOn(child: ContestRoute()),
     ),
     GoRoute(
       path: Routes.contestSetup,
       builder: (context, state) => const ContestSetupScreen(),
     ),
-    GoRoute(path: Routes.fle, builder: (context, state) => const FleScreen()),
+    GoRoute(
+      path: Routes.fle,
+      builder: (context, state) => const KeepScreenOn(child: FleScreen()),
+    ),
     GoRoute(
       path: Routes.activationSetup,
       builder: (context, state) => const ActivationSetupScreen(),
@@ -62,7 +66,8 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
           routes: [
             GoRoute(
               path: Routes.log,
-              builder: (context, state) => const LogScreen(),
+              builder: (context, state) =>
+                  const KeepScreenOn(child: LogScreen()),
             ),
           ],
         ),
@@ -103,6 +108,10 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
                 GoRoute(
                   path: 'appearance',
                   builder: (context, state) => const AppearanceSettingsPage(),
+                ),
+                GoRoute(
+                  path: 'field-mode',
+                  builder: (context, state) => const FieldModeSettingsPage(),
                 ),
                 GoRoute(
                   path: 'reference-data',

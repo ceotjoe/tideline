@@ -2837,6 +2837,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fleNoStation => 'Choose a station location first.';
+
+  @override
+  String get settingsFieldMode => 'Field mode';
+
+  @override
+  String get settingsFieldModeHint => 'Sunlight, big buttons, less battery use';
+
+  @override
+  String get fieldModeIntro =>
+      'For operating outdoors: one switch sets the sunlight theme, glove mode, the battery saver and keeps the screen on. Switching it off puts your theme and button size back. You can also set each part on its own below.';
+
+  @override
+  String get fieldModeSwitch => 'Field mode';
+
+  @override
+  String get fieldModeSwitchHint => 'Sets the four options below together';
+
+  @override
+  String get fieldModeParts => 'The parts';
+
+  @override
+  String get fieldModeSunlight => 'Sunlight theme (maximum contrast)';
+
+  @override
+  String get fieldModeBatterySaver => 'Battery saver';
+
+  @override
+  String get fieldModeBatterySaverHint =>
+      'The tide stands still and the clock updates once a minute. Sync still runs when you open the app, when the network returns and when you ask.';
+
+  @override
+  String get fieldModeKeepScreenOn => 'Keep the screen on while logging';
+
+  @override
+  String get fieldModeKeepScreenOnHint =>
+      'Only while the log, Fast Log Entry or the contest screen is open. This uses more battery.';
 }
 
 /// The translations for English (`en_XA`).
@@ -5737,4 +5773,44 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get fleNoStation => '[Çĥööšé á šţáţîöñ ļöçáţîöñ ƒîŕšţ.·············]';
+
+  @override
+  String get settingsFieldMode => '[Ƒîéļð ɱöðé····]';
+
+  @override
+  String get settingsFieldModeHint =>
+      '[Šûñļîĝĥţ, ƀîĝ ƀûţţöñš, ļéšš ƀáţţéŕý ûšé················]';
+
+  @override
+  String get fieldModeIntro =>
+      '[Ƒöŕ öþéŕáţîñĝ öûţðööŕš: öñé šŵîţçĥ šéţš ţĥé šûñļîĝĥţ ţĥéɱé, ĝļöṽé ɱöðé, ţĥé ƀáţţéŕý šáṽéŕ áñð ķééþš ţĥé šçŕééñ öñ. Šŵîţçĥîñĝ îţ öƒƒ þûţš ýöûŕ ţĥéɱé áñð ƀûţţöñ šîžé ƀáçķ. Ýöû çáñ áļšö šéţ éáçĥ þáŕţ öñ îţš öŵñ ƀéļöŵ.······················································································]';
+
+  @override
+  String get fieldModeSwitch => '[Ƒîéļð ɱöðé····]';
+
+  @override
+  String get fieldModeSwitchHint =>
+      '[Šéţš ţĥé ƒöûŕ öþţîöñš ƀéļöŵ ţöĝéţĥéŕ···············]';
+
+  @override
+  String get fieldModeParts => '[Ţĥé þáŕţš····]';
+
+  @override
+  String get fieldModeSunlight =>
+      '[Šûñļîĝĥţ ţĥéɱé (ɱáẋîɱûɱ çöñţŕášţ)··············]';
+
+  @override
+  String get fieldModeBatterySaver => '[Ɓáţţéŕý šáṽéŕ······]';
+
+  @override
+  String get fieldModeBatterySaverHint =>
+      '[Ţĥé ţîðé šţáñðš šţîļļ áñð ţĥé çļöçķ ûþðáţéš öñçé á ɱîñûţé. Šýñç šţîļļ ŕûñš ŵĥéñ ýöû öþéñ ţĥé áþþ, ŵĥéñ ţĥé ñéţŵöŕķ ŕéţûŕñš áñð ŵĥéñ ýöû ášķ.························································]';
+
+  @override
+  String get fieldModeKeepScreenOn =>
+      '[Ķééþ ţĥé šçŕééñ öñ ŵĥîļé ļöĝĝîñĝ·············]';
+
+  @override
+  String get fieldModeKeepScreenOnHint =>
+      '[Öñļý ŵĥîļé ţĥé ļöĝ, Ƒášţ Ļöĝ Éñţŕý öŕ ţĥé çöñţéšţ šçŕééñ îš öþéñ. Ţĥîš ûšéš ɱöŕé ƀáţţéŕý.····································]';
 }

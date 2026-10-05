@@ -710,5 +710,16 @@
   "fleProblemLineTooLong": "Die Zeile ist zu lang",
   "fleProblemTooManyLines": "Zu viele Zeilen. Der Rest wurde nicht gelesen.",
   "fleLogFailed": "Die QSOs konnten nicht geloggt werden. Es wurde nichts geloggt.",
-  "fleNoStation": "Wähle zuerst einen Stationsstandort."
+  "fleNoStation": "Wähle zuerst einen Stationsstandort.",
+  "settingsFieldMode": "Feldmodus",
+  "settingsFieldModeHint": "Sonnenlicht, große Tasten, weniger Akkuverbrauch",
+  "fieldModeIntro": "Für den Betrieb im Freien: Ein Schalter stellt das Sonnenlicht-Design und den Handschuhmodus ein, aktiviert den Akkusparmodus und hält den Bildschirm an. Beim Ausschalten kommen Ihr Design und Ihre Tastengröße zurück. Jeden Teil können Sie unten auch einzeln einstellen.",
+  "fieldModeSwitch": "Feldmodus",
+  "fieldModeSwitchHint": "Stellt die vier Optionen darunter gemeinsam ein",
+  "fieldModeParts": "Die einzelnen Teile",
+  "fieldModeSunlight": "Sonnenlicht-Design (maximaler Kontrast)",
+  "fieldModeBatterySaver": "Akkusparmodus",
+  "fieldModeBatterySaverHint": "Die Flut bleibt stehen und die Uhr wird einmal pro Minute aktualisiert. Synchronisiert wird weiterhin beim Öffnen der App, wenn das Netz zurückkehrt und auf Wunsch.",
+  "fieldModeKeepScreenOn": "Bildschirm beim Loggen anlassen",
+  "fieldModeKeepScreenOnHint": "Nur solange das Log, die Schnelleingabe oder der Contest-Bildschirm geöffnet ist. Das kostet Akku."
 }
