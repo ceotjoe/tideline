@@ -4,6 +4,11 @@ You need:
 - **Wavelog 3.1 or newer.** Contest sessions need 3.2 or newer.
 - An **API token** for it. See [Creating a Wavelog API token](api-token.md).
 
+## No Wavelog yet?
+
+Choose **Try the demo (no Wavelog needed)** on the first screen. Tideline sets up a demo account with a made-up station
+that runs entirely on your device. Nothing is sent anywhere. Remove it later under **Settings → Wavelog accounts**.
+
 ## Steps
 
 1. **Server address.** Open Tideline and choose **Connect to Wavelog**.

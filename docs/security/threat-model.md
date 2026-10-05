@@ -109,3 +109,10 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 - **New residual risk:** with several accounts a QSO can be logged to the wrong one. Mitigations: the active account is
   named on the log screen and in the settings, switching is refused while a contest session or an activation runs, and a
   newly added account is never made active automatically.
+
+## Changes in version 5 (demo account, ADR 0031)
+- **New flow:** requests to the reserved host `demo.tideline.invalid` are answered inside the app by the mock server; no
+  socket is opened and any other host is refused by that client. `.invalid` never resolves, so nothing can leave the device
+  under that name.
+- **New stored data:** none beyond a normal account; the demo token `wl2_demo_token` is public and valid only there.
+- **Residual risk:** the mock code ships in the binary. It listens on no port in the app.

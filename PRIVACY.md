@@ -54,6 +54,8 @@ Tideline connects only to:
 3. **Other Tideline devices on your local network**, only when you pair them (a later feature).
    - Traffic stays in the local network and is end-to-end encrypted.
 
+The built-in **demo account** (Welcome screen) makes no network connection at all: its "server" runs inside the app.
+
 Nothing else. The app makes no "phone-home", update check or font download calls.
 
 ## Permissions

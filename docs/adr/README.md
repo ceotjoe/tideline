@@ -31,4 +31,6 @@
 - [0029](0029-field-mode.md) Field mode: one switch, battery saver, keep the screen on
 - [0030](0030-release-automation.md) Release automation: GitHub releases for Windows and Linux, stores for Apple and Android
 
+- [0031](0031-demo-account.md) Built-in demo account for testing and App Review
+
 New ADRs start from [0000-template.md](0000-template.md).
