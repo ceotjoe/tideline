@@ -157,12 +157,14 @@ jobs:
         env:
           CERT_P12_BASE64: ${{ secrets.MACOS_CERT_P12_BASE64 }}
           CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+          INSTALLER_P12_BASE64: ${{ secrets.MACOS_INSTALLER_P12_BASE64 }}
+          INSTALLER_PASSWORD: ${{ secrets.MACOS_INSTALLER_PASSWORD }}
           PROFILE_BASE64: ${{ secrets.MACOS_PROVISIONING_PROFILE_BASE64 }}
         run: |
-          if [ -z "$CERT_P12_BASE64" ] || [ -z "$PROFILE_BASE64" ]; then
+          if [ -z "$CERT_P12_BASE64" ] || [ -z "$INSTALLER_P12_BASE64" ] || [ -z "$PROFILE_BASE64" ]; then
             # A release must never be built unsigned (nothing could be uploaded).
             if [ "$GITHUB_REF_TYPE" = "tag" ]; then
-              echo "::error::MACOS_CERT_P12_BASE64 or MACOS_PROVISIONING_PROFILE_BASE64 not set - refusing to build a release unsigned."
+              echo "::error::MACOS_CERT_P12_BASE64, MACOS_INSTALLER_P12_BASE64 or MACOS_PROVISIONING_PROFILE_BASE64 not set - refusing to build a release unsigned."
               exit 1
             fi
             echo "::warning::macOS signing secrets not set - building unsigned."
@@ -171,15 +173,18 @@ jobs:
           fi
           KEYCHAIN="$RUNNER_TEMP/signing-mac.keychain-db"
           KEYCHAIN_PASSWORD="$(openssl rand -hex 24)"
-          echo "$CERT_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/mac-cert.p12"
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
           security set-keychain-settings -lut 3600 "$KEYCHAIN"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
-          # One .p12 with both identities: Apple Distribution and Mac Installer Distribution.
-          security import "$RUNNER_TEMP/mac-cert.p12" -P "$CERT_PASSWORD" -A -f pkcs12 -k "$KEYCHAIN"
+          # Two files, one identity each: Apple Distribution (the app) and
+          # Mac Installer Distribution (the package).
+          echo "$CERT_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/mac-app.p12"
+          echo "$INSTALLER_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/mac-installer.p12"
+          security import "$RUNNER_TEMP/mac-app.p12" -P "$CERT_PASSWORD" -A -f pkcs12 -k "$KEYCHAIN"
+          security import "$RUNNER_TEMP/mac-installer.p12" -P "$INSTALLER_PASSWORD" -A -f pkcs12 -k "$KEYCHAIN"
           security set-key-partition-list -S apple-tool:,apple:,productbuild: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN" > /dev/null
           security list-keychain -d user -s "$KEYCHAIN"
-          rm "$RUNNER_TEMP/mac-cert.p12"
+          rm "$RUNNER_TEMP/mac-app.p12" "$RUNNER_TEMP/mac-installer.p12"
           # What arrived, by kind only: a certificate listed here but missing
           # as an identity has lost its private key (an incomplete .p12).
           echo "Certificates imported:"

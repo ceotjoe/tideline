@@ -30,8 +30,10 @@ other builds only warn and build unsigned. A manual run (*Run workflow*) is a dr
 | `APPLE_CERT_P12_BASE64` | Apple distribution certificate (`.p12`), base64-encoded |
 | `APPLE_CERT_PASSWORD` | Its password |
 | `IOS_PROVISIONING_PROFILE_BASE64` | App Store provisioning profile for `com.ITWebService.tideline`, base64-encoded (how to create it: below) |
-| `MACOS_CERT_P12_BASE64` | One `.p12` with both Mac identities, *Apple Distribution* and *Mac Installer Distribution*, base64-encoded |
+| `MACOS_CERT_P12_BASE64` | `.p12` with the *Apple Distribution* identity (signs the app), base64-encoded |
 | `MACOS_CERT_PASSWORD` | Its password |
+| `MACOS_INSTALLER_P12_BASE64` | `.p12` with the *Mac Installer Distribution* identity (signs the package), base64-encoded |
+| `MACOS_INSTALLER_PASSWORD` | Its password |
 | `MACOS_PROVISIONING_PROFILE_BASE64` | Mac App Store Connect provisioning profile for `com.ITWebService.tideline`, base64-encoded |
 | `WINDOWS_CERT_PFX_BASE64` | Code-signing certificate for the MSIX (`.pfx`), base64-encoded |
 | `WINDOWS_CERT_PASSWORD` | Its password |
@@ -57,15 +59,21 @@ passwords and `ANDROID_KEY_ALIAS` is `upload`.
 3. `APPLE_CERT_P12_BASE64` is the base64 of the `.p12`, `APPLE_CERT_PASSWORD` is the export password. Delete the file
    afterwards or keep it only in the password manager.
 
-**macOS** (3 secrets). Needs an *Apple Distribution* certificate and a *Mac Installer Distribution* certificate with their
+**macOS** (5 secrets). Needs an *Apple Distribution* certificate and a *Mac Installer Distribution* certificate with their
 private keys, plus a Mac App Store profile. Xcode's cloud-managed signing does not leave them in your keychain, and the iOS
 certificate (*iPhone Distribution*) cannot sign Mac apps.
 1. Keychain Access → *Certificate Assistant → Request a Certificate from a CA* (save to disk). In the developer portal →
    *Certificates → +*, create **Apple Distribution** and **Mac Installer Distribution** from that request, download both,
    double-click to install them. Each must show a private key under it in *My Certificates*. (An account may hold only a few
    Apple Distribution certificates; revoke one you don't use if the portal refuses.)
-2. Select both identities in *My Certificates* → right-click → *Export 2 items…* → one `.p12` with a strong password.
-   `MACOS_CERT_P12_BASE64` is its base64, `MACOS_CERT_PASSWORD` its password.
+2. Export **each identity on its own** (a single combined file is easy to get wrong: a file with only one of them looks fine
+   until the runner imports it). In *My Certificates*, select *Apple Distribution: …* (with its key) → right-click →
+   *Export…* → `.p12` with a password, then the same for *3rd Party Mac Developer Installer: …* (shown for the *Mac
+   Installer Distribution* certificate). `MACOS_CERT_P12_BASE64` / `MACOS_CERT_PASSWORD` are the first file and its password,
+   `MACOS_INSTALLER_P12_BASE64` / `MACOS_INSTALLER_PASSWORD` the second. Upload without the clipboard, with the full path:
+   `base64 -i "$HOME/…/installer.p12" | gh secret set MACOS_INSTALLER_P12_BASE64 -R ceotjoe/tideline`.
+   Check a file before uploading: `openssl pkcs12 -legacy -in FILE -nokeys | grep subject` must show the expected
+   certificate.
 3. *Profiles → + → **Mac App Store Connect*** → App ID `com.ITWebService.tideline` → the Apple Distribution certificate →
    a name such as `Tideline Mac App Store` → download the `.provisionprofile`.
    `MACOS_PROVISIONING_PROFILE_BASE64` is its base64.

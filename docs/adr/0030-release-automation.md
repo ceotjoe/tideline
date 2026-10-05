@@ -47,7 +47,7 @@ Windows trusts, which the project does not have yet.
 8. **Phase 4 (implemented, not yet run in CI): macOS to App Store Connect.** `tool/macos_package.sh` archives with the
    project's ad hoc signature (verified 2026-10-05 to keep the sandbox entitlements and to leave the plugin resource
    bundles unsigned) and exports with manual signing: an Apple Distribution and a Mac Installer Distribution certificate
-   (one `.p12`, repository secrets) and a Mac App Store profile. The `testflight` job uploads the IPA and the package with
+   (two `.p12` files, one identity each, repository secrets: a combined file proved easy to get wrong) and a Mac App Store profile. The `testflight` job uploads the IPA and the package with
    one approval and tries both. `tool/macos_archive.sh` stays as the local route; its signature-stripping fix (commit
    46e4f68) is not needed on the new path. A tag run without the Mac secrets fails.
 9. **Later:** the Windows certificate, and a decision on AppImage or Flatpak for Linux. Store uploads stay on internal tracks and TestFlight; promotion is manual.
