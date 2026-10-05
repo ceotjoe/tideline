@@ -26,6 +26,43 @@ artifacts and prints a warning.
 
 Encode a file with: `base64 -i file.jks | pbcopy` (macOS).
 
+### How to create each secret
+
+Never paste a secret into a chat or commit it. Keep the originals in a password manager. After adding a base64 secret, check
+that it decodes: `pbpaste | base64 --decode | file -`.
+
+**Android** (4 secrets). One upload keystore: reuse `~/tideline-upload.jks` from the Android section below if it exists,
+because Play registers the upload key. Otherwise create it with the `keytool` command there and back it up.
+`ANDROID_KEYSTORE_BASE64` is the base64 of the `.jks`, `ANDROID_KEYSTORE_PASSWORD` and `ANDROID_KEY_PASSWORD` are its
+passwords and `ANDROID_KEY_ALIAS` is `upload`.
+
+**Apple certificate** (2 secrets).
+1. In Keychain Access → My Certificates, find **Apple Distribution** (or *iPhone Distribution*) with a private key under it.
+   If there is none, create one in the developer portal (*Certificates, Identifiers & Profiles → Certificates → +*) with a
+   CSR from Keychain Access (*Certificate Assistant → Request a Certificate from a CA*) and install the download.
+2. Right-click it → *Export…* → `.p12` with a strong password.
+3. `APPLE_CERT_P12_BASE64` is the base64 of the `.p12`, `APPLE_CERT_PASSWORD` is the export password. Delete the file
+   afterwards or keep it only in the password manager.
+
+**Windows signing** (3 secrets). Needs a certificate Windows trusts: a commercial code-signing certificate (OV or EV) or
+Azure Trusted Signing (a different workflow step). A self-signed certificate is trusted only on machines that import it.
+With a `.pfx`: `WINDOWS_CERT_PFX_BASE64` is its base64, `WINDOWS_CERT_PASSWORD` its password, and `WINDOWS_PUBLISHER` the exact
+subject, which must equal `msix_config.publisher`: `openssl pkcs12 -in cert.pfx -nokeys | openssl x509 -noout -subject`.
+Leave all three unset until then: the workflow builds unsigned and says so.
+
+**Planned secrets for the store uploads** (not read by the workflow yet, see
+[ADR 0030](adr/0030-release-automation.md)):
+
+| Secret | How to get it |
+|---|---|
+| `PLAY_SERVICE_ACCOUNT_JSON` | Google Cloud: enable the *Google Play Android Developer API*, create a service account and a JSON key. Play Console → *Users and permissions* → invite its email, **for Tideline only** with *View app information and download bulk reports (read-only)* and *Release apps to testing tracks*. No production, store-presence or financial permissions. Use a service account of its own for Tideline. Permissions can take hours to apply. The first AAB must be uploaded by hand, and while the app has no published release the API accepts only draft releases. |
+| `ASC_KEY_P8_BASE64`, `ASC_KEY_ID`, `ASC_ISSUER_ID` | App Store Connect → *Users and Access → Integrations → App Store Connect API* → generate a key with the **App Manager** role. The `.p8` can be downloaded once. Key ID and issuer ID are shown on that page. |
+| `IOS_PROVISIONING_PROFILE_BASE64` | Developer portal: an **App Store** profile for `com.ITWebService.tideline` with the Distribution certificate; base64 of the `.mobileprovision`. |
+| macOS | Both *Apple Distribution* and *Mac Installer Distribution* certificates as `.p12` and a **Mac App Store** provisioning profile. Xcode's cloud-managed signing does not leave them in the keychain, so they must be created in the developer portal (with a CSR) and exported. |
+
+Also create a **`production` environment** (*Settings → Environments*) with yourself as required reviewer, and scope the
+store secrets to it.
+
 ## Not automated yet
 
 - **Apple:**
