@@ -80,6 +80,11 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 - **Not changed:** the set of hosts the app talks to grows only by the three official list sources, each contacted only
   when the user presses Download. PRIVACY.md lists them.
 
+## Changes in version 5 (field mode, step 6.8)
+- **New dependency:** `wakelock_plus` (and `package_info_plus`), only to keep the display on while the log is open and the
+  user has asked for it. No network access, no new data, no new permission (the plugin's Android manifest declares none, checked in
+  the package source). Pinned by the lockfile (ADR 0029).
+
 ## Changes in version 5 (Fast Log Entry, step 6.7)
 - **New input:** typed or pasted shorthand text (T27), read by a pure parser with limits and a preview before anything is
   stored. No new network access, scope or stored data beyond QSOs with source `fle`.

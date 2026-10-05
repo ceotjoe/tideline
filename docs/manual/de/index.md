@@ -11,6 +11,7 @@ _Version 0.3 (Aktivierungen)._
 1. [Aktivierungen (SOTA, POTA, WWFF)](activations.md)
 1. [Fast Log Entry](fast-log-entry.md)
 1. [Contest-Modus](contest-mode.md)
+1. [Feldmodus](field-mode.md)
 1. [Einstellungen](settings.md)
 1. [Speicher freigeben](free-space.md)
 1. [Sicherung und Export](backups.md)

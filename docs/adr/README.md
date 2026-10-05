@@ -28,5 +28,6 @@
 - [0026](0026-callsign-directory-and-notes.md) Offline callsign directory and local callsign notes
 - [0027](0027-evict-synced-qsos.md) Removing synced QSOs from the device (eviction)
 - [0028](0028-fast-log-entry.md) Fast Log Entry (FLE) in the normal log
+- [0029](0029-field-mode.md) Field mode: one switch, battery saver, keep the screen on
 
 New ADRs start from [0000-template.md](0000-template.md).

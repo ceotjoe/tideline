@@ -210,6 +210,8 @@ _6.2 done 2026-10-04: [ADR 0023](adr/0023-settings-hub.md). The hub has four gro
 
 _6.1 done 2026-10-04 (`7f25482`)._
 
+_6.8 done 2026-10-05: [ADR 0029](adr/0029-field-mode.md). One derived switch plus separate options, battery saver (no animation, minute clock, slower contest rates; the app has no sync backoff to change), keep screen on (`wakelock_plus`), no GPS button. Battery effect not measured._
+
 _6.7 done 2026-10-04: [ADR 0028](adr/0028-fast-log-entry.md), grammar in [fle.md](architecture/fle.md). FLE is for the normal log and activations, not contest sessions (the maintainer did not answer; the recommendation was followed)._
 
 _6.6 done 2026-10-04: [ADR 0027](adr/0027-evict-synced-qsos.md). Removal is a purge with a record, confirmed by a read-only listing of Wavelog; nothing is deleted there._

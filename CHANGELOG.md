@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Field mode** (ADR 0029). *Settings → Field mode*: one switch sets the sunlight theme, glove mode, a battery saver and
+  keeps the screen on while the log, Fast Log Entry or the contest screen is open; switching it off brings your theme and
+  button size back. Each part can be set on its own. The battery saver stops the tide animation, ticks the clock once a
+  minute and slows the contest rates. New dependency `wakelock_plus`. No location button.
 - **Fast Log Entry** (ADR 0028). Type QSOs as shorthand in the dialect of Wavelog's SimpleFLE (time fragments, band, mode,
   frequency, reports, locator, references, @name, date and time zone), see how every line was read, and log them all in
   one transaction. Problem lines are named and left out, duplicates and odd times are flagged, a running activation takes
