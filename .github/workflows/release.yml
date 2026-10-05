@@ -180,6 +180,12 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple:,productbuild: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN" > /dev/null
           security list-keychain -d user -s "$KEYCHAIN"
           rm "$RUNNER_TEMP/mac-cert.p12"
+          # What arrived, by kind only: a certificate listed here but missing
+          # as an identity has lost its private key (an incomplete .p12).
+          echo "Certificates imported:"
+          security find-certificate -a "$KEYCHAIN" | sed -nE 's/.*"labl"<blob>="([^":]*).*/  \1/p'
+          echo "Identities (certificate with private key):"
+          security find-identity -p basic "$KEYCHAIN" | sed -nE 's/^ *[0-9]+\) [0-9A-F]+ "([^":]*)[^"]*"(.*)$/  \1\2/p'
           echo "$PROFILE_BASE64" | base64 --decode > "$RUNNER_TEMP/mac.provisionprofile"
           echo "signed=true" >> "$GITHUB_OUTPUT"
       - name: Build the signed package
