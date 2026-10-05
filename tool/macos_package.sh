@@ -81,6 +81,15 @@ echo "Application certificate: $identity"
 installer="$(security find-identity -p basic | grep -E "Mac Installer Distribution|3rd Party Mac Developer Installer" \
   | grep "($team)" | grep -v CSSMERR | head -1 | awk '{print $2}')" || true
 if [ -z "$installer" ]; then
+  # Some systems leave the installer certificate out of the identity list
+  # (it is not a code-signing identity) although its key is in the keychain.
+  # Take the certificate itself and let the export say if the key is missing.
+  installer="$(security find-certificate -a -Z -c Installer 2>/dev/null | awk -v t="($team)" '
+    /^SHA-1 hash:/ { h = $3 }
+    /"labl"<blob>=/ && index($0, t) && (/Mac Installer Distribution/ || /3rd Party Mac Developer Installer/) { print h; exit }')" || true
+  [ -z "$installer" ] || echo "Installer certificate not in the identity list; using the certificate itself."
+fi
+if [ -z "$installer" ]; then
   echo "No usable Mac Installer Distribution certificate of team $team in the keychain (with its private key)." >&2
   echo "Identities found (kind only; CSSMERR_ marks one the system does not accept):" >&2
   security find-identity -p basic | sed -nE 's/^ *[0-9]+\) [0-9A-F]+ "([^":]*)[^"]*"(.*)$/  \1\2/p' >&2 || true
