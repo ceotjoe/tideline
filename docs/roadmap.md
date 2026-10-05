@@ -266,3 +266,9 @@ Rules editor, two-fer, a minimum desktop window size, two-pane settings, battery
 1. Is the scope in B right, or should the rules editor and two-fer be in 1.0?
 2. Microsoft Store for 1.0, or direct MSIX only?
 3. Is Linux unofficial at 1.0 (as in CLAUDE.md)?
+
+_Phase 7 progress 2026-10-05, on the recommended scope (the three decisions were not answered, so: B as proposed, direct MSIX only, Linux unofficial):_
+- _7.1 done: tests, analyze and format clean; README and manual version lines brought up to 0.4.0; `PRIVACY.md` no longer claims location or camera use; tablet-landscape goldens added for accounts, callsigns, free up space, FLE and field mode. Not done: a landscape golden for the reference-pack page._
+- _7.2 done: [store-listing.md](release/store-listing.md) (EN, DE, privacy answers)._
+- _7.4 done: counting rules checked, SOTA and WWFF fixed, see the ADR 0021 update. The official SOTA rules page could not be fetched; the SOTA points rest on secondary quotes._
+- _Open: 7.3 (activation e2e), 7.5 (hardening pass), 7.6 (release candidate, after the hand tests)._
