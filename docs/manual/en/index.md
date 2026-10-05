@@ -1,6 +1,6 @@
 # Tideline user manual
 
-_Version 0.3 (activations)._
+_Version 0.4 (Fast Log Entry, accounts, field mode)._
 
 1. [First setup](first-setup.md)
 1. [Creating a Wavelog API token](api-token.md)

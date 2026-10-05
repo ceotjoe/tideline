@@ -6,8 +6,9 @@ Tideline is an open-source, cross-platform logging app for amateur radio operato
 offline-first, on a summit, in a park, at a field day or in a contest, and synchronises them with your
 own [Wavelog](https://www.wavelog.org) instance whenever a connection is available.
 
-> **Status: v0.2 (contest mode) in development, not yet released.** Logging, sync, offline DXCC, ADIF, encrypted backups
-> and contest mode work and are tested end to end against a mock Wavelog. Store builds are not available yet; follow the
+> **Status: v0.4.0, preparing v1.0.** Logging, sync, offline DXCC, ADIF, encrypted backups, contest mode, activations,
+> Fast Log Entry, several accounts and field mode work and are tested end to end against a mock Wavelog. Test builds go
+> to TestFlight and Google Play internal testing; store releases follow the [roadmap](docs/roadmap.md). Follow the
 > [CHANGELOG](CHANGELOG.md).
 
 Platforms: **iOS · iPadOS · Android · macOS · Windows** (one Flutter codebase).
@@ -36,7 +37,7 @@ Tideline is built around four ideas:
 | ✅ Contest mode: keyboard-first entry, serials, dupe checks, super check partial, rates, multipliers, Cabrillo, Wavelog contest sessions | v0.2 |
 | ✅ "Worked before" index from your own Wavelog log | v0.2 |
 | ✅ SOTA / POTA / WWFF activations: offline reference lists you download yourself, search by name or distance, progress toward validity, park-to-park and summit-to-summit | v0.3 |
-| Fast Log Entry (FLE), glove mode, battery saver, multiple Wavelog accounts | v0.4 → v1.0 |
+| ✅ Fast Log Entry (FLE), field mode (glove mode, battery saver, keep screen on), multiple Wavelog accounts, offline callsign directory and notes, freeing space by removing synced QSOs, desktop navigation | v0.4 |
 | Device-to-device sync over local Wi-Fi (no internet), WSJT-X listener on desktop | later |
 
 ## Requirements

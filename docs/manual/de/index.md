@@ -1,6 +1,6 @@
 # Tideline-Handbuch
 
-_Version 0.3 (Aktivierungen)._
+_Version 0.4 (Fast Log Entry, Konten, Feldmodus)._
 
 1. [Ersteinrichtung](first-setup.md)
 1. [Wavelog-API-Token erstellen](api-token.md)

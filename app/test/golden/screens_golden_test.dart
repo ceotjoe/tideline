@@ -144,6 +144,7 @@ void main() {
   for (final MapEntry(key: sizeName, value: size) in {
     'phone': TestSizes.phone,
     'tablet_portrait': TestSizes.tabletPortrait,
+    'tablet_landscape': TestSizes.tabletLandscape,
   }.entries) {
     testWidgets('accounts page, $sizeName', (tester) async {
       await pumpTideline(
@@ -227,33 +228,41 @@ void main() {
     });
   }
 
-  testWidgets('callsign directory page, phone', (tester) async {
-    await pumpTideline(
-      tester,
-      settings: const AppSettings(theme: ThemeChoice.light),
-      callsigns: const {
-        'DL1ABC': anna,
-        'G4XYZ': CallsignInfo(
-          call: 'G4XYZ',
-          lastTime: 1_600_000_000_000,
-          name: 'Bob',
-          qth: 'Leeds',
-        ),
-      },
-      callsignNotes: const {'DL1ABC': 'x'},
-    );
-    GoRouter.of(tester.element(find.byType(Scaffold).first))
-        .go('/settings/callsigns');
-    await tester.pumpAndSettle();
-    await expectLater(
-      find.byType(MaterialApp),
-      matchesGoldenFile('goldens/callsigns_phone.png'),
-    );
-  });
+  for (final MapEntry(key: sizeName, value: size) in {
+    'phone': TestSizes.phone,
+    'tablet_portrait': TestSizes.tabletPortrait,
+    'tablet_landscape': TestSizes.tabletLandscape,
+  }.entries) {
+    testWidgets('callsign directory page, $sizeName', (tester) async {
+      await pumpTideline(
+        tester,
+        size: size,
+        settings: const AppSettings(theme: ThemeChoice.light),
+        callsigns: const {
+          'DL1ABC': anna,
+          'G4XYZ': CallsignInfo(
+            call: 'G4XYZ',
+            lastTime: 1_600_000_000_000,
+            name: 'Bob',
+            qth: 'Leeds',
+          ),
+        },
+        callsignNotes: const {'DL1ABC': 'x'},
+      );
+      GoRouter.of(tester.element(find.byType(Scaffold).first))
+          .go('/settings/callsigns');
+      await tester.pumpAndSettle();
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('goldens/callsigns_$sizeName.png'),
+      );
+    });
+  }
 
   for (final MapEntry(key: sizeName, value: size) in {
     'phone': TestSizes.phone,
     'tablet_portrait': TestSizes.tabletPortrait,
+    'tablet_landscape': TestSizes.tabletLandscape,
   }.entries) {
     testWidgets('free up space, checked, $sizeName', (tester) async {
       final synced = [
@@ -309,6 +318,7 @@ void main() {
   for (final MapEntry(key: sizeName, value: size) in {
     'phone': TestSizes.phone,
     'tablet_portrait': TestSizes.tabletPortrait,
+    'tablet_landscape': TestSizes.tabletLandscape,
   }.entries) {
     testWidgets('fast log entry with a preview, $sizeName', (tester) async {
       await pumpTideline(
@@ -335,6 +345,7 @@ void main() {
   for (final MapEntry(key: sizeName, value: size) in {
     'phone': TestSizes.phone,
     'tablet_portrait': TestSizes.tabletPortrait,
+    'tablet_landscape': TestSizes.tabletLandscape,
   }.entries) {
     testWidgets('field mode page, on, $sizeName', (tester) async {
       await pumpTideline(
