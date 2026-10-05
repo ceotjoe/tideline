@@ -3,7 +3,7 @@
 For the maintainer and any tester of a TestFlight build (ADR 0022). Work through the sections that fit your device;
 none of them needs to be done in one sitting. Tick what works and write down what does not.
 
-**Build under test:** Tideline 0.3.1, build ____ · **Device:** ____ · **iOS/iPadOS:** ____ · **Wavelog:** ____ ·
+**Build under test:** Tideline 0.4.0, build ____ · **Device:** ____ · **iOS/iPadOS:** ____ · **Wavelog:** ____ ·
 **Language:** EN / DE
 
 ## 0. Before you start
@@ -71,6 +71,22 @@ none of them needs to be done in one sitting. Tick what works and write down wha
 - [ ] Park to park: enter the other station's park; after sync it is on Wavelog as `POTA_REF`.
 - [ ] Wavelog only stores **your** park if the station location carries it (the app says so). Check one QSO on Wavelog.
 - [ ] End the activation; reopen the app; the log and the ADIF export contain `MY_POTA_REF` (or SOTA/WWFF).
+
+## 5b. New in 0.4
+- [ ] **Accounts:** add a second Wavelog account (Settings → Wavelog accounts), switch with the menu on the log screen,
+  rename it, give it a new token. Switching is refused during a contest session or an activation. Sync covers both.
+- [ ] **Callsign directory:** type a call you worked before: name, place and locator appear, **Fill in** fills empty
+  fields. Write a note for a station and see it again later, also offline. Browse and search it in Settings →
+  Reference data.
+- [ ] **Free up space:** Settings → account → *Remove synced QSOs*. Check the count, **Check with Wavelog**, **Export,
+  then remove**. Only synced QSOs go; nothing is deleted on Wavelog; an ADIF re-import skips them.
+- [ ] **Fast Log Entry** (lightning bolt in the log): paste a few lines like `20m cw` / `1734 DL1ABC 599 579` / `5 G4XYZ`.
+  Read the preview, fix a problem line, log. Duplicates are marked.
+- [ ] **Field mode** (Settings → Field mode): the switch changes theme, button size and keeps the screen on while the log
+  is open; switching it off restores yours. Note the battery over a longer session.
+- [ ] **Keyboard (phone):** a *Hide keyboard* bar sits above the keyboard and the navigation is reachable; number pads
+  appear for reports and frequency.
+- [ ] **Mac or Windows:** sidebar, menu bar, **Esc** or Alt+← goes back, right click on a log row.
 
 ## 6. Things that must not happen
 - [ ] No network request without a user action, other than talking to your Wavelog.
@@ -157,8 +173,8 @@ build.
 
 ## English
 
-Build 1 (0.3.0): first test build.
-Please try: 1) First setup with your Wavelog and a token. 2) Log QSOs offline, then sync. 3) A short contest session and
+Build 4 (0.4.0): several accounts, callsign directory, free up space, Fast Log Entry, field mode.
+Please try: 0) The new features: a second account, the callsign hint and notes, Fast Log Entry (lightning bolt), Settings → Field mode, Settings → account → Remove synced QSOs. Then the rest: 1) First setup with your Wavelog and a token. 2) Log QSOs offline, then sync. 3) A short contest session and
 a Cabrillo export. 4) Download a POTA list and run an activation. 5) VoiceOver on the log screen, the contest screen and
 the activation screen. 6) iPad rotation and the on-screen keyboard.
 The full checklist is in the repository: docs/testing/testflight.md.
@@ -166,8 +182,8 @@ Known: iPhone is portrait only; no background sync on iOS; reference lists need 
 
 ## Deutsch
 
-Build 1 (0.3.0): erster Testbuild.
-Bitte ausprobieren: 1) Ersteinrichtung mit Deinem Wavelog und einem Token. 2) QSOs offline loggen, dann synchronisieren.
+Build 4 (0.4.0): mehrere Konten, Rufzeichen-Verzeichnis, Speicher freigeben, Fast Log Entry, Feldmodus.
+Bitte ausprobieren: 0) Die Neuerungen: ein zweites Konto, Rufzeichen-Hinweis und Notizen, Fast Log Entry (Blitz-Symbol), Einstellungen → Feldmodus, Einstellungen → Konto → Synchronisierte QSOs entfernen. Danach das Übrige: 1) Ersteinrichtung mit Deinem Wavelog und einem Token. 2) QSOs offline loggen, dann synchronisieren.
 3) Eine kurze Contest-Sitzung und ein Cabrillo-Export. 4) Eine POTA-Liste laden und eine Aktivierung durchführen.
 5) VoiceOver auf Log-, Contest- und Aktivierungsbildschirm. 6) iPad-Drehung und Bildschirmtastatur.
 Die vollständige Checkliste liegt im Repository: docs/testing/testflight.md.

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-05
+
+Tester feedback turned into features, plus Fast Log Entry and field modes. Build number 4. Database schema 5 (the
+update migrates in place, nothing to do). Highlights: several Wavelog accounts, an offline callsign directory with notes,
+freeing up space by removing QSOs Wavelog already has, desktop navigation, Fast Log Entry, and a field mode.
+
 ### Added
 - **Field mode** (ADR 0029). *Settings → Field mode*: one switch sets the sunlight theme, glove mode, a battery saver and
   keeps the screen on while the log, Fast Log Entry or the contest screen is open; switching it off brings your theme and
