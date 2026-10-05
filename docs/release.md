@@ -9,8 +9,17 @@ branch is a dry run: it builds but publishes nothing.
 
 ## Required repository secrets
 
-Add these under **Settings → Secrets and variables → Actions**. Without them the workflow still runs, but builds unsigned
-artifacts and prints a warning.
+Where a secret lives matters, because an *environment* secret is visible only to jobs that declare that environment:
+
+- **Repository secrets** (signing material, needed by every build, no approval): the `ANDROID_*`, `APPLE_CERT_*` and
+  `WINDOWS_*` secrets and, later, the provisioning profile. Add them under **Settings → Secrets and variables → Actions →
+  Repository secrets**.
+- **`production` environment secrets** (credentials that publish to a store): `PLAY_SERVICE_ACCOUNT_JSON` and the
+  `ASC_*` secrets. Only the upload jobs declare `environment: production`, so a release waits for one approval from the
+  required reviewer before anything reaches a store (**Settings → Environments → production**).
+
+Without the signing secrets a tag run **fails** for Android (a release must not be debug-signed); the other builds only warn
+and build unsigned. A manual run (*Run workflow*) is a dry run and never uploads, and builds unsigned where the secrets are missing.
 
 | Secret | Used for |
 |---|---|
@@ -73,8 +82,7 @@ store secrets to it.
     [ADR 0022](adr/0022-testflight-first-distribution.md)).
   - The Mac App Store build needs its own certificates, provisioning profile and `ExportOptions.plist`.
   - After that, the macOS app can switch to the data-protection keychain (ADR 0006).
-- **Google Play upload:** planned via the Play Developer API once a service account exists. Until then, upload the AAB
-  artifact manually.
+- **Google Play:** automated since ADR 0030 phase 2, see the Android section below.
 - **Microsoft Store:** only if Store distribution is chosen. `msix_config.store` is `false` for now, meaning direct MSIX.
 
 ## Checklist
@@ -168,8 +176,20 @@ Without `key.properties` the build is signed with the debug key and Play will re
    for 14 days before they can apply for production (Google's rule; organisation accounts and older accounts are
    exempt). Internal testing does not count. Check your account type in Play Console and start the closed test early.
 
-Not automated yet: the upload. The release workflow builds the AAB; uploading through the Play Developer API needs a
-service account (step 5.4).
+### 4. Automatic upload (internal track)
+On a tag push the `play` job of `release.yml` uploads the AAB to the **internal** track after you approve the `production`
+environment. It first checks that the bundle is not debug-signed. Everything beyond internal testing (closed test,
+production) is promoted by hand in Play Console.
+
+Once, by hand, before the first automatic upload: create the app, fill in *App content*, upload the first AAB yourself
+(the API cannot create the app or its first release), and invite the service account (see the secrets section: permissions
+for Tideline only, never production). Permissions can take hours to apply.
+
+While the app has no published release the API accepts only **draft** releases, which is the default here: open the draft
+in Play Console and roll it out. After the first release, set the repository variable `PLAY_RELEASE_STATUS` to `completed`
+(**Settings → Secrets and variables → Actions → Variables**) so uploads roll out to internal testers by themselves.
+The `versionCode` is the build number from `app/pubspec.yaml` (`+N`), so bump it for every release: Play refuses a
+`versionCode` it already has, and a re-run of the same tag fails.
 
 ## macOS: Mac App Store and TestFlight
 

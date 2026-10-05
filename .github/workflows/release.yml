@@ -1,13 +1,16 @@
 # Builds signed release artifacts when a version tag (v*) is pushed.
 #
-# Signing material comes ONLY from repository secrets; see
-# docs/release.md for the list. Jobs whose secrets are missing build
-# unsigned artifacts and say so, so the workflow can be tried before the
-# credentials exist. Store uploads are not automated yet (docs/release.md).
+# Signing material comes ONLY from repository secrets; see docs/release.md for
+# the list. Outside a tag run, jobs whose secrets are missing build unsigned
+# artifacts and say so, so the workflow can be tried before the credentials
+# exist. Credentials that publish live in the `production` environment and are
+# visible only to the upload jobs.
 #
-# On a tag push the last job creates the GitHub release with the Windows and
-# Linux downloads, the SBOM and checksums. workflow_dispatch builds everything
-# but publishes nothing (a dry run).
+# On a tag push the publish job creates the GitHub release with the Windows and
+# Linux downloads, the SBOM and checksums, and the play job uploads the AAB to
+# the internal track of Google Play (ADR 0030). The iOS and macOS uploads are
+# not automated yet. workflow_dispatch builds everything and publishes nothing
+# (a dry run).
 name: Release
 
 on:
@@ -59,6 +62,11 @@ jobs:
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           if [ -z "$KEYSTORE_BASE64" ]; then
+            # A release must never go out debug-signed; Play would refuse it anyway.
+            if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+              echo "::error::ANDROID_KEYSTORE_BASE64 not set - refusing to build a release unsigned."
+              exit 1
+            fi
             echo "::warning::ANDROID_KEYSTORE_BASE64 not set - building unsigned."
             exit 0
           fi
@@ -270,3 +278,38 @@ jobs:
           case "$VERSION" in 0.*|*-*) flags="--prerelease" ;; esac
           gh release create "$TAG" release/* --verify-tag $flags \
             --title "Tideline $VERSION" --notes-file notes.md
+
+  play:
+    name: Google Play (internal track)
+    # Only for a tag push; workflow_dispatch is a dry run. The environment
+    # holds PLAY_SERVICE_ACCOUNT_JSON and asks the maintainer for approval.
+    if: github.ref_type == 'tag'
+    needs: [meta, android]
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: android-aab
+          path: aab
+      - name: Refuse a bundle that is not signed with the upload key
+        run: |
+          aab="$(find aab -name '*.aab')"
+          [ "$(echo "$aab" | wc -l)" = 1 ] && [ -n "$aab" ] || { echo "::error::Expected exactly one AAB"; exit 1; }
+          certs="$(keytool -printcert -jarfile "$aab")"
+          if [ -z "$certs" ] || echo "$certs" | grep -q "CN=Android Debug"; then
+            echo "::error::The AAB is unsigned or debug-signed; Play would refuse it."
+            exit 1
+          fi
+      # Internal track only; promotion to closed testing and production is
+      # done by hand in Play Console. Until the app has a published release the
+      # API accepts only drafts: set the repository variable
+      # PLAY_RELEASE_STATUS to "completed" after the first manual rollout.
+      - uses: r0adkll/upload-google-play@e738b9dd8f2476ea806d921b64aacd24f34515a5 # v1.1.5
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.ITWebService.tideline
+          releaseFiles: aab/*.aab
+          track: internal
+          status: ${{ vars.PLAY_RELEASE_STATUS || 'draft' }}
+          releaseName: ${{ needs.meta.outputs.version }}

@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Release workflow: a tag creates a GitHub release with a Windows portable zip and MSIX, an experimental Linux tarball,
-  the SBOM and checksums (ADR 0030).
+  the SBOM and checksums (ADR 0030). A tag also uploads the Android bundle to the Google Play internal track, after
+  approval of the `production` environment.
 
 ### Fixed
 - `tool/macos_archive.sh`: the Mac App Store upload was rejected with ITMS-90284 because the plugins' resource bundles

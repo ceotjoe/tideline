@@ -28,8 +28,17 @@ Windows trusts, which the project does not have yet.
    The support promise stays as it was.
 4. **Windows gets a portable zip next to the MSIX.** Without a certificate Windows trusts, the MSIX cannot be installed;
    the zip needs no installer and no certificate. Both are unsigned until a certificate exists, and SmartScreen may warn.
-5. **Later phases** (separate commits, each approved first): Google Play upload through the Play Developer API (internal
-   track, promotion by hand), iOS to TestFlight with an App Store Connect API key and a manual provisioning profile,
+5. **Phase 2 (implemented): Google Play.** A `play` job (tag pushes only, `environment: production`, needs the Android
+   build) checks that the AAB is not debug-signed and uploads it to the **internal** track with
+   `r0adkll/upload-google-play` (pinned to a commit) and the service account JSON. The release status is `draft` until the
+   repository variable `PLAY_RELEASE_STATUS` says otherwise, because the API accepts only drafts for an app without a
+   published release. The Android job now fails a tag run without the keystore. The `versionCode` stays the build number
+   in `app/pubspec.yaml`, shared with the Apple builds (ADR 0022 had suggested the run number; a manual run and the
+   Apple uploads would make those numbers diverge).
+6. **Secrets by risk.** Signing material (keystore, certificates) is a repository secret, so builds need no approval.
+   Credentials that publish (`PLAY_SERVICE_ACCOUNT_JSON`, `ASC_*`) are `production` environment secrets, declared only by
+   the upload jobs, with the maintainer as required reviewer: one approval gates the irreversible step.
+7. **Later phases** (separate commits, each approved first): iOS to TestFlight with an App Store Connect API key and a manual provisioning profile,
    macOS to App Store Connect. Store uploads stay on internal tracks and TestFlight; promotion is manual.
 
 ## Consequences
