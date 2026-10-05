@@ -76,10 +76,14 @@ echo "Application certificate: $identity"
 
 # The installer certificate signs the .pkg. It is not a code-signing identity,
 # so it is not in the "codesigning" list.
-installer="$(security find-identity -v -p basic | grep -E "Mac Installer Distribution|3rd Party Mac Developer Installer" \
-  | grep "($team)" | head -1 | awk '{print $2}')"
+# `|| true`: with pipefail a missing match would end the script before the
+# message below.
+installer="$(security find-identity -p basic | grep -E "Mac Installer Distribution|3rd Party Mac Developer Installer" \
+  | grep "($team)" | grep -v CSSMERR | head -1 | awk '{print $2}')" || true
 if [ -z "$installer" ]; then
-  echo "No Mac Installer Distribution certificate of team $team in the keychain (with its private key)." >&2
+  echo "No usable Mac Installer Distribution certificate of team $team in the keychain (with its private key)." >&2
+  echo "Identities found (kind only; CSSMERR_ marks one the system does not accept):" >&2
+  security find-identity -p basic | sed -nE 's/^ *[0-9]+\) [0-9A-F]+ "([^":]*)[^"]*"(.*)$/  \1\2/p' >&2 || true
   exit 1
 fi
 echo "Installer certificate: $installer"
