@@ -164,9 +164,17 @@ set comes out ad hoc and the Organizer says "No Team Found in Archive"; verified
    `app/macos/ExportOptions.plist`; **Xcode may create certificates and the provisioning profile in your Apple Developer
    account**, which is why this is an explicit flag; not run yet), or in Xcode: double-click the `.xcarchive`, then
    *Distribute App → App Store Connect → Upload*.
-4. If git shows changes in `app/macos/Runner.xcodeproj` afterwards, newer Xcode only upgraded the file:
+4. **ITMS-90284** ("The executable `….bundle` must be signed with the certificate that is contained in the provisioning
+   profile", one per plugin: `connectivity_plus`, `file_picker_darwin`, `flutter_secure_storage_darwin`,
+   `local_auth_darwin`): the archive signs the plugins' resource bundles in `Contents/Resources` with the development
+   certificate, and the export re-signs only the app and the frameworks. The script therefore removes the signature of
+   those bundles (they contain no code, and the app's own signature seals them as resources), re-seals the app and checks
+   it with `codesign --verify --deep --strict`. It refuses to strip a bundle that contains an executable. Verified on
+   2026-10-05 by exporting with `destination: export` and checking every nested object in the `.pkg`. The Organizer
+   route is fixed too, because the archive itself is changed. After a Flutter or plugin update, repeat the check.
+5. If git shows changes in `app/macos/Runner.xcodeproj` afterwards, newer Xcode only upgraded the file:
    `git checkout app/macos/Runner.xcodeproj`.
-5. In TestFlight, install the build from the Mac **TestFlight** app. External macOS testers need Beta App Review like on iOS.
+6. In TestFlight, install the build from the Mac **TestFlight** app. External macOS testers need Beta App Review like on iOS.
 
 ### What to check on the first signed run
 - **The keychain.** macOS uses the legacy file-based keychain (`usesDataProtectionKeychain: false`, ADR 0006) because the

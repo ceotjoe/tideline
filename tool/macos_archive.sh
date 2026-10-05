@@ -48,6 +48,28 @@ if [ -z "$team" ] || [ "$team" = "not set" ]; then
   exit 1
 fi
 
+# Swift Package Manager plugins ship resource bundles in Contents/Resources
+# (no executable). The archive signs them with the development certificate and
+# the export re-signs the app and frameworks with the distribution one but
+# leaves these alone, so App Store Connect rejects the upload with ITMS-90284.
+# Without a signature they are sealed as plain resources by the app's own
+# signature, which the export does create (verified 2026-10-05).
+app="$archive/Products/Applications/Tideline.app"
+for bundle in "$app"/Contents/Resources/*.bundle; do
+  [ -e "$bundle" ] || continue
+  # Fails if the bundle holds code: that would need a real signature instead.
+  if find "$bundle" -type f -perm +111 | grep -q .; then
+    echo "$bundle contains an executable: it must be signed, not stripped." >&2
+    exit 1
+  fi
+  codesign --remove-signature "$bundle"
+done
+# Re-seal the app: the bundles are part of its signature.
+codesign --force --preserve-metadata=identifier,entitlements,flags,runtime \
+  --sign "$(codesign -dvv "$app" 2>&1 | sed -n 's/^Authority=\(Apple Development.*\)/\1/p' | head -1)" "$app"
+codesign --verify --deep --strict "$app"
+echo "Resource bundles stripped; app re-sealed and verified."
+
 if $upload; then
   xcodebuild -exportArchive -archivePath "$archive" \
     -exportOptionsPlist macos/ExportOptions.plist \

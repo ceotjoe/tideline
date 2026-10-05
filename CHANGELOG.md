@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `tool/macos_archive.sh`: the Mac App Store upload was rejected with ITMS-90284 because the plugins' resource bundles
+  kept the development signature. The script now strips it and re-seals the app (`docs/release.md`).
+
 ## [0.4.0] - 2026-10-05
 
 Tester feedback turned into features, plus Fast Log Entry and field modes. Build number 5 (0.3.1 had builds 3 and 4). Database schema 5 (the
