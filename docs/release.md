@@ -261,8 +261,10 @@ Test it locally with the certificates in your keychain and the downloaded profil
 `app/build/macos/export/Tideline.pkg`.
 *Checked 2026-10-05:* an ad hoc archive keeps the three sandbox entitlements and has unsigned resource bundles, and its
 export (with Xcode's automatic signing) gives a valid app with those entitlements, the application identifier, the profile
-and no development-signed bundles. The script refuses Xcode-managed profiles. **Not yet run:** the manual-signing export
-and the `altool` upload for macOS, because the Mac certificates and a portal profile do not exist yet.
+and no development-signed bundles. The script refuses Xcode-managed profiles. A manual workflow run on 2026-10-05 then built
+and verified the signed package with the portal profile `Tideline app Mac`: installer certificate, Apple Distribution
+for team Q486NF4XF6, sandbox entitlements, embedded profile, no development-signed code, version 0.4.0 build 6.
+**Not yet run:** the `altool` upload of the package (it runs with the next release tag).
 
 The manual way below (`tool/macos_archive.sh`) stays as the local alternative that uses Xcode's own signing.
 
