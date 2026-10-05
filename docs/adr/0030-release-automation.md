@@ -38,8 +38,13 @@ Windows trusts, which the project does not have yet.
 6. **Secrets by risk.** Signing material (keystore, certificates) is a repository secret, so builds need no approval.
    Credentials that publish (`PLAY_SERVICE_ACCOUNT_JSON`, `ASC_*`) are `production` environment secrets, declared only by
    the upload jobs, with the maintainer as required reviewer: one approval gates the irreversible step.
-7. **Later phases** (separate commits, each approved first): iOS to TestFlight with an App Store Connect API key and a manual provisioning profile,
-   macOS to App Store Connect. Store uploads stay on internal tracks and TestFlight; promotion is manual.
+7. **Phase 3 (implemented): iOS and iPadOS to TestFlight.** `tool/ios_archive.sh` archives without signing and exports with
+   a **manual** App Store profile (a repository secret) and the distribution certificate the profile names, then verifies
+   the IPA. Passing the profile to `xcodebuild archive` would apply it to every Swift package target, so the export does
+   the signing. The `ios` job signs; the `testflight` job (tag pushes, `environment: production`) uploads with `altool` and
+   the App Store Connect API key. The old `apple` job is split into `ios` and an unsigned `macos` build. A tag run without
+   the certificate or profile fails. Export compliance is still answered by hand in App Store Connect (ADR 0022).
+8. **Later phases** (separate commits, each approved first): macOS to App Store Connect. Store uploads stay on internal tracks and TestFlight; promotion is manual.
 
 ## Consequences
 - A release is now public the moment the tag is pushed (a pre-release for `0.x`). A bad build is fixed by deleting the

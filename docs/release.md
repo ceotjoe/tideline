@@ -18,8 +18,8 @@ Where a secret lives matters, because an *environment* secret is visible only to
   `ASC_*` secrets. Only the upload jobs declare `environment: production`, so a release waits for one approval from the
   required reviewer before anything reaches a store (**Settings → Environments → production**).
 
-Without the signing secrets a tag run **fails** for Android (a release must not be debug-signed); the other builds only warn
-and build unsigned. A manual run (*Run workflow*) is a dry run and never uploads, and builds unsigned where the secrets are missing.
+Without the signing secrets a tag run **fails** for Android and iOS (a release must not be debug-signed or unsigned); the
+other builds only warn and build unsigned. A manual run (*Run workflow*) is a dry run and never uploads, and builds unsigned where the secrets are missing.
 
 | Secret | Used for |
 |---|---|
@@ -29,6 +29,7 @@ and build unsigned. A manual run (*Run workflow*) is a dry run and never uploads
 | `ANDROID_KEY_PASSWORD` | Key password |
 | `APPLE_CERT_P12_BASE64` | Apple distribution certificate (`.p12`), base64-encoded |
 | `APPLE_CERT_PASSWORD` | Its password |
+| `IOS_PROVISIONING_PROFILE_BASE64` | App Store provisioning profile for `com.ITWebService.tideline`, base64-encoded (how to create it: below) |
 | `WINDOWS_CERT_PFX_BASE64` | Code-signing certificate for the MSIX (`.pfx`), base64-encoded |
 | `WINDOWS_CERT_PASSWORD` | Its password |
 | `WINDOWS_PUBLISHER` | Publisher subject of that certificate, e.g. `CN=…` (must match exactly) |
@@ -59,14 +60,13 @@ With a `.pfx`: `WINDOWS_CERT_PFX_BASE64` is its base64, `WINDOWS_CERT_PASSWORD` 
 subject, which must equal `msix_config.publisher`: `openssl pkcs12 -in cert.pfx -nokeys | openssl x509 -noout -subject`.
 Leave all three unset until then: the workflow builds unsigned and says so.
 
-**Planned secrets for the store uploads** (not read by the workflow yet, see
+**Secrets for the store uploads** (`PLAY_SERVICE_ACCOUNT_JSON` and `ASC_*` are read by the upload jobs; the macOS row is not yet; see
 [ADR 0030](adr/0030-release-automation.md)):
 
 | Secret | How to get it |
 |---|---|
 | `PLAY_SERVICE_ACCOUNT_JSON` | Google Cloud: enable the *Google Play Android Developer API*, create a service account and a JSON key. Play Console → *Users and permissions* → invite its email, **for Tideline only** with *View app information and download bulk reports (read-only)* and *Release apps to testing tracks*. No production, store-presence or financial permissions. Use a service account of its own for Tideline. Permissions can take hours to apply. The first AAB must be uploaded by hand, and while the app has no published release the API accepts only draft releases. |
 | `ASC_KEY_P8_BASE64`, `ASC_KEY_ID`, `ASC_ISSUER_ID` | App Store Connect → *Users and Access → Integrations → App Store Connect API* → generate a key with the **App Manager** role. The `.p8` can be downloaded once. Key ID and issuer ID are shown on that page. |
-| `IOS_PROVISIONING_PROFILE_BASE64` | Developer portal: an **App Store** profile for `com.ITWebService.tideline` with the Distribution certificate; base64 of the `.mobileprovision`. |
 | macOS | Both *Apple Distribution* and *Mac Installer Distribution* certificates as `.p12` and a **Mac App Store** provisioning profile. Xcode's cloud-managed signing does not leave them in the keychain, so they must be created in the developer portal (with a CSR) and exported. |
 
 Also create a **`production` environment** (*Settings → Environments*) with yourself as required reviewer, and scope the
@@ -74,15 +74,12 @@ store secrets to it.
 
 ## Not automated yet
 
-- **Apple:**
-  - The iOS project already has a development team and automatic signing (checked 2026-10-04), so a local
-    `flutter build ipa` signs with the maintainer's certificates. CI has no provisioning profile and no App Store Connect
-    credentials yet.
-  - Upload to App Store Connect (manual until step 5.4 of the Phase 5 plan, see
-    [ADR 0022](adr/0022-testflight-first-distribution.md)).
-  - The Mac App Store build needs its own certificates, provisioning profile and `ExportOptions.plist`.
-  - After that, the macOS app can switch to the data-protection keychain (ADR 0006).
-- **Google Play:** automated since ADR 0030 phase 2, see the Android section below.
+- **macOS (Mac App Store):** still local with `tool/macos_archive.sh` (below). It needs its own certificates
+  (*Apple Distribution* and *Mac Installer Distribution*), a provisioning profile and a way to sign in CI; automation is
+  phase 4 of [ADR 0030](adr/0030-release-automation.md). After that, the macOS app can switch to the data-protection
+  keychain (ADR 0006).
+- **iOS and iPadOS:** automated since ADR 0030 phase 3, see the next section. **Google Play:** automated since phase 2, see
+  the Android section below.
 - **Microsoft Store:** only if Store distribution is chosen. `msix_config.store` is `false` for now, meaning direct MSIX.
 
 ## Checklist
@@ -92,7 +89,40 @@ store secrets to it.
 3. Tag `vX.Y.Z` and push. The workflow creates the GitHub release; check its files and notes afterwards. A bad release is
    removed with `gh release delete vX.Y.Z --cleanup-tag --yes`, then fixed and tagged again.
 
-## First TestFlight build (iOS and iPadOS, manual)
+## iOS and iPadOS: automatic TestFlight upload
+
+On a tag push, the `ios` job builds a signed IPA with `tool/ios_archive.sh` and the `testflight` job uploads it to App
+Store Connect with `xcrun altool` and the API key, after you approve the `production` environment. Nothing is uploaded by
+a manual run (*Run workflow*), but it does build the signed IPA, so it is the way to test the signing setup.
+
+### The provisioning profile (once, and again when it expires or the certificate changes)
+CI signs **manually**, without an Apple ID, so the profile must be one you create in the developer portal. The profiles
+Xcode manages for you ("iOS Team Store Provisioning Profile: …") are refused.
+1. *Certificates, Identifiers & Profiles → Profiles → +* → **App Store Connect** (distribution) → the App ID
+   `com.ITWebService.tideline` → the **Distribution certificate you exported as `.p12`** → a name such as
+   `Tideline App Store` → Generate → Download.
+2. `base64 -i Tideline_App_Store.mobileprovision | pbcopy` → repository secret `IOS_PROVISIONING_PROFILE_BASE64`.
+3. A profile lasts a year and becomes invalid if its certificate is revoked or regenerated: make a new one and replace the
+   secret.
+
+### Testing the signing locally
+With the certificate in your keychain (with its private key) and the downloaded profile:
+`tool/ios_archive.sh --profile ~/Downloads/Tideline_App_Store.mobileprovision [build-number]` archives without signing and
+exports with the profile, then checks the IPA (team, distribution certificate, embedded profile). It never uploads.
+The IPA is `app/build/ios/export/Tideline.ipa`. It copies the profile into Xcode's profile folders, like Xcode does.
+*Checked 2026-10-05:* the archive step works and the script refuses an Xcode-managed profile with an explanation; the
+export itself has not been run with a portal profile yet.
+
+### Export compliance
+`ITSAppUsesNonExemptEncryption` is not set (ADR 0022, point 4), so every uploaded build waits in App Store Connect with
+*Missing Compliance* until you answer the question in TestFlight; testers cannot install it before. This is deliberate until
+the export classification is decided; then set the key in `app/ios/Runner/Info.plist` and the wait disappears.
+
+### Version and build number
+`tool/ios_archive.sh` takes both from `app/pubspec.yaml` (`+N`). App Store Connect refuses a build number it has seen for
+that version, so bump `+N` for every release (the same number is the Play `versionCode`).
+
+## First TestFlight build (by hand, as a fallback)
 
 Prerequisites, all in the maintainer's Apple account: an app record for `com.ITWebService.tideline` in App Store
 Connect, and the privacy manifest and export-compliance answer from step 5.1 of the roadmap in the build.

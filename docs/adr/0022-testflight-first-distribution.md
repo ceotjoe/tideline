@@ -53,3 +53,6 @@ Verified from Apple's public documentation and forums (not from our code):
 - The release workflow needs an Apple section with provisioning and upload; `docs/release.md` describes it.
 - Export classification and the answers in App Store Connect (privacy "nutrition label", encryption, age rating) are the
   maintainer's to give. Tideline's `PRIVACY.md` is the source for them.
+
+## Update 2026-10-05
+Point 6 is carried out by [ADR 0030](0030-release-automation.md): the upload runs in CI with an App Store Connect API key.
