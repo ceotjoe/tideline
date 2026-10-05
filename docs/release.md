@@ -112,7 +112,8 @@ exports with the profile, then checks the IPA (team, distribution certificate, e
 The IPA is `app/build/ios/export/Tideline.ipa`. It copies the profile into Xcode's profile folders, like Xcode does.
 *Checked 2026-10-05:* the script refuses an Xcode-managed profile with an explanation, and a manual workflow run built
 and verified the signed IPA with the portal profile `Tideline App Store` (team Q486NF4XF6, version 0.4.0, build 5).
-The upload itself has not been run yet.
+The first upload attempt (tag `v0.4.0`) stopped in the job's own IPA check, which failed on macOS because `wc -l` pads its
+number (fixed afterwards), so `altool` has not been exercised yet.
 
 ### Export compliance
 `ITSAppUsesNonExemptEncryption` is not set (ADR 0022, point 4), so every uploaded build waits in App Store Connect with
@@ -221,6 +222,7 @@ in Play Console and roll it out. After the first release, set the repository var
 (**Settings → Secrets and variables → Actions → Variables**) so uploads roll out to internal testers by themselves.
 The `versionCode` is the build number from `app/pubspec.yaml` (`+N`), so bump it for every release: Play refuses a
 `versionCode` it already has, and a re-run of the same tag fails.
+*Checked 2026-10-05:* the tag `v0.4.0` uploaded build 6 to the internal track as a draft.
 
 ## macOS: Mac App Store and TestFlight
 

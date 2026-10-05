@@ -341,7 +341,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: com.ITWebService.tideline
           releaseFiles: aab/*.aab
-          track: internal
+          tracks: internal
           status: ${{ vars.PLAY_RELEASE_STATUS || 'draft' }}
           releaseName: ${{ needs.meta.outputs.version }}
 
@@ -365,7 +365,8 @@ jobs:
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
           ipa="$(find ipa -name '*.ipa')"
-          [ "$(echo "$ipa" | wc -l)" = 1 ] && [ -n "$ipa" ] || { echo "::error::Expected exactly one IPA"; exit 1; }
+          # BSD wc pads its count with spaces, so strip them before comparing.
+          [ -n "$ipa" ] && [ "$(echo "$ipa" | wc -l | tr -d ' ')" = 1 ] || { echo "::error::Expected exactly one IPA"; exit 1; }
           # altool looks for the key in this folder, named after its id.
           mkdir -p "$HOME/.appstoreconnect/private_keys"
           key="$HOME/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8"
