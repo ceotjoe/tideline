@@ -1,6 +1,6 @@
 # Privacy Statement
 
-_Last updated: 2026-10-02. Applies to Tideline on all platforms._
+_Last updated: 2026-10-05. Applies to Tideline on all platforms._
 
 Tideline is an open-source logging app for licensed amateur radio operators.
 
@@ -23,7 +23,6 @@ reporting service and no third-party tracker. The developers never receive your 
 | Records of QSOs removed from this device to free space (local id, Wavelog id, time and a hash of the QSO's duplicate key; no callsign) | Not uploading or importing them again | Encrypted database; not part of backups or exports |
 | Activations (programme, reference, your grid square, start and end) | Activation logging and progress | Encrypted database |
 | Contest definitions you import | Contest rules and scoring | Encrypted database |
-| Device location (only while you ask for it) | Computing your Maidenhead grid locator | Used on device, stored only as the grid in your QSO / activation |
 | Settings | Your preferences | Encrypted database |
 
 Backups you export are encrypted with a passphrase you choose. Exports (ADIF, Cabrillo) are written only
@@ -60,8 +59,8 @@ Nothing else. The app makes no "phone-home", update check or font download calls
 
 ## Permissions
 
-- **Location:** optional. Used only to compute your grid locator when you ask for it.
-- **Camera:** optional. Used only to scan a pairing QR code (later feature).
+- **Location:** not used. Tideline never asks for your position; you type your grid locator.
+- **Camera:** not used. A later pairing feature may ask for it to scan a QR code, and this statement will change first.
 - **Local network:** used only to reach a Wavelog server on your LAN, or for device pairing.
 - **Biometrics:** optional. Used only for the app lock, evaluated by the OS. Tideline never sees biometric data.
 
