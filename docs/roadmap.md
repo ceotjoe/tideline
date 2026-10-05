@@ -232,3 +232,37 @@ Every step follows the Definition of Done. Order: 6.1 and 6.2 as v0.3.1, then 6.
 3. Request 4: eviction only. Nothing is ever deleted on Wavelog; only local, already synced QSOs can be removed.
 4. Request 5: local-only notes are acceptable if Wavelog has no notes API.
 5. Request 5: a directory per account, with a merged lookup on the entry form.
+
+## Phase 7 scope proposal: v1.0 (written 2026-10-05, awaiting the maintainer's decisions)
+
+Nothing here is built yet. 1.0 means: installable from the stores on every official platform, the hand tests done, no
+known data-loss or security findings, and the documentation current.
+
+### A. Maintainer-side (I cannot do these; I can prepare texts and checklists)
+- Hand tests from a TestFlight and Play internal build: VoiceOver, TalkBack, a real contest run, a real activation
+  ([testflight.md](testing/testflight.md)).
+- Play: first AAB by hand, app record and content forms, closed test (12 testers, 14 days) if the account needs it.
+- Mac App Store: first run of the signed app, keychain check in the sandbox (data-protection keychain as fallback).
+- Export classification follow-up questions in App Store Connect (key set to `true` on 2026-10-05).
+- Store listings: privacy label ("Data Not Collected"), screenshots, descriptions EN/DE, age rating, support URL.
+- Decide Microsoft Store versus direct MSIX; check the MSIX publisher against the certificate subject.
+- App Review access: the in-app demo account of [ADR 0031](adr/0031-demo-account.md) replaces the hosted demo server.
+
+### B. Work for me (proposed, each its own step and commit)
+| Step | Work |
+|---|---|
+| 7.1 | **Release audit.** Check the Definition of Done for every 0.4.0 feature: manual EN/DE, threat model, `PRIVACY.md`, goldens for phone, tablet portrait and landscape, accessibility matchers. Fix gaps. |
+| 7.2 | **Store texts.** Listing, What's New, privacy answers and screenshots plan in EN and DE under `docs/release/`, taken from `PRIVACY.md` so they stay true. |
+| 7.3 | **Activation end-to-end test** against the mock (open item from Phase 4). |
+| 7.4 | **Activation rules.** Verify the SOTA and WWFF counting windows against the programmes' rules and fix the default; decide whether the rules editor and two-fer wait for 1.1. |
+| 7.5 | **Hardening pass.** ADIF fuzz run, token/log redaction check, dependency review against the lockfile, threat model refresh. |
+| 7.6 | **Release candidate.** Version 1.0.0, CHANGELOG, tag, upload through the release workflow, one more test round. |
+
+### C. Recommended for 1.1 or later
+Rules editor, two-fer, a minimum desktop window size, two-pane settings, battery measurements, and everything under
+"later" in the table above.
+
+### Decisions needed
+1. Is the scope in B right, or should the rules editor and two-fer be in 1.0?
+2. Microsoft Store for 1.0, or direct MSIX only?
+3. Is Linux unofficial at 1.0 (as in CLAUDE.md)?
