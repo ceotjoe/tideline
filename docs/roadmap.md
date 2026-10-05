@@ -9,7 +9,9 @@ The milestones from the Phase 0 plan. Each phase ends with a summary and the mai
 | 2 | M2 MVP (v0.1) | done |
 | 3 | M3 Contest mode (v0.2) | done, approved 2026-10-03 |
 | 4 | M4 Activations and reference packs (v0.3) | done, approved 2026-10-04 |
-| 5 | M5 First TestFlight build, then FLE, field modes, multi-account UI, store releases (v0.4 → v1.0) | release plan written, awaiting approval |
+| 5 | M5 First TestFlight build and release automation (FLE, field modes and multi-account UI moved to Phase 6) | done, approved 2026-10-05 |
+| 6 | M6 Tester feedback and v0.4 (6.1–6.8) | done, shipped as 0.4.0 |
+| — | Store listing and release for v1.0 | open |
 | — | Device-to-device sync, WSJT-X listener, desktop extras, iPad drag and drop, Android background sync | later |
 
 ## Phase 3 scope
