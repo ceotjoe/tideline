@@ -11,14 +11,14 @@ branch is a dry run: it builds but publishes nothing.
 
 Where a secret lives matters, because an *environment* secret is visible only to jobs that declare that environment:
 
-- **Repository secrets** (signing material, needed by every build, no approval): the `ANDROID_*`, `APPLE_CERT_*` and
-  `WINDOWS_*` secrets and, later, the provisioning profile. Add them under **Settings → Secrets and variables → Actions →
+- **Repository secrets** (signing material, needed by every build, no approval): the `ANDROID_*`, `APPLE_CERT_*`, `MACOS_*` and
+  `WINDOWS_*` secrets and the iOS provisioning profile. Add them under **Settings → Secrets and variables → Actions →
   Repository secrets**.
 - **`production` environment secrets** (credentials that publish to a store): `PLAY_SERVICE_ACCOUNT_JSON` and the
   `ASC_*` secrets. Only the upload jobs declare `environment: production`, so a release waits for one approval from the
   required reviewer before anything reaches a store (**Settings → Environments → production**).
 
-Without the signing secrets a tag run **fails** for Android and iOS (a release must not be debug-signed or unsigned); the
+Without the signing secrets a tag run **fails** for Android, iOS and macOS (a release must not be debug-signed or unsigned); the
 other builds only warn and build unsigned. A manual run (*Run workflow*) is a dry run and never uploads, and builds unsigned where the secrets are missing.
 
 | Secret | Used for |
@@ -30,6 +30,9 @@ other builds only warn and build unsigned. A manual run (*Run workflow*) is a dr
 | `APPLE_CERT_P12_BASE64` | Apple distribution certificate (`.p12`), base64-encoded |
 | `APPLE_CERT_PASSWORD` | Its password |
 | `IOS_PROVISIONING_PROFILE_BASE64` | App Store provisioning profile for `com.ITWebService.tideline`, base64-encoded (how to create it: below) |
+| `MACOS_CERT_P12_BASE64` | One `.p12` with both Mac identities, *Apple Distribution* and *Mac Installer Distribution*, base64-encoded |
+| `MACOS_CERT_PASSWORD` | Its password |
+| `MACOS_PROVISIONING_PROFILE_BASE64` | Mac App Store Connect provisioning profile for `com.ITWebService.tideline`, base64-encoded |
 | `WINDOWS_CERT_PFX_BASE64` | Code-signing certificate for the MSIX (`.pfx`), base64-encoded |
 | `WINDOWS_CERT_PASSWORD` | Its password |
 | `WINDOWS_PUBLISHER` | Publisher subject of that certificate, e.g. `CN=…` (must match exactly) |
@@ -54,31 +57,41 @@ passwords and `ANDROID_KEY_ALIAS` is `upload`.
 3. `APPLE_CERT_P12_BASE64` is the base64 of the `.p12`, `APPLE_CERT_PASSWORD` is the export password. Delete the file
    afterwards or keep it only in the password manager.
 
+**macOS** (3 secrets). Needs an *Apple Distribution* certificate and a *Mac Installer Distribution* certificate with their
+private keys, plus a Mac App Store profile. Xcode's cloud-managed signing does not leave them in your keychain, and the iOS
+certificate (*iPhone Distribution*) cannot sign Mac apps.
+1. Keychain Access → *Certificate Assistant → Request a Certificate from a CA* (save to disk). In the developer portal →
+   *Certificates → +*, create **Apple Distribution** and **Mac Installer Distribution** from that request, download both,
+   double-click to install them. Each must show a private key under it in *My Certificates*. (An account may hold only a few
+   Apple Distribution certificates; revoke one you don't use if the portal refuses.)
+2. Select both identities in *My Certificates* → right-click → *Export 2 items…* → one `.p12` with a strong password.
+   `MACOS_CERT_P12_BASE64` is its base64, `MACOS_CERT_PASSWORD` its password.
+3. *Profiles → + → **Mac App Store Connect*** → App ID `com.ITWebService.tideline` → the Apple Distribution certificate →
+   a name such as `Tideline Mac App Store` → download the `.provisionprofile`.
+   `MACOS_PROVISIONING_PROFILE_BASE64` is its base64.
+
 **Windows signing** (3 secrets). Needs a certificate Windows trusts: a commercial code-signing certificate (OV or EV) or
 Azure Trusted Signing (a different workflow step). A self-signed certificate is trusted only on machines that import it.
 With a `.pfx`: `WINDOWS_CERT_PFX_BASE64` is its base64, `WINDOWS_CERT_PASSWORD` its password, and `WINDOWS_PUBLISHER` the exact
 subject, which must equal `msix_config.publisher`: `openssl pkcs12 -in cert.pfx -nokeys | openssl x509 -noout -subject`.
 Leave all three unset until then: the workflow builds unsigned and says so.
 
-**Secrets for the store uploads** (`PLAY_SERVICE_ACCOUNT_JSON` and `ASC_*` are read by the upload jobs; the macOS row is not yet; see
+**Secrets for the store uploads** (`PLAY_SERVICE_ACCOUNT_JSON` and `ASC_*` are read by the upload job; see
 [ADR 0030](adr/0030-release-automation.md)):
 
 | Secret | How to get it |
 |---|---|
 | `PLAY_SERVICE_ACCOUNT_JSON` | Google Cloud: enable the *Google Play Android Developer API*, create a service account and a JSON key. Play Console → *Users and permissions* → invite its email, **for Tideline only** with *View app information and download bulk reports (read-only)* and *Release apps to testing tracks*. No production, store-presence or financial permissions. Use a service account of its own for Tideline. Permissions can take hours to apply. The first AAB must be uploaded by hand, and while the app has no published release the API accepts only draft releases. |
 | `ASC_KEY_P8_BASE64`, `ASC_KEY_ID`, `ASC_ISSUER_ID` | App Store Connect → *Users and Access → Integrations → App Store Connect API* → generate a key with the **App Manager** role. The `.p8` can be downloaded once. Key ID and issuer ID are shown on that page. |
-| macOS | Both *Apple Distribution* and *Mac Installer Distribution* certificates as `.p12` and a **Mac App Store** provisioning profile. Xcode's cloud-managed signing does not leave them in the keychain, so they must be created in the developer portal (with a CSR) and exported. |
 
 Also create a **`production` environment** (*Settings → Environments*) with yourself as required reviewer, and scope the
 store secrets to it.
 
 ## Not automated yet
 
-- **macOS (Mac App Store):** still local with `tool/macos_archive.sh` (below). It needs its own certificates
-  (*Apple Distribution* and *Mac Installer Distribution*), a provisioning profile and a way to sign in CI; automation is
-  phase 4 of [ADR 0030](adr/0030-release-automation.md). After that, the macOS app can switch to the data-protection
-  keychain (ADR 0006).
-- **iOS and iPadOS:** automated since ADR 0030 phase 3, see the next section. **Google Play:** automated since phase 2, see
+- **macOS (Mac App Store):** automated since ADR 0030 phase 4, see "macOS: Mac App Store and TestFlight" below. After
+  the first release is through, the macOS app can switch to the data-protection keychain (ADR 0006).
+- **iOS and iPadOS:** automated since phase 3, see the next section. **Google Play:** automated since phase 2, see
   the Android section below.
 - **Microsoft Store:** only if Store distribution is chosen. `msix_config.store` is `false` for now, meaning direct MSIX.
 
@@ -225,6 +238,25 @@ The `versionCode` is the build number from `app/pubspec.yaml` (`+N`), so bump it
 *Checked 2026-10-05:* the tag `v0.4.0` uploaded build 6 to the internal track as a draft.
 
 ## macOS: Mac App Store and TestFlight
+
+### Automatic upload
+On a tag push the `macos` job builds a signed `.pkg` with `tool/macos_package.sh` and the `testflight` job uploads it to App
+Store Connect together with the iOS IPA (`xcrun altool --type macos`), after you approve the `production` environment. A
+manual run builds the signed package too but uploads nothing. The script archives with the project's ad hoc signature,
+which keeps the sandbox entitlements, and lets the export sign with the profile, the Apple Distribution certificate and
+the installer certificate; the plugins' resource bundles then stay unsigned, so ITMS-90284 does not arise. It checks the
+package before it can be uploaded: installer signature, team and distribution certificate of the app, sandbox, embedded
+profile, no development-signed code.
+
+Test it locally with the certificates in your keychain and the downloaded profile:
+`tool/macos_package.sh --profile ~/Downloads/Tideline_Mac_App_Store.provisionprofile [build-number]`. The package is
+`app/build/macos/export/Tideline.pkg`.
+*Checked 2026-10-05:* an ad hoc archive keeps the three sandbox entitlements and has unsigned resource bundles, and its
+export (with Xcode's automatic signing) gives a valid app with those entitlements, the application identifier, the profile
+and no development-signed bundles. The script refuses Xcode-managed profiles. **Not yet run:** the manual-signing export
+and the `altool` upload for macOS, because the Mac certificates and a portal profile do not exist yet.
+
+The manual way below (`tool/macos_archive.sh`) stays as the local alternative that uses Xcode's own signing.
 
 Prepared on 2026-10-04: privacy manifest, languages, category `public.app-category.utilities` (change it in
 `app/macos/Runner/Info.plist` if you prefer another), the local-network text (macOS asks for it too) and

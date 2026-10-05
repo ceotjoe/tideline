@@ -44,7 +44,13 @@ Windows trusts, which the project does not have yet.
    the signing. The `ios` job signs; the `testflight` job (tag pushes, `environment: production`) uploads with `altool` and
    the App Store Connect API key. The old `apple` job is split into `ios` and an unsigned `macos` build. A tag run without
    the certificate or profile fails. Export compliance is still answered by hand in App Store Connect (ADR 0022).
-8. **Later phases** (separate commits, each approved first): macOS to App Store Connect. Store uploads stay on internal tracks and TestFlight; promotion is manual.
+8. **Phase 4 (implemented, not yet run in CI): macOS to App Store Connect.** `tool/macos_package.sh` archives with the
+   project's ad hoc signature (verified 2026-10-05 to keep the sandbox entitlements and to leave the plugin resource
+   bundles unsigned) and exports with manual signing: an Apple Distribution and a Mac Installer Distribution certificate
+   (one `.p12`, repository secrets) and a Mac App Store profile. The `testflight` job uploads the IPA and the package with
+   one approval and tries both. `tool/macos_archive.sh` stays as the local route; its signature-stripping fix (commit
+   46e4f68) is not needed on the new path. A tag run without the Mac secrets fails.
+9. **Later:** the Windows certificate, and a decision on AppImage or Flatpak for Linux. Store uploads stay on internal tracks and TestFlight; promotion is manual.
 
 ## Consequences
 - A release is now public the moment the tag is pushed (a pre-release for `0.x`). A bad build is fixed by deleting the
