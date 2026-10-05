@@ -56,3 +56,8 @@ Verified from Apple's public documentation and forums (not from our code):
 
 ## Update 2026-10-05
 Point 6 is carried out by [ADR 0030](0030-release-automation.md): the upload runs in CI with an App Store Connect API key.
+
+## Update 2026-10-05 (encryption)
+Point 4 is superseded for the key: the maintainer classified the app's own encryption as non-exempt, so
+`ITSAppUsesNonExemptEncryption` is `true` in the iOS and macOS `Info.plist`. Follow-up export questions in App Store
+Connect remain the maintainer's to answer.

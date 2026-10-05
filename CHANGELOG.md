@@ -8,10 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- A built-in demo account: **Try the demo (no Wavelog needed)** on the Welcome screen sets up an account served inside
+  the app, for testers and App Review. Nothing is sent over the network (ADR 0031).
 - Release workflow: a tag creates a GitHub release with a Windows portable zip and MSIX, an experimental Linux tarball,
   the SBOM and checksums (ADR 0030). A tag also uploads the Android bundle to the Google Play internal track, after
   approval of the `production` environment, and the signed iOS and iPadOS build goes to TestFlight the same way
   (`tool/ios_archive.sh`), and so does the signed macOS package (`tool/macos_package.sh`).
+
+### Changed
+- iOS and macOS `Info.plist` declare `ITSAppUsesNonExemptEncryption` as `true`, so builds no longer wait for the
+  per-build encryption question (ADR 0022).
 
 ### Fixed
 - `tool/macos_archive.sh`: the Mac App Store upload was rejected with ITMS-90284 because the plugins' resource bundles

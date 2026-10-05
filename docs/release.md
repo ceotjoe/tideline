@@ -136,10 +136,20 @@ and verified the signed IPA with the portal profile `Tideline App Store` (team Q
 The first upload attempt (tag `v0.4.0`) stopped in the job's own IPA check, which failed on macOS because `wc -l` pads its
 number (fixed afterwards), so `altool` has not been exercised yet.
 
+### App Review notes
+No sign-in credentials are needed. Paste into the review notes (App Store Connect, Play Console *App access*):
+
+> Tideline is a client for the user's own Wavelog server. To review it without one, tap **Try the demo (no Wavelog
+> needed)** on the first screen, then **Finish**. This creates a demo account with a made-up station that runs entirely
+> on the device (no network). Log a QSO on the Log tab and open **Sync** to see it upload to the demo server.
+> The demo account can be removed under Settings → Wavelog accounts.
+
 ### Export compliance
-`ITSAppUsesNonExemptEncryption` is not set (ADR 0022, point 4), so every uploaded build waits in App Store Connect with
-*Missing Compliance* until you answer the question in TestFlight; testers cannot install it before. This is deliberate until
-the export classification is decided; then set the key in `app/ios/Runner/Info.plist` and the wait disappears.
+`ITSAppUsesNonExemptEncryption` is `true` in `app/ios/Runner/Info.plist` and `app/macos/Runner/Info.plist` (maintainer's
+decision 2026-10-05, ADR 0022 update): the app's own encryption (SQLite3MultipleCiphers, backups) goes beyond what the OS
+provides, so it is not exempt. Builds no longer wait with *Missing Compliance*, but App Store Connect may still ask the
+follow-up questions (mass-market self-classification, France); the maintainer answers them. This is the maintainer's
+classification, not a legal opinion of the project.
 
 ### Version and build number
 `tool/ios_archive.sh` takes both from `app/pubspec.yaml` (`+N`). App Store Connect refuses a build number it has seen for
@@ -159,7 +169,7 @@ Connect, and the privacy manifest and export-compliance answer from step 5.1 of 
 3. Upload it with the Transporter app (drag the IPA in, **Deliver**).
 4. In App Store Connect → TestFlight: wait for processing, answer any compliance question, add an **internal** testing
    group and install through the TestFlight app. External testers need Beta App Review: a beta description, a feedback
-   address and a way for the reviewer to get past onboarding (a Wavelog address and token).
+   address and a way for the reviewer to get past onboarding: the built-in demo (ADR 0031), see *App Review notes* below.
 5. Test with the checklist in the roadmap (VoiceOver, a contest run, an activation) and note findings as issues.
 
 Checked on 2026-10-04: `flutter build ios --release --no-codesign` succeeds (29.8 MB, minimum iOS 16.0) and contains
@@ -216,7 +226,7 @@ Without `key.properties` the build is signed with the debug key and Play will re
 ### 3. Google Play
 1. Play Console → **Create app**: name, default language, App (not game), free, accept the declarations.
 2. **App content** (required before any track works): privacy policy URL (a public page; `PRIVACY.md` on GitHub works),
-   app access (the app needs a Wavelog server: give the demo address and token, as for Apple), ads (none), content rating
+   app access (the app needs a Wavelog server: tell the reviewer to use the built-in demo, as for Apple), ads (none), content rating
    questionnaire, target audience (not for children), and the **Data safety** form. From `PRIVACY.md`: no data collected
    or shared, no tracking. The merged manifest of the release build (checked 2026-10-04) has `INTERNET`, `ACCESS_NETWORK_STATE`
    (connectivity check), `USE_BIOMETRIC` and `USE_FINGERPRINT` (app lock), minSdk 24 and targetSdk 36.
