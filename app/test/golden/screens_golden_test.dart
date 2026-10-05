@@ -35,6 +35,19 @@ void main() {
       );
     });
 
+    testWidgets('welcome with demo button, $sizeName', (tester) async {
+      await pumpTideline(
+        tester,
+        size: size,
+        settings: const AppSettings(theme: ThemeChoice.light),
+        accounts: const [],
+      );
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('goldens/welcome_$sizeName.png'),
+      );
+    });
+
     testWidgets('settings, $sizeName', (tester) async {
       await pumpTideline(
         tester,

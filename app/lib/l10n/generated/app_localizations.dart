@@ -477,6 +477,30 @@ abstract class AppLocalizations {
   /// **'Connect to Wavelog'**
   String get onboardingStart;
 
+  /// Button on the welcome step that sets up the built-in demo account.
+  ///
+  /// In en, this message translates to:
+  /// **'Try the demo (no Wavelog needed)'**
+  String get onboardingTryDemo;
+
+  /// Explains the demo account under the demo button.
+  ///
+  /// In en, this message translates to:
+  /// **'The demo runs entirely on this device with a made-up station. Nothing is sent anywhere, and you can remove it later.'**
+  String get onboardingDemoHint;
+
+  /// Name of the demo account.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo'**
+  String get accountDemoLabel;
+
+  /// Line under the demo account in account lists.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo account: no server, nothing leaves this device'**
+  String get accountDemoNote;
+
   /// Onboarding progress.
   ///
   /// In en, this message translates to:

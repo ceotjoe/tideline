@@ -5,6 +5,7 @@ import 'package:tideline/src/services/tls.dart';
 import 'package:tideline_data/tideline_data.dart'
     show Account, stationReferences;
 import 'package:wavelog_client/wavelog_client.dart';
+import 'package:wavelog_mock/wavelog_mock.dart' show demoToken, demoUrl;
 
 /// Onboarding steps.
 enum OnboardingStep {
@@ -152,6 +153,13 @@ class OnboardingController extends Notifier<OnboardingState> {
   /// Moves to [step] (back navigation).
   void goTo(OnboardingStep step) =>
       state = state.copyWith(step: step, clearProblem: true);
+
+  /// Sets up the built-in demo account: the usual checks, answered inside
+  /// the app (ADR 0031). Continues at the station step like a real server.
+  Future<void> startDemo({required String label}) async {
+    submitServer(url: demoUrl, label: label, allowHttpLan: false);
+    await submitToken(demoToken);
+  }
 
   /// Validates the address and continues to the token step.
   void submitServer({

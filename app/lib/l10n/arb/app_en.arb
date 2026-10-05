@@ -258,6 +258,22 @@
   "@onboardingStart": {
     "description": "Button starting setup."
   },
+  "onboardingTryDemo": "Try the demo (no Wavelog needed)",
+  "@onboardingTryDemo": {
+    "description": "Button on the welcome step that sets up the built-in demo account."
+  },
+  "onboardingDemoHint": "The demo runs entirely on this device with a made-up station. Nothing is sent anywhere, and you can remove it later.",
+  "@onboardingDemoHint": {
+    "description": "Explains the demo account under the demo button."
+  },
+  "accountDemoLabel": "Demo",
+  "@accountDemoLabel": {
+    "description": "Name of the demo account."
+  },
+  "accountDemoNote": "Demo account: no server, nothing leaves this device",
+  "@accountDemoNote": {
+    "description": "Line under the demo account in account lists."
+  },
   "onboardingStepOf": "Step {current} of {total}",
   "@onboardingStepOf": {
     "description": "Onboarding progress.",

@@ -67,7 +67,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final step = state.step;
     final metrics = context.metrics;
     final content = switch (step) {
-      OnboardingStep.welcome => _welcome(l10n, controller),
+      OnboardingStep.welcome => _welcome(l10n, state, controller),
       OnboardingStep.server => _server(l10n, state, controller),
       OnboardingStep.token => _tokenStep(l10n, state, controller),
       OnboardingStep.station => _stationStep(l10n, state, controller),
@@ -166,7 +166,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
-  Widget _welcome(AppLocalizations l10n, OnboardingController c) => Column(
+  Widget _welcome(
+    AppLocalizations l10n,
+    OnboardingState state,
+    OnboardingController c,
+  ) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       _title(l10n.onboardingWelcomeTitle),
@@ -174,6 +178,21 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       _buttons(
         onContinue: () => c.goTo(OnboardingStep.server),
         continueLabel: l10n.onboardingStart,
+      ),
+      SizedBox(height: context.metrics.lg),
+      Text(
+        l10n.onboardingDemoHint,
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      SizedBox(height: context.metrics.sm),
+      Align(
+        alignment: AlignmentDirectional.centerEnd,
+        child: OutlinedButton(
+          onPressed: state.busy
+              ? null
+              : () => c.startDemo(label: l10n.accountDemoLabel),
+          child: Text(l10n.onboardingTryDemo),
+        ),
       ),
     ],
   );

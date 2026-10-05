@@ -281,6 +281,11 @@ class MockWavelog {
     );
   }
 
+  /// The server as a plain request handler, for callers that serve it
+  /// without a socket (the app's demo mode). Injected connection drops
+  /// ([MockFault.storeThenDropConnection]) are not available this way.
+  Handler get handler => _handle;
+
   /// Stops the server.
   Future<void> stop() async {
     await _server?.close(force: true);

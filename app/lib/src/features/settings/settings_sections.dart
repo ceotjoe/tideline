@@ -42,7 +42,10 @@ class AccountSection extends ConsumerWidget {
           title: Text(account.label),
           subtitle: Text(
             [
-              account.baseUrl,
+              if (isDemoAccount(account))
+                l10n.accountDemoNote
+              else
+                account.baseUrl,
               if (active) l10n.accountsInUse,
               if (account.certPinSha256 != null) l10n.accountPinned,
               if (expires != null)

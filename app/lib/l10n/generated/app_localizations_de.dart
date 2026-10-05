@@ -216,6 +216,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get onboardingStart => 'Mit Wavelog verbinden';
 
   @override
+  String get onboardingTryDemo => 'Demo ausprobieren (ohne Wavelog)';
+
+  @override
+  String get onboardingDemoHint =>
+      'Die Demo läuft vollständig auf diesem Gerät mit einer erfundenen Station. Es wird nichts versendet, und du kannst sie später entfernen.';
+
+  @override
+  String get accountDemoLabel => 'Demo';
+
+  @override
+  String get accountDemoNote =>
+      'Demo-Konto: kein Server, nichts verlässt dieses Gerät';
+
+  @override
   String onboardingStepOf(int current, int total) {
     return 'Schritt $current von $total';
   }

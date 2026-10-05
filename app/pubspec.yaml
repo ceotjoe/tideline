@@ -33,6 +33,9 @@ dependencies:
   wakelock_plus: ^1.8.1
   wavelog_client:
     path: ../packages/wavelog_client
+  # Serves the in-app demo account without a network (ADR 0031).
+  wavelog_mock:
+    path: ../packages/wavelog_mock
 
 dev_dependencies:
   flutter_test:

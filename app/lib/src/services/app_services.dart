@@ -11,6 +11,7 @@ import 'package:tideline/src/services/tls.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 import 'package:wavelog_client/wavelog_client.dart';
+import 'package:wavelog_mock/wavelog_mock.dart' show isDemoHost;
 
 /// Platform secure store. Overridden at startup.
 final secretStoreProvider = Provider<SecretStore>(
@@ -148,6 +149,10 @@ final contestSeedProvider = FutureProvider<ContestSeedReport?>(
     repository: ref.watch(contestDefinitionRepositoryProvider),
   ),
 );
+
+/// Whether [account] is the built-in demo account (ADR 0031).
+bool isDemoAccount(Account account) =>
+    isDemoHost(Uri.tryParse(account.baseUrl)?.host);
 
 /// Builds a pinned API client for an account (ADR 0009).
 WavelogClient clientForAccount(Account account, String token) {

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:wavelog_mock/wavelog_mock.dart' show demoHttpClient, isDemoHost;
 
 /// Facts about a server certificate shown in the trust-on-first-use dialog.
 typedef CertificateInfo = ({
@@ -25,7 +26,11 @@ String fingerprintOf(X509Certificate cert) => sha256
 /// An HTTP client that trusts the platform roots and, if [pinnedSha256] is
 /// set, additionally exactly that one certificate for [host]. Never accepts
 /// anything else: there is no "ignore certificate errors" (ADR 0009).
+///
+/// The reserved demo host is answered inside the app and never touches the
+/// network (ADR 0031).
 http.Client pinnedHttpClient({String? host, String? pinnedSha256}) {
+  if (isDemoHost(host)) return demoHttpClient();
   final client = HttpClient()
     ..connectionTimeout = const Duration(seconds: 15)
     ..badCertificateCallback = (cert, certHost, port) =>

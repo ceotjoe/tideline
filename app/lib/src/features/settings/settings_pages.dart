@@ -44,7 +44,7 @@ class AccountsSettingsPage extends ConsumerWidget {
             title: Text(a.label),
             subtitle: Text(
               [
-                a.baseUrl,
+                if (isDemoAccount(a)) l10n.accountDemoNote else a.baseUrl,
                 if (a.id == active?.id) l10n.accountsInUse,
                 l10n.accountsPending(pending[a.id] ?? 0),
               ].join('\n'),

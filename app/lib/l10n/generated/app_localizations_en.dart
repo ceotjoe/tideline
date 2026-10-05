@@ -216,6 +216,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingStart => 'Connect to Wavelog';
 
   @override
+  String get onboardingTryDemo => 'Try the demo (no Wavelog needed)';
+
+  @override
+  String get onboardingDemoHint =>
+      'The demo runs entirely on this device with a made-up station. Nothing is sent anywhere, and you can remove it later.';
+
+  @override
+  String get accountDemoLabel => 'Demo';
+
+  @override
+  String get accountDemoNote =>
+      'Demo account: no server, nothing leaves this device';
+
+  @override
   String onboardingStepOf(int current, int total) {
     return 'Step $current of $total';
   }
@@ -3085,6 +3099,21 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get onboardingStart => '[Çöññéçţ ţö Ŵáṽéļöĝ········]';
+
+  @override
+  String get onboardingTryDemo =>
+      '[Ţŕý ţĥé ðéɱö (ñö Ŵáṽéļöĝ ñééðéð)·············]';
+
+  @override
+  String get onboardingDemoHint =>
+      '[Ţĥé ðéɱö ŕûñš éñţîŕéļý öñ ţĥîš ðéṽîçé ŵîţĥ á ɱáðé-ûþ šţáţîöñ. Ñöţĥîñĝ îš šéñţ áñýŵĥéŕé, áñð ýöû çáñ ŕéɱöṽé îţ ļáţéŕ.···············································]';
+
+  @override
+  String get accountDemoLabel => '[Ðéɱö··]';
+
+  @override
+  String get accountDemoNote =>
+      '[Ðéɱö áççöûñţ: ñö šéŕṽéŕ, ñöţĥîñĝ ļéáṽéš ţĥîš ðéṽîçé·····················]';
 
   @override
   String onboardingStepOf(int current, int total) {
