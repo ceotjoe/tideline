@@ -48,8 +48,8 @@ Encode a file with: `base64 -i file.jks | pbcopy` (macOS).
 Prerequisites, all in the maintainer's Apple account: an app record for `com.ITWebService.tideline` in App Store
 Connect, and the privacy manifest and export-compliance answer from step 5.1 of the roadmap in the build.
 
-1. Choose the version and build number. The version is `0.4.0` for this round (`0.3.0` had builds 1 and 2, `0.3.1` build 3). The build
-   number keeps growing across versions (`4` for 0.4.0, then `5`, …), which also keeps the Play `versionCode` and the
+1. Choose the version and build number. The version is `0.4.0` for this round (`0.3.0` had builds 1 and 2, `0.3.1` builds 3 and 4). The build
+   number keeps growing across versions (`5` for 0.4.0, then `6`, …), which also keeps the Play `versionCode` and the
    Mac builds in order. Keep `app/pubspec.yaml`, `app/lib/src/app_version.dart` (`appVersion`) and `msix_version` in
    step.
 2. From `app/`: `flutter build ipa --release --build-name 0.4.0 --build-number <N>`. The IPA lands in
@@ -106,7 +106,7 @@ Checked on 2026-10-04: `flutter build appbundle --release` succeeds (69.4 MB, de
 
 ### 2. A signed build for your own device (TalkBack tests, no Play needed)
 ```bash
-cd app && flutter build apk --release --build-name 0.4.0 --build-number 4
+cd app && flutter build apk --release --build-name 0.4.0 --build-number 5
 adb install -r build/app/outputs/flutter-apk/app-release.apk
 ```
 Without `key.properties` the build is signed with the debug key and Play will refuse it, but it installs for testing.

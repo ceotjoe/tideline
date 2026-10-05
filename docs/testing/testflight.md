@@ -173,7 +173,7 @@ build.
 
 ## English
 
-Build 4 (0.4.0): several accounts, callsign directory, free up space, Fast Log Entry, field mode.
+Build 5 (0.4.0): several accounts, callsign directory, free up space, Fast Log Entry, field mode.
 Please try: 0) The new features: a second account, the callsign hint and notes, Fast Log Entry (lightning bolt), Settings → Field mode, Settings → account → Remove synced QSOs. Then the rest: 1) First setup with your Wavelog and a token. 2) Log QSOs offline, then sync. 3) A short contest session and
 a Cabrillo export. 4) Download a POTA list and run an activation. 5) VoiceOver on the log screen, the contest screen and
 the activation screen. 6) iPad rotation and the on-screen keyboard.
@@ -182,7 +182,7 @@ Known: iPhone is portrait only; no background sync on iOS; reference lists need 
 
 ## Deutsch
 
-Build 4 (0.4.0): mehrere Konten, Rufzeichen-Verzeichnis, Speicher freigeben, Fast Log Entry, Feldmodus.
+Build 5 (0.4.0): mehrere Konten, Rufzeichen-Verzeichnis, Speicher freigeben, Fast Log Entry, Feldmodus.
 Bitte ausprobieren: 0) Die Neuerungen: ein zweites Konto, Rufzeichen-Hinweis und Notizen, Fast Log Entry (Blitz-Symbol), Einstellungen → Feldmodus, Einstellungen → Konto → Synchronisierte QSOs entfernen. Danach das Übrige: 1) Ersteinrichtung mit Deinem Wavelog und einem Token. 2) QSOs offline loggen, dann synchronisieren.
 3) Eine kurze Contest-Sitzung und ein Cabrillo-Export. 4) Eine POTA-Liste laden und eine Aktivierung durchführen.
 5) VoiceOver auf Log-, Contest- und Aktivierungsbildschirm. 6) iPad-Drehung und Bildschirmtastatur.
