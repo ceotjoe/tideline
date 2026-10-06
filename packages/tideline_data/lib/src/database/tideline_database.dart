@@ -4,10 +4,9 @@ import 'package:tideline_data/src/database/tideline_database.steps.dart';
 
 part 'tideline_database.g.dart';
 
-/// The local, encrypted Tideline database: the single source of truth for
-/// the UI.
+/// The local Tideline database: the single source of truth for the UI.
 ///
-/// Open it with `openEncryptedExecutor` so that it is always encrypted.
+/// Open it with `openDatabaseExecutor`.
 @DriftDatabase(
   tables: [
     Accounts,

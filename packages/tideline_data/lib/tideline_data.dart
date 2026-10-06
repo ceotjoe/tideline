@@ -1,9 +1,9 @@
-/// Encrypted local database, repositories and sync engine for Tideline.
+/// Local database, repositories and sync engine for Tideline.
 library;
 
 export 'src/backup/backup_codec.dart';
 export 'src/backup/backup_service.dart';
-export 'src/database/encrypted_executor.dart';
+export 'src/database/database_opener.dart';
 export 'src/database/tables.dart';
 export 'src/database/tideline_database.dart';
 export 'src/repositories/account_repository.dart';
@@ -21,7 +21,7 @@ export 'src/repositories/shortcut_binding_store.dart';
 export 'src/repositories/sync_journal_repository.dart';
 export 'src/repositories/sync_status_repository.dart';
 export 'src/repositories/worked_before_repository.dart';
-export 'src/security/database_key.dart';
+export 'src/security/device_id.dart';
 export 'src/sync/contest_session_sync.dart';
 export 'src/sync/qso_eviction_service.dart';
 export 'src/sync/sync_engine.dart';

@@ -192,11 +192,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get languagePseudo => 'Pseudo-Sprache (Tests)';
 
   @override
-  String get startupKeyMissingTitle => 'Dein Log lässt sich nicht entsperren';
+  String get legacyDatabaseTitle =>
+      'Dein früheres Log konnte nicht übernommen werden';
 
   @override
-  String get startupKeyMissingBody =>
-      'Tideline hat sein Log auf diesem Gerät gefunden, aber der Schlüssel zum Entsperren fehlt im sicheren Speicher des Systems. Das kann nach dem Wiederherstellen des Geräts aus einer Sicherung passieren. Es wurde nichts gelöscht. Stelle eine Tideline-Sicherung wieder her oder installiere die App neu, um ein neues Log zu beginnen.';
+  String get legacyDatabaseBody =>
+      'Diese Version verschlüsselt das Log nicht mehr mit einem eigenen Schlüssel, deshalb lässt sich das Log der früheren Version nicht öffnen. Tideline hat mit einem leeren Log gestartet. Die alte Datei liegt noch auf diesem Gerät, wird aber nicht verwendet. Bereits synchronisierte QSOs liegen weiter in deinem Wavelog-Logbuch.';
 
   @override
   String get startupErrorTitle => 'Tideline konnte nicht starten';

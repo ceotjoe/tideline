@@ -19,7 +19,8 @@
 - **Database:** plain SQLite (`sqlite3` build hook, `source: sqlite3`). No key, no cipher, no `cryptography` package.
 - **Backups:** one plain, unencrypted backup file. The UI says clearly that it is unencrypted, like an ADIF export.
   Encrypted backups of earlier versions can not be restored any more.
-- **Secure store:** keeps the API tokens and the device id. The stored database key is deleted.
+- **Secure store:** keeps the API tokens and the device id. The stored database key is deleted at startup, except when an
+  old database was just set aside: then the key stays so that someone technical can still open that file.
 - **Clean break for existing installs (no bridge build).** A database that a plain SQLite can not read (it was encrypted by
   0.5.x) is renamed aside, never deleted, and the app starts empty and tells the user. Unsynced QSOs of such an install are
   not migrated; testers sync before updating.

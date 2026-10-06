@@ -24,6 +24,10 @@ final deviceIdProvider = Provider<String>(
   (ref) => throw UnimplementedError('deviceIdProvider must be overridden'),
 );
 
+/// Whether an encrypted database of Tideline 0.5.x was set aside at startup
+/// (ADR 0034). The app shows a one-time notice. Overridden at startup.
+final legacyDatabaseNoticeProvider = Provider<bool>((ref) => false);
+
 /// The sync state machine.
 final syncMachineProvider = Provider<SyncMachine>((ref) => SyncMachine());
 

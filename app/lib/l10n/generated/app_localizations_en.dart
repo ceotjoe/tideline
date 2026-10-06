@@ -192,11 +192,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languagePseudo => 'Pseudo-locale (testing)';
 
   @override
-  String get startupKeyMissingTitle => 'Your log can\'t be unlocked';
+  String get legacyDatabaseTitle =>
+      'Your earlier log could not be carried over';
 
   @override
-  String get startupKeyMissingBody =>
-      'Tideline found its log on this device, but the key that unlocks it is missing from the system\'s secure storage. This can happen after restoring the device from a backup. Nothing has been deleted. Restore a Tideline backup, or reinstall the app to start a new log.';
+  String get legacyDatabaseBody =>
+      'This version no longer encrypts the log with its own key, so the log of the earlier version can\'t be opened. Tideline started with an empty log. The old file is still on this device but is not used. QSOs that were already synced are still in your Wavelog logbook.';
 
   @override
   String get startupErrorTitle => 'Tideline couldn\'t start';
@@ -3090,12 +3091,12 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   String get languagePseudo => '[Þšéûðö-ļöçáļé (ţéšţîñĝ)··········]';
 
   @override
-  String get startupKeyMissingTitle =>
-      '[Ýöûŕ ļöĝ çáñ\'ţ ƀé ûñļöçķéð···········]';
+  String get legacyDatabaseTitle =>
+      '[Ýöûŕ éáŕļîéŕ ļöĝ çöûļð ñöţ ƀé çáŕŕîéð öṽéŕ·················]';
 
   @override
-  String get startupKeyMissingBody =>
-      '[Ţîðéļîñé ƒöûñð îţš ļöĝ öñ ţĥîš ðéṽîçé, ƀûţ ţĥé ķéý ţĥáţ ûñļöçķš îţ îš ɱîššîñĝ ƒŕöɱ ţĥé šýšţéɱ\'š šéçûŕé šţöŕáĝé. Ţĥîš çáñ ĥáþþéñ áƒţéŕ ŕéšţöŕîñĝ ţĥé ðéṽîçé ƒŕöɱ á ƀáçķûþ. Ñöţĥîñĝ ĥáš ƀééñ ðéļéţéð. Ŕéšţöŕé á Ţîðéļîñé ƀáçķûþ, öŕ ŕéîñšţáļļ ţĥé áþþ ţö šţáŕţ á ñéŵ ļöĝ.··········································································································]';
+  String get legacyDatabaseBody =>
+      '[Ţĥîš ṽéŕšîöñ ñö ļöñĝéŕ éñçŕýþţš ţĥé ļöĝ ŵîţĥ îţš öŵñ ķéý, šö ţĥé ļöĝ öƒ ţĥé éáŕļîéŕ ṽéŕšîöñ çáñ\'ţ ƀé öþéñéð. Ţîðéļîñé šţáŕţéð ŵîţĥ áñ éɱþţý ļöĝ. Ţĥé öļð ƒîļé îš šţîļļ öñ ţĥîš ðéṽîçé ƀûţ îš ñöţ ûšéð. ǪŠÖš ţĥáţ ŵéŕé áļŕéáðý šýñçéð áŕé šţîļļ îñ ýöûŕ Ŵáṽéļöĝ ļöĝƀööķ.··········································································································]';
 
   @override
   String get startupErrorTitle => '[Ţîðéļîñé çöûļðñ\'ţ šţáŕţ··········]';

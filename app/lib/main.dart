@@ -6,7 +6,6 @@ import 'package:tideline/src/platform/bootstrap.dart';
 import 'package:tideline/src/platform/platform_secret_store.dart';
 import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
-import 'package:tideline_data/tideline_data.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,16 +18,15 @@ Future<void> main() async {
           databaseProvider.overrideWithValue(result.database),
           secretStoreProvider.overrideWithValue(secrets),
           deviceIdProvider.overrideWithValue(result.deviceId),
+          legacyDatabaseNoticeProvider.overrideWithValue(
+            result.legacyDatabaseMovedAside,
+          ),
         ],
         child: const TidelineApp(),
       ),
     );
-  } on DatabaseKeyMissingException {
-    runApp(const StartupErrorApp(keyMissing: true));
   } on Object catch (error) {
-    // Developer-facing only; never includes key material (see
-    // DatabaseEncryptionException).
     debugPrint('Startup failed: ${error.runtimeType}');
-    runApp(const StartupErrorApp(keyMissing: false));
+    runApp(const StartupErrorApp());
   }
 }

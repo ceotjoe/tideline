@@ -1,5 +1,5 @@
 /// Platform secure storage (Keychain, Android Keystore, Windows protected
-/// storage) for API tokens and the database key.
+/// storage) for API tokens and the device id.
 ///
 /// Implementations must never write values to logs, preferences or backups.
 abstract interface class SecretStore {
@@ -15,8 +15,9 @@ abstract interface class SecretStore {
 
 /// Well-known [SecretStore] keys.
 abstract final class SecretKeys {
-  /// Hex-encoded 256-bit key of the local database.
-  static const String databaseKey = 'tideline.db.key.v1';
+  /// Hex-encoded key that Tideline 0.5.x used for its encrypted database.
+  /// No longer used; deleted at startup (ADR 0034).
+  static const String legacyDatabaseKey = 'tideline.db.key.v1';
 
   /// Stable identifier of this installation, used in HLC timestamps.
   static const String deviceId = 'tideline.device.id';

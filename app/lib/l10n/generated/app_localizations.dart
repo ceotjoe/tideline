@@ -435,17 +435,17 @@ abstract class AppLocalizations {
   /// **'Pseudo-locale (testing)'**
   String get languagePseudo;
 
-  /// Title when the database exists but its key is gone from the secure store.
+  /// Title of the one-time notice after the encrypted database of version 0.5 was set aside.
   ///
   /// In en, this message translates to:
-  /// **'Your log can\'t be unlocked'**
-  String get startupKeyMissingTitle;
+  /// **'Your earlier log could not be carried over'**
+  String get legacyDatabaseTitle;
 
-  /// Explanation of the missing database key situation.
+  /// Explanation shown once after an encrypted 0.5 database was moved aside.
   ///
   /// In en, this message translates to:
-  /// **'Tideline found its log on this device, but the key that unlocks it is missing from the system\'s secure storage. This can happen after restoring the device from a backup. Nothing has been deleted. Restore a Tideline backup, or reinstall the app to start a new log.'**
-  String get startupKeyMissingBody;
+  /// **'This version no longer encrypts the log with its own key, so the log of the earlier version can\'t be opened. Tideline started with an empty log. The old file is still on this device but is not used. QSOs that were already synced are still in your Wavelog logbook.'**
+  String get legacyDatabaseBody;
 
   /// Title of the generic startup error screen.
   ///

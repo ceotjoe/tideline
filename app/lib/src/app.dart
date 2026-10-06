@@ -42,6 +42,30 @@ class _TidelineAppState extends ConsumerState<TidelineApp> {
     // Load the bundled contest definitions in the background. Nothing waits
     // for it and a failure is only logged, so logging is never blocked.
     ref.read(contestSeedProvider);
+    if (ref.read(legacyDatabaseNoticeProvider)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _showLegacyNotice());
+    }
+  }
+
+  /// One-time notice after an encrypted 0.5.x log was set aside (ADR 0034).
+  Future<void> _showLegacyNotice() async {
+    final context = _router.routerDelegate.navigatorKey.currentContext;
+    if (!mounted || context == null) return;
+    final l10n = AppLocalizations.of(context);
+    await showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        icon: const Icon(Icons.info_outline),
+        title: Text(l10n.legacyDatabaseTitle),
+        content: Text(l10n.legacyDatabaseBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(MaterialLocalizations.of(context).okButtonLabel),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
