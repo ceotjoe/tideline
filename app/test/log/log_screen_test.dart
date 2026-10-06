@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -115,6 +117,31 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('QSO details'), findsOneWidget);
     });
+  });
+
+  testWidgets('switching accounts picks a station of the new account', (
+    tester,
+  ) async {
+    const clubStation = StationProfile(
+      id: 'st-2',
+      accountId: 'acc-2',
+      remoteId: 7,
+      name: 'Club QTH',
+      callsign: 'DL0CLB',
+      active: true,
+    );
+    final stations = StreamController<List<StationProfile>>();
+    addTearDown(stations.close);
+    stations.add(const [testStation]);
+    await pumpTideline(tester, stationStream: stations.stream);
+    expect(find.text('Home QTH (DO1HOZ)'), findsOneWidget);
+
+    // The other account's stations arrive; the entry still names st-1.
+    stations.add(const [clubStation]);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('Club QTH (DL0CLB)'), findsOneWidget);
+    expect(find.text('Home QTH (DO1HOZ)'), findsNothing);
   });
 
   group('tablet landscape with the keyboard up', () {

@@ -467,6 +467,7 @@ Future<Pumped> pumpTideline(
   ActivationProgress? activationProgress,
   ActivationRepository? activations,
   List<StationProfile> stations = const [testStation],
+  Stream<List<StationProfile>>? stationStream,
   Map<String, CallsignInfo> callsigns = const {},
   Map<String, String> callsignNotes = const {},
   FakeEvictionRepository? evictionRepository,
@@ -521,7 +522,9 @@ Future<Pumped> pumpTideline(
         bindingOverridesProvider.overrideWith((ref) => Stream.value(const [])),
         settingsControllerProvider.overrideWithValue(controller),
         accountsProvider.overrideWith((ref) => Stream.value(accounts)),
-        stationsProvider.overrideWith((ref) => Stream.value(stations)),
+        stationsProvider.overrideWith(
+          (ref) => stationStream ?? Stream.value(stations),
+        ),
         activeActivationProvider.overrideWith(
           (ref) => Stream.value(activation),
         ),

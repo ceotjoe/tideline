@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   per-build encryption question (ADR 0022).
 
 ### Fixed
+- Switching to another Wavelog account in the log view failed with a dropdown assertion: the entry form kept the station of
+  the previous account. It now picks a station of the new account.
 - On phones with a notch or status bar the screens under the tide gauge left a blank band of the status bar's height
   above their title, because their app bars padded for the status bar a second time.
 - `tool/macos_archive.sh`: the Mac App Store upload was rejected with ITMS-90284 because the plugins' resource bundles

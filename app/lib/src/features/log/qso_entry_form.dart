@@ -185,7 +185,10 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
               .value?['account.${account?.id}.defaultStation'] ??
           '',
     );
-    if (entry.stationProfileId == null && stations.isNotEmpty) {
+    // After switching accounts the entry still holds a station of the old
+    // account: pick again, as for a first start.
+    final stationKnown = stations.any((s) => s.id == entry.stationProfileId);
+    if (!stationKnown && stations.isNotEmpty) {
       final initial =
           stations.where((s) => s.remoteId == defaultRemote).firstOrNull ??
           stations.where((s) => s.active).firstOrNull ??
@@ -406,7 +409,8 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
     final stationField = stations.isEmpty
         ? null
         : DropdownButtonFormField<String>(
-            initialValue: entry.stationProfileId,
+            // Null until the new account's station is picked (next frame).
+            initialValue: stationKnown ? entry.stationProfileId : null,
             isExpanded: true,
             decoration: InputDecoration(labelText: l10n.fieldStation),
             items: [
