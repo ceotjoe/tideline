@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-06
+
 ### Added
 - A built-in demo account: **Try the demo (no Wavelog needed)** on the Welcome screen sets up an account served inside
   the app, for testers and App Review. Nothing is sent over the network (ADR 0031).
