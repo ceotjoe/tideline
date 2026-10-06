@@ -28,3 +28,7 @@ app/test/golden/failures/
 
 # Local signing settings for the Mac App Store build (docs/release.md)
 app/macos/Runner/Configs/Signing.local.xcconfig
+
+# Generated on demand by tool/store_screenshots.py
+/docs/release/screenshots/
+__pycache__/

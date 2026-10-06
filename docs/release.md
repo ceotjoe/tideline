@@ -338,3 +338,26 @@ set comes out ad hoc and the Organizer says "No Team Found in Archive"; verified
 Notarization and the hardened runtime are for direct downloads outside the store. If you later distribute a `.dmg`,
 that is a separate runbook.
 
+
+## Store screenshots
+`tool/store_screenshots.py` makes the screenshots on demand; the folder `docs/release/screenshots/` is git-ignored.
+It runs `app/integration_test/store_screenshots_test.dart` on a device. The test uses the in-app demo account (ADR 0031) and
+invented QSOs, so nothing private is in the pictures, and stops at the four main screens (Log, Callsigns, Sync, Settings).
+The script takes the picture with the platform's own tool, so pixels, fonts and status bar are the real ones.
+
+```bash
+tool/store_screenshots.py ios --locales en de          # iPhone 6.9" and iPad 13" simulators, created and deleted by the script
+tool/store_screenshots.py android --locales en de      # one running emulator or device; phone 1080x1920, tablet 1600x2560
+tool/store_screenshots.py mac --locales en de          # see the warning below
+```
+
+- Output: `docs/release/screenshots/<iphone-6.9|ipad-13|android-phone|android-tablet-10|mac>/<locale>/NN-name.png`. The script
+  warns when a picture has not the size the store asks for.
+- It runs at low priority (`nice`), but builds the app for each run: expect 15 minutes or more for everything.
+  `--ios-only iphone-6.9` limits it to one simulator.
+- Android needs exactly one device listed by `adb devices` (for example `emulator -avd Pixel_10a`). The display size is
+  changed with `wm size` for the run and reset afterwards; the app is uninstalled first so every run starts clean.
+- **macOS:** the test runs the real app, which uses your real database. The script moves `tideline.sqlite` aside, restores it
+  and compares checksums (see the macOS note in this file), but the macOS mode has not been run yet. Run it only when you
+  have a backup. The window is captured as it is; the Mac App Store wants 1280×800, 1440×900, 2560×1600 or 2880×1800.
+- Not generated: contest, activation and Fast Log Entry screens (you asked for the four main screens only).
