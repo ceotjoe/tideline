@@ -7,7 +7,7 @@ This script then takes the picture with the platform's own tool, so the pixels,
 fonts and status bar are the real ones:
 
   ios      simctl on two throw-away simulators it creates and deletes
-           (iPhone 6.9" and iPad 13"), status bar set to 9:41
+           (iPhone 6.3" and iPad 13"; 6.9" with --ios-only), status bar 9:41
   android  adb on a running emulator or device (phone 1080x1920, tablet
            1600x2560 through `wm size`, restored afterwards), demo-mode status bar
   mac      screencapture of the app window; moves the maintainer's
@@ -41,11 +41,18 @@ BUNDLE_ID = "com.ITWebService.tideline"
 # Device types the store asks for. Names are simctl device type identifiers,
 # matched by prefix against `simctl list devicetypes`.
 IOS_DEVICES = {
+    # Required by App Store Connect: an iPhone with Dynamic Island, 6.1" or 6.3"
+    # (1179x2556 or 1206x2622).
+    "iphone-6.3": ["iPhone 17 Pro", "iPhone 17", "iPhone 16 Pro"],
+    # Optional: the 6.9" set. Apple scales it down if the 6.3" set is missing,
+    # but asks for the 6.3" one, so it is not made unless asked for.
     "iphone-6.9": ["iPhone 18 Pro Max", "iPhone 17 Pro Max", "iPhone 16 Pro Max"],
     "ipad-13": ["iPad Pro 13-inch (M5)", "iPad Pro 13-inch (M4)"],
 }
+DEFAULT_IOS = ["iphone-6.3", "ipad-13"]
 # Pixel sizes the store requires, checked after capture.
 EXPECTED = {
+    "iphone-6.3": {(1206, 2622), (1179, 2556)},
     "iphone-6.9": {(1320, 2868), (1290, 2796), (1260, 2736)},
     "ipad-13": {(2064, 2752), (2048, 2732)},
     "android-phone": {(1080, 1920)},
@@ -129,7 +136,7 @@ def ios_device_type(prefixes: list[str]) -> str:
 def do_ios(locales, only=None):
     runtime = ios_runtime()
     for key, names in IOS_DEVICES.items():
-        if only and key not in only:
+        if key not in (only or DEFAULT_IOS):
             continue
         dtype = ios_device_type(names)
         name = f"Tideline store {key}"

@@ -347,15 +347,16 @@ invented QSOs, so nothing private is in the pictures, and stops at the four main
 The script takes the picture with the platform's own tool, so pixels, fonts and status bar are the real ones.
 
 ```bash
-tool/store_screenshots.py ios --locales en de          # iPhone 6.9" and iPad 13" simulators, created and deleted by the script
+tool/store_screenshots.py ios --locales en de          # iPhone 6.3" and iPad 13" simulators, created and deleted by the script
 tool/store_screenshots.py android --locales en de      # one running emulator or device; phone 1080x1920, tablet 1600x2560
 tool/store_screenshots.py mac --locales en de          # see the warning below
 ```
 
-- Output: `docs/release/screenshots/<iphone-6.9|ipad-13|android-phone|android-tablet-10|mac>/<locale>/NN-name.png`. The script
+- Output: `docs/release/screenshots/<iphone-6.3|iphone-6.9|ipad-13|android-phone|android-tablet-10|mac>/<locale>/NN-name.png`. The script
   warns when a picture has not the size the store asks for.
 - It runs at low priority (`nice`), but builds the app for each run: expect 15 minutes or more for everything.
-  `--ios-only iphone-6.9` limits it to one simulator.
+  `--ios-only iphone-6.3` limits it to one simulator. App Store Connect requires the iPhone 6.1"/6.3" set (1179×2556 or
+  1206×2622) and the iPad 13" set; the 6.9" set is optional and made only with `--ios-only iphone-6.9`.
 - Android needs exactly one device listed by `adb devices` (for example `emulator -avd Pixel_10a`). The display size is
   changed with `wm size` for the run and reset afterwards; the app is uninstalled first so every run starts clean.
 - **macOS:** the test runs the real app, which uses your real database. The script moves `tideline.sqlite` aside, restores it
