@@ -18,16 +18,23 @@ ADIF files are **not encrypted**, so keep them somewhere safe.
 - **Large imports:** before more than 50 new QSOs are uploaded, Tideline shows a preview and waits for you. See
   [Sync and conflicts](sync-and-conflicts.md).
 
-## Encrypted backup
+## Backup
 
-**Create encrypted backup** saves everything except your token, protected by a passphrase of at least 8 characters.
-- **Keep the passphrase safe.** Without it, the backup cannot be opened, not even by us.
+**Create backup** saves everything except your token in one `.tlbackup` file.
+- **The backup is not encrypted.** It holds your QSOs, station locations and callsign notes in readable form, so keep it
+  somewhere safe, like an ADIF export.
 - **Restoring:** **Restore a backup** brings everything back on the same or a new device.
 - **No duplicates:** QSOs that were already in Wavelog stay linked to their Wavelog entries and are not uploaded again.
 - **Your token is not in the backup.** After restoring on a new device, enter a new token under **Settings → Wavelog account → Enter a
   new token**.
+- **Backups from version 0.5 can't be restored.** Version 0.5 encrypted its backups with a passphrase; this version
+  has no encryption code any more. Tideline says so when you pick such a file.
 
-### Why Android doesn't back Tideline up to the cloud
+### How your log is protected on the device
 
-Tideline's data is encrypted with a key that never leaves the device. A cloud copy could not be opened, so Tideline
-switches the system backup off and offers its own encrypted backup instead.
+Tideline doesn't encrypt your log itself. It relies on what your device does: the lock screen and the operating system's
+own storage protection. Use a device passcode, and switch on the app lock under **Security and backup** if others use your
+device.
+
+Tideline asks iPhone, iPad and Android not to put its data into iCloud, iTunes or Google backups. Your own backup file,
+which you save yourself, is the way to move the log to another device.

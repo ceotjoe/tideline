@@ -145,11 +145,12 @@ No sign-in credentials are needed. Paste into the review notes (App Store Connec
 > The demo account can be removed under Settings → Wavelog accounts.
 
 ### Export compliance
-`ITSAppUsesNonExemptEncryption` is `true` in `app/ios/Runner/Info.plist` and `app/macos/Runner/Info.plist` (maintainer's
-decision 2026-10-05, ADR 0022 update): the app's own encryption (SQLite3MultipleCiphers, backups) goes beyond what the OS
-provides, so it is not exempt. Builds no longer wait with *Missing Compliance*, but App Store Connect may still ask the
-follow-up questions (mass-market self-classification, France); the maintainer answers them. This is the maintainer's
-classification, not a legal opinion of the project.
+`ITSAppUsesNonExemptEncryption` is `false` in `app/ios/Runner/Info.plist` and `app/macos/Runner/Info.plist` (ADR 0034,
+2026-10-06). The app contains no encryption of its own: HTTPS and certificate pinning use the OS TLS stack, tokens use the
+OS secure store, and SHA-256 is only hashing. So builds do not wait with *Missing Compliance* and there are no follow-up
+questions. Keep it that way: SQLite3MultipleCiphers, SQLCipher and the `cryptography` package must not come back, and the key must
+stay `false` (ADR 0034; an automatic CI check is planned). If a future feature needs its own cryptography, write an ADR first; it changes this answer. This
+is the maintainer's classification, not a legal opinion of the project.
 
 ### Version and build number
 `tool/ios_archive.sh` takes both from `app/pubspec.yaml` (`+N`). App Store Connect refuses a build number it has seen for
@@ -172,14 +173,14 @@ Connect, and the privacy manifest and export-compliance answer from step 5.1 of 
    address and a way for the reviewer to get past onboarding: the built-in demo (ADR 0031), see *App Review notes* below.
 5. Test with the checklist in the roadmap (VoiceOver, a contest run, an activation) and note findings as issues.
 
-Checked on 2026-10-04: `flutter build ios --release --no-codesign` succeeds (29.8 MB, minimum iOS 16.0) and contains
-`sqlite3mc.framework`, which has no privacy manifest of its own.
+Checked on 2026-10-04: `flutter build ios --release --no-codesign` succeeds (29.8 MB, minimum iOS 16.0) and contained
+`sqlite3mc.framework` (no longer; the build now uses plain `sqlite3`, ADR 0034, so verify the list below on the next build).
 
 ## Privacy manifest (iOS)
 
 `app/ios/Runner/PrivacyInfo.xcprivacy` declares no tracking, no tracking domains and no collected data, plus the
 "required reason" APIs that code in the app uses without a manifest of its own. Plugins and Flutter bring their own
-manifests; `sqlite3mc.framework` does not. Checked with `nm -u` on the release build of 2026-10-04: it imports `stat`,
+manifests; the bundled SQLite library does not. Checked with `nm -u` on the release build of 2026-10-04 (then `sqlite3mc.framework`; check again for the plain build): it imports `stat`,
 `fstat`, `lstat`, `utimes` and `futimes` (file timestamps) and `statfs` and `fstatfs` (disk space).
 
 - File timestamps: `C617.1`, files inside the app's own container (the database and its journal).
@@ -325,10 +326,10 @@ set comes out ad hoc and the Organizer says "No Team Found in Archive"; verified
 ### What to check on the first signed run
 - **The keychain.** macOS uses the legacy file-based keychain (`usesDataProtectionKeychain: false`, ADR 0006) because the
   data-protection keychain needs a provisioning profile with a keychain access group. Test: set up an account, quit,
-  start again. The token and the database must still unlock, with no keychain password prompt. A build signed
+  start again. The token must still be found, with no keychain password prompt. A build signed
   differently from an earlier one (development vs distribution) cannot read items of the other: expect to enter the
-  token again on a Mac where you ran a development build before, and, if the database key is lost, "Your log can't be
-  unlocked" (see the troubleshooting chapter). Use a clean Mac user or move `tideline.sqlite` aside first.
+  token again on a Mac where you ran a development build before. The database is a plain file and no longer depends on
+  the keychain. Use a clean Mac user or move `tideline.sqlite` aside first.
   If the legacy keychain does not work in the sandbox of the store build, switch to the data-protection keychain (a
   `keychain-access-groups` entitlement and the profile) and record it in ADR 0006.
 - ADIF import and export and backups still work through the system pickers (sandbox).

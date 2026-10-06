@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **No encryption of our own any more (ADR 0034).** The local database is plain SQLite and backups are plain files, so
+  the app needs no export-compliance declarations: `ITSAppUsesNonExemptEncryption` is `false` on iOS and macOS. Protection
+  at rest is the operating system's. The database and backups are excluded from iCloud, iTunes and Android backups, and
+  the backup button says that the file is not encrypted. The `cryptography` package and SQLite3MultipleCiphers are gone.
+- Backups use a new plain format (`TIDELINE-BACKUP 2`, gzip, hash-checked) with a size limit when restoring.
+
+### Removed
+- The backup passphrase. **Backups made by 0.5.x can no longer be restored.**
+
+### Upgrade notes
+- **0.5.x logs are not carried over.** The encrypted database of 0.5.x can't be opened. It is renamed aside (not deleted),
+  the app starts with an empty log and says so once. Sync before updating; QSOs already uploaded stay in Wavelog.
+
 ## [0.5.0] - 2026-10-06
 
 ### Added

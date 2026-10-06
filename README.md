@@ -6,7 +6,7 @@ Tideline is an open-source, cross-platform logging app for amateur radio operato
 offline-first, on a summit, in a park, at a field day or in a contest, and synchronises them with your
 own [Wavelog](https://www.wavelog.org) instance whenever a connection is available.
 
-> **Status: v0.5.0, preparing v1.0.** Logging, sync, offline DXCC, ADIF, encrypted backups, contest mode, activations,
+> **Status: v0.5.0, preparing v1.0.** Logging, sync, offline DXCC, ADIF, backups, contest mode, activations,
 > Fast Log Entry, several accounts and field mode work and are tested end to end against a mock Wavelog. Test builds go
 > to TestFlight and Google Play internal testing; store releases follow the [roadmap](docs/roadmap.md). Follow the
 > [CHANGELOG](CHANGELOG.md).
@@ -25,14 +25,14 @@ Tideline is built around four ideas:
    - Nothing is silently lost or duplicated.
 3. **Built for the field.** Usable with gloves, in bright sunlight, at night (red mode), one-handed and with a
    screen reader.
-4. **Secure and private by design.** No telemetry. Encrypted at rest. Least-privilege API tokens.
+4. **Secure and private by design.** No telemetry. No cryptography of our own, so nothing to declare for export compliance. API tokens in the OS secure store, with least privilege.
 
 ## Planned features
 
 | Feature | Milestone |
 |---|---|
 | ✅ Offline QSO logging, transparent sync queue with journal, tide-gauge sync indicator | MVP (v0.1) |
-| ✅ Offline DXCC / prefix lookup, ADIF import/export, encrypted backup, app lock | MVP (v0.1) |
+| ✅ Offline DXCC / prefix lookup, ADIF import/export, backup, app lock | MVP (v0.1) |
 | ✅ English and German UI, accessibility baseline (WCAG 2.2 AA) | MVP (v0.1) |
 | ✅ Contest mode: keyboard-first entry, serials, dupe checks, super check partial, rates, multipliers, Cabrillo, Wavelog contest sessions | v0.2 |
 | ✅ "Worked before" index from your own Wavelog log | v0.2 |

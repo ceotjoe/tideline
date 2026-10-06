@@ -21,7 +21,7 @@ it too.
   2,000 characters.
 - **Notes stay on your device.** Wavelog's interface has callsign notes of its own, but its API gives no access to them,
   so Tideline's notes are never sent to Wavelog and never appear in an ADIF export. They are in your
-  [encrypted backup](backups.md); restoring never overwrites a note you already have.
+  [backup](backups.md); restoring never overwrites a note you already have.
 - Saving an empty note deletes it.
 
 ## Browse
@@ -30,5 +30,5 @@ locator, DXCC and zones and the date you last worked them. Search by the start o
 station to read or edit its note; a filled note icon marks stations that have one.
 
 ## Privacy
-Names and places of other people are personal data. They stay in the encrypted database on your device and are not sent
+Names and places of other people are personal data. They stay in the database on your device and are not sent
 anywhere. See the [privacy statement](../../../PRIVACY.md).

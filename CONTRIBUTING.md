@@ -46,7 +46,7 @@ cd app && flutter run
 | `packages/tideline_domain` | Pure-Dart domain model and sync state machine |
 | `packages/tideline_adif` | ADIF / Cabrillo |
 | `packages/wavelog_client` | Wavelog API v2 client |
-| `packages/tideline_data` | Encrypted database, repositories and sync engine |
+| `packages/tideline_data` | Database, repositories and sync engine |
 | `packages/wavelog_mock` | Mock Wavelog server for tests |
 | `docs/` | Manual, architecture, ADRs, security and design system |
 

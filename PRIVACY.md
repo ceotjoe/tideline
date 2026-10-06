@@ -13,20 +13,23 @@ reporting service and no third-party tracker. The developers never receive your 
 
 | Data | Purpose | Protection |
 |---|---|---|
-| Your QSO log (callsigns, times, frequencies, locations, notes) | The app's core function | Encrypted database (SQLite3MultipleCiphers); key held in the OS secure store |
+| Your QSO log (callsigns, times, frequencies, locations, notes) | The app's core function | Local database on your device (plain SQLite, protected by the operating system; see below) |
 | Wavelog server address and API token(s) | Syncing to your own Wavelog | Token kept only in the OS secure store (Keychain, Android Keystore, Windows protected storage) |
-| Pinned server certificate fingerprints | Trusting your self-hosted server | Encrypted database |
-| Downloaded reference data (DXCC, SOTA, POTA, WWFF, call history, MASTER.SCP) | Offline lookups | Encrypted database (during installation a list is briefly held in a temporary table; it contains only public reference data) |
-| Worked-before index (calls, bands and modes from your log and your Wavelog server) | "Worked before" hints | Encrypted database; rebuildable from settings |
-| Callsign directory (name, place, locator and zones of the stations you worked, from your QSO history) | Showing what you know about a station while you log, offline | Encrypted database; rebuildable from settings; never sent anywhere |
-| Callsign notes (text you write about a station) | Your own memory aid | Encrypted database; included in encrypted backups; never sent to Wavelog or exported to ADIF |
-| Records of QSOs removed from this device to free space (local id, Wavelog id, time and a hash of the QSO's duplicate key; no callsign) | Not uploading or importing them again | Encrypted database; not part of backups or exports |
-| Activations (programme, reference, your grid square, start and end) | Activation logging and progress | Encrypted database |
-| Contest definitions you import | Contest rules and scoring | Encrypted database |
-| Settings | Your preferences | Encrypted database |
+| Pinned server certificate fingerprints | Trusting your self-hosted server | Local database |
+| Downloaded reference data (DXCC, SOTA, POTA, WWFF, call history, MASTER.SCP) | Offline lookups | Local database (during installation a list is briefly held in a temporary table; it contains only public reference data) |
+| Worked-before index (calls, bands and modes from your log and your Wavelog server) | "Worked before" hints | Local database; rebuildable from settings |
+| Callsign directory (name, place, locator and zones of the stations you worked, from your QSO history) | Showing what you know about a station while you log, offline | Local database; rebuildable from settings; never sent anywhere |
+| Callsign notes (text you write about a station) | Your own memory aid | Local database; included in backups; never sent to Wavelog or exported to ADIF |
+| Records of QSOs removed from this device to free space (local id, Wavelog id, time and a hash of the QSO's duplicate key; no callsign) | Not uploading or importing them again | Local database; not part of backups or exports |
+| Activations (programme, reference, your grid square, start and end) | Activation logging and progress | Local database |
+| Contest definitions you import | Contest rules and scoring | Local database |
+| Settings | Your preferences | Local database |
 
-Backups you export are encrypted with a passphrase you choose. Exports (ADIF, Cabrillo) are written only
-where you save them.
+**Tideline does not encrypt your data itself.** The local database and the backups you export are plain files. On the
+device they are protected by the operating system (the lock screen and its storage protection), and Tideline asks iOS,
+iPadOS and Android not to include them in iCloud, iTunes or Google backups. Backups and exports (ADIF, Cabrillo) are
+written only where you save them and are **not encrypted**, so keep them somewhere safe. Only the API token is kept in
+the OS secure store (Keychain, Android Keystore, Windows protected storage).
 
 ## Network connections
 
@@ -51,7 +54,8 @@ Tideline connects only to:
      `Tideline/<version>` user agent, and Tideline never contacts these addresses on its own. The operators of these
      sites see your IP address like for any web request.
 3. **Other Tideline devices on your local network**, only when you pair them (a later feature).
-   - Traffic stays in the local network and is end-to-end encrypted.
+   - Traffic stays in the local network. (Not built yet. Tideline ships no encryption of its own, ADR 0034, so this
+     needs a design before it can be offered.)
 
 The built-in **demo account** (Welcome screen) makes no network connection at all: its "server" runs inside the app.
 

@@ -7,7 +7,7 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 1. **Wavelog API tokens.** Can write to, and optionally delete from, the user's log.
 2. **The QSO log.** The user's data. It includes locations of portable operation, and it is irreplaceable when not yet synced.
 3. **Integrity of the log.** No lost, silently altered or duplicated QSOs.
-4. **The DB encryption key and the backup passphrase.**
+4. **The local database file and backup files.** Plain files since ADR 0034; protected by the OS only.
 5. **Pinned certificate fingerprints.** They decide whom we send tokens to.
 
 ## Actors
@@ -24,7 +24,7 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 |---|---|---|---|---|---|
 | T1 | Token sent to an impostor server via a MITM | S, I | A1 | TLS with platform roots. Self-signed certificates only via an explicit TOFU pin after showing the SHA-256 fingerprint; the inspection connection sends no data. No "disable validation" option. HTTP only on private LANs after opt-in. | Implemented (ADR 0009) |
 | T2 | Token leaked via logs, crash output, backups or prefs | I | A4, A5 | Token only in the secure store. Redaction in the logging layer. Backups exclude secrets. Android auto-backup excludes secure-storage files. | Designed (ADR 0006) |
-| T3 | QSO log read from a stolen device or backup | I | A4 | DB encrypted (ADR 0005). The key is in the secure store. Optional UI app lock (biometric/PIN). Backups: Argon2id + XChaCha20-Poly1305, tokens never included; restore caps KDF parameters (crafted files cannot exhaust memory). ADIF exports are plain text by design and say so. | Implemented |
+| T3 | QSO log read from a stolen device or a copied backup file | I | A4, A5 | **No app-level encryption (ADR 0034).** Protection is the OS's: device lock and storage protection; the database and backups are kept out of iCloud, iTunes and Android backups; optional UI app lock (biometric/PIN); tokens only in the secure store and never in backups. Backup files and ADIF exports are plain by design and say so in the UI, the manual and PRIVACY.md. Restore caps the decompressed size (crafted files cannot exhaust memory). | Accepted (ADR 0034) |
 | T4 | Crafted ADIF causing a crash, memory blow-up or injection | D, T | A3 | Strict parser with 64 MiB file, 64 KiB field and 500,000 record limits; fuzz tests; parsing in a separate isolate; imports above 50 QSOs wait for a dry-run review before upload. | Implemented |
 | T5 | Crafted API responses (huge, malformed, unexpected types) | D, T | A2 | Typed decoding with validation, 16 MiB response limit, 20 s timeouts; malformed responses become errors, never crashes. | Implemented |
 | T6 | Duplicate or lost QSOs from retries after timeouts or crashes | T | — | Reconcile before retry (ADR 0008). Crash-safe states. Every transition is journaled. | Designed |
@@ -34,7 +34,7 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 | T10 | Malicious reference list (SOTA, POTA, WWFF: wrong data, oversized, parser exploit) | T, D | A1, A3 | Downloads only when the user presses Download, from a URL shown and editable in settings (defaults are the official files). HTTPS only, also after redirects (≤ 3); no credentials, query or fragment in URLs; platform TLS validation, never disabled. Per-list size caps (POTA 20 MB, SOTA 60 MB, WWFF 60 MB) enforced on `Content-Length` and while streaming; the body goes to a temporary file that is deleted afterwards. Strict streaming CSV parser: a wrong header rejects the file, bad rows are skipped and counted, field length, column count and row count are capped (400,000 rows). The new list replaces the old one in a single transaction only after the whole file parsed, so a failed or cancelled download never damages the installed list. The request carries only a neutral `Tideline/<version>` User-Agent. Hash, source and fetch date are recorded. Lists are display data: they never change QSOs. MASTER.SCP: see T19. | Implemented (ADR 0021) |
 | T11 | DoS on the server through aggressive sync | D | — | Single worker. Exponential backoff with jitter. `Retry-After` honoured. | Designed |
 | T12 | Clock skew corrupting QSO times | T | — | Times are taken from the device's UTC clock. A warning is shown when the server's `Date` header differs by more than 2 minutes. The time is always editable before sync. | Planned (MVP) |
-| T13 | Other apps reading exported files | I | A5 | Exports go only where the user saves them, through the system file pickers. A warning that ADIF exports are unencrypted. | Planned (MVP) |
+| T13 | Other apps reading exported files | I | A5 | Exports go only where the user saves them, through the system file pickers. A warning that ADIF exports and backups are unencrypted. | Planned (MVP) |
 | T14 | Repudiation: "I never logged/deleted that" | R | — | Append-only sync journal for each QSO. Soft deletes with tombstones. | Designed |
 | T15 | Supply-chain compromise of a dependency | T, E | — | Minimal dependencies, lockfile, Dependabot, actions pinned to SHAs, SBOM per release, review of native-asset hooks. Release artifacts are built by jobs with a read-only token. Only the `publish` job can write to the repository (GitHub release), runs no project code and takes the files from the build jobs; `SHA256SUMS.txt` is attached (ADR 0030). Signing keys are repository secrets; credentials that publish to a store are secrets of the `production` environment with a required reviewer, visible only to the upload jobs. | In place (CI, release job) |
 | T16 | (Later) Rogue peer injecting or exfiltrating QSOs | S, T, I | A6 | QR pairing with public-key exchange. Mutual authentication. AEAD channel. Peer data validated like an import. Revocable pairings. A threat-model update is required before implementation. | Later |
@@ -46,23 +46,24 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 | T22 | Cabrillo export used for header injection (CR/LF in soapbox, name or address) | T | A3 | The writer replaces control characters and line separators with spaces and writes pure ASCII; tested with injection attempts. | Implemented |
 | T23 | Activation data sent to Wavelog is not what the user expects (own park or grid silently replaced by the station location's values) | T | A2 | Own references and grid are kept on every QSO and in ADIF exports. Wavelog ignores them in an upload and uses its station location (verified 2026-10-03, `wavelog-api.md`), so the setup screen shows whether the chosen location carries the reference and warns when none does. Tideline never edits Wavelog station locations (ADR 0021, option A). | Implemented |
 | T24 | Unencrypted copy of a reference list in SQLite's temporary storage while a list is installed | I | A5 | The list is public data (reference, name, region, position). It is collected in a SQLite temporary table, which lives in memory or in SQLite's temp file and is dropped when the install ends, also on failure. No QSO, callsign or other personal data is ever written there. | Accepted |
-| T25 | Personal data of third parties (names and places of the stations you worked, your own notes about them) leaks from the device or a backup | I | A4, A5 | The directory and the notes live in the encrypted database (T3); notes travel only in encrypted backups; neither is part of any ADIF or Cabrillo export or sent to Wavelog (it has no notes API, `wavelog-api.md`). Text from untrusted ADIF (server pull, restored backup) is cleaned (control characters removed, length limited), the directory is capped at 500,000 stations per account for server pulls, and notes are limited to 2,000 characters. | Implemented (ADR 0026) |
+| T25 | Personal data of third parties (names and places of the stations you worked, your own notes about them) leaks from the device or a backup | I | A4, A5 | The directory and the notes live in the local database (T3, not encrypted by the app); notes travel only in backups (also plain); neither is part of any ADIF or Cabrillo export or sent to Wavelog (it has no notes API, `wavelog-api.md`). Text from untrusted ADIF (server pull, restored backup) is cleaned (control characters removed, length limited), the directory is capped at 500,000 stations per account for server pulls, and notes are limited to 2,000 characters. | Implemented (ADR 0026) |
 | T26 | A QSO is removed from the device although Wavelog does not have it (data loss), or Wavelog data is deleted by mistake | T, D | A2 | Removal is a purge of the local copy, never a delete: nothing is sent to the server and no delete scope is used. Only QSOs that are synced, unchanged since and outside contests and activations are eligible, and Wavelog must confirm each by id and duplicate key through a read-only listing before removal; if the listing cannot be read completely (offline, revoked token, too large) nothing is removed. The conditions are re-checked inside the removal transaction. An ADIF export of exactly the removed QSOs is offered first and removal is cancelled if saving fails. The record that stays holds ids and a SHA-256 of the duplicate key, no callsign. | Implemented (ADR 0027) |
 | T27 | Crafted or huge Fast Log Entry text (pasted from elsewhere): crash, slow parsing, injected fields, QSOs logged wrongly | D, T | A3 | The parser is total (never throws), reads at most 5,000 lines of 500 characters and values of 256, uses only linear patterns, and is fuzzed (token soup, random characters, mutations, hostile sizes). A line with a problem is left out whole and cannot change what later lines inherit. Control characters are removed from values; fields that are core, that have their own word, or that Tideline sets (`my_*`, station, operator) are refused. Nothing is stored until the user confirms, all QSOs in one all-or-none transaction. | Implemented (ADR 0028) |
 
 ## Residual risks
 - **Compromised OS (jailbreak/root):** an attacker who controls the OS can read the secure store. This is out of scope,
   per MASVS L1.
-- **Lost DB key:** if the key is lost (for example a keychain reset), unsynced QSOs are unrecoverable without a backup.
-  Mitigated by backup prompts and by showing the unsynced count prominently.
+- **Plain database and backups (ADR 0034):** an attacker with the unlocked device, a rooted or jailbroken device, or a
+  copy of the file or a backup file can read the log, including third-party names and own notes and locations. Accepted:
+  encryption of our own would bring export-compliance obligations out of proportion for this app. The key-loss risk of
+  the encrypted design is gone with it.
 - **Self-hosted servers on plain HTTP:** the user explicitly accepts this risk, limited to private LANs.
 
 ## Changes in version 2
-- **New flows (MVP):** onboarding with certificate inspection (F2), ADIF import and export (F4), encrypted backup and
+- **New flows (MVP):** onboarding with certificate inspection (F2), ADIF import and export (F4), backup and
   restore (F4), and the optional app lock.
 - **New residual risk:** while the app lock is shown, the database stays open so sync can continue. The lock protects
-  the screen, not the data at rest; the data at rest is protected by the encrypted DB and the OS. Gating the key is
-  planned for v1.0.
+  the screen, not the data at rest; the data at rest is protected by the OS only (ADR 0034).
 
 ## Changes in version 3
 - **New inputs (contest mode):** user contest definitions (T18), the MASTER.SCP download and file import (T19), and the
@@ -75,7 +76,7 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
 - **New inputs (activations):** the SOTA, POTA and WWFF reference lists (T10), downloaded only on request.
 - **New flows:** the own references of an activation travel with the QSO to Wavelog, which replaces them with the
   values of the station location (T23). No new Wavelog scope is requested.
-- **New residual data:** reference lists in the local database (encrypted at rest) and a short-lived temporary table
+- **New residual data:** reference lists in the local database and a short-lived temporary table
   during installation (T24).
 - **Not changed:** the set of hosts the app talks to grows only by the three official list sources, each contacted only
   when the user presses Download. PRIVACY.md lists them.
@@ -116,3 +117,13 @@ for example new network flows, new input formats, peer sync or the WSJT-X listen
   under that name.
 - **New stored data:** none beyond a normal account; the demo token `wl2_demo_token` is public and valid only there.
 - **Residual risk:** the mock code ships in the binary. It listens on no port in the app.
+
+## Changes in version 5 (2026-10-06, ADR 0034)
+- **Encryption removed:** the database is plain SQLite and backups are plain, hash-checked gzip files. No app-level
+  cryptography remains (`cryptography`, SQLite3MultipleCiphers and Argon2id are gone); TLS, the secure store and
+  biometrics are the OS's, SHA-256 is only hashing.
+- **Weaker protection at rest, accepted** (T3, T25, residual risks). Mitigations: OS protection, exclusion from cloud
+  backups, app lock, plain-file warnings in the UI.
+- **Upgrade from 0.5.x:** an encrypted database is renamed aside, not deleted, and the app starts empty with a one-time
+  notice. The old key stays in the secure store only in that case.
+- **Future features** (LAN pairing, F6) must not add encryption of our own without a new ADR.

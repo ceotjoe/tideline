@@ -22,7 +22,7 @@ neu aufbauen** baut es mit neu auf.
   zu 2.000 Zeichen lang sein.
 - **Notizen bleiben auf deinem Gerät.** Die Wavelog-Oberfläche hat eigene Rufzeichen-Notizen, aber ihre API gibt keinen
   Zugriff darauf; Tidelines Notizen werden deshalb nie an Wavelog gesendet und stehen in keinem ADIF-Export. Sie sind in
-  deinem [verschlüsselten Backup](backups.md); ein Wiederherstellen überschreibt nie eine vorhandene Notiz.
+  deinem [Backup](backups.md); ein Wiederherstellen überschreibt nie eine vorhandene Notiz.
 - Eine leere Notiz zu speichern löscht sie.
 
 ## Durchsuchen
@@ -32,5 +32,5 @@ Rufzeichens oder nach Name oder Ort. Tippe auf eine Station, um ihre Notiz zu le
 Notiz-Symbol markiert Stationen mit Notiz.
 
 ## Datenschutz
-Namen und Orte anderer Personen sind personenbezogene Daten. Sie bleiben in der verschlüsselten Datenbank auf deinem Gerät
+Namen und Orte anderer Personen sind personenbezogene Daten. Sie bleiben in der Datenbank auf deinem Gerät
 und werden nirgendwohin gesendet. Siehe die [Datenschutzerklärung](../../../PRIVACY.md).

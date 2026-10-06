@@ -9,5 +9,5 @@
 | **Needs decision** after changing time, mode, frequency or station | Wavelog can't change these fields on an uploaded QSO. Choose **Replace in Wavelog** (needs the qso:delete permission) or **I'll fix it in Wavelog**. |
 | "Another QSO with the same callsign … in the same minute" | Wavelog stores only one QSO per callsign, band, mode and minute. Correct the time if it was a separate contact, or delete one of them. |
 | "Unknown certificate" during setup | Normal for self-hosted servers. Compare the fingerprint with your server's, then trust it. |
-| "Your log can't be unlocked" when starting | The key in your device's secure storage is missing, which can happen after restoring the device. Nothing is deleted. Restore a Tideline backup, or reinstall to start over. |
+| "Your earlier log could not be carried over" after updating from 0.5 | Version 0.5 encrypted its database; this version can't open it and starts empty. The old file stays on the device but is not used. QSOs that were already synced are still in your Wavelog logbook. |
 | iPhone/iPad doesn't sync in the background | Correct: iOS does not allow reliable background syncing. Open Tideline when you're back online. |

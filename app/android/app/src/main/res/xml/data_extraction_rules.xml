@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  No cloud backup or device transfer: the database key lives in the Android
-  Keystore and is never transferred, so a restored copy could not be opened
-  (and restored secure-storage prefs cause InvalidKeyException). Tideline
-  offers its own passphrase-encrypted backup instead. See ADR 0006.
+  No cloud backup or device transfer. The database is a plain file (ADR 0034),
+  so it must not leave the device through Google backups, and restored
+  secure-storage prefs cause InvalidKeyException (ADR 0006). Tideline offers
+  its own backup file instead, which the user saves where they choose.
 -->
 <data-extraction-rules>
     <cloud-backup>

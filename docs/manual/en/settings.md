@@ -9,7 +9,7 @@ again) returns to the list.
 | **Field mode** | One switch for operating outdoors, and its parts: see [Field mode](field-mode.md). |
 | **Appearance and language** | Theme (including sunlight and night red), touch-target size (glove mode), the easy-to-read font, text spacing and the language of the app. |
 | **Reference data** | The lists you download: SOTA, POTA and WWFF references, the super check partial list, contest definitions and the worked-before index. |
-| **Security and backup** | App lock, ADIF import and export, and the encrypted backup. |
+| **Security and backup** | App lock, ADIF import and export, and the backup. |
 | **Keyboard shortcuts** | Opens the list of all shortcuts. |
 
 Nothing changes in what the settings do: only where they are.

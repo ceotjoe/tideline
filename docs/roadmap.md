@@ -114,7 +114,8 @@ proposal.
   I have not found a reason that clearly fits SQLite's use, so 5.1 verifies it with Xcode's privacy report and Apple's
   list instead of guessing.
 - Encryption: HTTPS is exempt as OS-provided. The app's own encryption (SQLite3MultipleCiphers with ChaCha20, backups with
-  Argon2id and XChaCha20-Poly1305) is for the maintainer to classify. I am not giving a legal answer.
+  Argon2id and XChaCha20-Poly1305) was for the maintainer to classify. **Update 2026-10-06:** removed altogether, see
+  [ADR 0034](adr/0034-remove-app-level-encryption.md).
 - Without an account the app always shows onboarding. Internal testers use the maintainer's server; Beta App Review for
   external testers needs a way in.
 

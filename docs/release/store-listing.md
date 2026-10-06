@@ -5,12 +5,12 @@ today. Check the limits again in App Store Connect and Play Console before pasti
 
 ## Privacy answers (from `PRIVACY.md`)
 - **App Store privacy label:** Data Not Collected. No tracking, no third-party SDKs, no analytics.
-- **Play Data safety:** no data collected, none shared. Data is encrypted at rest on the device. Users can delete the data
+- **Play Data safety:** no data collected, none shared. The app does not encrypt the data itself; the operating system protects it on the device and it is excluded from cloud backups. Users can delete the data
   by removing an account or the app. The app contacts only servers the user configures and, on request, reference-list
   sources.
 - **Permissions:** no location, no camera. Biometrics (app lock, optional), local network (a Wavelog on the LAN),
   internet.
-- **Export compliance:** `ITSAppUsesNonExemptEncryption` is true; the follow-up answers are the maintainer's.
+- **Export compliance:** `ITSAppUsesNonExemptEncryption` is false (ADR 0034): the app uses only the OS's HTTPS and secure store and has no encryption of its own, so there are no follow-up questions. On Google Play, answer the data-safety encryption question accordingly: data in transit is encrypted (HTTPS), data at rest is not encrypted by the app.
 - **Age rating:** no user-generated content shared, no ads, no purchases, no web browsing.
 - **App access for review:** the Welcome screen's "Try the demo" needs no server or sign-in (ADR 0031).
 
@@ -39,13 +39,13 @@ doing (waiting, uploaded, checked, rejected) with a plain explanation, and nothi
   valid activation, park-to-park and summit-to-summit.
 • Offline callsign directory and your own notes, built from your log and your Wavelog history.
 • Worked-before hints and offline DXCC lookup.
-• ADIF import and export, and encrypted backups.
+• ADIF import and export, and backups.
 • Free up space by removing local copies of QSOs Wavelog already has. Nothing is deleted on Wavelog.
 • Field mode: sunlight theme, glove mode, a battery saver and keep-screen-on in one switch.
 • Made accessible: VoiceOver and TalkBack, text up to 200 %, themes for sunlight and for the night, full keyboard use.
 • English and German, chosen in the app.
 
-Private by design: no account with us, no ads, no analytics, no tracking. Your log is encrypted on your device and your
+Private by design: no account with us, no ads, no analytics, no tracking. Your log stays on your device, and your
 API token stays in the system's secure store. Tideline talks only to your Wavelog servers and, when you press Download,
 to the reference-list sources you can see. Open source under the MIT licence.
 

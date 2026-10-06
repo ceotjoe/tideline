@@ -23,8 +23,8 @@ none of them needs to be done in one sitting. Tick what works and write down wha
 - [ ] Log a duplicate (same call, band, mode, minute): the explanation is clear.
 - [ ] Revoke the token in Wavelog, sync: "Token problem" is explained, nothing is lost, a new token fixes it.
 - [ ] Quit and reopen the app during a sync: no QSO is duplicated or lost.
-- [ ] Settings → Export log as ADIF; open the file in another app. Create an encrypted backup and restore it on a
-  second device or after reinstalling.
+- [ ] Settings → Export log as ADIF; open the file in another app. Create a backup and restore it on a
+  second device or after reinstalling. The backup is not encrypted and says so.
 - [ ] Optional app lock with Face ID / Touch ID, and the passcode fallback.
 
 ## 2. Everyday logging (phone, tablet)

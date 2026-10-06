@@ -1,7 +1,7 @@
 # Data model
 
-The local database uses drift on SQLite3MultipleCiphers (encrypted at rest; see
-[ADR 0005](../adr/0005-encrypted-database-sqlite3mc.md)).
+The local database uses drift on plain SQLite. It is not encrypted by the app; see
+[ADR 0034](../adr/0034-remove-app-level-encryption.md), which superseded the encrypted design of ADR 0005.
 
 **Field names follow ADIF 3.1.x**, so import and export are lossless. Every ADIF field without a dedicated column is kept
 in `adif_extra` (a JSON object of `FIELD_NAME → string value`).

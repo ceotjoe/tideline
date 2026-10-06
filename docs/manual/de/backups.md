@@ -19,18 +19,25 @@ anderen Loggers.
 - **Große Importe:** Bevor mehr als 50 neue QSOs hochgeladen werden, zeigt Tideline eine Vorschau und wartet auf dich.
   Siehe [Synchronisierung und Konflikte](sync-and-conflicts.md).
 
-## Verschlüsselte Sicherung
+## Sicherung
 
-**Verschlüsselte Sicherung erstellen** speichert alles außer deinem Token, geschützt durch ein Passwort mit mindestens
-8 Zeichen.
-- **Bewahre das Passwort gut auf.** Ohne es lässt sich die Sicherung nicht öffnen – auch nicht von uns.
+**Sicherung erstellen** speichert alles außer deinem Token in einer `.tlbackup`-Datei.
+- **Die Sicherung ist nicht verschlüsselt.** Sie enthält deine QSOs, Standorte und Rufzeichen-Notizen lesbar; bewahre
+  sie also sicher auf, wie einen ADIF-Export.
 - **Wiederherstellen:** **Sicherung wiederherstellen** holt alles auf dasselbe oder ein neues Gerät zurück.
 - **Keine Duplikate:** QSOs, die schon in Wavelog waren, bleiben mit ihren Wavelog-Einträgen verknüpft und werden nicht
   erneut hochgeladen.
 - **Dein Token ist nicht in der Sicherung.** Gib nach dem Wiederherstellen auf einem neuen Gerät unter **Einstellungen →
   Wavelog-Konto → Neuen Token eingeben** einen neuen Token ein.
+- **Sicherungen aus Version 0.5 lassen sich nicht wiederherstellen.** Version 0.5 hat ihre Sicherungen mit einem Passwort
+  verschlüsselt; diese Version enthält keinen Verschlüsselungscode mehr. Tideline weist darauf hin, wenn du so eine Datei
+  auswählst.
 
-### Warum Android Tideline nicht in die Cloud sichert
+### Wie dein Log auf dem Gerät geschützt ist
 
-Tidelines Daten sind mit einem Schlüssel verschlüsselt, der das Gerät nie verlässt. Eine Cloud-Kopie ließe sich nicht
-öffnen. Daher schaltet Tideline die Systemsicherung ab und bietet stattdessen seine eigene verschlüsselte Sicherung an.
+Tideline verschlüsselt dein Log nicht selbst. Es verlässt sich auf das, was dein Gerät bietet: die Displaysperre und den
+Speicherschutz des Betriebssystems. Nutze einen Gerätecode und aktiviere die App-Sperre unter **Sicherheit und Backup**,
+wenn andere dein Gerät benutzen.
+
+Tideline bittet iPhone, iPad und Android, seine Daten nicht in iCloud-, iTunes- oder Google-Sicherungen aufzunehmen. Deine
+eigene Sicherungsdatei, die du selbst speicherst, ist der Weg, das Log auf ein anderes Gerät zu bringen.

@@ -27,7 +27,7 @@
 - **At-rest protection** comes from the OS (iOS/Android data protection with the device lock, optional app lock in the UI).
   The database and backups are excluded from iCloud/iTunes backup and from Android auto-backup and device transfer.
 - `ITSAppUsesNonExemptEncryption` is `false` in the iOS and macOS `Info.plist`.
-- CI guard: fail if `cryptography`, SQLite3MultipleCiphers or SQLCipher appear in the lockfile or hooks, or if the plist key
+- CI guard (planned, done in the last phase of this change): fail if `cryptography`, SQLite3MultipleCiphers or SQLCipher appear in the lockfile or hooks, or if the plist key
   is `true`.
 - Future features must not reintroduce our own encryption (for example LAN pairing should rely on OS TLS or wait).
 

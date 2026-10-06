@@ -1,6 +1,6 @@
 # Architecture overview
 
-Tideline is an offline-first Flutter app. The local encrypted database is the single source of truth for the UI.
+Tideline is an offline-first Flutter app. The local database is the single source of truth for the UI.
 Wavelog synchronisation is a separate, resumable and idempotent background process that never blocks logging.
 
 ## Workspace layout
