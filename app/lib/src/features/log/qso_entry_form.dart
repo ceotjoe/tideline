@@ -762,11 +762,14 @@ class _TimeRow extends StatelessWidget {
       initialDate: time.value,
       firstDate: DateTime.utc(1930),
       lastDate: DateTime.now().toUtc().add(const Duration(days: 1)),
+      // Typing is faster than dialling for a QSO from the paper log.
+      initialEntryMode: DatePickerEntryMode.input,
     );
     if (date == null || !context.mounted) return;
     final clock = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: time.value.hour, minute: time.value.minute),
+      initialEntryMode: TimePickerEntryMode.input,
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
         child: child!,

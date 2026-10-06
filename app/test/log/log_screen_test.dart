@@ -144,6 +144,36 @@ void main() {
     expect(find.text('Home QTH (DO1HOZ)'), findsNothing);
   });
 
+  testWidgets('changing the time opens the date and time as text fields', (
+    tester,
+  ) async {
+    await pumpTideline(tester, size: TestSizes.tabletPortrait);
+    await tester.ensureVisible(find.text('Change time'));
+    await tester.tap(find.text('Change time'));
+    await tester.pumpAndSettle();
+    // Input mode: an editable date, and the switch back to the calendar.
+    expect(find.byType(DatePickerDialog), findsOneWidget);
+    expect(find.byIcon(Icons.calendar_today), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(DatePickerDialog),
+        matching: find.byType(TextField),
+      ),
+      findsOneWidget,
+    );
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+    expect(find.byType(TimePickerDialog), findsOneWidget);
+    expect(find.byIcon(Icons.keyboard_outlined), findsNothing);
+    expect(
+      find.descendant(
+        of: find.byType(TimePickerDialog),
+        matching: find.byType(TextField),
+      ),
+      findsNWidgets(2),
+    );
+  });
+
   group('tablet landscape with the keyboard up', () {
     const keyboard = 430.0; // iPad landscape software keyboard, measured
     const labels = [
