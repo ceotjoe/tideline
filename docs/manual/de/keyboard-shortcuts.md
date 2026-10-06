@@ -10,7 +10,8 @@ Diese Tabelle wird aus dem Befehlsverzeichnis der App erzeugt.
 |---|---|---|---|
 | Tastenkürzel anzeigen | Überall | `⌘/` oder `F1` | `Strg+/` oder `F1` |
 | Zum Log | Überall | `⌘1` | `Strg+1` |
-| Zur Synchronisierung | Überall | `⌘2` | `Strg+2` |
+| Zu den Rufzeichen | Überall | `⌘2` | `Strg+2` |
+| Zur Synchronisierung | Überall | `⌘3` | `Strg+3` |
 | Einstellungen öffnen | Überall | `⌘,` | `Strg+,` |
 | Zurück | Überall | `Esc` oder `⌥←` oder `⌘[` | `Esc` oder `Alt+←` oder `Strg+[` |
 | Jetzt synchronisieren | Überall | `⇧⌘S` | `Strg+Umschalt+S` |

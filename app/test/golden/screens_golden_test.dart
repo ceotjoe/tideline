@@ -249,8 +249,7 @@ void main() {
         },
         callsignNotes: const {'DL1ABC': 'x'},
       );
-      GoRouter.of(tester.element(find.byType(Scaffold).first))
-          .go('/settings/callsigns');
+      GoRouter.of(tester.element(find.byType(Scaffold).first)).go('/callsigns');
       await tester.pumpAndSettle();
       await expectLater(
         find.byType(MaterialApp),

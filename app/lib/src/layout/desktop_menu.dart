@@ -62,6 +62,7 @@ List<_Menu> _menus({
     _Menu(l10n.menuGo, [
       [
         item(CommandIds.goToLog),
+        item(CommandIds.goToCallsigns),
         item(CommandIds.goToSync),
         item(CommandIds.goToSettings),
       ],

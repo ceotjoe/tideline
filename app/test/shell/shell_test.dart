@@ -90,7 +90,7 @@ void main() {
         tester,
       ) async {
         await pumpTideline(tester, size: size, textScale: 2, pending: 120);
-        for (final label in ['Log', 'Sync', 'Settings']) {
+        for (final label in ['Log', 'Callsigns', 'Sync', 'Settings']) {
           await tester.tap(find.text(label).last);
           await tester.pumpAndSettle();
           expect(tester.takeException(), isNull, reason: label);
@@ -176,12 +176,12 @@ void main() {
       expect(find.text('Ctrl+/ or F1'), findsOneWidget);
     });
 
-    testWidgets('⌘2 switches to sync on Apple platforms', (tester) async {
+    testWidgets('⌘3 switches to sync on Apple platforms', (tester) async {
       debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
       await pumpTideline(tester, size: TestSizes.desktop);
       await tester.sendKeyDownEvent(LogicalKeyboardKey.metaLeft);
-      await tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+      await tester.sendKeyEvent(LogicalKeyboardKey.digit3);
       await tester.sendKeyUpEvent(LogicalKeyboardKey.metaLeft);
       await tester.pumpAndSettle();
       expect(find.text('Sync history'), findsOneWidget);

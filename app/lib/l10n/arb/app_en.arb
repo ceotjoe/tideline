@@ -16,6 +16,10 @@
   "@actionHideKeyboard": {
     "description": "Button above the on-screen keyboard on phones. Closes the keyboard so the navigation bar is reachable."
   },
+  "navCallsigns": "Callsigns",
+  "@navCallsigns": {
+    "description": "Navigation destination: the offline callsign directory."
+  },
   "navSync": "Sync",
   "@navSync": {
     "description": "Navigation destination: sync status and history."
@@ -128,6 +132,10 @@
   },
   "commandGoToLog": "Go to log",
   "@commandGoToLog": {
+    "description": "Command name."
+  },
+  "commandGoToCallsigns": "Go to callsigns",
+  "@commandGoToCallsigns": {
     "description": "Command name."
   },
   "commandGoToSync": "Go to sync",
@@ -3157,10 +3165,6 @@
         "type": "int"
       }
     }
-  },
-  "callsignBrowse": "Browse callsigns and notes",
-  "@callsignBrowse": {
-    "description": "Settings entry that opens the directory page."
   },
   "callsignSearch": "Search call, name or place",
   "@callsignSearch": {

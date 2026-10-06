@@ -23,7 +23,12 @@ const _stations = {
   ),
 };
 
-Future<void> _open(WidgetTester tester) async {
+Future<void> _openTab(WidgetTester tester) async {
+  await tester.tap(find.text('Callsigns').last);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _openSettingsSection(WidgetTester tester) async {
   await tester.tap(find.text('Settings').last);
   await tester.pumpAndSettle();
   await tester.scrollUntilVisible(
@@ -36,7 +41,7 @@ Future<void> _open(WidgetTester tester) async {
   await tester.tap(find.text('Reference data'));
   await tester.pumpAndSettle();
   await tester.scrollUntilVisible(
-    find.text('Browse callsigns and notes'),
+    find.text('2 stations'),
     200,
     scrollable: find
         .byWidgetPredicate(
@@ -44,23 +49,32 @@ Future<void> _open(WidgetTester tester) async {
         )
         .last,
   );
-  await tester.ensureVisible(find.text('Browse callsigns and notes'));
-  await tester.pumpAndSettle();
 }
 
 void main() {
-  testWidgets('the section says what the directory holds and how to open it', (
+  testWidgets('the directory is a main destination, not hidden in settings', (
     tester,
   ) async {
-    await pumpTideline(
-      tester,
-      size: TestSizes.tabletPortrait,
-      callsigns: _stations,
-    );
-    await _open(tester);
-    expect(find.text('2 stations'), findsOneWidget);
-    expect(find.textContaining('kept on this device'), findsOneWidget);
+    await pumpTideline(tester, callsigns: _stations);
+    expect(find.byType(NavigationBar), findsOneWidget);
+    await _openTab(tester);
+    expect(find.text('Callsign directory'), findsOneWidget);
+    expect(find.text('DL1ABC'), findsOneWidget);
   });
+
+  testWidgets(
+    'the settings section says what the directory holds and how many stations',
+    (tester) async {
+      await pumpTideline(
+        tester,
+        size: TestSizes.tabletPortrait,
+        callsigns: _stations,
+      );
+      await _openSettingsSection(tester);
+      expect(find.text('2 stations'), findsOneWidget);
+      expect(find.textContaining('kept on this device'), findsOneWidget);
+    },
+  );
 
   testWidgets('the page lists the stations, newest first, with details', (
     tester,
@@ -70,9 +84,7 @@ void main() {
       size: TestSizes.tabletPortrait,
       callsigns: _stations,
     );
-    await _open(tester);
-    await tester.tap(find.text('Browse callsigns and notes'));
-    await tester.pumpAndSettle();
+    await _openTab(tester);
     expect(find.text('DL1ABC'), findsOneWidget);
     expect(find.textContaining('Anna · Berlin · JO62'), findsOneWidget);
     expect(find.textContaining('DXCC 230 · CQ 14 · ITU 28'), findsOneWidget);
@@ -87,9 +99,7 @@ void main() {
       size: TestSizes.tabletPortrait,
       callsigns: _stations,
     );
-    await _open(tester);
-    await tester.tap(find.text('Browse callsigns and notes'));
-    await tester.pumpAndSettle();
+    await _openTab(tester);
     await tester.enterText(find.byType(TextField), 'leeds');
     await tester.pumpAndSettle();
     expect(find.text('G4XYZ'), findsOneWidget);
@@ -107,9 +117,7 @@ void main() {
       size: TestSizes.tabletPortrait,
       callsigns: _stations,
     );
-    await _open(tester);
-    await tester.tap(find.text('Browse callsigns and notes'));
-    await tester.pumpAndSettle();
+    await _openTab(tester);
     expect(find.byIcon(Icons.sticky_note_2), findsNothing);
     await tester.tap(find.text('G4XYZ'));
     await tester.pumpAndSettle();
@@ -135,9 +143,7 @@ void main() {
       callsigns: _stations,
       callsignNotes: {'DL1ABC': 'x'},
     );
-    await _open(tester);
-    await tester.tap(find.text('Browse callsigns and notes'));
-    await tester.pumpAndSettle();
+    await _openTab(tester);
     expect(tester.takeException(), isNull);
     await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
     await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));

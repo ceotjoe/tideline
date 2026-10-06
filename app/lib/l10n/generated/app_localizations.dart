@@ -123,6 +123,12 @@ abstract class AppLocalizations {
   /// **'Hide keyboard'**
   String get actionHideKeyboard;
 
+  /// Navigation destination: the offline callsign directory.
+  ///
+  /// In en, this message translates to:
+  /// **'Callsigns'**
+  String get navCallsigns;
+
   /// Navigation destination: sync status and history.
   ///
   /// In en, this message translates to:
@@ -284,6 +290,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go to log'**
   String get commandGoToLog;
+
+  /// Command name.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to callsigns'**
+  String get commandGoToCallsigns;
 
   /// Command name.
   ///
@@ -3882,12 +3894,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =0{No stations yet} =1{1 station} other{{count} stations}}'**
   String callsignDirectoryCount(int count);
-
-  /// Settings entry that opens the directory page.
-  ///
-  /// In en, this message translates to:
-  /// **'Browse callsigns and notes'**
-  String get callsignBrowse;
 
   /// Label of the search field.
   ///

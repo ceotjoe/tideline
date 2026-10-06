@@ -74,6 +74,14 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
+              path: Routes.callsigns,
+              builder: (context, state) => const CallsignsPage(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
               path: Routes.sync,
               builder: (context, state) => const SyncScreen(),
             ),
@@ -117,10 +125,6 @@ GoRouter createRouter({ValueListenable<bool?>? hasAccount}) => GoRouter(
                   path: 'reference-data',
                   builder: (context, state) =>
                       const ReferenceDataSettingsPage(),
-                ),
-                GoRoute(
-                  path: 'callsigns',
-                  builder: (context, state) => const CallsignsPage(),
                 ),
                 GoRoute(
                   path: 'security',

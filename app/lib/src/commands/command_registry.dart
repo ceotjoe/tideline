@@ -6,6 +6,7 @@ import 'package:tideline/src/commands/command.dart';
 abstract final class CommandIds {
   static const showShortcuts = 'app.showShortcuts';
   static const goToLog = 'nav.log';
+  static const goToCallsigns = 'nav.callsigns';
   static const goToSync = 'nav.sync';
   static const goToSettings = 'nav.settings';
   static const goBack = 'nav.back';
@@ -51,10 +52,16 @@ final List<TidelineCommand> tidelineCommands = [
     defaults: const [KeyChord(LogicalKeyboardKey.digit1, primary: true)],
   ),
   TidelineCommand(
+    id: CommandIds.goToCallsigns,
+    scope: CommandScope.global,
+    label: (l) => l.commandGoToCallsigns,
+    defaults: const [KeyChord(LogicalKeyboardKey.digit2, primary: true)],
+  ),
+  TidelineCommand(
     id: CommandIds.goToSync,
     scope: CommandScope.global,
     label: (l) => l.commandGoToSync,
-    defaults: const [KeyChord(LogicalKeyboardKey.digit2, primary: true)],
+    defaults: const [KeyChord(LogicalKeyboardKey.digit3, primary: true)],
   ),
   TidelineCommand(
     id: CommandIds.goToSettings,

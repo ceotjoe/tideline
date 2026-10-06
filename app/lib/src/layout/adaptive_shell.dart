@@ -62,6 +62,11 @@ class AdaptiveShell extends ConsumerWidget {
         selected: Icons.edit_note,
         label: l10n.navLog,
       ),
+      (
+        icon: Icons.contacts_outlined,
+        selected: Icons.contacts,
+        label: l10n.navCallsigns,
+      ),
       (icon: Icons.waves_outlined, selected: Icons.waves, label: l10n.navSync),
       (
         icon: Icons.tune_outlined,
@@ -87,8 +92,9 @@ class AdaptiveShell extends ConsumerWidget {
       CommandIds.showShortcuts: () =>
           showShortcutsOverlay(context, ref.read(commandRegistryProvider)),
       CommandIds.goToLog: () => goTo(0),
-      CommandIds.goToSync: () => goTo(1),
-      CommandIds.goToSettings: () => goTo(2),
+      CommandIds.goToCallsigns: () => goTo(1),
+      CommandIds.goToSync: () => goTo(2),
+      CommandIds.goToSettings: () => goTo(3),
       // Only while there is a page to leave: Esc then passes through.
       if (parent != null) CommandIds.goBack: () => context.go(parent),
       CommandIds.openContest: () => context.push(Routes.contest),

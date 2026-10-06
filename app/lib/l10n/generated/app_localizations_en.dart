@@ -22,6 +22,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionHideKeyboard => 'Hide keyboard';
 
   @override
+  String get navCallsigns => 'Callsigns';
+
+  @override
   String get navSync => 'Sync';
 
   @override
@@ -115,6 +118,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commandGoToLog => 'Go to log';
+
+  @override
+  String get commandGoToCallsigns => 'Go to callsigns';
 
   @override
   String get commandGoToSync => 'Go to sync';
@@ -2413,9 +2419,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get callsignBrowse => 'Browse callsigns and notes';
-
-  @override
   String get callsignSearch => 'Search call, name or place';
 
   @override
@@ -2917,6 +2920,9 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   String get actionHideKeyboard => '[Ĥîðé ķéýƀöáŕð······]';
 
   @override
+  String get navCallsigns => '[Çáļļšîĝñš····]';
+
+  @override
   String get navSync => '[Šýñç··]';
 
   @override
@@ -3010,6 +3016,9 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
 
   @override
   String get commandGoToLog => '[Ĝö ţö ļöĝ····]';
+
+  @override
+  String get commandGoToCallsigns => '[Ĝö ţö çáļļšîĝñš······]';
 
   @override
   String get commandGoToSync => '[Ĝö ţö šýñç····]';
@@ -5368,9 +5377,6 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
     );
     return '$_temp0';
   }
-
-  @override
-  String get callsignBrowse => '[Ɓŕöŵšé çáļļšîĝñš áñð ñöţéš···········]';
 
   @override
   String get callsignSearch => '[Šéáŕçĥ çáļļ, ñáɱé öŕ þļáçé···········]';

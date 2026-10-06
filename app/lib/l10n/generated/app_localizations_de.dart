@@ -22,6 +22,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get actionHideKeyboard => 'Tastatur ausblenden';
 
   @override
+  String get navCallsigns => 'Rufzeichen';
+
+  @override
   String get navSync => 'Sync';
 
   @override
@@ -115,6 +118,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get commandGoToLog => 'Zum Log';
+
+  @override
+  String get commandGoToCallsigns => 'Zu den Rufzeichen';
 
   @override
   String get commandGoToSync => 'Zur Synchronisierung';
@@ -2429,9 +2435,6 @@ class AppLocalizationsDe extends AppLocalizations {
     );
     return '$_temp0';
   }
-
-  @override
-  String get callsignBrowse => 'Rufzeichen und Notizen durchsuchen';
 
   @override
   String get callsignSearch => 'Rufzeichen, Name oder Ort suchen';

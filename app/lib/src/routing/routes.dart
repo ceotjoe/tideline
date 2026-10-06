@@ -11,6 +11,7 @@ abstract final class Routes {
 
   static const welcome = '/welcome';
   static const log = '/log';
+  static const callsigns = '/callsigns';
   static const sync = '/sync';
   static const settings = '/settings';
 
@@ -32,9 +33,6 @@ abstract final class Routes {
   static const settingsReferenceData = '/settings/reference-data';
   static const settingsSecurity = '/settings/security';
   static const settingsDeveloper = '/settings/developer';
-
-  /// The offline callsign directory and its notes.
-  static const settingsCallsigns = '/settings/callsigns';
 
   /// Contest mode: the entry screen, or the setup when no session runs.
   static const contest = '/contest';

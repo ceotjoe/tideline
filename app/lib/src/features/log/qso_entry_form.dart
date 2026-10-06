@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -613,13 +614,24 @@ class QsoEntryFormState extends ConsumerState<QsoEntryForm> {
             ),
           ),
           vgap,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              SizedBox(width: buttonWidth, child: actions.clear),
-              SizedBox(width: metrics.sm),
-              SizedBox(width: buttonWidth, child: actions.log),
-            ],
+          // At large text the two buttons may not fit side by side at their
+          // natural width (a wider navigation rail leaves less room): they
+          // share what there is.
+          LayoutBuilder(
+            builder: (context, box) {
+              final width = math.min(
+                buttonWidth,
+                (box.maxWidth - metrics.sm) / 2,
+              );
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(width: width, child: actions.clear),
+                  SizedBox(width: metrics.sm),
+                  SizedBox(width: width, child: actions.log),
+                ],
+              );
+            },
           ),
         ],
       ),
