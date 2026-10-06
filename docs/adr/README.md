@@ -34,5 +34,6 @@
 - [0031](0031-demo-account.md) Built-in demo account for testing and App Review
 - [0032](0032-callsigns-in-main-navigation.md) The callsign directory as a main destination
 - [0033](0033-request-economy.md) Request economy: cached refresh, debounced triggers, rate-limit retry
+- [0034](0034-remove-app-level-encryption.md) Remove app-level encryption (DB and backups) to avoid export-compliance declarations
 
 New ADRs start from [0000-template.md](0000-template.md).

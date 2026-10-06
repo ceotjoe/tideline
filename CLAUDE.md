@@ -49,7 +49,9 @@ These rules apply to every session. If something here conflicts with what you fi
 
 ## Security rules
 - API tokens only in the platform secure store. Never in prefs, logs, backups or crash output.
-- Local DB encrypted at rest (SQLite3MultipleCiphers); the key lives in the secure store.
+- No app-level encryption (ADR 0034): the local DB and backups are plain files, protected by the OS (iOS/Android data
+  protection, device lock) and excluded from cloud backups. Do not add encryption code, `cryptography`, SQLite3MultipleCiphers
+  or SQLCipher; the only cryptography allowed is what the OS provides (TLS, secure store, biometrics) and SHA-2 hashing.
 - TLS:
   - HTTPS by default.
   - Self-signed certificates only via explicit trust-on-first-use pinning, shown with a clear warning.

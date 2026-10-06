@@ -1,6 +1,6 @@
 # 0006. Secrets: flutter_secure_storage
 
-- Status: accepted
+- Status: accepted; the DB key part is superseded by [ADR 0034](0034-remove-app-level-encryption.md) (API tokens stay in the secure store)
 - Date: 2026-10-01
 
 ## Context

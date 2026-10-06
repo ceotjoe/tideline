@@ -1,6 +1,6 @@
 # 0005. Encrypted database: drift + SQLite3MultipleCiphers
 
-- Status: accepted
+- Status: superseded by [ADR 0034](0034-remove-app-level-encryption.md)
 - Date: 2026-10-01
 
 ## Context

@@ -61,3 +61,7 @@ Point 6 is carried out by [ADR 0030](0030-release-automation.md): the upload run
 Point 4 is superseded for the key: the maintainer classified the app's own encryption as non-exempt, so
 `ITSAppUsesNonExemptEncryption` is `true` in the iOS and macOS `Info.plist`. Follow-up export questions in App Store
 Connect remain the maintainer's to answer.
+
+## Update 2026-10-06 (encryption removed)
+Superseded by [ADR 0034](0034-remove-app-level-encryption.md): the app no longer ships its own encryption, so
+`ITSAppUsesNonExemptEncryption` becomes `false` in the iOS and macOS `Info.plist`.
