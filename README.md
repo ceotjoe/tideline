@@ -80,7 +80,7 @@ cd packages/wavelog_mock && dart run bin/serve.dart
 cd packages/wavelog_mock && dart run bin/serve.dart --lan
 ```
 
-The end-to-end test uses the same mock: `cd app && flutter test integration_test -d macos`.
+The end-to-end test uses the same mock: `cd app && flutter test integration_test/end_to_end_test.dart -d macos`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 

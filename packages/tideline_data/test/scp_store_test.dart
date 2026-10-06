@@ -63,7 +63,9 @@ void main() {
     final info = await store.replace(text, sourceUrl: 'u', fetchedAt: fetched);
     watch.stop();
     expect(info.callCount, 50000);
-    expect(watch.elapsed, lessThan(const Duration(seconds: 2)));
+    // A budget that still catches a per-row regression but tolerates a slow
+    // CI runner (Windows took 3 s).
+    expect(watch.elapsed, lessThan(const Duration(seconds: 6)));
     expect((await store.load())!.length, 50000);
   });
 }

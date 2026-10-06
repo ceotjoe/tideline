@@ -78,17 +78,26 @@ void main() {
   );
 
   test('watch follows saves and deletes', () async {
-    final seen = expectLater(
-      notes.watch('DL1ABC').distinct(),
-      emitsInOrder([null, 'a', 'b', null]),
-    );
-    await Future<void>.delayed(const Duration(milliseconds: 150));
+    final seen = <String?>[];
+    final sub = notes.watch('DL1ABC').distinct().listen(seen.add);
+    addTearDown(sub.cancel);
+
+    // Wait for each emission instead of sleeping: a slow machine (the Windows
+    // runner) may deliver them late, but never out of order.
+    Future<void> expectSeen(List<String?> expected) async {
+      for (var i = 0; i < 500 && seen.length < expected.length; i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+      }
+      expect(seen, expected);
+    }
+
+    await expectSeen([null]);
     await notes.save('DL1ABC', 'a');
-    await Future<void>.delayed(const Duration(milliseconds: 150));
+    await expectSeen([null, 'a']);
     await notes.save('DL1ABC', 'b');
-    await Future<void>.delayed(const Duration(milliseconds: 150));
+    await expectSeen([null, 'a', 'b']);
     await notes.delete('DL1ABC');
-    await seen;
+    await expectSeen([null, 'a', 'b', null]);
   });
 
   test('watchCalls lists the stations that have a note', () async {
