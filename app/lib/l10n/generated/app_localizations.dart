@@ -1596,13 +1596,13 @@ abstract class AppLocalizations {
   /// Button.
   ///
   /// In en, this message translates to:
-  /// **'Create encrypted backup'**
+  /// **'Create backup'**
   String get actionCreateBackup;
 
   /// Hint.
   ///
   /// In en, this message translates to:
-  /// **'Everything except your token, protected by a passphrase.'**
+  /// **'Everything except your token. The file is not encrypted: keep it somewhere safe.'**
   String get backupHint;
 
   /// Confirmation.
@@ -1623,47 +1623,17 @@ abstract class AppLocalizations {
   /// **'Restored {added} QSOs ({skipped} were already here).'**
   String restoreDone(int added, int skipped);
 
-  /// Error.
+  /// Error when restoring a backup made by version 0.5 with a passphrase.
   ///
   /// In en, this message translates to:
-  /// **'That passphrase doesn\'t open this backup.'**
-  String get restoreWrongPassphrase;
+  /// **'This backup was encrypted by an earlier version of Tideline. This version can\'t open it any more.'**
+  String get restoreOldEncryptedBackup;
 
   /// Error.
   ///
   /// In en, this message translates to:
   /// **'This file isn\'t a Tideline backup or is damaged.'**
   String get restoreInvalidFile;
-
-  /// Dialog title.
-  ///
-  /// In en, this message translates to:
-  /// **'Backup passphrase'**
-  String get backupPassphraseTitle;
-
-  /// Hint.
-  ///
-  /// In en, this message translates to:
-  /// **'At least 8 characters. Without it the backup cannot be opened – keep it safe.'**
-  String get backupPassphraseHint;
-
-  /// Field label.
-  ///
-  /// In en, this message translates to:
-  /// **'Passphrase'**
-  String get fieldPassphrase;
-
-  /// Field label.
-  ///
-  /// In en, this message translates to:
-  /// **'Repeat passphrase'**
-  String get fieldPassphraseRepeat;
-
-  /// Validation.
-  ///
-  /// In en, this message translates to:
-  /// **'The passphrases don\'t match.'**
-  String get passphraseMismatch;
 
   /// Dialog title.
   ///

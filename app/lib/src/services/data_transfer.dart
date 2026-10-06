@@ -45,7 +45,7 @@ class ImportTooLargeException implements Exception {
   const new();
 }
 
-/// ADIF import/export and encrypted backups.
+/// ADIF import/export and plain backups.
 class DataTransfer {
   /// Creates the service.
   new(this._ref);
@@ -131,22 +131,17 @@ class DataTransfer {
     );
   }
 
-  /// An encrypted backup of everything (tokens excluded).
-  Future<Uint8List> createBackup(String passphrase) => BackupService(
+  /// A plain, unencrypted backup of everything (tokens excluded).
+  Future<Uint8List> createBackup() => BackupService(
     _ref.read(databaseProvider),
     _ref.read(qsoRepositoryProvider),
-  ).create(passphrase, nowMillis: DateTime.now().millisecondsSinceEpoch);
+  ).create(nowMillis: DateTime.now().millisecondsSinceEpoch);
 
   /// Restores a backup.
-  Future<RestoreReport> restoreBackup(Uint8List file, String passphrase) =>
-      BackupService(
-        _ref.read(databaseProvider),
-        _ref.read(qsoRepositoryProvider),
-      ).restore(
-        file,
-        passphrase,
-        nowMillis: DateTime.now().millisecondsSinceEpoch,
-      );
+  Future<RestoreReport> restoreBackup(Uint8List file) => BackupService(
+    _ref.read(databaseProvider),
+    _ref.read(qsoRepositoryProvider),
+  ).restore(file, nowMillis: DateTime.now().millisecondsSinceEpoch);
 
   /// Lets the user pick a file; returns its bytes, or null if cancelled.
   ///

@@ -76,7 +76,7 @@ void main() {
     await openPage(tester, 'Security and backup');
     expect(find.text('App lock'), findsOneWidget);
     await tester.scrollUntilVisible(
-      find.text('Create encrypted backup'),
+      find.text('Create backup'),
       200,
       scrollable: find
           .byWidgetPredicate(

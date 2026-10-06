@@ -923,11 +923,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportDone => 'Log exported.';
 
   @override
-  String get actionCreateBackup => 'Create encrypted backup';
+  String get actionCreateBackup => 'Create backup';
 
   @override
   String get backupHint =>
-      'Everything except your token, protected by a passphrase.';
+      'Everything except your token. The file is not encrypted: keep it somewhere safe.';
 
   @override
   String get backupDone => 'Backup saved.';
@@ -941,28 +941,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get restoreWrongPassphrase =>
-      'That passphrase doesn\'t open this backup.';
+  String get restoreOldEncryptedBackup =>
+      'This backup was encrypted by an earlier version of Tideline. This version can\'t open it any more.';
 
   @override
   String get restoreInvalidFile =>
       'This file isn\'t a Tideline backup or is damaged.';
-
-  @override
-  String get backupPassphraseTitle => 'Backup passphrase';
-
-  @override
-  String get backupPassphraseHint =>
-      'At least 8 characters. Without it the backup cannot be opened – keep it safe.';
-
-  @override
-  String get fieldPassphrase => 'Passphrase';
-
-  @override
-  String get fieldPassphraseRepeat => 'Repeat passphrase';
-
-  @override
-  String get passphraseMismatch => 'The passphrases don\'t match.';
 
   @override
   String get importDoneTitle => 'Import finished';
@@ -3835,11 +3819,11 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   String get exportDone => '[Ļöĝ éẋþöŕţéð.······]';
 
   @override
-  String get actionCreateBackup => '[Çŕéáţé éñçŕýþţéð ƀáçķûþ··········]';
+  String get actionCreateBackup => '[Çŕéáţé ƀáçķûþ······]';
 
   @override
   String get backupHint =>
-      '[Éṽéŕýţĥîñĝ éẋçéþţ ýöûŕ ţöķéñ, þŕöţéçţéð ƀý á þáššþĥŕášé.·······················]';
+      '[Éṽéŕýţĥîñĝ éẋçéþţ ýöûŕ ţöķéñ. Ţĥé ƒîļé îš ñöţ éñçŕýþţéð: ķééþ îţ šöɱéŵĥéŕé šáƒé.································]';
 
   @override
   String get backupDone => '[Ɓáçķûþ šáṽéð.······]';
@@ -3853,29 +3837,12 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   }
 
   @override
-  String get restoreWrongPassphrase =>
-      '[Ţĥáţ þáššþĥŕášé ðöéšñ\'ţ öþéñ ţĥîš ƀáçķûþ.·················]';
+  String get restoreOldEncryptedBackup =>
+      '[Ţĥîš ƀáçķûþ ŵáš éñçŕýþţéð ƀý áñ éáŕļîéŕ ṽéŕšîöñ öƒ Ţîðéļîñé. Ţĥîš ṽéŕšîöñ çáñ\'ţ öþéñ îţ áñý ɱöŕé.·······································]';
 
   @override
   String get restoreInvalidFile =>
       '[Ţĥîš ƒîļé îšñ\'ţ á Ţîðéļîñé ƀáçķûþ öŕ îš ðáɱáĝéð.····················]';
-
-  @override
-  String get backupPassphraseTitle => '[Ɓáçķûþ þáššþĥŕášé·······]';
-
-  @override
-  String get backupPassphraseHint =>
-      '[Åţ ļéášţ 8 çĥáŕáçţéŕš. Ŵîţĥöûţ îţ ţĥé ƀáçķûþ çáññöţ ƀé öþéñéð – ķééþ îţ šáƒé.·······························]';
-
-  @override
-  String get fieldPassphrase => '[Þáššþĥŕášé····]';
-
-  @override
-  String get fieldPassphraseRepeat => '[Ŕéþéáţ þáššþĥŕášé·······]';
-
-  @override
-  String get passphraseMismatch =>
-      '[Ţĥé þáššþĥŕášéš ðöñ\'ţ ɱáţçĥ.············]';
 
   @override
   String get importDoneTitle => '[Îɱþöŕţ ƒîñîšĥéð······]';

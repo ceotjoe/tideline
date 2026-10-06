@@ -1162,11 +1162,11 @@
   "@exportDone": {
     "description": "Confirmation."
   },
-  "actionCreateBackup": "Create encrypted backup",
+  "actionCreateBackup": "Create backup",
   "@actionCreateBackup": {
     "description": "Button."
   },
-  "backupHint": "Everything except your token, protected by a passphrase.",
+  "backupHint": "Everything except your token. The file is not encrypted: keep it somewhere safe.",
   "@backupHint": {
     "description": "Hint."
   },
@@ -1190,33 +1190,13 @@
       }
     }
   },
-  "restoreWrongPassphrase": "That passphrase doesn't open this backup.",
-  "@restoreWrongPassphrase": {
-    "description": "Error."
+  "restoreOldEncryptedBackup": "This backup was encrypted by an earlier version of Tideline. This version can't open it any more.",
+  "@restoreOldEncryptedBackup": {
+    "description": "Error when restoring a backup made by version 0.5 with a passphrase."
   },
   "restoreInvalidFile": "This file isn't a Tideline backup or is damaged.",
   "@restoreInvalidFile": {
     "description": "Error."
-  },
-  "backupPassphraseTitle": "Backup passphrase",
-  "@backupPassphraseTitle": {
-    "description": "Dialog title."
-  },
-  "backupPassphraseHint": "At least 8 characters. Without it the backup cannot be opened – keep it safe.",
-  "@backupPassphraseHint": {
-    "description": "Hint."
-  },
-  "fieldPassphrase": "Passphrase",
-  "@fieldPassphrase": {
-    "description": "Field label."
-  },
-  "fieldPassphraseRepeat": "Repeat passphrase",
-  "@fieldPassphraseRepeat": {
-    "description": "Field label."
-  },
-  "passphraseMismatch": "The passphrases don't match.",
-  "@passphraseMismatch": {
-    "description": "Validation."
   },
   "importDoneTitle": "Import finished",
   "@importDoneTitle": {

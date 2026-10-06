@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cryptography/cryptography.dart';
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:drift/drift.dart';
 import 'package:meta/meta.dart';
 import 'package:tideline_data/src/database/tideline_database.dart';
@@ -48,10 +48,7 @@ class ScpStore {
     required DateTime fetchedAt,
   }) async {
     final database = ScpDatabase.parse(text);
-    final digest = await Sha256().hash(utf8.encode(text));
-    final sha = [
-      for (final b in digest.bytes) b.toRadixString(16).padLeft(2, '0'),
-    ].join();
+    final sha = crypto.sha256.convert(utf8.encode(text)).toString();
     final at = fetchedAt.toUtc();
     await _db.transaction(() async {
       await _db.delete(_db.scpCalls).go();

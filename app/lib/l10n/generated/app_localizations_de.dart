@@ -925,11 +925,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get exportDone => 'Log exportiert.';
 
   @override
-  String get actionCreateBackup => 'Verschlüsselte Sicherung erstellen';
+  String get actionCreateBackup => 'Sicherung erstellen';
 
   @override
   String get backupHint =>
-      'Alles außer deinem Token, geschützt durch ein Passwort.';
+      'Alles außer deinem Token. Die Datei ist nicht verschlüsselt: Bewahre sie an einem sicheren Ort auf.';
 
   @override
   String get backupDone => 'Sicherung gespeichert.';
@@ -943,28 +943,12 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get restoreWrongPassphrase =>
-      'Mit diesem Passwort lässt sich die Sicherung nicht öffnen.';
+  String get restoreOldEncryptedBackup =>
+      'Diese Sicherung wurde von einer früheren Tideline-Version verschlüsselt. Diese Version kann sie nicht mehr öffnen.';
 
   @override
   String get restoreInvalidFile =>
       'Diese Datei ist keine Tideline-Sicherung oder beschädigt.';
-
-  @override
-  String get backupPassphraseTitle => 'Passwort der Sicherung';
-
-  @override
-  String get backupPassphraseHint =>
-      'Mindestens 8 Zeichen. Ohne es lässt sich die Sicherung nicht öffnen – bewahre es gut auf.';
-
-  @override
-  String get fieldPassphrase => 'Passwort';
-
-  @override
-  String get fieldPassphraseRepeat => 'Passwort wiederholen';
-
-  @override
-  String get passphraseMismatch => 'Die Passwörter stimmen nicht überein.';
 
   @override
   String get importDoneTitle => 'Import abgeschlossen';

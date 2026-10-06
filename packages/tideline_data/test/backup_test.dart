@@ -9,62 +9,51 @@ import 'package:tideline_domain/tideline_domain.dart';
 import 'support/memory_secret_store.dart';
 import 'support/test_database.dart';
 
-// Small KDF parameters keep the tests fast; production uses the defaults.
-const _codec = BackupCodec(memoryKiB: 1024, iterations: 1);
+const _codec = BackupCodec();
 
 void main() {
   group('BackupCodec', () {
-    test('round-trips and hides the content', () async {
+    test('round-trips', () {
       final data = List<int>.generate(5000, (i) => i % 7);
-      final file = await _codec.encrypt(data, 'correct horse');
-      expect(await _codec.decrypt(file, 'correct horse'), data);
-      expect(String.fromCharCodes(file), isNot(contains('\x00\x01\x02\x03')));
+      expect(_codec.decode(_codec.encode(data)), data);
     });
 
-    test('a wrong passphrase is reported as such', () async {
-      final file = await _codec.encrypt([1, 2, 3], 'right');
-      await expectLater(
-        _codec.decrypt(file, 'wrong'),
-        throwsA(isA<BackupPassphraseException>()),
-      );
+    test('starts with the plain version-2 marker', () {
+      final file = _codec.encode(utf8.encode('{"a":1}'));
+      expect(String.fromCharCodes(file.sublist(0, 18)), 'TIDELINE-BACKUP 2\n');
     });
 
-    test('tampering is detected (header and body are authenticated)', () async {
-      final file = await _codec.encrypt([1, 2, 3], 'pw');
-      final body = Uint8List.fromList(file)..[file.length - 20] ^= 1;
-      await expectLater(
-        _codec.decrypt(body, 'pw'),
-        throwsA(isA<BackupPassphraseException>()),
-      );
-      final text = String.fromCharCodes(file);
-      final header = Uint8List.fromList(
-        text.replaceFirst('"t":1', '"t":2').codeUnits,
-      );
-      await expectLater(
-        _codec.decrypt(header, 'pw'),
-        throwsA(isA<BackupPassphraseException>()),
-      );
-    });
-
-    test('rejects foreign files and hostile parameters', () async {
-      await expectLater(
-        _codec.decrypt('hello'.codeUnits, 'pw'),
+    test('damage is reported as a format error', () {
+      final file = _codec.encode(List.filled(1000, 1));
+      final damaged = Uint8List.fromList(file)..[file.length - 6] ^= 1;
+      expect(
+        () => _codec.decode(damaged),
         throwsA(isA<BackupFormatException>()),
       );
-      const header = {
-        'kdf': 'argon2id',
-        'm': 99999999,
-        't': 1,
-        'p': 1,
-        'salt': 'AAAAAAAAAAAAAAAAAAAAAA==',
-        'cipher': 'xchacha20-poly1305',
-        'nonce': 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-      };
-      final hostile = 'TIDELINE-BACKUP 1\n${jsonEncode(header)}\n'.codeUnits;
-      await expectLater(
-        _codec.decrypt([...hostile, ...List.filled(32, 0)], 'pw'),
+      expect(
+        () => _codec.decode(file.sublist(0, file.length - 10)),
         throwsA(isA<BackupFormatException>()),
       );
+    });
+
+    test('rejects foreign files', () {
+      expect(
+        () => _codec.decode('hello'.codeUnits),
+        throwsA(isA<BackupFormatException>()),
+      );
+    });
+
+    test('recognises an encrypted backup of 0.5.x', () {
+      expect(
+        () => _codec.decode('TIDELINE-BACKUP 1\n{}\n'.codeUnits),
+        throwsA(isA<BackupEncryptedException>()),
+      );
+    });
+
+    test('caps the decompressed size (zip bomb)', () {
+      const small = BackupCodec(maxPayloadBytes: 1000);
+      final bomb = _codec.encode(List.filled(100000, 0));
+      expect(() => small.decode(bomb), throwsA(isA<BackupFormatException>()));
     });
   });
 
@@ -122,11 +111,7 @@ void main() {
       await notes.save('DL1ABC', 'Calls on 40 m');
       await notes.save('G4XYZ', 'Gone');
       await notes.delete('G4XYZ');
-      final file = await BackupService(
-        db,
-        qsos,
-        codec: _codec,
-      ).create('pw', nowMillis: 1);
+      final file = await BackupService(db, qsos).create(nowMillis: 1);
       expect(String.fromCharCodes(file), isNot(contains('wl2_secret_token')));
 
       // New device.
@@ -136,8 +121,8 @@ void main() {
         HlcClock('b'),
         SyncMachine(random: Random(1)),
       );
-      final service2 = BackupService(db2, qsos2, codec: _codec);
-      final report = await service2.restore(file, 'pw', nowMillis: 2);
+      final service2 = BackupService(db2, qsos2);
+      final report = await service2.restore(file, nowMillis: 2);
       expect((report.accountsAdded, report.qsosAdded), (1, 2));
       // Notes come back; a deleted one does not, and its text is not in the
       // file.
@@ -159,13 +144,13 @@ void main() {
       );
 
       // Restoring again adds nothing.
-      final again = await service2.restore(file, 'pw', nowMillis: 3);
+      final again = await service2.restore(file, nowMillis: 3);
       expect((again.qsosAdded, again.qsosSkipped), (0, 2));
       expect(again.notesAdded, 0);
 
       // A note typed on the new device is not overwritten by a restore.
       await notes2.save('DL1ABC', 'newer');
-      await service2.restore(file, 'pw', nowMillis: 4);
+      await service2.restore(file, nowMillis: 4);
       expect(await notes2.find('DL1ABC'), 'newer');
     });
   });

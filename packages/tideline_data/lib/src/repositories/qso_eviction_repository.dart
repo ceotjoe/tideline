@@ -1,4 +1,4 @@
-import 'package:cryptography/dart.dart';
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:drift/drift.dart';
 import 'package:meta/meta.dart';
 import 'package:tideline_data/src/database/tideline_database.dart';
@@ -200,9 +200,7 @@ class QsoEvictionRepository {
     final k = q.dupeKey;
     final text =
         '${k.call}|${k.minuteMillis}|${k.band}|${k.mode}|${q.stationProfileId}';
-    final digest = const DartSha256().hashSync(text.codeUnits);
-    return [for (final b in digest.bytes) b.toRadixString(16).padLeft(2, '0')]
-        .join();
+    return crypto.sha256.convert(text.codeUnits).toString();
   }
 
   /// The fingerprints of the QSOs of [accountId] removed from this device.

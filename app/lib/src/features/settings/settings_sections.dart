@@ -309,13 +309,11 @@ class DataSection extends ConsumerWidget {
           },
         ),
         ListTile(
-          leading: const Icon(Icons.enhanced_encryption_outlined),
+          leading: const Icon(Icons.save_alt),
           title: Text(l10n.actionCreateBackup),
           subtitle: Text(l10n.backupHint),
           onTap: () async {
-            final passphrase = await _askPassphrase(context, confirm: true);
-            if (passphrase == null) return;
-            final bytes = await transfer.createBackup(passphrase);
+            final bytes = await transfer.createBackup();
             final saved = await transfer.saveFile(
               'tideline-${_stamp()}.tlbackup',
               bytes,
@@ -330,18 +328,18 @@ class DataSection extends ConsumerWidget {
           onTap: () async {
             final bytes = await transfer.pickFile(['tlbackup']);
             if (bytes == null || !context.mounted) return;
-            final passphrase = await _askPassphrase(context, confirm: false);
-            if (passphrase == null) return;
             try {
-              final report = await transfer.restoreBackup(bytes, passphrase);
+              final report = await transfer.restoreBackup(bytes);
               if (context.mounted) {
                 _snack(
                   context,
                   l10n.restoreDone(report.qsosAdded, report.qsosSkipped),
                 );
               }
-            } on BackupPassphraseException {
-              if (context.mounted) _snack(context, l10n.restoreWrongPassphrase);
+            } on BackupEncryptedException {
+              if (context.mounted) {
+                _snack(context, l10n.restoreOldEncryptedBackup);
+              }
             } on BackupFormatException {
               if (context.mounted) _snack(context, l10n.restoreInvalidFile);
             }
@@ -409,71 +407,6 @@ class DataSection extends ConsumerWidget {
     } on ImportTooLargeException {
       if (context.mounted) _snack(context, l10n.importTooLarge);
     }
-  }
-
-  Future<String?> _askPassphrase(
-    BuildContext context, {
-    required bool confirm,
-  }) async {
-    final l10n = AppLocalizations.of(context);
-    final first = TextEditingController();
-    final second = TextEditingController();
-    final result = await showDialog<String>(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          final tooShort = first.text.length < 8;
-          final mismatch = confirm && first.text != second.text;
-          return AlertDialog(
-            title: Text(l10n.backupPassphraseTitle),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (confirm) Text(l10n.backupPassphraseHint),
-                TextField(
-                  controller: first,
-                  obscureText: true,
-                  autocorrect: false,
-                  enableSuggestions: false,
-                  decoration: InputDecoration(labelText: l10n.fieldPassphrase),
-                  onChanged: (_) => setState(() {}),
-                ),
-                if (confirm)
-                  TextField(
-                    controller: second,
-                    obscureText: true,
-                    autocorrect: false,
-                    enableSuggestions: false,
-                    decoration: InputDecoration(
-                      labelText: l10n.fieldPassphraseRepeat,
-                      errorText: mismatch && second.text.isNotEmpty
-                          ? l10n.passphraseMismatch
-                          : null,
-                    ),
-                    onChanged: (_) => setState(() {}),
-                  ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(l10n.certCancel),
-              ),
-              TextButton(
-                onPressed:
-                    (confirm && (tooShort || mismatch)) || first.text.isEmpty
-                    ? null
-                    : () => Navigator.of(context).pop(first.text),
-                child: Text(l10n.actionContinue),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-    first.dispose();
-    second.dispose();
-    return result;
   }
 }
 

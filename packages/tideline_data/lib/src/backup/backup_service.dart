@@ -33,7 +33,7 @@ class RestoreReport {
   final int notesAdded;
 }
 
-/// Creates and restores encrypted backups of the whole log.
+/// Creates and restores plain (unencrypted) backups of the whole log.
 ///
 /// A backup contains accounts (without tokens: those never leave the
 /// secure store), station locations and every QSO as an ADIF record with
@@ -50,8 +50,8 @@ class BackupService {
   static const _format = 'tideline-backup';
   static const _version = 1;
 
-  /// An encrypted backup protected by [passphrase].
-  Future<Uint8List> create(String passphrase, {required int nowMillis}) async {
+  /// A plain backup file. It is not encrypted (ADR 0034).
+  Future<Uint8List> create({required int nowMillis}) async {
     final accounts = await _db.select(_db.accounts).get();
     final stations = await _db.select(_db.stationProfiles).get();
     final qsos = await _qsos.all();
@@ -117,16 +117,15 @@ class BackupService {
           },
       ],
     };
-    return await _codec.encrypt(utf8.encode(jsonEncode(payload)), passphrase);
+    return _codec.encode(utf8.encode(jsonEncode(payload)));
   }
 
   /// Restores a backup. Existing data is never overwritten.
   Future<RestoreReport> restore(
-    List<int> file,
-    String passphrase, {
+    List<int> file, {
     required int nowMillis,
   }) async {
-    final plain = await _codec.decrypt(file, passphrase);
+    final plain = _codec.decode(file);
     final Map<String, dynamic> payload;
     try {
       payload = jsonDecode(utf8.decode(plain)) as Map<String, dynamic>;

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:cryptography/cryptography.dart';
+import 'package:crypto/crypto.dart';
 
 /// The backup file could not be read (corrupt, truncated or not a Tideline
 /// backup).
@@ -17,148 +17,102 @@ class BackupFormatException implements Exception {
   String toString() => 'BackupFormatException($reason)';
 }
 
-/// The passphrase does not decrypt the backup (or the file was altered).
-class BackupPassphraseException implements Exception {
+/// The file is an encrypted backup of Tideline 0.5.x. Newer versions contain
+/// no decryption code (ADR 0034), so it cannot be restored.
+class BackupEncryptedException implements Exception {
   /// Creates the exception.
   const new();
 
   @override
-  String toString() => 'BackupPassphraseException';
+  String toString() => 'BackupEncryptedException';
 }
 
-/// Encrypted backup container:
+/// Plain backup container: `TIDELINE-BACKUP 2\n` + the SHA-256 of the body
+/// (32 bytes) + the gzipped payload.
 ///
-/// `TIDELINE-BACKUP 1\n` + header JSON + `\n` + XChaCha20-Poly1305
-/// ciphertext (with MAC) of the gzipped payload. The key is derived from the
-/// passphrase with Argon2id; the header is authenticated as associated data.
-/// See docs/security/threat-model.md (T3).
+/// The file is **not encrypted** (ADR 0034); gzip only makes it smaller and
+/// the hash only detects damage, it is no protection against tampering.
+/// Backup files are untrusted input when restored, so the
+/// decompressed size is capped.
 class BackupCodec {
-  /// Creates a codec. Defaults follow the OWASP Argon2id recommendation
-  /// (19 MiB, 2 iterations, 1 lane).
-  const new({this.memoryKiB = 19456, this.iterations = 2});
+  /// Creates a codec.
+  const new({this.maxPayloadBytes = 256 * 1024 * 1024});
 
-  /// Argon2id memory in KiB for new backups.
-  final int memoryKiB;
+  /// Largest payload accepted when restoring, after decompression.
+  final int maxPayloadBytes;
 
-  /// Argon2id iterations for new backups.
-  final int iterations;
+  static const _magic = 'TIDELINE-BACKUP 2\n';
+  static const _legacyMagic = 'TIDELINE-BACKUP 1\n';
 
-  static const _magic = 'TIDELINE-BACKUP 1\n';
-
-  // Limits for parameters read from a file, so a crafted backup cannot make
-  // the app allocate unbounded memory or spin for minutes.
-  static const _maxMemoryKiB = 262144;
-  static const _maxIterations = 10;
-
-  /// Encrypts [payload] with [passphrase].
-  Future<Uint8List> encrypt(List<int> payload, String passphrase) async {
-    final salt = SecretKeyData.random(length: 16).bytes;
-    final cipher = Xchacha20.poly1305Aead();
-    final nonce = cipher.newNonce();
-    final header = utf8.encode(
-      jsonEncode({
-        'kdf': 'argon2id',
-        'm': memoryKiB,
-        't': iterations,
-        'p': 1,
-        'salt': base64.encode(salt),
-        'cipher': 'xchacha20-poly1305',
-        'nonce': base64.encode(nonce),
-      }),
-    );
-    final key = await _deriveKey(passphrase, salt, memoryKiB, iterations);
-    final box = await cipher.encrypt(
-      gzip.encode(payload),
-      secretKey: key,
-      nonce: nonce,
-      aad: header,
-    );
+  /// Wraps [payload] into a backup file.
+  Uint8List encode(List<int> payload) {
+    final body = gzip.encode(payload);
     return Uint8List.fromList([
       ...ascii.encode(_magic),
-      ...header,
-      0x0A,
-      ...box.cipherText,
-      ...box.mac.bytes,
+      ...sha256.convert(body).bytes,
+      ...body,
     ]);
   }
 
-  /// Decrypts a backup made by [encrypt].
-  Future<List<int>> decrypt(List<int> file, String passphrase) async {
+  /// Unwraps a file made by [encode].
+  List<int> decode(List<int> file) {
     final magic = ascii.encode(_magic);
-    if (file.length < magic.length || !_startsWith(file, magic)) {
+    if (_startsWith(file, ascii.encode(_legacyMagic))) {
+      throw const BackupEncryptedException();
+    }
+    if (!_startsWith(file, magic)) {
       throw const BackupFormatException('not a Tideline backup');
     }
-    final headerEnd = file.indexOf(0x0A, magic.length);
-    if (headerEnd < 0 || headerEnd - magic.length > 4096) {
-      throw const BackupFormatException('no header');
-    }
-    final header = file.sublist(magic.length, headerEnd);
-    final Map<String, dynamic> h;
-    try {
-      h = jsonDecode(utf8.decode(header)) as Map<String, dynamic>;
-    } on Object {
-      throw const BackupFormatException('malformed header');
-    }
-    final m = h['m'];
-    final t = h['t'];
-    if (h['kdf'] != 'argon2id' ||
-        h['cipher'] != 'xchacha20-poly1305' ||
-        h['p'] != 1 ||
-        m is! int ||
-        t is! int ||
-        m < 8 ||
-        m > _maxMemoryKiB ||
-        t < 1 ||
-        t > _maxIterations) {
-      throw const BackupFormatException('unsupported parameters');
-    }
-    final List<int> salt;
-    final List<int> nonce;
-    try {
-      salt = base64.decode(h['salt'] as String);
-      nonce = base64.decode(h['nonce'] as String);
-    } on Object {
-      throw const BackupFormatException('malformed salt or nonce');
-    }
-    final body = file.sublist(headerEnd + 1);
-    if (body.length < 16 || nonce.length != 24 || salt.length < 16) {
+    final hashEnd = magic.length + 32;
+    if (file.length <= hashEnd) {
       throw const BackupFormatException('truncated');
     }
-    final key = await _deriveKey(passphrase, salt, m, t);
+    final body = file.sublist(hashEnd);
+    final expected = file.sublist(magic.length, hashEnd);
+    final actual = sha256.convert(body).bytes;
+    var same = true;
+    for (var i = 0; i < 32; i++) {
+      if (expected[i] != actual[i]) same = false;
+    }
+    if (!same) throw const BackupFormatException('damaged');
+    final out = _CappedSink(maxPayloadBytes);
     try {
-      final plain = await Xchacha20.poly1305Aead().decrypt(
-        SecretBox(
-          body.sublist(0, body.length - 16),
-          nonce: nonce,
-          mac: Mac(body.sublist(body.length - 16)),
-        ),
-        secretKey: key,
-        aad: header,
-      );
-      return gzip.decode(plain);
-    } on SecretBoxAuthenticationError {
-      throw const BackupPassphraseException();
-    } on FormatException {
+      gzip.decoder.startChunkedConversion(out)
+        ..add(body)
+        ..close();
+    } on _TooLarge {
+      throw const BackupFormatException('payload too large');
+    } on Object {
       throw const BackupFormatException('corrupt payload');
     }
+    return out.bytes.takeBytes();
   }
 
   static bool _startsWith(List<int> data, List<int> prefix) {
+    if (data.length < prefix.length) return false;
     for (var i = 0; i < prefix.length; i++) {
       if (data[i] != prefix[i]) return false;
     }
     return true;
   }
+}
 
-  static Future<SecretKey> _deriveKey(
-    String passphrase,
-    List<int> salt,
-    int memory,
-    int iterations,
-  ) => Argon2id(
-    parallelism: 1,
-    memory: memory,
-    iterations: iterations,
-    hashLength: 32,
-  ).deriveKey(secretKey: SecretKey(utf8.encode(passphrase)), nonce: salt);
+class _TooLarge implements Exception {
+  const new();
+}
+
+class _CappedSink implements Sink<List<int>> {
+  new(this._max);
+
+  final int _max;
+  final BytesBuilder bytes = BytesBuilder(copy: false);
+
+  @override
+  void add(List<int> data) {
+    if (bytes.length + data.length > _max) throw const _TooLarge();
+    bytes.add(data);
+  }
+
+  @override
+  void close() {}
 }
