@@ -49,6 +49,28 @@ void main() {
     });
   });
 
+  group('status bar inset', () {
+    for (final tab in ['Log', 'Callsigns', 'Settings']) {
+      testWidgets('$tab starts right below the tide gauge', (tester) async {
+        // A phone with a notch: the gauge clears it, the screen must not
+        // pad for it again.
+        tester.view.padding = FakeViewPadding(
+          top: 59 * tester.view.devicePixelRatio,
+        );
+        tester.view.viewPadding = tester.view.padding;
+        addTearDown(tester.view.reset);
+        await pumpTideline(tester);
+        await tester.tap(find.text(tab).last);
+        await tester.pumpAndSettle();
+        final gauge = tester.getRect(find.byType(TideGauge));
+        final appBar = tester.getRect(find.byType(AppBar).first);
+        expect(gauge.top, 59);
+        expect(appBar.top, gauge.bottom);
+        expect(appBar.height, kToolbarHeight);
+      });
+    }
+  });
+
   group('accessibility', () {
     for (final theme in ThemeChoice.values) {
       for (final size in [TestSizes.phone, TestSizes.tabletLandscape]) {

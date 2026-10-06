@@ -81,7 +81,19 @@ class AdaptiveShell extends ConsumerWidget {
           bottom: false,
           child: TideGauge(pendingCount: pending, animate: !saver),
         ),
-        Expanded(child: navigationShell),
+        // The gauge already sits below the status bar; without this every
+        // screen's app bar would pad for it a second time. The Builder
+        // matters: it takes the MediaQuery from below the shell's Scaffold,
+        // which has already consumed the keyboard inset.
+        Expanded(
+          child: Builder(
+            builder: (context) => MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              child: navigationShell,
+            ),
+          ),
+        ),
       ],
     );
 
