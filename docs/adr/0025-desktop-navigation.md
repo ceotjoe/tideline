@@ -18,7 +18,7 @@
 - **A sidebar, never a bottom bar.** Desktop windows always use the navigation rail, also at a phone-like width. The
   rail shows labels beside the icons (sidebar) from 1100 dp on desktop, 1440 dp elsewhere (tablets in landscape need
   the room). Screens still adapt to the width they are left, as before.
-- **A menu bar from the registry.** Menus *Go* (log, sync, settings, go back), *Operate* (sync now, contest mode, start
+- **A menu bar from the registry.** Menus *Go* (log, callsigns, sync, settings, go back), *Operate* (sync now, contest mode, start
   an activation) and *Help* (keyboard shortcuts). Labels and the shortcut shown come from the registry, so menus,
   shortcuts, the overlay and the manual cannot disagree; an item whose command has no handler on the current screen is
   disabled.

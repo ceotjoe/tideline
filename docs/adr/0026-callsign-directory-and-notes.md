@@ -31,7 +31,7 @@
 - **Entry form.** Under the callsign: what earlier contacts say ("Anna · Berlin · JO62") with *Fill in*, which copies the
   name and locator into **empty** fields only, and the start of the note. A note button sits in the callsign field
   (filled when a note exists). Values are suggestions, never written into a QSO by themselves.
-- **Directory page** (Settings → Reference data → *Browse callsigns and notes*): search by call prefix, name or place,
+- **Directory page** (the *Callsigns* tab of the main navigation, [ADR 0032](0032-callsigns-in-main-navigation.md); first Settings → Reference data → *Browse callsigns and notes*): search by call prefix, name or place,
   newest contact first; tapping a station opens its note.
 
 ## Consequences

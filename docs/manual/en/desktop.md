@@ -2,7 +2,7 @@
 
 On a computer, Tideline works like a computer program.
 
-- **Sidebar.** Log, Sync and Settings are in a sidebar on the left, in every window size. From a wide window on, it
+- **Sidebar.** Log, Callsigns, Sync and Settings are in a sidebar on the left, in every window size. From a wide window on, it
   shows the names next to the icons.
 - **Menu bar.** On a Mac it is the menu bar at the top of the screen; on Windows and Linux it is a strip at the top of
   the window. It has three menus:

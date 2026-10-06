@@ -32,5 +32,6 @@
 - [0030](0030-release-automation.md) Release automation: GitHub releases for Windows and Linux, stores for Apple and Android
 
 - [0031](0031-demo-account.md) Built-in demo account for testing and App Review
+- [0032](0032-callsigns-in-main-navigation.md) The callsign directory as a main destination
 
 New ADRs start from [0000-template.md](0000-template.md).

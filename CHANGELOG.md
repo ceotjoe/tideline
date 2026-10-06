@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`tool/ios_archive.sh`), and so does the signed macOS package (`tool/macos_package.sh`).
 
 ### Changed
+- The callsign directory is a main destination (second after Log, `⌘2` / `Ctrl+2`) instead of a page under Settings →
+  Reference data. Sync moves to `⌘3` / `Ctrl+3` (ADR 0032).
 - Activation counting follows the programmes' rules (ADR 0021 update): SOTA needs 4 QSOs with different stations on one UTC
   day (the same station on another band no longer counts), WWFF counts the same station again on another UTC day and
   adds the days of a session up. Counting across several activations is not tracked.

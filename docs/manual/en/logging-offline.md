@@ -42,7 +42,7 @@ See [Keyboard shortcuts](keyboard-shortcuts.md) for the full list.
 - Report fields (RST) open a number keyboard that also has the minus sign. Frequency opens a number keyboard with a
   decimal point. Callsign, name and locator open the letter keyboard.
 - While the keyboard is up, **Hide keyboard** sits directly above it. Tap it to close the keyboard; the navigation bar
-  (Log, Sync, Settings) is back as soon as the keyboard is gone. Tapping an empty area, or dragging the list, closes
+  (Log, Callsigns, Sync, Settings) is back as soon as the keyboard is gone. Tapping an empty area, or dragging the list, closes
   the keyboard too.
 - On tablets and computers nothing changes: the keyboard has its own close key, and the form keeps all the height.
 

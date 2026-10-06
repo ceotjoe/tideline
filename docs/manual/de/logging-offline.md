@@ -45,7 +45,7 @@ Die vollständige Liste steht unter [Tastenkürzel](keyboard-shortcuts.md).
 - Berichtsfelder (RST) öffnen eine Zifferntastatur, die auch das Minuszeichen hat. Die Frequenz öffnet eine
   Zifferntastatur mit Dezimalpunkt. Rufzeichen, Name und Locator öffnen die Buchstabentastatur.
 - Solange die Tastatur offen ist, steht **Tastatur ausblenden** direkt darüber. Tippen schließt die Tastatur; die
-  Navigationsleiste (Log, Sync, Einstellungen) ist sofort wieder da. Auch ein Tipp auf eine leere Fläche oder ein Ziehen
+  Navigationsleiste (Log, Rufzeichen, Sync, Einstellungen) ist sofort wieder da. Auch ein Tipp auf eine leere Fläche oder ein Ziehen
   der Liste schließt die Tastatur.
 - Auf Tablets und Computern ändert sich nichts: Die Tastatur hat ihre eigene Schließtaste, und das Formular behält die
   ganze Höhe.

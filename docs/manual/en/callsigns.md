@@ -25,7 +25,7 @@ it too.
 - Saving an empty note deletes it.
 
 ## Browse
-**Settings → Reference data → Browse callsigns and notes** lists the stations, newest contact first, with name, place,
+**Callsigns** in the main navigation (second place, `⌘2` / `Ctrl+2`) lists the stations, newest contact first, with name, place,
 locator, DXCC and zones and the date you last worked them. Search by the start of a call, or by a name or place. Tap a
 station to read or edit its note; a filled note icon marks stations that have one.
 

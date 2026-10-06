@@ -26,7 +26,7 @@ neu aufbauen** baut es mit neu auf.
 - Eine leere Notiz zu speichern löscht sie.
 
 ## Durchsuchen
-**Einstellungen → Referenzdaten → Rufzeichen und Notizen durchsuchen** listet die Stationen, neuester Kontakt zuerst, mit
+**Rufzeichen** in der Hauptnavigation (an zweiter Stelle, `⌘2` / `Strg+2`) listet die Stationen, neuester Kontakt zuerst, mit
 Name, Ort, Locator, DXCC und Zonen und dem Datum, an dem du sie zuletzt gearbeitet hast. Suche nach dem Anfang eines
 Rufzeichens oder nach Name oder Ort. Tippe auf eine Station, um ihre Notiz zu lesen oder zu bearbeiten; ein gefülltes
 Notiz-Symbol markiert Stationen mit Notiz.
