@@ -6,7 +6,7 @@ Tideline is an open-source, cross-platform logging app for amateur radio operato
 offline-first, on a summit, in a park, at a field day or in a contest, and synchronises them with your
 own [Wavelog](https://www.wavelog.org) instance whenever a connection is available.
 
-> **Status: v0.5.0, preparing v1.0.** Logging, sync, offline DXCC, ADIF, backups, contest mode, activations,
+> **Status: v0.6.0, preparing v1.0.** Logging, sync, offline DXCC, ADIF, backups, contest mode, activations,
 > Fast Log Entry, several accounts and field mode work and are tested end to end against a mock Wavelog. Test builds go
 > to TestFlight and Google Play internal testing; store releases follow the [roadmap](docs/roadmap.md). Follow the
 > [CHANGELOG](CHANGELOG.md).

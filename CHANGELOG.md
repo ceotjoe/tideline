@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-06
+
 ### Changed
 - **No encryption of our own any more (ADR 0034).** The local database is plain SQLite and backups are plain files, so
   the app has no encryption of its own, and `ITSAppUsesNonExemptEncryption` is `false` on iOS and macOS (only TLS and the
