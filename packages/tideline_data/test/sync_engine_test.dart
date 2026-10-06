@@ -35,9 +35,14 @@ class Harness {
   final String stationId;
   int minute = 0;
 
-  static Future<Harness> start({Set<String> scopes = _scopes}) async {
+  static Future<Harness> start({
+    Set<String> scopes = _scopes,
+    int? rateLimitAfter,
+    int Function()? nowMillis,
+  }) async {
     final server = MockWavelog(
       tokens: {_token: MockToken(scopes: scopes)},
+      rateLimitAfter: rateLimitAfter,
       stations: [
         {'id': 3, 'name': 'Home', 'callsign': 'DO1HOZ', 'active': true},
       ],
@@ -57,6 +62,7 @@ class Harness {
       accounts: accounts,
       journal: SyncJournalRepository(db),
       machine: machine,
+      nowMillis: nowMillis,
       clientFor: (account, token) => WavelogClient(
         endpoint: WavelogEndpoint(baseUri, usesIndexPhp: true),
         token: token,
@@ -115,6 +121,7 @@ class Harness {
 }
 
 void main() {
+  _refreshTests();
   test('uploads queued QSOs and stores server ids', () async {
     final h = await Harness.start();
     final a = h.qso();
@@ -398,4 +405,77 @@ void main() {
       expect(h.server.qsos, hasLength(1)); // nothing was uploaded
     },
   );
+}
+
+int _count(Harness h, String pathEnd) =>
+    h.server.requests.where((r) => r.path.endsWith(pathEnd)).length;
+
+void _refreshTests() {
+  group('token and station refresh (ADR 0033)', () {
+    test('runs within the interval do not ask again', () async {
+      final h = await Harness.start();
+      await h.engine.sync(h.accountId);
+      await h.engine.sync(h.accountId);
+      await h.engine.sync(h.accountId);
+      expect(_count(h, '/v2/token'), 1);
+      expect(_count(h, '/v2/station'), 1);
+    });
+
+    test('a forced run refreshes', () async {
+      final h = await Harness.start();
+      await h.engine.sync(h.accountId);
+      await h.engine.sync(h.accountId, force: true);
+      expect(_count(h, '/v2/token'), 2);
+      expect(_count(h, '/v2/station'), 2);
+    });
+
+    test('a run after the interval refreshes', () async {
+      var now = 1000000;
+      final h = await Harness.start(nowMillis: () => now);
+      await h.engine.sync(h.accountId);
+      now += const Duration(minutes: 59).inMilliseconds;
+      await h.engine.sync(h.accountId);
+      expect(_count(h, '/v2/token'), 1);
+      now += const Duration(minutes: 2).inMilliseconds;
+      await h.engine.sync(h.accountId);
+      expect(_count(h, '/v2/token'), 2);
+    });
+
+    test('a new token refreshes at once', () async {
+      final h = await Harness.start();
+      await h.engine.sync(h.accountId);
+      h.server.tokens['wl2_new'] = const MockToken(scopes: _scopes);
+      await h.accounts.replaceToken(
+        h.accountId,
+        token: 'wl2_new',
+        scopes: _scopes,
+      );
+      await h.engine.sync(h.accountId);
+      expect(_count(h, '/v2/token'), 2);
+    });
+
+    test('a blocked account refreshes again once the token works', () async {
+      final h = await Harness.start();
+      await h.engine.sync(h.accountId);
+      h.server.tokens[_token] = const MockToken(scopes: _scopes, expired: true);
+      // A forced run sees the expiry and blocks the account, which also
+      // drops the cached refresh.
+      final q = h.qso();
+      await h.qsos.log(q);
+      final run = await h.engine.sync(h.accountId, force: true);
+      expect(run.outcome, SyncRunOutcome.blocked);
+      h.server.tokens[_token] = const MockToken(scopes: _scopes);
+      final before = _count(h, '/v2/token');
+      await h.engine.sync(h.accountId);
+      expect(_count(h, '/v2/token'), before + 1);
+      expect((await h.status(q))!.state, SyncState.synced);
+    });
+
+    test("a 429 carries the server's Retry-After", () async {
+      final h = await Harness.start(rateLimitAfter: 0);
+      final run = await h.engine.sync(h.accountId);
+      expect(run.outcome, SyncRunOutcome.rateLimited);
+      expect(run.retryAfter, const Duration(seconds: 30));
+    });
+  });
 }

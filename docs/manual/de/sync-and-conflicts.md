@@ -21,6 +21,9 @@ Synchronisiert wird beim Öffnen der App, wenn die Verbindung zurückkommt, und 
 tippst. iPhone und iPad erlauben keine zuverlässige Hintergrund-Synchronisierung; öffne Tideline also, wenn du wieder
 online bist.
 
+Meldet Wavelog, dass zu viele Anfragen eingehen, wartet Tideline so lange, wie Wavelog es verlangt, und macht dann von
+selbst weiter, solange die App geöffnet ist. Verlässt du die App, geht es beim Zurückkehren weiter.
+
 ## Vor einem großen Upload
 
 Warten mehr als 50 neue QSOs, etwa nach einem ADIF-Import, lädt Tideline sie nicht automatisch hoch. Der

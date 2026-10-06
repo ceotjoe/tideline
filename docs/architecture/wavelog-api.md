@@ -266,7 +266,8 @@ _Verified 2026-10-03 on `wavelog/wavelog@dev` (latest release 3.2.3):
 - Off by default; an admin can enable them. ✔ docs
 - Limits use a sliding window per token per resource (the docs' example: `api_v2_qso` 120/60 s, default 60/60 s).
   Failed authentication is limited per IP.
-- When limited, the server returns 429 with `Retry-After`. Tideline honours it exactly.
+- When limited, the server returns 429 with `Retry-After`. Tideline honours it exactly: the run stops, and while the app is in
+  the foreground one retry is scheduled for `Retry-After` plus one second ([ADR 0033](../adr/0033-request-economy.md)).
 
 ## Legacy API (`application/controllers/Api.php`)
 - **Methods:** `auth`, `check_auth`, `create_station`, `station_info`, `qso`, `get_contacts_adif`, `logbook_check_callsign`,

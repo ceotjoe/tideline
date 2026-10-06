@@ -364,6 +364,7 @@ class FakeSyncController extends SyncController {
   Future<SyncRunResult?> syncNow({
     bool reviewed = false,
     String? accountId,
+    bool manual = false,
   }) async {
     runs++;
     return null;

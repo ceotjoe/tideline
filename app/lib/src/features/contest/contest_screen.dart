@@ -345,7 +345,7 @@ class _ContestScreenState extends ConsumerState<ContestScreen>
         CommandIds.goToSync: () => context.go(Routes.sync),
         CommandIds.goToSettings: () => context.go(Routes.settings),
         CommandIds.syncNow: () =>
-            ref.read(syncControllerProvider.notifier).syncNow(),
+            ref.read(syncControllerProvider.notifier).syncNow(manual: true),
       },
       child: Scaffold(
         // The keyboard needs the room on a tablet in landscape.

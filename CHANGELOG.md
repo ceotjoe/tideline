@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`tool/ios_archive.sh`), and so does the signed macOS package (`tool/macos_package.sh`).
 
 ### Changed
+- Fewer requests to Wavelog (ADR 0033): a sync run no longer asks for the token and the station list every time (once an
+  hour, on **Sync now**, with a new token, or after a refused request); several app-open and connection-change events
+  within five seconds start one run; and after "too many requests" Tideline retries by itself when Wavelog said it may,
+  while the app is open.
 - Changing the time of a QSO opens the date and time as text fields to type into, instead of the calendar and the clock
   dial (both can still be switched to).
 - The callsign directory is a main destination (second after Log, `⌘2` / `Ctrl+2`) instead of a page under Settings →

@@ -20,6 +20,9 @@ The **tide gauge** shows how many QSOs are still waiting to sync. When the tide 
 Sync runs when you open the app, when your connection comes back, and when you tap **Sync now**. iPhone and iPad do not
 allow reliable background syncing, so open Tideline when you're back online.
 
+If Wavelog says it is receiving too many requests, Tideline waits as long as Wavelog asks and then carries on by itself,
+while the app is open. If you leave the app, it picks up again when you return.
+
 ## Before a large upload
 
 When more than 50 new QSOs are waiting, for example after an ADIF import, Tideline doesn't upload them automatically.

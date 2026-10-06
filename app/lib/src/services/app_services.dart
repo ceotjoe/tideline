@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show StreamProviderFamily;
 import 'package:tideline/src/features/contest/contest_seed.dart';
 import 'package:tideline/src/providers.dart';
+import 'package:tideline/src/services/sync_scheduler.dart';
 import 'package:tideline/src/services/tls.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -263,20 +264,33 @@ const int previewThreshold = 50;
 /// Runs sync on the triggers from CLAUDE.md: app foreground, connectivity
 /// regained and manual "Sync now". Never runs in the background on iOS.
 class SyncController extends Notifier<SyncActivity> {
-  StreamSubscription<List<ConnectivityResult>>? _connectivity;
   AppLifecycleListener? _lifecycle;
+  StreamSubscription<List<ConnectivityResult>>? _connectivity;
+  // Bursts of resume and connectivity events become one run; a 429 is
+  // retried when the server said so, in the foreground only (ADR 0033).
+  late final SyncScheduler _scheduler = SyncScheduler(
+    run: () => unawaited(syncNow()),
+  );
   final _recovered = <String>{};
 
   @override
   SyncActivity build() {
-    _lifecycle = AppLifecycleListener(onResume: syncNow);
+    _lifecycle = AppLifecycleListener(
+      onResume: _scheduler.requestAutomatic,
+      onStateChange: (s) => _scheduler.setForeground(
+        s == AppLifecycleState.resumed || s == AppLifecycleState.inactive,
+      ),
+    );
     _connectivity = Connectivity().onConnectivityChanged.listen((results) {
       // An interface came up; the probe inside the run checks real reach.
-      if (!results.contains(ConnectivityResult.none)) unawaited(syncNow());
+      if (!results.contains(ConnectivityResult.none)) {
+        _scheduler.requestAutomatic();
+      }
     });
     ref.onDispose(() {
       _lifecycle?.dispose();
       unawaited(_connectivity?.cancel());
+      _scheduler.dispose();
     });
     return const SyncIdle();
   }
@@ -284,7 +298,8 @@ class SyncController extends Notifier<SyncActivity> {
   /// Starts a run unless one is running. It covers every account, the
   /// active one first, so QSOs of an account you switched away from still
   /// reach their server. With [accountId] it covers that account only (the
-  /// confirmed upload of a review).
+  /// confirmed upload of a review). A [manual] run also refreshes the token
+  /// and station list when they were checked recently.
   ///
   /// A large first upload waits for the user's review unless [reviewed] is
   /// true: the other accounts still sync, and the state becomes
@@ -293,8 +308,10 @@ class SyncController extends Notifier<SyncActivity> {
   Future<SyncRunResult?> syncNow({
     bool reviewed = false,
     String? accountId,
+    bool manual = false,
   }) async {
     if (state is SyncRunning) return null;
+    _scheduler.cancelRetry();
     final active = ref.read(activeAccountProvider);
     final all = ref.read(accountsProvider).value ?? const <Account>[];
     final accounts = [
@@ -326,14 +343,22 @@ class SyncController extends Notifier<SyncActivity> {
 
     state = const SyncRunning();
     SyncRunResult? result;
+    Duration? retryAfter;
     try {
       for (final account in toRun) {
         if (_recovered.add(account.id)) {
           await engine.recoverAfterRestart(account.id);
         }
-        final r = await engine.sync(account.id);
+        final r = await engine.sync(account.id, force: manual);
         result ??= r;
+        final wait = r.retryAfter;
+        if (r.outcome == SyncRunOutcome.rateLimited &&
+            wait != null &&
+            (retryAfter == null || wait > retryAfter)) {
+          retryAfter = wait;
+        }
       }
+      if (retryAfter != null) _scheduler.scheduleRetry(retryAfter);
       state = review ?? SyncIdle(last: result);
       return result;
     } on Object {

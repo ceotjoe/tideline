@@ -15,13 +15,15 @@ class _Sync extends SyncController {
 class _Engine extends Fake implements SyncEngine {
   final List<String> recovered = [];
   final List<String> synced = [];
+  final List<bool> forced = [];
 
   @override
   Future<void> recoverAfterRestart(String accountId) async =>
       recovered.add(accountId);
 
   @override
-  Future<SyncRunResult> sync(String accountId) async {
+  Future<SyncRunResult> sync(String accountId, {bool force = false}) async {
+    forced.add(force);
     synced.add(accountId);
     return SyncRunResult(SyncRunOutcome.completed, processed: synced.length);
   }

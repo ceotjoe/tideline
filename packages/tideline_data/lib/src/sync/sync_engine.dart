@@ -37,18 +37,22 @@ enum SyncRunOutcome {
 @immutable
 class SyncRunResult {
   /// Creates a summary.
-  const new(this.outcome, {this.processed = 0});
+  const new(this.outcome, {this.processed = 0, this.retryAfter});
 
   /// How it ended.
   final SyncRunOutcome outcome;
 
   /// QSOs processed.
   final int processed;
+
+  /// For [SyncRunOutcome.rateLimited]: how long the server asked us to wait.
+  final Duration? retryAfter;
 }
 
 class _StopRun implements Exception {
-  const new(this.outcome);
+  const new(this.outcome, {this.retryAfter});
   final SyncRunOutcome outcome;
+  final Duration? retryAfter;
 }
 
 /// What an upload would do, shown before large uploads.
@@ -91,6 +95,7 @@ class SyncEngine {
     required this.clientFor,
     this.contestSessions,
     this.workedBefore,
+    this.refreshInterval = const Duration(hours: 1),
     int Function()? nowMillis,
   }) : _now =
            nowMillis ?? (() => DateTime.now().toUtc().millisecondsSinceEpoch);
@@ -119,8 +124,17 @@ class SyncEngine {
   /// Pages of 5,000 QSOs the worked-before pull reads per run at most.
   static const workedBeforePagesPerRun = 10;
 
+  /// How long the token's scopes and the station list are trusted before a
+  /// run asks the server again. A manual sync, a new token and a refused
+  /// request (401/403) always refresh sooner (ADR 0033).
+  final Duration refreshInterval;
+
   final int Function() _now;
   final Set<String> _running = {};
+
+  /// When each account's token and stations were last refreshed, and with
+  /// which token (compared by hash; the token itself is never kept here).
+  final Map<String, ({int at, int tokenHash})> _refreshed = {};
 
   /// Call once at app start: requests that were in flight when the app
   /// stopped become verifications.
@@ -194,19 +208,29 @@ class SyncEngine {
     }
   }
 
-  /// Runs one sync pass for [accountId].
-  Future<SyncRunResult> sync(String accountId) async {
+  /// Runs one sync pass for [accountId]. With [force] the token and station
+  /// refresh is not skipped (a manual "Sync now").
+  Future<SyncRunResult> sync(String accountId, {bool force = false}) async {
     if (!_running.add(accountId)) {
       return const SyncRunResult(SyncRunOutcome.alreadyRunning);
     }
     try {
-      return await _run(accountId);
+      return await _run(accountId, force: force);
     } finally {
       _running.remove(accountId);
     }
   }
 
-  Future<SyncRunResult> _run(String accountId) async {
+  bool _refreshDue(String accountId, String token, {required bool force}) {
+    final last = _refreshed[accountId];
+    return force ||
+        last == null ||
+        last.tokenHash != token.hashCode ||
+        _now() - last.at >= refreshInterval.inMilliseconds ||
+        _now() < last.at;
+  }
+
+  Future<SyncRunResult> _run(String accountId, {required bool force}) async {
     final account = await accounts.find(accountId);
     if (account == null) {
       return const SyncRunResult(SyncRunOutcome.completed);
@@ -225,7 +249,10 @@ class SyncEngine {
 
     var processed = 0;
     try {
-      await _refreshAccount(account, client);
+      if (_refreshDue(accountId, token, force: force)) {
+        await _refreshAccount(account, client);
+        _refreshed[accountId] = (at: _now(), tokenHash: token.hashCode);
+      }
       await _unblock(accountId);
       final stations = {
         for (final s in await accounts.watchStations(accountId).first)
@@ -241,7 +268,11 @@ class SyncEngine {
       await _pullWorkedBefore(refreshed, client);
       return SyncRunResult(SyncRunOutcome.completed, processed: processed);
     } on _StopRun catch (stop) {
-      return SyncRunResult(stop.outcome, processed: processed);
+      return SyncRunResult(
+        stop.outcome,
+        processed: processed,
+        retryAfter: stop.retryAfter,
+      );
     } finally {
       await journal.append(
         accountId: accountId,
@@ -286,8 +317,8 @@ class SyncEngine {
       throw const _StopRun(SyncRunOutcome.blocked);
     } on WavelogNetworkError {
       throw const _StopRun(SyncRunOutcome.offline);
-    } on WavelogRateLimited {
-      throw const _StopRun(SyncRunOutcome.rateLimited);
+    } on WavelogRateLimited catch (e) {
+      throw _StopRun(SyncRunOutcome.rateLimited, retryAfter: e.retryAfter);
     } on WavelogException {
       // Server trouble (5xx, malformed): try again next run.
       throw const _StopRun(SyncRunOutcome.offline);
@@ -311,8 +342,8 @@ class SyncEngine {
       throw const _StopRun(SyncRunOutcome.blocked);
     } on WavelogNetworkError {
       throw const _StopRun(SyncRunOutcome.offline);
-    } on WavelogRateLimited {
-      throw const _StopRun(SyncRunOutcome.rateLimited);
+    } on WavelogRateLimited catch (e) {
+      throw _StopRun(SyncRunOutcome.rateLimited, retryAfter: e.retryAfter);
     }
   }
 
@@ -428,6 +459,8 @@ class SyncEngine {
       }
       await _reject(account, item, started, SyncProblem.invalidData, e);
     } on WavelogForbidden catch (e) {
+      // Scopes or station access may have changed: look again next run.
+      _refreshed.remove(account.id);
       await _reject(
         account,
         item,
@@ -551,6 +584,7 @@ class SyncEngine {
     } on WavelogValidationError catch (e) {
       await _reject(account, item, started, SyncProblem.invalidData, e);
     } on WavelogForbidden catch (e) {
+      _refreshed.remove(account.id);
       await _reject(account, item, started, SyncProblem.missingPermission, e);
     } on WavelogException catch (e) {
       await _handleFailure(account, item, started, e, uncertain: false);
@@ -581,7 +615,7 @@ class SyncEngine {
           'problem': SyncProblem.rateLimited.name,
           'retryAfterSeconds': retryAfter.inSeconds,
         });
-        throw const _StopRun(SyncRunOutcome.rateLimited);
+        throw _StopRun(SyncRunOutcome.rateLimited, retryAfter: retryAfter);
       case WavelogNetworkError():
         await _apply(
           item,
@@ -629,6 +663,7 @@ class SyncEngine {
   }
 
   Future<void> _blockAccount(String accountId, SyncProblem problem) async {
+    _refreshed.remove(accountId);
     for (final (qsoId, status) in await qsos.statuses(accountId)) {
       final next = machine.apply(status, AccountBlocked(problem), _now());
       if (next != null && next != status) {
