@@ -10,9 +10,14 @@
   passphrase backups (Argon2id + XChaCha20-Poly1305, `cryptography` package).
 - Because of them the app counts as using non-exempt encryption (ADR 0022 update 2026-10-05). That means export-compliance
   answers in App Store Connect (mass-market self-classification, France) and a matching story for the other stores.
-- For a logbook app run by one maintainer that overhead is out of proportion. What is left without our own encryption is
-  exempt: HTTPS and certificate pinning use the OS TLS stack, tokens use the OS secure store, biometrics use `local_auth`,
-  and SHA-256 is only hashing.
+- For a logbook app run by one maintainer that overhead is out of proportion. What is left without our own encryption is,
+  in the maintainer's classification, exempt: TLS to the user's servers (a standard protocol; `dart:io` uses the BoringSSL
+  that the Flutter engine bundles, with the system's trust roots), tokens in the OS secure store (the macOS/iOS plugin
+  also contains an optional Secure Enclave path with CryptoKit AES-GCM, which Tideline does not enable), biometrics
+  through `local_auth`, and SHA-256 only as a hash.
+- Apple asks for `NO` only if the app, "including any third-party libraries it links against", uses no encryption or
+  only exempt forms. Release builds contain the engine's BoringSSL, so whether TLS through it counts as exempt is a
+  classification the maintainer owns; it is not a legal opinion here.
 - The app is still in TestFlight (0.5.0); no store release has happened.
 
 ## Decision
@@ -27,12 +32,14 @@
 - **At-rest protection** comes from the OS (iOS/Android data protection with the device lock, optional app lock in the UI).
   The database and backups are excluded from iCloud/iTunes backup and from Android auto-backup and device transfer.
 - `ITSAppUsesNonExemptEncryption` is `false` in the iOS and macOS `Info.plist`.
-- CI guard (planned, done in the last phase of this change): fail if `cryptography`, SQLite3MultipleCiphers or SQLCipher appear in the lockfile or hooks, or if the plist key
-  is `true`.
+- CI guard `tool/check_no_encryption.sh` (run in `ci.yml`): fails if an encryption package, SQLite3MultipleCiphers or
+  SQLCipher appear in the lockfile, pubspecs, hooks or `lib/`, or if the plist key is not `false`.
 - Future features must not reintroduce our own encryption (for example LAN pairing should rely on OS TLS or wait).
 
 ## Consequences
-- No export-compliance questions; simpler store forms.
+- No export-compliance questions about our own encryption, and simpler store forms. If App Store Connect or a store
+  still asks about TLS in the Flutter engine, the maintainer answers it; the removed database and backup encryption were
+  the clear non-exempt part.
 - A lost or reset keychain no longer orphans the database, so the key-missing restore flow goes away.
 - A stolen unlocked device, a rooted device or a file-level copy exposes the log. That is a weaker position than before and
   is recorded in the threat model (T3, T25). The log holds callsigns and QSO data that are public by nature in amateur radio,

@@ -42,30 +42,42 @@ class _TidelineAppState extends ConsumerState<TidelineApp> {
     // Load the bundled contest definitions in the background. Nothing waits
     // for it and a failure is only logged, so logging is never blocked.
     ref.read(contestSeedProvider);
-    if (ref.read(legacyDatabaseNoticeProvider)) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _showLegacyNotice());
-    }
+    if (ref.read(legacyDatabaseNoticeProvider)) _scheduleLegacyNotice();
   }
 
   /// One-time notice after an encrypted 0.5.x log was set aside (ADR 0034).
-  Future<void> _showLegacyNotice() async {
-    final context = _router.routerDelegate.navigatorKey.currentContext;
-    if (!mounted || context == null) return;
-    final l10n = AppLocalizations.of(context);
-    await showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        icon: const Icon(Icons.info_outline),
-        title: Text(l10n.legacyDatabaseTitle),
-        content: Text(l10n.legacyDatabaseBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(MaterialLocalizations.of(context).okButtonLabel),
+  /// The router's navigator does not exist in the first frames, so this
+  /// retries from frame to frame.
+  void _scheduleLegacyNotice([int attempt = 0]) {
+    WidgetsBinding.instance
+      ..addPostFrameCallback((_) async {
+        if (!mounted) return;
+        final context = _router.routerDelegate.navigatorKey.currentContext;
+        if (context == null || !context.mounted) {
+          if (attempt < 600) _scheduleLegacyNotice(attempt + 1);
+          return;
+        }
+        final l10n = AppLocalizations.of(context);
+        // Push on the navigator itself: `context` is the navigator's own
+        // context, which `showDialog` cannot look the navigator up from.
+        await _router.routerDelegate.navigatorKey.currentState!.push<void>(
+          DialogRoute<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              icon: const Icon(Icons.info_outline),
+              title: Text(l10n.legacyDatabaseTitle),
+              content: Text(l10n.legacyDatabaseBody),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(MaterialLocalizations.of(context).okButtonLabel),
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
-    );
+        );
+      })
+      ..scheduleFrame();
   }
 
   @override

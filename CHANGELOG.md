@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **No encryption of our own any more (ADR 0034).** The local database is plain SQLite and backups are plain files, so
-  the app needs no export-compliance declarations: `ITSAppUsesNonExemptEncryption` is `false` on iOS and macOS. Protection
+  the app has no encryption of its own, and `ITSAppUsesNonExemptEncryption` is `false` on iOS and macOS (only TLS and the
+  OS secure store remain, see ADR 0034). Protection
   at rest is the operating system's. The database and backups are excluded from iCloud, iTunes and Android backups, and
   the backup button says that the file is not encrypted. The `cryptography` package and SQLite3MultipleCiphers are gone.
 - Backups use a new plain format (`TIDELINE-BACKUP 2`, gzip, hash-checked) with a size limit when restoring.

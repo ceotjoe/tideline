@@ -10,7 +10,7 @@ today. Check the limits again in App Store Connect and Play Console before pasti
   sources.
 - **Permissions:** no location, no camera. Biometrics (app lock, optional), local network (a Wavelog on the LAN),
   internet.
-- **Export compliance:** `ITSAppUsesNonExemptEncryption` is false (ADR 0034): the app uses only the OS's HTTPS and secure store and has no encryption of its own, so there are no follow-up questions. On Google Play, answer the data-safety encryption question accordingly: data in transit is encrypted (HTTPS), data at rest is not encrypted by the app.
+- **Export compliance:** `ITSAppUsesNonExemptEncryption` is false (ADR 0034): the app has no encryption of its own (only TLS and the OS secure store; the Flutter engine bundles BoringSSL for TLS, see `release.md`). If follow-up questions appear, the maintainer answers them. On Google Play, answer the data-safety encryption question accordingly: data in transit is encrypted (HTTPS), data at rest is not encrypted by the app.
 - **Age rating:** no user-generated content shared, no ads, no purchases, no web browsing.
 - **App access for review:** the Welcome screen's "Try the demo" needs no server or sign-in (ADR 0031).
 

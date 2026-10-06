@@ -25,7 +25,7 @@ Tideline is built around four ideas:
    - Nothing is silently lost or duplicated.
 3. **Built for the field.** Usable with gloves, in bright sunlight, at night (red mode), one-handed and with a
    screen reader.
-4. **Secure and private by design.** No telemetry. No cryptography of our own, so nothing to declare for export compliance. API tokens in the OS secure store, with least privilege.
+4. **Secure and private by design.** No telemetry. No encryption of our own (only TLS and the OS secure store), which keeps export compliance simple. API tokens in the OS secure store, with least privilege.
 
 ## Planned features
 

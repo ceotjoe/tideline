@@ -146,10 +146,14 @@ No sign-in credentials are needed. Paste into the review notes (App Store Connec
 
 ### Export compliance
 `ITSAppUsesNonExemptEncryption` is `false` in `app/ios/Runner/Info.plist` and `app/macos/Runner/Info.plist` (ADR 0034,
-2026-10-06). The app contains no encryption of its own: HTTPS and certificate pinning use the OS TLS stack, tokens use the
-OS secure store, and SHA-256 is only hashing. So builds do not wait with *Missing Compliance* and there are no follow-up
-questions. Keep it that way: SQLite3MultipleCiphers, SQLCipher and the `cryptography` package must not come back, and the key must
-stay `false` (ADR 0034; an automatic CI check is planned). If a future feature needs its own cryptography, write an ADR first; it changes this answer. This
+2026-10-06). The app contains no encryption of its own (ADR 0034). What remains: TLS to the user's servers through `dart:io`, which
+uses the BoringSSL bundled in the Flutter engine (verified in the 2026-10-06 release builds, with system trust roots),
+the Keychain/Keystore through `flutter_secure_storage` (its iOS/macOS plugin has an optional CryptoKit Secure Enclave
+path that Tideline does not enable) and SHA-256 as a hash. The maintainer classifies this as exempt (standard protocol,
+authentication and transport only), so builds do not wait with *Missing Compliance*. Apple's wording is "including any
+third-party libraries it links against"; if App Store Connect or a reviewer questions the bundled TLS, the maintainer
+answers it. This is not verified by Apple or a lawyer. Keep it that way: SQLite3MultipleCiphers, SQLCipher and the `cryptography` package must not come back, and the key must
+stay `false` (ADR 0034; `tool/check_no_encryption.sh` checks this in CI). If a future feature needs its own cryptography, write an ADR first; it changes this answer. This
 is the maintainer's classification, not a legal opinion of the project.
 
 ### Version and build number
