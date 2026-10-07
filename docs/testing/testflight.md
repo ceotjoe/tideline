@@ -1,9 +1,11 @@
 # TestFlight: what to test
 
 For the maintainer and any tester of a TestFlight build (ADR 0022). Work through the sections that fit your device;
-none of them needs to be done in one sitting. Tick what works and write down what does not.
+none of them needs to be done in one sitting. Tick what works and write down what does not. The overview for all
+platforms, the language pass and the exit criteria for v1.0 are in [README.md](README.md); Android and Windows have their
+own lists ([android.md](android.md), [desktop.md](desktop.md)).
 
-**Build under test:** Tideline 0.4.0, build ____ · **Device:** ____ · **iOS/iPadOS:** ____ · **Wavelog:** ____ ·
+**Build under test:** Tideline 0.6.0, build ____ · **Device:** ____ · **iOS/iPadOS:** ____ · **Wavelog:** ____ ·
 **Language:** EN / DE
 
 ## 0. Before you start
@@ -11,6 +13,9 @@ none of them needs to be done in one sitting. Tick what works and write down wha
   "Creating a Wavelog API token".
 - [ ] Use a **test station location** or a test logbook if you do not want test QSOs in your real log. Deleting QSOs
   on Wavelog needs `qso:delete`.
+- [ ] No Wavelog at hand? **Try the demo (no Wavelog needed)** on the Welcome screen gives you an account that runs inside
+  the app. It covers everything except what needs a real server (certificates, token problems, contest sessions on
+  Wavelog 3.2, reconcile after an interrupted upload).
 - [ ] Turn on VoiceOver (Settings → Accessibility → VoiceOver) for sections 2 to 4 if you test it.
 
 ## 1. First setup and sync
@@ -24,7 +29,7 @@ none of them needs to be done in one sitting. Tick what works and write down wha
 - [ ] Revoke the token in Wavelog, sync: "Token problem" is explained, nothing is lost, a new token fixes it.
 - [ ] Quit and reopen the app during a sync: no QSO is duplicated or lost.
 - [ ] Settings → Export log as ADIF; open the file in another app. Create a backup and restore it on a
-  second device or after reinstalling. The backup is not encrypted and says so.
+  second device or after reinstalling. The backup is not encrypted and says so (see section 5c).
 - [ ] Optional app lock with Face ID / Touch ID, and the passcode fallback.
 
 ## 2. Everyday logging (phone, tablet)
@@ -88,6 +93,34 @@ none of them needs to be done in one sitting. Tick what works and write down wha
   appear for reports and frequency.
 - [ ] **Mac or Windows:** sidebar, menu bar, **Esc** or Alt+← goes back, right click on a log row.
 
+## 5c. New in 0.5 and 0.6
+- [ ] **Demo account:** on the Welcome screen, **Try the demo (no Wavelog needed)**. Onboarding finishes with no network.
+  The account list says "Demo account: no server, nothing leaves this device". Log a few QSOs, sync, remove the account.
+  Check in airplane mode that nothing asks for a network.
+- [ ] **No app-level encryption (0.6):** Settings → Security and backup says the backup is **not encrypted**. There is no
+  passphrase field anywhere. Create a backup, restore it (same device, then another): QSOs, station locations and
+  callsign notes are back, QSOs already on Wavelog are not uploaded again, and the token is not in the backup (enter a
+  new one under Settings → Wavelog account).
+- [ ] **Not in backups (0.6):** Tideline's database is not offered in iCloud (Settings → your name → iCloud → Manage Storage), and a
+  restored device backup (if you can try it) does not bring the log back. Your own backup file is the way to move it.
+- [ ] **Upgrading from 0.5.x:** the app starts with an empty log and shows a one-time notice that says why, in EN and DE.
+  QSOs you had synced are still in Wavelog; sync again and the worked-before hints come back. The old file is not
+  deleted. A `.tlbackup` made by 0.5.x is refused with a clear message, not a crash.
+- [ ] **App lock** still works on its own after this change: switch it on, leave the app, come back, unlock by Face ID,
+  then by passcode.
+- [ ] **Fewer requests (0.5):** a sync no longer asks Wavelog for the token and the station list every time. Tap
+  **Sync now** three times in a row: one run, no error. Open the app, leave it and return within five seconds: one run.
+  If Wavelog answers "too many requests" (a busy server), Tideline waits and retries by itself while the app is open.
+- [ ] **Callsigns in the main navigation (0.5):** Log, Callsigns, Sync, Settings. **⌘2** opens Callsigns and **⌘3** opens Sync
+  on an iPad with a keyboard. The old place under Reference data is gone.
+- [ ] **Date and time editing (0.5):** change the time of a QSO. The date and time are text fields you can type into; the
+  calendar and the clock dial can still be switched to. The time stays UTC.
+- [ ] **Activation counting (0.5):** SOTA counts 4 QSOs with different stations on one UTC day (the same station on
+  another band does not count). WWFF counts the same station again on another UTC day and adds the days of a session
+  up. Compare with the award rules.
+- [ ] **Switching accounts (0.5):** with two accounts, switch on the log screen and the entry form takes a station of the
+  new account without an error. On a phone with a notch, no blank band sits above the page titles.
+
 ## 6. Things that must not happen
 - [ ] No network request without a user action, other than talking to your Wavelog.
 - [ ] The token never appears in screens, exports, backups or in what you attach to a report.
@@ -101,10 +134,13 @@ none of them needs to be done in one sitting. Tick what works and write down wha
 - The counting rules of the activation programs are fixed defaults (POTA 10 per UTC day, SOTA 4, WWFF 44; SOTA and WWFF
   count over the whole activation). Check your award's rules if exact counting matters.
 - Wavelog ignores your own park or summit in an upload and uses the one of the station location.
-- No tests on TalkBack, Android or desktop in this build.
+- This file is for iPhone and iPad (and the Mac build through TestFlight). TalkBack, Android and Windows are in
+  [android.md](android.md) and [desktop.md](desktop.md).
+- Logs made with 0.5.x can't be carried over to 0.6 (the encrypted database is set aside); backups made by 0.5.x can't be
+  restored.
 
 ## How to report
-Use TestFlight's **Send Beta Feedback** (screenshot, device and build are attached) or open an issue at
+(The same form is in [README.md](README.md).) Use TestFlight's **Send Beta Feedback** (screenshot, device and build are attached) or open an issue at
 <https://github.com/ceotjoe/tideline/issues>. Please include:
 1. What you did, step by step, and what you expected.
 2. What happened, with a screenshot if you can.
@@ -173,8 +209,8 @@ build.
 
 ## English
 
-Build 5 (0.4.0): several accounts, callsign directory, free up space, Fast Log Entry, field mode.
-Please try: 0) The new features: a second account, the callsign hint and notes, Fast Log Entry (lightning bolt), Settings → Field mode, Settings → account → Remove synced QSOs. Then the rest: 1) First setup with your Wavelog and a token. 2) Log QSOs offline, then sync. 3) A short contest session and
+Build 8 (0.6.0): no more app-level encryption, a built-in demo account, fewer requests to Wavelog.
+Please try: 0) The new features: Try the demo on the Welcome screen, backup and restore (the backup is no longer encrypted), the callsign directory (⌘2), Fast Log Entry (lightning bolt), Settings → Field mode. Coming from 0.5? Your log starts empty with a notice; QSOs already synced are on Wavelog. Then the rest: 1) First setup with your Wavelog and a token. 2) Log QSOs offline, then sync. 3) A short contest session and
 a Cabrillo export. 4) Download a POTA list and run an activation. 5) VoiceOver on the log screen, the contest screen and
 the activation screen. 6) iPad rotation and the on-screen keyboard.
 The full checklist is in the repository: docs/testing/testflight.md.
@@ -182,8 +218,8 @@ Known: iPhone is portrait only; no background sync on iOS; reference lists need 
 
 ## Deutsch
 
-Build 5 (0.4.0): mehrere Konten, Rufzeichen-Verzeichnis, Speicher freigeben, Fast Log Entry, Feldmodus.
-Bitte ausprobieren: 0) Die Neuerungen: ein zweites Konto, Rufzeichen-Hinweis und Notizen, Fast Log Entry (Blitz-Symbol), Einstellungen → Feldmodus, Einstellungen → Konto → Synchronisierte QSOs entfernen. Danach das Übrige: 1) Ersteinrichtung mit Deinem Wavelog und einem Token. 2) QSOs offline loggen, dann synchronisieren.
+Build 8 (0.6.0): keine eigene Verschlüsselung mehr, ein eingebautes Demo-Konto, weniger Anfragen an Wavelog.
+Bitte ausprobieren: 0) Die Neuerungen: „Demo ausprobieren (ohne Wavelog)“ auf dem Willkommensbildschirm, Backup und Wiederherstellen (das Backup ist nicht mehr verschlüsselt), das Rufzeichen-Verzeichnis (⌘2), Fast Log Entry (Blitz-Symbol), Einstellungen → Feldmodus. Von 0.5 gekommen? Dein Log beginnt leer, mit einem Hinweis; bereits synchronisierte QSOs liegen in Wavelog. Danach das Übrige: 1) Ersteinrichtung mit Deinem Wavelog und einem Token. 2) QSOs offline loggen, dann synchronisieren.
 3) Eine kurze Contest-Sitzung und ein Cabrillo-Export. 4) Eine POTA-Liste laden und eine Aktivierung durchführen.
 5) VoiceOver auf Log-, Contest- und Aktivierungsbildschirm. 6) iPad-Drehung und Bildschirmtastatur.
 Die vollständige Checkliste liegt im Repository: docs/testing/testflight.md.
