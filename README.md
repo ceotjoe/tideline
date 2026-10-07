@@ -8,7 +8,7 @@ own [Wavelog](https://www.wavelog.org) instance whenever a connection is availab
 
 > **Status: v0.6.0, preparing v1.0.** Logging, sync, offline DXCC, ADIF, backups, contest mode, activations,
 > Fast Log Entry, several accounts and field mode work and are tested end to end against a mock Wavelog. Test builds go
-> to TestFlight and Google Play internal testing; store releases follow the [roadmap](docs/roadmap.md). Follow the
+> to TestFlight and Google Play (public testing); store releases follow the [roadmap](docs/roadmap.md). Follow the
 > [CHANGELOG](CHANGELOG.md).
 
 Platforms: **iOS · iPadOS · Android · macOS · Windows** (one Flutter codebase).
@@ -56,7 +56,18 @@ Tideline is built around four ideas:
 
 ## Install
 
-Store links will appear here (App Store, Mac App Store, Google Play).
+**Android (public test release):**
+
+<a href="https://play.google.com/store/apps/details?id=com.ITWebService.tideline"><img alt="Join the Android test release on Google Play" src="docs/design/badges/join-google-play.svg" height="64"></a>
+
+**iOS / iPadOS (public beta):**
+
+<a href="https://testflight.apple.com/join/T8sejHVN"><img alt="Join the iPhone and iPad beta on TestFlight" src="docs/design/badges/join-testflight.svg" height="64"></a>
+
+Requires the free TestFlight app from Apple.
+
+Both are test releases, not yet the final store versions. The App Store and Mac App Store links will appear here once
+v1.0 ships.
 
 Windows (portable zip, MSIX) and an experimental Linux tarball are attached to each
 [GitHub release](https://github.com/ceotjoe/tideline/releases) with checksums.

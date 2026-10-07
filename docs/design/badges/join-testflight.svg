@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="64" viewBox="0 0 240 64" role="img" aria-label="Join on TestFlight">
+  <title>Join on TestFlight</title>
+  <defs><clipPath id="r"><rect width="240" height="64" rx="10"/></clipPath></defs>
+  <g clip-path="url(#r)">
+    <rect width="240" height="64" fill="#12302D"/>
+    <path d="M0 50 q15 -8 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V64 H0Z" fill="#2E7C70"/>
+    <path d="M0 56 q15 -6 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V64 H0Z" fill="#5FB8A6"/>
+  </g>
+  <g font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <text x="20" y="25" font-size="12" fill="#9ED9CB">iPhone and iPad beta</text>
+    <text x="20" y="43" font-size="18" font-weight="600" fill="#FFFFFF">Join on TestFlight</text>
+  </g>
+  <g transform="translate(212 28)" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 -8 v11 m-5 -4 l5 5 l5 -5 M-7 9 h14"/>
+  </g>
+</svg>
