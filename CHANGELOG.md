@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Update from Wavelog** on a synced QSO (ADR 0035): a QSO whose time or other data you changed in Wavelog can be
+  replaced by Wavelog's version, so *Remove from this device* works again. Read-only towards Wavelog; contest and
+  activation QSOs are excluded. Fixes #1.
+
 ### Changed
 - Dependency update within the existing constraints (`pubspec.lock` only): drift 2.35.2, sqlite3 3.7.1 (SQLite 3.54.0,
   still the plain `sqlite3` source), file_picker platform packages (darwin 2.3.0, android 2.1.0, linux 2.0.2,

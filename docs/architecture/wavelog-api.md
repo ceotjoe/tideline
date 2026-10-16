@@ -145,6 +145,7 @@ See [ADR 0008](../adr/0008-sync-idempotency-without-server-uuid.md).
 - **Filters:** `callsign`, `qso_since`, `qso_until` (date, inclusive), `station_id`, `since_id`, `page`, `per_page` (≤ 5000).
 - **JSON** is ordered newest first.
 - **`format=adif`** is ordered by ascending `id` and returns `{exported, lastfetchedid, adif}`; pass `lastfetchedid` back as `since_id`.
+- **`since_id` is strictly greater-than** (✔ `Qso_resource::index`, `Logbook_model`: `COL_PRIMARY_KEY > since_id`). So `since_id=<id - 1>&per_page=1` reads exactly one QSO by id; if `lastfetchedid` is not `<id>`, it is gone. Used by the refresh in [ADR 0035](../adr/0035-refresh-changed-qso-from-wavelog.md).
 - **No `updated_since`:** edits and deletes made in the Wavelog UI are not visible incrementally. Detect drift with
   `meta.total` and a periodic full rebuild.
 - **JSON rows do not include** `station_callsign`, `dxcc` or QSL status. Use ADIF format for the full field set.
