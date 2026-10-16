@@ -310,7 +310,8 @@ void main() {
         .watchInfo(ReferenceProgram.pota)
         .listen((i) => events.add(i?.count));
     Future<void> until(bool Function() done) async {
-      for (var i = 0; i < 200 && !done(); i++) {
+      // Up to 20 s: opening the database is slow on CI runners (Windows).
+      for (var i = 0; i < 2000 && !done(); i++) {
         await Future<void>.delayed(const Duration(milliseconds: 10));
       }
     }
