@@ -83,9 +83,10 @@ void main() {
     addTearDown(sub.cancel);
 
     // Wait for each emission instead of sleeping: a slow machine (the Windows
-    // runner) may deliver them late, but never out of order.
+    // runner, up to 20 s to open the database) may deliver them late, but never
+    // out of order.
     Future<void> expectSeen(List<String?> expected) async {
-      for (var i = 0; i < 500 && seen.length < expected.length; i++) {
+      for (var i = 0; i < 2000 && seen.length < expected.length; i++) {
         await Future<void>.delayed(const Duration(milliseconds: 10));
       }
       expect(seen, expected);
