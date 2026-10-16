@@ -643,6 +643,8 @@ class MockWavelog {
     if (hz != null) field('freq', (hz / 1e6).toStringAsFixed(6));
     field('rst_sent', f['rst_sent']);
     field('rst_rcvd', f['rst_rcvd']);
+    field('name', f['name']);
+    field('comment', f['comment']);
     field('contest_id', f['contest_id']);
     field('stx', f['stx']);
     field('srx', f['srx']);

@@ -24,5 +24,6 @@ export 'src/repositories/worked_before_repository.dart';
 export 'src/security/device_id.dart';
 export 'src/sync/contest_session_sync.dart';
 export 'src/sync/qso_eviction_service.dart';
+export 'src/sync/qso_refresh_service.dart';
 export 'src/sync/sync_engine.dart';
 export 'src/sync/wavelog_mapping.dart';

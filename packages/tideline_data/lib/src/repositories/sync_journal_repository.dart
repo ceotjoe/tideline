@@ -71,6 +71,10 @@ enum JournalEvent {
 
   /// A contest-session step failed and will be retried.
   contestSessionRetry,
+
+  /// The local copy was replaced by the version Wavelog has (it had been
+  /// changed there).
+  refreshedFromServer,
 }
 
 /// One journal entry.
