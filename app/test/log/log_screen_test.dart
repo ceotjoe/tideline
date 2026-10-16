@@ -144,34 +144,17 @@ void main() {
     expect(find.text('Home QTH (DO1HOZ)'), findsNothing);
   });
 
-  testWidgets('changing the time opens the date and time as text fields', (
+  testWidgets('changing the time opens one dialog with two text fields', (
     tester,
   ) async {
     await pumpTideline(tester, size: TestSizes.tabletPortrait);
     await tester.ensureVisible(find.text('Change time'));
     await tester.tap(find.text('Change time'));
     await tester.pumpAndSettle();
-    // Input mode: an editable date, and the switch back to the calendar.
-    expect(find.byType(DatePickerDialog), findsOneWidget);
-    expect(find.byIcon(Icons.calendar_today), findsOneWidget);
-    expect(
-      find.descendant(
-        of: find.byType(DatePickerDialog),
-        matching: find.byType(TextField),
-      ),
-      findsOneWidget,
-    );
-    await tester.tap(find.text('OK'));
-    await tester.pumpAndSettle();
-    expect(find.byType(TimePickerDialog), findsOneWidget);
-    expect(find.byIcon(Icons.keyboard_outlined), findsNothing);
-    expect(
-      find.descendant(
-        of: find.byType(TimePickerDialog),
-        matching: find.byType(TextField),
-      ),
-      findsNWidgets(2),
-    );
+    expect(find.text('Date and time (UTC)'), findsOneWidget);
+    expect(field('Date (UTC)'), findsOneWidget);
+    expect(field('Time (UTC)'), findsOneWidget);
+    expect(find.byType(DatePickerDialog), findsNothing);
   });
 
   group('tablet landscape with the keyboard up', () {

@@ -24,7 +24,10 @@ Synchronisierung läuft getrennt davon und lässt dich nie warten.
    - Band, Betriebsart, Frequenz und Station bleiben für das nächste QSO eingestellt.
 3. **Rapporte.** Lass die Felder leer für den üblichen Standard: 59 bei Fonie, 599 bei CW, −10 bei FT8/FT4.
 4. **Zeit.** Die Zeit ist immer **UTC** und läuft mit. Mit **Zeit ändern** loggst du einen früheren Kontakt, mit
-   **Aktuelle Zeit verwenden** geht es zurück.
+   **Aktuelle Zeit verwenden** geht es zurück. Ein Dialog fragt nach Datum (`JJJJ-MM-TT`) und Uhrzeit (`HH:MM`, 24
+   Stunden). Das Datum ist beim Öffnen markiert, du tippst also einfach drüber: Nach der achten Ziffer springt der Cursor zur
+   Uhrzeit, und **Eingabe** übernimmt sie. Du kannst `20240229` und `1437` ohne Trennzeichen eingeben. Die Kalender- und
+   Uhr-Symbole neben den Feldern öffnen bei Bedarf eine Auswahl.
 5. **Loggen.** Wähle **QSO loggen** oder drücke auf einer Tastatur **Eingabe**. Das Formular ist sofort bereit für das
    nächste QSO.
 
