@@ -2908,4 +2908,38 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get fieldModeKeepScreenOnHint =>
       'Nur solange das Log, die Schnelleingabe oder der Contest-Bildschirm geöffnet ist. Das kostet Akku.';
+
+  @override
+  String get qsoRefreshFromServer => 'Von Wavelog aktualisieren';
+
+  @override
+  String get qsoRefreshConfirmTitle =>
+      'Dieses QSO durch die Wavelog-Version ersetzen?';
+
+  @override
+  String get qsoRefreshConfirmBody =>
+      'Nutze das, wenn du das QSO in Wavelog geändert hast. Die Kopie auf diesem Gerät wird durch die Wavelog-Version ersetzt. Es wird nichts an Wavelog gesendet.';
+
+  @override
+  String get qsoRefreshDone => 'Von Wavelog aktualisiert.';
+
+  @override
+  String get qsoRefreshGone =>
+      'Wavelog hat dieses QSO nicht mehr. Es wurde nichts geändert.';
+
+  @override
+  String get qsoRefreshUnreadable =>
+      'Wavelog hat eine Version geschickt, die sich nicht lesen ließ. Es wurde nichts geändert.';
+
+  @override
+  String get qsoRefreshNotPossible =>
+      'Nicht aktualisiert: Das QSO wurde inzwischen hier geändert oder ist nicht synchronisiert.';
+
+  @override
+  String get qsoNotRemovedChanged =>
+      'Nicht entfernt: Wavelog hat dieses QSO mit anderen Daten. Aktualisiere es zuerst von Wavelog.';
+
+  @override
+  String get journalRefreshedFromServer =>
+      'Von Wavelog aktualisiert (dort geändert)';
 }

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/services/data_transfer.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -336,9 +337,71 @@ void main() {
       await tester.pumpAndSettle();
       expect(service.carried, isEmpty);
       expect(
-        find.text('Not removed: Wavelog could not confirm this QSO.'),
+        find.textContaining('Wavelog has this QSO with different data'),
         findsOneWidget,
       );
+      expect(find.text('Update from Wavelog'), findsWidgets);
+    });
+
+    testWidgets('Update from Wavelog asks first, then refreshes', (
+      tester,
+    ) async {
+      final item = _synced(1);
+      final refresh = FakeRefreshService();
+      await pumpTideline(
+        tester,
+        size: TestSizes.tabletPortrait,
+        log: [item],
+        overrides: [qsoRefreshServiceProvider.overrideWithValue(refresh)],
+      );
+      await openDetail(tester, item);
+      await tester.tap(
+        find.widgetWithText(OutlinedButton, 'Update from Wavelog'),
+      );
+      await tester.pumpAndSettle();
+      expect(refresh.refreshed, isEmpty);
+      await tester.tap(find.widgetWithText(TextButton, 'Update from Wavelog'));
+      await tester.pumpAndSettle();
+      expect(refresh.refreshed, [item.qso.id]);
+      expect(find.text('Updated from Wavelog.'), findsOneWidget);
+    });
+
+    testWidgets('cancelling the update changes nothing', (tester) async {
+      final item = _synced(1);
+      final refresh = FakeRefreshService();
+      await pumpTideline(
+        tester,
+        size: TestSizes.tabletPortrait,
+        log: [item],
+        overrides: [qsoRefreshServiceProvider.overrideWithValue(refresh)],
+      );
+      await openDetail(tester, item);
+      await tester.tap(
+        find.widgetWithText(OutlinedButton, 'Update from Wavelog'),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(TextButton, 'Cancel'));
+      await tester.pumpAndSettle();
+      expect(refresh.refreshed, isEmpty);
+    });
+
+    testWidgets('a QSO gone from Wavelog is reported', (tester) async {
+      final item = _synced(1);
+      final refresh = FakeRefreshService(outcome: RefreshOutcome.goneOnServer);
+      await pumpTideline(
+        tester,
+        size: TestSizes.tabletPortrait,
+        log: [item],
+        overrides: [qsoRefreshServiceProvider.overrideWithValue(refresh)],
+      );
+      await openDetail(tester, item);
+      await tester.tap(
+        find.widgetWithText(OutlinedButton, 'Update from Wavelog'),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(TextButton, 'Update from Wavelog'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('no longer has this QSO'), findsOneWidget);
     });
 
     testWidgets('no answer from Wavelog: nothing is removed', (tester) async {

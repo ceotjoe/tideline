@@ -4440,6 +4440,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Only while the log, Fast Log Entry or the contest screen is open. This uses more battery.'**
   String get fieldModeKeepScreenOnHint;
+
+  /// Button on a synced QSO.
+  ///
+  /// In en, this message translates to:
+  /// **'Update from Wavelog'**
+  String get qsoRefreshFromServer;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace this QSO with the Wavelog version?'**
+  String get qsoRefreshConfirmTitle;
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this when you changed the QSO in Wavelog. The copy on this device is replaced by what Wavelog has. Nothing is sent to Wavelog.'**
+  String get qsoRefreshConfirmBody;
+
+  /// Snackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated from Wavelog.'**
+  String get qsoRefreshDone;
+
+  /// Snackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog no longer has this QSO. Nothing was changed.'**
+  String get qsoRefreshGone;
+
+  /// Snackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Wavelog sent a version that could not be read. Nothing was changed.'**
+  String get qsoRefreshUnreadable;
+
+  /// Snackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Not updated: this QSO changed here in the meantime or is not synced.'**
+  String get qsoRefreshNotPossible;
+
+  /// Snackbar when removing from the device finds a changed QSO.
+  ///
+  /// In en, this message translates to:
+  /// **'Not removed: Wavelog has this QSO with different data. Update it from Wavelog first.'**
+  String get qsoNotRemovedChanged;
+
+  /// Journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated from Wavelog (it had been changed there)'**
+  String get journalRefreshedFromServer;
 }
 
 class _AppLocalizationsDelegate

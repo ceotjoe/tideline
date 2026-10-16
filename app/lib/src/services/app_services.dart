@@ -189,6 +189,15 @@ final qsoEvictionServiceProvider = Provider<QsoEvictionService>(
   ),
 );
 
+/// Replaces a QSO that was changed in Wavelog with Wavelog's version.
+final qsoRefreshServiceProvider = Provider<QsoRefreshService>(
+  (ref) => QsoRefreshService(
+    qsos: ref.watch(qsoRepositoryProvider),
+    accounts: ref.watch(accountRepositoryProvider),
+    clientFor: clientForAccount,
+  ),
+);
+
 /// How many QSOs of an account were removed from this device so far.
 final StreamProviderFamily<int, String> evictedCountProvider = StreamProvider
     .autoDispose

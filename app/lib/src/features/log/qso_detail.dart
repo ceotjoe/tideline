@@ -212,12 +212,18 @@ class QsoDetail extends ConsumerWidget {
             if (status?.state == SyncState.synced &&
                 status?.remoteQsoId != null &&
                 item.qso.contestSessionId == null &&
-                item.qso.activationId == null)
+                item.qso.activationId == null) ...[
+              OutlinedButton.icon(
+                icon: const Icon(Icons.cloud_download_outlined),
+                label: Text(l10n.qsoRefreshFromServer),
+                onPressed: () => _refreshFromServer(context, ref, item),
+              ),
               OutlinedButton.icon(
                 icon: const Icon(Icons.cleaning_services_outlined),
                 label: Text(l10n.qsoRemoveFromDevice),
                 onPressed: () => _removeFromDevice(context, ref, item),
               ),
+            ],
           ],
         ),
         if (status?.state == SyncState.synced)
@@ -232,6 +238,67 @@ class QsoDetail extends ConsumerWidget {
         _QsoJournal(qsoId: q.id),
       ],
     );
+  }
+
+  /// Replaces one synced QSO with the version Wavelog has (ADR 0035), after
+  /// the user agreed. Nothing is sent to Wavelog.
+  Future<void> _refreshFromServer(
+    BuildContext context,
+    WidgetRef ref,
+    LoggedQso item,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final account = ref
+        .read(accountsProvider)
+        .value
+        ?.where((a) => a.id == item.qso.accountId)
+        .firstOrNull;
+    if (account == null) return;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.qsoRefreshConfirmTitle),
+        content: Text(l10n.qsoRefreshConfirmBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.actionCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.qsoRefreshFromServer),
+          ),
+        ],
+      ),
+    );
+    if (!(confirmed ?? false)) return;
+    try {
+      final outcome = await ref
+          .read(qsoRefreshServiceProvider)
+          .refresh(account, item.qso.id);
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(switch (outcome) {
+            RefreshOutcome.refreshed => l10n.qsoRefreshDone,
+            RefreshOutcome.goneOnServer => l10n.qsoRefreshGone,
+            RefreshOutcome.unreadable => l10n.qsoRefreshUnreadable,
+            RefreshOutcome.notEligible => l10n.qsoRefreshNotPossible,
+          }),
+        ),
+      );
+    } on EvictionCheckFailed catch (e) {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(switch (e.problem) {
+            EvictionCheckProblem.offline => l10n.freeSpaceOffline,
+            EvictionCheckProblem.unauthorized => l10n.freeSpaceUnauthorized,
+            EvictionCheckProblem.server ||
+            EvictionCheckProblem.tooMany => l10n.freeSpaceServerProblem,
+          }),
+        ),
+      );
+    }
   }
 
   /// Removes the local copy of one synced QSO, after Wavelog confirmed it.
@@ -270,7 +337,22 @@ class QsoDetail extends ConsumerWidget {
     try {
       final plan = await service.plan(account, ids: {item.qso.id});
       if (plan.confirmed.isEmpty) {
-        messenger.showSnackBar(SnackBar(content: Text(l10n.qsoNotRemoved)));
+        // Found under its Wavelog id but with other data: it was changed
+        // there, and Wavelog's version can be taken over.
+        final changed = plan.missingOnServer.isNotEmpty;
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              changed ? l10n.qsoNotRemovedChanged : l10n.qsoNotRemoved,
+            ),
+            action: changed
+                ? SnackBarAction(
+                    label: l10n.qsoRefreshFromServer,
+                    onPressed: () => _refreshFromServer(context, ref, item),
+                  )
+                : null,
+          ),
+        );
         return;
       }
       final removed = await service.carryOut(plan);
@@ -370,6 +452,7 @@ class JournalTile extends StatelessWidget {
       JournalEvent.contestSessionLocalOnly =>
         l10n.journalContestSessionLocalOnly,
       JournalEvent.contestSessionRetry => l10n.journalContestSessionRetry,
+      JournalEvent.refreshedFromServer => l10n.journalRefreshedFromServer,
     };
     final server = entry.detail['server'] as String?;
     return ListTile(
