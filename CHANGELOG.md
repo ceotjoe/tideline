@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-16
+
 ### Added
 - **Update from Wavelog** on a synced QSO (ADR 0035): a QSO whose time or other data you changed in Wavelog can be
   replaced by Wavelog's version, so *Remove from this device* works again. Read-only towards Wavelog; contest and
