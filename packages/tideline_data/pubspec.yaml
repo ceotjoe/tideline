@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   crypto: ^3.0.7
-  drift: ^2.35.1
+  drift: ^2.35.2
   meta: ^1.19.0
   sqlite3: ^3.7.0
   tideline_adif: any
