@@ -189,6 +189,58 @@ class QsoRepository {
     }
   });
 
+  /// The revision counter of [id], or null if there is no such QSO. A
+  /// refresh from the server passes it back to [applyServerVersion] to prove
+  /// nothing changed in between.
+  Future<int?> revOf(String id) async {
+    final row = await (_db.select(
+      _db.qsos,
+    )..where((q) => q.id.equals(id))).getSingleOrNull();
+    return row?.rev;
+  }
+
+  /// Replaces the local copy of a synced QSO with [server], the version
+  /// Wavelog has (ADR 0035). Nothing is sent: the sync row stays `synced`.
+  ///
+  /// Returns false and changes nothing unless the QSO is still synced with a
+  /// Wavelog id, outside contests and activations, and unedited since
+  /// [expectedRev] was read.
+  Future<bool> applyServerVersion(Qso server, {required int expectedRev}) =>
+      _db.transaction(() async {
+        final current = await find(server.id);
+        final status = current?.status;
+        if (current == null ||
+            status == null ||
+            status.state != SyncState.synced ||
+            status.remoteQsoId == null) {
+          return false;
+        }
+        final row = await _row(server.id);
+        if (row.deletedAt != null ||
+            row.rev != expectedRev ||
+            row.contestSessionId != null ||
+            row.activationId != null) {
+          return false;
+        }
+        await (_db.update(
+          _db.qsos,
+        )..where((q) => q.id.equals(server.id))).write(
+          qsoToCompanion(server).copyWith(
+            hlcModified: Value(_clock.now().toString()),
+            rev: Value(row.rev + 1),
+          ),
+        );
+        await _workedBefore.noteQso(server);
+        await _journal.append(
+          accountId: server.accountId,
+          qsoId: server.id,
+          event: JournalEvent.refreshedFromServer,
+          at: _now(),
+          detail: {'call': server.call.value, 'remoteId': status.remoteQsoId},
+        );
+        return true;
+      });
+
   /// Deletes a QSO locally (soft delete) and, if it reached the server and
   /// [canDeleteOnServer], queues the server delete.
   Future<void> delete(String id, {required bool canDeleteOnServer}) =>

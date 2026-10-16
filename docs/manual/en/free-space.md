@@ -22,6 +22,13 @@ deleted on Wavelog.**
 ## One QSO
 Open a synced QSO and choose **Remove from this device.** Tideline checks with Wavelog first.
 
+### A QSO you changed in Wavelog
+If you changed a QSO in Wavelog itself (for example its time), Wavelog's copy no longer matches this one and Tideline will
+not remove it. Open the QSO and choose **Update from Wavelog.** After you confirm, this device's copy is replaced by what
+Wavelog has; nothing is sent to Wavelog. Then **Remove from this device** works. This is not offered for QSOs of contest
+sessions and activations, nor for QSOs that were changed here and are still waiting to be sent. If Wavelog no longer has
+the QSO at all, nothing is changed.
+
 ## What changes
 - The QSO is gone from the log list and from the ADIF export of this account. **Export first** if you want a copy.
 - It cannot be brought back from Wavelog into Tideline; only from an ADIF file.

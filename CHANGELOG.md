@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Update from Wavelog** on a synced QSO (ADR 0035): a QSO whose time or other data you changed in Wavelog can be
+  replaced by Wavelog's version, so *Remove from this device* works again. Read-only towards Wavelog; contest and
+  activation QSOs are excluded. Fixes #1.
+
+### Changed
+- Dependency update within the existing constraints (`pubspec.lock` only): drift 2.35.2, sqlite3 3.7.1 (SQLite 3.54.0,
+  still the plain `sqlite3` source), file_picker platform packages (darwin 2.3.0, android 2.1.0, linux 2.0.2,
+  windows 2.0.1, web 4.1.0, interface 4.2.0), material_ui 1.6.0, cupertino_ui 1.1.2, local_auth_android 2.3.0,
+  jni_flutter 1.0.4+1, coverage 1.16.0, frontend_server_client 4.1.0 and the build-time-only archive 4.5.2 and
+  image 4.12.0 (both include security fixes for untrusted input). No goldens changed.
+- Not updated, blocked by the Flutter 3.47.2 SDK pin on test_api/matcher: test, test_api, test_core,
+  material_color_utilities, and through them analyzer, source_gen and build_runner. package_config 3.0.0 and
+  cross_file 0.4.0 are held back on purpose.
+
 ## [0.6.0] - 2026-10-06
 
 ### Changed

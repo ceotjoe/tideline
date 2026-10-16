@@ -1,6 +1,6 @@
 # 0027. Removing synced QSOs from the device (eviction)
 
-- Status: accepted
+- Status: accepted; amended by [0035](0035-refresh-changed-qso-from-wavelog.md)
 - Date: 2026-10-04
 
 ## Context
@@ -44,5 +44,5 @@
   suggests exporting first.
 - A QSO removed by mistake can only come back through an ADIF file (the export offered first, or one from Wavelog).
 - The fingerprint is a hash of a low-entropy tuple, so someone who has the database could test a guess; the database is
-  encrypted and the record is not part of backups or exports. Threat T26.
+  a plain file (ADR 0034) and the record is not part of backups or exports. Threat T26.
 - Device-to-device sync (later) can use the records to avoid sending a removed QSO back to this device.

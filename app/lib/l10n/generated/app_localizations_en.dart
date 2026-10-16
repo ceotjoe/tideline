@@ -2886,6 +2886,40 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get fieldModeKeepScreenOnHint =>
       'Only while the log, Fast Log Entry or the contest screen is open. This uses more battery.';
+
+  @override
+  String get qsoRefreshFromServer => 'Update from Wavelog';
+
+  @override
+  String get qsoRefreshConfirmTitle =>
+      'Replace this QSO with the Wavelog version?';
+
+  @override
+  String get qsoRefreshConfirmBody =>
+      'Use this when you changed the QSO in Wavelog. The copy on this device is replaced by what Wavelog has. Nothing is sent to Wavelog.';
+
+  @override
+  String get qsoRefreshDone => 'Updated from Wavelog.';
+
+  @override
+  String get qsoRefreshGone =>
+      'Wavelog no longer has this QSO. Nothing was changed.';
+
+  @override
+  String get qsoRefreshUnreadable =>
+      'Wavelog sent a version that could not be read. Nothing was changed.';
+
+  @override
+  String get qsoRefreshNotPossible =>
+      'Not updated: this QSO changed here in the meantime or is not synced.';
+
+  @override
+  String get qsoNotRemovedChanged =>
+      'Not removed: Wavelog has this QSO with different data. Update it from Wavelog first.';
+
+  @override
+  String get journalRefreshedFromServer =>
+      'Updated from Wavelog (it had been changed there)';
 }
 
 /// The translations for English (`en_XA`).
@@ -5838,4 +5872,38 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String get fieldModeKeepScreenOnHint =>
       '[Öñļý ŵĥîļé ţĥé ļöĝ, Ƒášţ Ļöĝ Éñţŕý öŕ ţĥé çöñţéšţ šçŕééñ îš öþéñ. Ţĥîš ûšéš ɱöŕé ƀáţţéŕý.····································]';
+
+  @override
+  String get qsoRefreshFromServer => '[Ûþðáţé ƒŕöɱ Ŵáṽéļöĝ········]';
+
+  @override
+  String get qsoRefreshConfirmTitle =>
+      '[Ŕéþļáçé ţĥîš ǪŠÖ ŵîţĥ ţĥé Ŵáṽéļöĝ ṽéŕšîöñ?·················]';
+
+  @override
+  String get qsoRefreshConfirmBody =>
+      '[Ûšé ţĥîš ŵĥéñ ýöû çĥáñĝéð ţĥé ǪŠÖ îñ Ŵáṽéļöĝ. Ţĥé çöþý öñ ţĥîš ðéṽîçé îš ŕéþļáçéð ƀý ŵĥáţ Ŵáṽéļöĝ ĥáš. Ñöţĥîñĝ îš šéñţ ţö Ŵáṽéļöĝ.····················································]';
+
+  @override
+  String get qsoRefreshDone => '[Ûþðáţéð ƒŕöɱ Ŵáṽéļöĝ.·········]';
+
+  @override
+  String get qsoRefreshGone =>
+      '[Ŵáṽéļöĝ ñö ļöñĝéŕ ĥáš ţĥîš ǪŠÖ. Ñöţĥîñĝ ŵáš çĥáñĝéð.·····················]';
+
+  @override
+  String get qsoRefreshUnreadable =>
+      '[Ŵáṽéļöĝ šéñţ á ṽéŕšîöñ ţĥáţ çöûļð ñöţ ƀé ŕéáð. Ñöţĥîñĝ ŵáš çĥáñĝéð.···························]';
+
+  @override
+  String get qsoRefreshNotPossible =>
+      '[Ñöţ ûþðáţéð: ţĥîš ǪŠÖ çĥáñĝéð ĥéŕé îñ ţĥé ɱéáñţîɱé öŕ îš ñöţ šýñçéð.····························]';
+
+  @override
+  String get qsoNotRemovedChanged =>
+      '[Ñöţ ŕéɱöṽéð: Ŵáṽéļöĝ ĥáš ţĥîš ǪŠÖ ŵîţĥ ðîƒƒéŕéñţ ðáţá. Ûþðáţé îţ ƒŕöɱ Ŵáṽéļöĝ ƒîŕšţ.··································]';
+
+  @override
+  String get journalRefreshedFromServer =>
+      '[Ûþðáţéð ƒŕöɱ Ŵáṽéļöĝ (îţ ĥáð ƀééñ çĥáñĝéð ţĥéŕé)····················]';
 }

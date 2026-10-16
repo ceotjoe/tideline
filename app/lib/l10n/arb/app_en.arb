@@ -3720,5 +3720,41 @@
   "fieldModeKeepScreenOnHint": "Only while the log, Fast Log Entry or the contest screen is open. This uses more battery.",
   "@fieldModeKeepScreenOnHint": {
     "description": "Hint under the keep screen on switch."
+  },
+  "qsoRefreshFromServer": "Update from Wavelog",
+  "@qsoRefreshFromServer": {
+    "description": "Button on a synced QSO."
+  },
+  "qsoRefreshConfirmTitle": "Replace this QSO with the Wavelog version?",
+  "@qsoRefreshConfirmTitle": {
+    "description": "Dialog title."
+  },
+  "qsoRefreshConfirmBody": "Use this when you changed the QSO in Wavelog. The copy on this device is replaced by what Wavelog has. Nothing is sent to Wavelog.",
+  "@qsoRefreshConfirmBody": {
+    "description": "Dialog text."
+  },
+  "qsoRefreshDone": "Updated from Wavelog.",
+  "@qsoRefreshDone": {
+    "description": "Snackbar."
+  },
+  "qsoRefreshGone": "Wavelog no longer has this QSO. Nothing was changed.",
+  "@qsoRefreshGone": {
+    "description": "Snackbar."
+  },
+  "qsoRefreshUnreadable": "Wavelog sent a version that could not be read. Nothing was changed.",
+  "@qsoRefreshUnreadable": {
+    "description": "Snackbar."
+  },
+  "qsoRefreshNotPossible": "Not updated: this QSO changed here in the meantime or is not synced.",
+  "@qsoRefreshNotPossible": {
+    "description": "Snackbar."
+  },
+  "qsoNotRemovedChanged": "Not removed: Wavelog has this QSO with different data. Update it from Wavelog first.",
+  "@qsoNotRemovedChanged": {
+    "description": "Snackbar when removing from the device finds a changed QSO."
+  },
+  "journalRefreshedFromServer": "Updated from Wavelog (it had been changed there)",
+  "@journalRefreshedFromServer": {
+    "description": "Journal entry."
   }
 }

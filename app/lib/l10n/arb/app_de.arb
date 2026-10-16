@@ -722,5 +722,14 @@
   "fieldModeBatterySaver": "Akkusparmodus",
   "fieldModeBatterySaverHint": "Die Flut bleibt stehen und die Uhr wird einmal pro Minute aktualisiert. Synchronisiert wird weiterhin beim Öffnen der App, wenn das Netz zurückkehrt und auf Wunsch.",
   "fieldModeKeepScreenOn": "Bildschirm beim Loggen anlassen",
-  "fieldModeKeepScreenOnHint": "Nur solange das Log, die Schnelleingabe oder der Contest-Bildschirm geöffnet ist. Das kostet Akku."
+  "fieldModeKeepScreenOnHint": "Nur solange das Log, die Schnelleingabe oder der Contest-Bildschirm geöffnet ist. Das kostet Akku.",
+  "qsoRefreshFromServer": "Von Wavelog aktualisieren",
+  "qsoRefreshConfirmTitle": "Dieses QSO durch die Wavelog-Version ersetzen?",
+  "qsoRefreshConfirmBody": "Nutze das, wenn du das QSO in Wavelog geändert hast. Die Kopie auf diesem Gerät wird durch die Wavelog-Version ersetzt. Es wird nichts an Wavelog gesendet.",
+  "qsoRefreshDone": "Von Wavelog aktualisiert.",
+  "qsoRefreshGone": "Wavelog hat dieses QSO nicht mehr. Es wurde nichts geändert.",
+  "qsoRefreshUnreadable": "Wavelog hat eine Version geschickt, die sich nicht lesen ließ. Es wurde nichts geändert.",
+  "qsoRefreshNotPossible": "Nicht aktualisiert: Das QSO wurde inzwischen hier geändert oder ist nicht synchronisiert.",
+  "qsoNotRemovedChanged": "Nicht entfernt: Wavelog hat dieses QSO mit anderen Daten. Aktualisiere es zuerst von Wavelog.",
+  "journalRefreshedFromServer": "Von Wavelog aktualisiert (dort geändert)"
 }

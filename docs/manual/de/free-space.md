@@ -22,6 +22,13 @@ Wavelog wird nichts gelöscht.**
 ## Ein einzelnes QSO
 Öffne ein synchronisiertes QSO und wähle **Von diesem Gerät entfernen.** Tideline prüft vorher bei Wavelog.
 
+### Ein QSO, das du in Wavelog geändert hast
+Hast du ein QSO in Wavelog selbst geändert (zum Beispiel die Zeit), passt die Wavelog-Kopie nicht mehr zu dieser, und
+Tideline entfernt es nicht. Öffne das QSO und wähle **Von Wavelog aktualisieren.** Nach deiner Bestätigung wird die Kopie
+auf diesem Gerät durch die Wavelog-Version ersetzt; an Wavelog wird nichts gesendet. Danach funktioniert **Von diesem
+Gerät entfernen.** Das gibt es nicht für QSOs aus Contest-Sitzungen und Aktivierungen und nicht für QSOs, die hier
+geändert wurden und noch auf das Senden warten. Hat Wavelog das QSO gar nicht mehr, ändert sich nichts.
+
 ## Was sich ändert
 - Das QSO verschwindet aus der Log-Liste und aus dem ADIF-Export dieses Kontos. **Exportiere vorher**, wenn du eine
   Kopie willst.

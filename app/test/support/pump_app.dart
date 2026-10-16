@@ -353,6 +353,27 @@ class FakeEvictionService extends Fake implements QsoEvictionService {
   }
 }
 
+/// A refresh service that answers with a fixed outcome.
+class FakeRefreshService extends Fake implements QsoRefreshService {
+  new({this.outcome = RefreshOutcome.refreshed, this.problem});
+
+  /// What every refresh reports.
+  final RefreshOutcome outcome;
+
+  /// If set, the refresh fails with it.
+  final EvictionCheckProblem? problem;
+
+  /// The QSO ids refreshed.
+  final List<String> refreshed = [];
+
+  @override
+  Future<RefreshOutcome> refresh(Account account, String qsoId) async {
+    refreshed.add(qsoId);
+    if (problem != null) throw EvictionCheckFailed(problem!);
+    return outcome;
+  }
+}
+
 /// A sync controller that never touches the network or plugins.
 class FakeSyncController extends SyncController {
   int runs = 0;
