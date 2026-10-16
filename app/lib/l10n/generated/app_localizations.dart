@@ -4494,6 +4494,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Updated from Wavelog (it had been changed there)'**
   String get journalRefreshedFromServer;
+
+  /// Title of the dialog to set the QSO time.
+  ///
+  /// In en, this message translates to:
+  /// **'Date and time (UTC)'**
+  String get dateTimeDialogTitle;
+
+  /// Confirm button of that dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Set time'**
+  String get dateTimeDialogSet;
+
+  /// Label of the date field.
+  ///
+  /// In en, this message translates to:
+  /// **'Date (UTC)'**
+  String get dateUtcLabel;
+
+  /// Label of the time field.
+  ///
+  /// In en, this message translates to:
+  /// **'Time (UTC)'**
+  String get timeUtcLabel;
+
+  /// Hint in the date field.
+  ///
+  /// In en, this message translates to:
+  /// **'YYYY-MM-DD'**
+  String get dateFormatHint;
+
+  /// Hint in the time field.
+  ///
+  /// In en, this message translates to:
+  /// **'HH:MM'**
+  String get timeFormatHint;
+
+  /// Tooltip of the calendar button.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick date from calendar'**
+  String get pickDate;
+
+  /// Tooltip of the clock button.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick time from clock'**
+  String get pickTime;
+
+  /// Validation error.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid date as YYYY-MM-DD.'**
+  String get dateInvalid;
+
+  /// Validation error.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid time as HH:MM (24 hours).'**
+  String get timeInvalid;
+
+  /// Validation error.
+  ///
+  /// In en, this message translates to:
+  /// **'This date is too far in the future.'**
+  String get dateInFuture;
 }
 
 class _AppLocalizationsDelegate

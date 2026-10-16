@@ -22,7 +22,10 @@ never makes you wait.
    - Band, mode, frequency and station stay set for the next QSO.
 3. **Reports.** Leave them empty for the usual default: 59 for phone, 599 for CW, −10 for FT8/FT4.
 4. **Time.** The time is always **UTC** and runs live. Choose **Change time** to log an earlier contact, and **Use current
-   time** to go back.
+   time** to go back. One dialog asks for the date (`YYYY-MM-DD`) and the time (`HH:MM`, 24 hours). The date is selected
+   when it opens, so just type over it: after the eighth digit the cursor jumps to the time, and **Enter** sets it. You can
+   type `20240229` and `1437` without separators. The calendar and clock buttons next to the fields open a picker if you
+   prefer one.
 5. **Log.** Choose **Log QSO**, or press **Enter** on a keyboard. The form is ready for the next QSO immediately.
 
 ## Keyboard

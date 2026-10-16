@@ -2920,6 +2920,39 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get journalRefreshedFromServer =>
       'Updated from Wavelog (it had been changed there)';
+
+  @override
+  String get dateTimeDialogTitle => 'Date and time (UTC)';
+
+  @override
+  String get dateTimeDialogSet => 'Set time';
+
+  @override
+  String get dateUtcLabel => 'Date (UTC)';
+
+  @override
+  String get timeUtcLabel => 'Time (UTC)';
+
+  @override
+  String get dateFormatHint => 'YYYY-MM-DD';
+
+  @override
+  String get timeFormatHint => 'HH:MM';
+
+  @override
+  String get pickDate => 'Pick date from calendar';
+
+  @override
+  String get pickTime => 'Pick time from clock';
+
+  @override
+  String get dateInvalid => 'Enter a valid date as YYYY-MM-DD.';
+
+  @override
+  String get timeInvalid => 'Enter a valid time as HH:MM (24 hours).';
+
+  @override
+  String get dateInFuture => 'This date is too far in the future.';
 }
 
 /// The translations for English (`en_XA`).
@@ -5906,4 +5939,39 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String get journalRefreshedFromServer =>
       '[Ûþðáţéð ƒŕöɱ Ŵáṽéļöĝ (îţ ĥáð ƀééñ çĥáñĝéð ţĥéŕé)····················]';
+
+  @override
+  String get dateTimeDialogTitle => '[Ðáţé áñð ţîɱé (ÛŢÇ)········]';
+
+  @override
+  String get dateTimeDialogSet => '[Šéţ ţîɱé····]';
+
+  @override
+  String get dateUtcLabel => '[Ðáţé (ÛŢÇ)····]';
+
+  @override
+  String get timeUtcLabel => '[Ţîɱé (ÛŢÇ)····]';
+
+  @override
+  String get dateFormatHint => '[ÝÝÝÝ-ṀṀ-ÐÐ····]';
+
+  @override
+  String get timeFormatHint => '[ĤĤ:ṀṀ··]';
+
+  @override
+  String get pickDate => '[Þîçķ ðáţé ƒŕöɱ çáļéñðáŕ··········]';
+
+  @override
+  String get pickTime => '[Þîçķ ţîɱé ƒŕöɱ çļöçķ········]';
+
+  @override
+  String get dateInvalid => '[Éñţéŕ á ṽáļîð ðáţé áš ÝÝÝÝ-ṀṀ-ÐÐ.··············]';
+
+  @override
+  String get timeInvalid =>
+      '[Éñţéŕ á ṽáļîð ţîɱé áš ĤĤ:ṀṀ (24 ĥöûŕš).················]';
+
+  @override
+  String get dateInFuture =>
+      '[Ţĥîš ðáţé îš ţöö ƒáŕ îñ ţĥé ƒûţûŕé.··············]';
 }

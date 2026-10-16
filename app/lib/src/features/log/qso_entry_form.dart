@@ -20,6 +20,7 @@ import 'package:tideline/src/providers.dart';
 import 'package:tideline/src/services/app_services.dart';
 import 'package:tideline/src/widgets/frequency_field.dart';
 import 'package:tideline/src/widgets/upper_case_formatter.dart';
+import 'package:tideline/src/widgets/utc_date_time_dialog.dart';
 import 'package:tideline_data/tideline_data.dart' show CallsignInfo;
 import 'package:tideline_domain/tideline_domain.dart';
 
@@ -757,30 +758,12 @@ class _TimeRow extends StatelessWidget {
   final VoidCallback onNow;
 
   Future<void> _pick(BuildContext context) async {
-    final date = await showDatePicker(
-      context: context,
-      initialDate: time.value,
-      firstDate: DateTime.utc(1930),
-      lastDate: DateTime.now().toUtc().add(const Duration(days: 1)),
-      // Typing is faster than dialling for a QSO from the paper log.
-      initialEntryMode: DatePickerEntryMode.input,
+    final picked = await showUtcDateTimeDialog(
+      context,
+      initial: time,
+      latest: DateTime.now().toUtc().add(const Duration(days: 1)),
     );
-    if (date == null || !context.mounted) return;
-    final clock = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay(hour: time.value.hour, minute: time.value.minute),
-      initialEntryMode: TimePickerEntryMode.input,
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-        child: child!,
-      ),
-    );
-    if (clock == null) return;
-    onPick(
-      UtcDateTime(
-        DateTime.utc(date.year, date.month, date.day, clock.hour, clock.minute),
-      ),
-    );
+    if (picked != null) onPick(picked);
   }
 
   @override

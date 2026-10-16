@@ -2942,4 +2942,38 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get journalRefreshedFromServer =>
       'Von Wavelog aktualisiert (dort geändert)';
+
+  @override
+  String get dateTimeDialogTitle => 'Datum und Uhrzeit (UTC)';
+
+  @override
+  String get dateTimeDialogSet => 'Zeit übernehmen';
+
+  @override
+  String get dateUtcLabel => 'Datum (UTC)';
+
+  @override
+  String get timeUtcLabel => 'Uhrzeit (UTC)';
+
+  @override
+  String get dateFormatHint => 'JJJJ-MM-TT';
+
+  @override
+  String get timeFormatHint => 'HH:MM';
+
+  @override
+  String get pickDate => 'Datum im Kalender wählen';
+
+  @override
+  String get pickTime => 'Uhrzeit an der Uhr wählen';
+
+  @override
+  String get dateInvalid => 'Gib ein gültiges Datum als JJJJ-MM-TT ein.';
+
+  @override
+  String get timeInvalid =>
+      'Gib eine gültige Uhrzeit als HH:MM ein (24 Stunden).';
+
+  @override
+  String get dateInFuture => 'Dieses Datum liegt zu weit in der Zukunft.';
 }

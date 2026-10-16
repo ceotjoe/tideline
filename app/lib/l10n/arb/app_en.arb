@@ -3756,5 +3756,49 @@
   "journalRefreshedFromServer": "Updated from Wavelog (it had been changed there)",
   "@journalRefreshedFromServer": {
     "description": "Journal entry."
+  },
+  "dateTimeDialogTitle": "Date and time (UTC)",
+  "@dateTimeDialogTitle": {
+    "description": "Title of the dialog to set the QSO time."
+  },
+  "dateTimeDialogSet": "Set time",
+  "@dateTimeDialogSet": {
+    "description": "Confirm button of that dialog."
+  },
+  "dateUtcLabel": "Date (UTC)",
+  "@dateUtcLabel": {
+    "description": "Label of the date field."
+  },
+  "timeUtcLabel": "Time (UTC)",
+  "@timeUtcLabel": {
+    "description": "Label of the time field."
+  },
+  "dateFormatHint": "YYYY-MM-DD",
+  "@dateFormatHint": {
+    "description": "Hint in the date field."
+  },
+  "timeFormatHint": "HH:MM",
+  "@timeFormatHint": {
+    "description": "Hint in the time field."
+  },
+  "pickDate": "Pick date from calendar",
+  "@pickDate": {
+    "description": "Tooltip of the calendar button."
+  },
+  "pickTime": "Pick time from clock",
+  "@pickTime": {
+    "description": "Tooltip of the clock button."
+  },
+  "dateInvalid": "Enter a valid date as YYYY-MM-DD.",
+  "@dateInvalid": {
+    "description": "Validation error."
+  },
+  "timeInvalid": "Enter a valid time as HH:MM (24 hours).",
+  "@timeInvalid": {
+    "description": "Validation error."
+  },
+  "dateInFuture": "This date is too far in the future.",
+  "@dateInFuture": {
+    "description": "Validation error."
   }
 }

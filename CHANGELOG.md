@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   activation QSOs are excluded. Fixes #1.
 
 ### Changed
+- **One dialog for the QSO date and time** (replaces the date picker followed by the time picker). Both fields are text
+  fields that select their content, so a value is typed over at once; the cursor jumps from the date to the time after the
+  eighth digit and Enter sets it. A calendar and a clock are available on demand. Fixes #2.
 - Dependency update within the existing constraints (`pubspec.lock` only): drift 2.35.2, sqlite3 3.7.1 (SQLite 3.54.0,
   still the plain `sqlite3` source), file_picker platform packages (darwin 2.3.0, android 2.1.0, linux 2.0.2,
   windows 2.0.1, web 4.1.0, interface 4.2.0), material_ui 1.6.0, cupertino_ui 1.1.2, local_auth_android 2.3.0,

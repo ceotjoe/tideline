@@ -731,5 +731,16 @@
   "qsoRefreshUnreadable": "Wavelog hat eine Version geschickt, die sich nicht lesen ließ. Es wurde nichts geändert.",
   "qsoRefreshNotPossible": "Nicht aktualisiert: Das QSO wurde inzwischen hier geändert oder ist nicht synchronisiert.",
   "qsoNotRemovedChanged": "Nicht entfernt: Wavelog hat dieses QSO mit anderen Daten. Aktualisiere es zuerst von Wavelog.",
-  "journalRefreshedFromServer": "Von Wavelog aktualisiert (dort geändert)"
+  "journalRefreshedFromServer": "Von Wavelog aktualisiert (dort geändert)",
+  "dateTimeDialogTitle": "Datum und Uhrzeit (UTC)",
+  "dateTimeDialogSet": "Zeit übernehmen",
+  "dateUtcLabel": "Datum (UTC)",
+  "timeUtcLabel": "Uhrzeit (UTC)",
+  "dateFormatHint": "JJJJ-MM-TT",
+  "timeFormatHint": "HH:MM",
+  "pickDate": "Datum im Kalender wählen",
+  "pickTime": "Uhrzeit an der Uhr wählen",
+  "dateInvalid": "Gib ein gültiges Datum als JJJJ-MM-TT ein.",
+  "timeInvalid": "Gib eine gültige Uhrzeit als HH:MM ein (24 Stunden).",
+  "dateInFuture": "Dieses Datum liegt zu weit in der Zukunft."
 }
