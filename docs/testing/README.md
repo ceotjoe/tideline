@@ -4,14 +4,14 @@ This is the entry point for anyone who tests Tideline by hand. Automated tests (
 accessibility and l10n tests, the end-to-end test) run in CI and do not replace this. The hand tests cover what they
 cannot: real devices, real screen readers, a real Wavelog and real use in the field.
 
-**Build under test:** Tideline 0.6.0 (build 8).
+**Build under test:** Tideline 0.7.0 (build 9).
 
 ## Pick your checklist
 
 | You have | Use | Distribution |
 |---|---|---|
 | iPhone or iPad | [testflight.md](testflight.md) | TestFlight |
-| Mac | [testflight.md](testflight.md) (sections 1, 2, 4, 5, 5b, 5c) and [desktop.md](desktop.md) | TestFlight for Mac, or the build from source |
+| Mac | [testflight.md](testflight.md) (sections 1, 2, 4, 5, 5b, 5c, 5d) and [desktop.md](desktop.md) | TestFlight for Mac, or the build from source |
 | Android phone or tablet | [android.md](android.md) | Google Play internal or closed test |
 | Windows PC | [desktop.md](desktop.md) | GitHub release: portable zip or MSIX |
 | No Wavelog at all | Any checklist, using **Try the demo (no Wavelog needed)** on the Welcome screen | |
@@ -37,6 +37,12 @@ Same for every platform. TestFlight testers can use **Send Beta Feedback**. Ever
 Mark the severity: **blocker** (data lost, duplicated or silently changed; token leaked; crash; cannot log), **major**
 (a feature does not work or cannot be used with a screen reader or keyboard), **minor** (wrong text, layout glitch,
 unclear message).
+
+## Pre-1.0 test cases
+The checklists above are walk-throughs per platform. [cases/](cases/README.md) holds the **numbered test cases** that
+must pass before v1.0: one step list and one expected result per case, grouped by area (data safety, logging, contest,
+activations, accessibility and language, security and privacy, platforms and stores). The exit criteria below refer to
+them.
 
 ## Language pass (EN and DE)
 Do this once per release, on one platform, in German. The language is set in-app (Settings → Appearance and language)

@@ -5,7 +5,7 @@ none of them needs to be done in one sitting. Tick what works and write down wha
 platforms, the language pass and the exit criteria for v1.0 are in [README.md](README.md); Android and Windows have their
 own lists ([android.md](android.md), [desktop.md](desktop.md)).
 
-**Build under test:** Tideline 0.6.0, build ____ · **Device:** ____ · **iOS/iPadOS:** ____ · **Wavelog:** ____ ·
+**Build under test:** Tideline 0.7.0, build 9 · **Device:** ____ · **iOS/iPadOS:** ____ · **Wavelog:** ____ ·
 **Language:** EN / DE
 
 ## 0. Before you start
@@ -35,7 +35,7 @@ own lists ([android.md](android.md), [desktop.md](desktop.md)).
 ## 2. Everyday logging (phone, tablet)
 - [ ] Callsign entry with the keyboard up: DXCC hint, worked-before hint, band from the frequency
   (`14205`, `14.205`, `472`, `1840`).
-- [ ] Times are UTC. Change the time manually and back to "now".
+- [ ] Times are UTC. Change the time manually and back to "now" (the dialog is in section 5d).
 - [ ] **iPad**: rotate in both directions, use split view and Stage Manager, with and without the on-screen keyboard.
   Typed input must survive. Nothing important is hidden behind the keyboard.
 - [ ] **iPhone**: portrait only, as intended.
@@ -81,8 +81,7 @@ own lists ([android.md](android.md), [desktop.md](desktop.md)).
 - [ ] **Accounts:** add a second Wavelog account (Settings → Wavelog accounts), switch with the menu on the log screen,
   rename it, give it a new token. Switching is refused during a contest session or an activation. Sync covers both.
 - [ ] **Callsign directory:** type a call you worked before: name, place and locator appear, **Fill in** fills empty
-  fields. Write a note for a station and see it again later, also offline. Browse and search it in Settings →
-  Reference data.
+  fields. Write a note for a station and see it again later, also offline. Browse and search it in the **Callsigns** tab.
 - [ ] **Free up space:** Settings → account → *Remove synced QSOs*. Check the count, **Check with Wavelog**, **Export,
   then remove**. Only synced QSOs go; nothing is deleted on Wavelog; an ADIF re-import skips them.
 - [ ] **Fast Log Entry** (lightning bolt in the log): paste a few lines like `20m cw` / `1734 DL1ABC 599 579` / `5 G4XYZ`.
@@ -113,13 +112,28 @@ own lists ([android.md](android.md), [desktop.md](desktop.md)).
   If Wavelog answers "too many requests" (a busy server), Tideline waits and retries by itself while the app is open.
 - [ ] **Callsigns in the main navigation (0.5):** Log, Callsigns, Sync, Settings. **⌘2** opens Callsigns and **⌘3** opens Sync
   on an iPad with a keyboard. The old place under Reference data is gone.
-- [ ] **Date and time editing (0.5):** change the time of a QSO. The date and time are text fields you can type into; the
-  calendar and the clock dial can still be switched to. The time stays UTC.
+- [ ] **Date and time editing (0.5):** superseded by the one dialog of 0.7, see section 5d.
 - [ ] **Activation counting (0.5):** SOTA counts 4 QSOs with different stations on one UTC day (the same station on
   another band does not count). WWFF counts the same station again on another UTC day and adds the days of a session
   up. Compare with the award rules.
 - [ ] **Switching accounts (0.5):** with two accounts, switch on the log screen and the entry form takes a station of the
   new account without an error. On a phone with a notch, no blank band sits above the page titles.
+
+## 5d. New in 0.7
+- [ ] **One UTC date and time dialog:** in the log form choose **Change time** (and when editing a QSO). One dialog,
+  "Date and time (UTC)", opens with the date selected. Type over it (`20261017` or `2026-10-17`); after the eighth digit
+  the cursor jumps to the time; type the time (`1734` or `17:34`); **Enter** or **Set time** sets it. The calendar and
+  the clock open on demand and give the same result.
+- [ ] A date or time that does not exist (month 13, 25:00) is refused with "Enter a valid date as YYYY-MM-DD." or "Enter
+  a valid time as HH:MM (24 hours).", and a date too far in the future is refused too. Cancel keeps the old value.
+  Rotate the iPad with the dialog open: nothing typed is lost.
+- [ ] VoiceOver reads the fields and the buttons sensibly, and the result is announced. Largest text size: nothing cut off.
+- [ ] **Update from Wavelog:** sync a QSO, change its time in Wavelog, then open the QSO in Tideline and choose
+  **Update from Wavelog**. Confirm. The QSO shows Wavelog's version, nothing is sent to Wavelog, the state stays synced.
+  Then **Remove from this device** works.
+- [ ] Choosing **Remove from this device** on a QSO changed in Wavelog offers the same update as an action of the message.
+- [ ] Not offered for QSOs of a contest session or an activation, nor for a QSO changed here and still waiting. If the
+  QSO is gone from Wavelog, nothing changes. Needs the `qso:read` permission; without a connection the message says so.
 
 ## 6. Things that must not happen
 - [ ] No network request without a user action, other than talking to your Wavelog.
@@ -136,6 +150,8 @@ own lists ([android.md](android.md), [desktop.md](desktop.md)).
 - Wavelog ignores your own park or summit in an upload and uses the one of the station location.
 - This file is for iPhone and iPad (and the Mac build through TestFlight). TalkBack, Android and Windows are in
   [android.md](android.md) and [desktop.md](desktop.md).
+- **Update from Wavelog** works on one QSO at a time and not for contest or activation QSOs. Tideline does not notice by
+  itself that a QSO was changed in Wavelog.
 - Logs made with 0.5.x can't be carried over to 0.6 (the encrypted database is set aside); backups made by 0.5.x can't be
   restored.
 
@@ -169,6 +185,8 @@ What you can try in this build:
   partial, score and rates, Cabrillo export.
 • SOTA, POTA and WWFF activations: reference lists you download yourself, search by name or distance, progress toward a
   valid activation, park-to-park and summit-to-summit.
+• A demo account on the Welcome screen that needs no server, one dialog for the QSO date and time (UTC), and "Update
+  from Wavelog" for QSOs you changed on the server.
 • Made to be accessible: VoiceOver, large text up to 200 %, themes for sunlight and for the night, glove mode, full
   keyboard use on iPad.
 
@@ -191,6 +209,8 @@ Das kannst Du in diesem Build ausprobieren:
   Dupe-Prüfung, Super Check Partial, Punkte und Raten, Cabrillo-Export.
 • SOTA-, POTA- und WWFF-Aktivierungen: Referenzlisten, die Du selbst herunterlädst, Suche nach Name oder Entfernung,
   Fortschritt zur gültigen Aktivierung, Park zu Park und Gipfel zu Gipfel.
+• Ein Demo-Konto auf dem Willkommensbildschirm, das keinen Server braucht, ein Dialog für Datum und Uhrzeit des QSOs
+  (UTC) und „Von Wavelog aktualisieren“ für QSOs, die Du auf dem Server geändert hast.
 • Barrierefrei gedacht: VoiceOver, große Schrift bis 200 %, Themen für Sonnenlicht und für die Nacht, Handschuh-Modus,
   volle Tastaturbedienung auf dem iPad.
 
@@ -209,19 +229,15 @@ build.
 
 ## English
 
-Build 8 (0.6.0): no more app-level encryption, a built-in demo account, fewer requests to Wavelog.
-Please try: 0) The new features: Try the demo on the Welcome screen, backup and restore (the backup is no longer encrypted), the callsign directory (⌘2), Fast Log Entry (lightning bolt), Settings → Field mode. Coming from 0.5? Your log starts empty with a notice; QSOs already synced are on Wavelog. Then the rest: 1) First setup with your Wavelog and a token. 2) Log QSOs offline, then sync. 3) A short contest session and
-a Cabrillo export. 4) Download a POTA list and run an activation. 5) VoiceOver on the log screen, the contest screen and
-the activation screen. 6) iPad rotation and the on-screen keyboard.
+Build 9 (0.7.0): a new date and time dialog and "Update from Wavelog" for changed QSOs.
+Please try: 0) The new features: a) Open a QSO and change its date or time. One dialog opens with the date selected: type over it, the cursor jumps to the time after the eighth digit, Enter sets it; the calendar and clock buttons still work. Check it in UTC, on iPhone and iPad, and with VoiceOver. b) Change the time of a synced QSO in Wavelog, open it in Tideline and use "Update from Wavelog"; then try "Remove from this device". Contest and activation QSOs do not offer it. Then the rest: 1) First setup with your Wavelog and a token. 2) Log QSOs offline, then sync. 3) A short contest session and a Cabrillo export. 4) Download a POTA list and run an activation. 5) VoiceOver on the log screen. 6) iPad rotation and the on-screen keyboard.
 The full checklist is in the repository: docs/testing/testflight.md.
 Known: iPhone is portrait only; no background sync on iOS; reference lists need a one-time download of 9 to 25 MB.
 
 ## Deutsch
 
-Build 8 (0.6.0): keine eigene Verschlüsselung mehr, ein eingebautes Demo-Konto, weniger Anfragen an Wavelog.
-Bitte ausprobieren: 0) Die Neuerungen: „Demo ausprobieren (ohne Wavelog)“ auf dem Willkommensbildschirm, Backup und Wiederherstellen (das Backup ist nicht mehr verschlüsselt), das Rufzeichen-Verzeichnis (⌘2), Fast Log Entry (Blitz-Symbol), Einstellungen → Feldmodus. Von 0.5 gekommen? Dein Log beginnt leer, mit einem Hinweis; bereits synchronisierte QSOs liegen in Wavelog. Danach das Übrige: 1) Ersteinrichtung mit Deinem Wavelog und einem Token. 2) QSOs offline loggen, dann synchronisieren.
-3) Eine kurze Contest-Sitzung und ein Cabrillo-Export. 4) Eine POTA-Liste laden und eine Aktivierung durchführen.
-5) VoiceOver auf Log-, Contest- und Aktivierungsbildschirm. 6) iPad-Drehung und Bildschirmtastatur.
+Build 9 (0.7.0): ein neuer Dialog für Datum und Uhrzeit und „Von Wavelog aktualisieren“ für geänderte QSOs.
+Bitte ausprobieren: 0) Die Neuerungen: a) Öffne ein QSO und ändere Datum oder Uhrzeit. Ein Dialog öffnet sich mit markiertem Datum: einfach überschreiben, nach der achten Ziffer springt der Cursor zur Uhrzeit, Enter übernimmt; Kalender und Uhr gibt es weiterhin per Taste. Prüfe es in UTC, auf iPhone und iPad und mit VoiceOver. b) Ändere die Zeit eines synchronisierten QSOs in Wavelog, öffne es in Tideline und nutze „Von Wavelog aktualisieren“; probiere danach „Von diesem Gerät entfernen“. Contest- und Aktivierungs-QSOs bieten es nicht an. Danach das Übrige: 1) Ersteinrichtung mit Deinem Wavelog und einem Token. 2) QSOs offline loggen, dann synchronisieren. 3) Eine kurze Contest-Sitzung und ein Cabrillo-Export. 4) Eine POTA-Liste laden und eine Aktivierung durchführen. 5) VoiceOver auf dem Log-Bildschirm. 6) iPad-Drehung und Bildschirmtastatur.
 Die vollständige Checkliste liegt im Repository: docs/testing/testflight.md.
 Bekannt: iPhone nur im Hochformat; keine Hintergrund-Synchronisierung unter iOS; Referenzlisten brauchen einmalig einen
 Download von 9 bis 25 MB.

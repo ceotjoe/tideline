@@ -5,7 +5,7 @@ For testers of the Android build (phone and tablet), delivered through the Googl
 reporting form and the exit criteria are in [README.md](README.md). The iOS checklist in [testflight.md](testflight.md)
 explains each feature in more detail; this page lists what is different or only testable on Android.
 
-**Build under test:** Tideline 0.6.0, build ____ · **Device:** ____ · **Android:** ____ · **Wavelog:** ____ ·
+**Build under test:** Tideline 0.7.0, build ____ · **Device:** ____ · **Android:** ____ · **Wavelog:** ____ ·
 **Language:** EN / DE · **Screen reader:** TalkBack on / off
 
 ## 0. Before you start
@@ -77,6 +77,8 @@ Work through these in testflight.md. Tick them again for Android; each has been 
 - [ ] Contest mode (section 4): a session of 30 minutes or more, Cabrillo export, rotation mid-contest.
 - [ ] Activations (section 5): download a POTA list on Wi-Fi, cancel a download, run an activation offline.
 - [ ] New in 0.4 (section 5b): accounts, callsign directory, free up space, Fast Log Entry, Field mode.
+- [ ] New in 0.5 to 0.7 (sections 5c and 5d): the UTC date and time dialog (type the date, the cursor jumps to the time,
+      Enter sets it; check it with Gboard and TalkBack), Update from Wavelog, fewer requests, no encryption notice.
 - [ ] The demo account: **Try the demo (no Wavelog needed)** works with no network at all.
 
 ## 6. Things that must not happen

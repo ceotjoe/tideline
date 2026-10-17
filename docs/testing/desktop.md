@@ -4,7 +4,7 @@ For testers of the desktop builds. The general rules, the reporting form and the
 [README.md](README.md). Features are explained in [testflight.md](testflight.md); this page lists what is different on a
 computer. Linux is scaffolded but unofficial: reports are welcome, but they do not block a release.
 
-**Build under test:** Tideline 0.6.0 · **Computer:** ____ · **OS:** ____ · **Wavelog:** ____ · **Language:** EN / DE ·
+**Build under test:** Tideline 0.7.0 · **Computer:** ____ · **OS:** ____ · **Wavelog:** ____ · **Language:** EN / DE ·
 **Screen reader:** VoiceOver (Mac) / Narrator or NVDA (Windows) / none
 
 ## 0. Before you start
@@ -56,6 +56,8 @@ Put the mouse away.
 - [ ] **Ctrl/⌘+1, 2, 3** go to Log, Callsigns, Sync; **Ctrl/⌘+,** opens settings.
 - [ ] **Ctrl/⌘+Shift+C** opens contest mode, **+A** starts an activation, **+E** ends it, **+F** opens Fast Log Entry,
   **+S** syncs.
+- [ ] Contest mode extras: **Ctrl/⌘+M** next mode, **Ctrl/⌘+R** shows or hides score and rates, **Ctrl/⌘+Shift+X**
+  exports Cabrillo, **Ctrl/⌘+Shift+E** ends the session.
 - [ ] Contest mode: Enter, Space and Tab move through the exchange; Page Up and Page Down change band; **Ctrl/⌘+L**
   goes to the callsign.
 - [ ] Dialogs trap focus and return it to where you were when closed. Every dialog closes with Esc.
@@ -85,7 +87,8 @@ Put the mouse away.
 Work through these in testflight.md and tick them again for desktop.
 - [ ] Contest mode (section 4) with a hardware keyboard, which is the main use on a computer.
 - [ ] Activations (section 5): download a POTA list, search offline, run an activation.
-- [ ] New in 0.4 (section 5b) and New in 0.5 and 0.6 (section 5c): accounts, callsign directory, free up space, Fast Log
+- [ ] New in 0.4 (section 5b), New in 0.5 and 0.6 (section 5c) and New in 0.7 (section 5d, the date and time dialog
+  with the keyboard only): accounts, callsign directory, free up space, Fast Log
   Entry, Field mode (the screen-on and battery parts do not apply to a computer), demo account.
 
 ## 9. Things that must not happen
