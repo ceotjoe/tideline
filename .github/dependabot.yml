@@ -15,3 +15,7 @@ updates:
       - "/.github/actions/*"
     schedule:
       interval: weekly
+  - package-ecosystem: gradle
+    directory: "/app/android"
+    schedule:
+      interval: weekly
