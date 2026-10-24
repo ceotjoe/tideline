@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tideline_data/tideline_data.dart';
 import 'package:tideline_domain/tideline_domain.dart';
@@ -16,6 +17,17 @@ typedef BootstrapResult = ({
 
 /// File name of the database inside the app-support directory.
 const databaseFileName = 'tideline.sqlite';
+
+/// The platform secure store could not be used, for example on Linux when no
+/// secret service (GNOME Keyring, KWallet) is running. Tideline never falls
+/// back to storing secrets elsewhere (ADR 0006).
+class SecretStoreUnavailableException implements Exception {
+  /// Creates the exception.
+  const new();
+
+  @override
+  String toString() => 'SecretStoreUnavailableException';
+}
 
 /// Opens the database and sets an unreadable 0.5.x one aside (ADR 0034).
 Future<BootstrapResult> bootstrap(SecretStore secrets) async {
@@ -34,9 +46,14 @@ Future<BootstrapResult> bootstrap(SecretStore secrets) async {
 
   // The old key is only useful for a file that was just set aside (someone
   // technical may want to open it); otherwise do not leave it behind.
-  if (movedAside == null) await secrets.delete(SecretKeys.legacyDatabaseKey);
-
-  final deviceId = await DeviceIdProvider(secrets).obtain();
+  final String deviceId;
+  try {
+    if (movedAside == null) await secrets.delete(SecretKeys.legacyDatabaseKey);
+    deviceId = await DeviceIdProvider(secrets).obtain();
+  } on PlatformException {
+    await database.close();
+    throw const SecretStoreUnavailableException();
+  }
   return (
     database: database,
     deviceId: deviceId,

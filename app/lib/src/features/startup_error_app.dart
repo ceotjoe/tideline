@@ -5,11 +5,15 @@ import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/design/tokens/color_tokens.dart';
 import 'package:tideline/src/widgets/empty_state.dart';
 
-/// Shown instead of the app when the database cannot be opened. Never
-/// deletes or replaces anything.
+/// Shown instead of the app when the database or the secure store cannot be
+/// opened. Never deletes or replaces anything.
 class StartupErrorApp extends StatelessWidget {
-  /// Creates the error app.
-  const new({super.key});
+  /// Creates the error app. `secretStoreUnavailable` explains a missing
+  /// system keyring instead of the generic message.
+  const new({super.key, this.secretStoreUnavailable = false});
+
+  /// Whether the platform secure store was the cause.
+  final bool secretStoreUnavailable;
 
   @override
   Widget build(BuildContext context) => MaterialApp(
@@ -30,7 +34,9 @@ class StartupErrorApp extends StatelessWidget {
           body: EmptyState(
             icon: Icons.error_outline,
             title: l10n.startupErrorTitle,
-            body: l10n.startupErrorBody,
+            body: secretStoreUnavailable
+                ? l10n.startupSecretStoreBody
+                : l10n.startupErrorBody,
           ),
         );
       },

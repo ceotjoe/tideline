@@ -207,6 +207,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Something went wrong while opening your log. Your QSOs have not been changed. Please restart the app; if this keeps happening, report it on GitHub.';
 
   @override
+  String get startupSecretStoreBody =>
+      'Tideline needs the system keyring to keep your Wavelog token safe, and none is available. Your QSOs have not been changed. On Linux, install and start a secret service such as GNOME Keyring or KWallet, then restart the app.';
+
+  @override
   String get shortcutsUnbound => 'Not assigned';
 
   @override
@@ -3155,6 +3159,10 @@ class AppLocalizationsEnXa extends AppLocalizationsEn {
   @override
   String get startupErrorBody =>
       '[Šöɱéţĥîñĝ ŵéñţ ŵŕöñĝ ŵĥîļé öþéñîñĝ ýöûŕ ļöĝ. Ýöûŕ ǪŠÖš ĥáṽé ñöţ ƀééñ çĥáñĝéð. Þļéášé ŕéšţáŕţ ţĥé áþþ; îƒ ţĥîš ķééþš ĥáþþéñîñĝ, ŕéþöŕţ îţ öñ ĜîţĤûƀ.···························································]';
+
+  @override
+  String get startupSecretStoreBody =>
+      '[Ţîðéļîñé ñééðš ţĥé šýšţéɱ ķéýŕîñĝ ţö ķééþ ýöûŕ Ŵáṽéļöĝ ţöķéñ šáƒé, áñð ñöñé îš áṽáîļáƀļé. Ýöûŕ ǪŠÖš ĥáṽé ñöţ ƀééñ çĥáñĝéð. Öñ Ļîñûẋ, îñšţáļļ áñð šţáŕţ á šéçŕéţ šéŕṽîçé šûçĥ áš ĜÑÖṀÉ Ķéýŕîñĝ öŕ ĶŴáļļéţ, ţĥéñ ŕéšţáŕţ ţĥé áþþ.··························································································]';
 
   @override
   String get shortcutsUnbound => '[Ñöţ áššîĝñéð·····]';

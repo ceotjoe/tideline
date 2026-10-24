@@ -459,6 +459,12 @@ abstract class AppLocalizations {
   /// **'Something went wrong while opening your log. Your QSOs have not been changed. Please restart the app; if this keeps happening, report it on GitHub.'**
   String get startupErrorBody;
 
+  /// Startup error explanation when the platform secure store is not available.
+  ///
+  /// In en, this message translates to:
+  /// **'Tideline needs the system keyring to keep your Wavelog token safe, and none is available. Your QSOs have not been changed. On Linux, install and start a secret service such as GNOME Keyring or KWallet, then restart the app.'**
+  String get startupSecretStoreBody;
+
   /// Shown in the shortcut list for a command without a shortcut.
   ///
   /// In en, this message translates to:

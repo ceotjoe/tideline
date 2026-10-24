@@ -246,6 +246,10 @@
   "@startupErrorBody": {
     "description": "Generic startup error explanation."
   },
+  "startupSecretStoreBody": "Tideline needs the system keyring to keep your Wavelog token safe, and none is available. Your QSOs have not been changed. On Linux, install and start a secret service such as GNOME Keyring or KWallet, then restart the app.",
+  "@startupSecretStoreBody": {
+    "description": "Startup error explanation when the platform secure store is not available."
+  },
   "shortcutsUnbound": "Not assigned",
   "@shortcutsUnbound": {
     "description": "Shown in the shortcut list for a command without a shortcut."

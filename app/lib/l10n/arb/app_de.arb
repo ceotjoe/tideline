@@ -60,6 +60,7 @@
   "legacyDatabaseBody": "Diese Version verschlüsselt das Log nicht mehr mit einem eigenen Schlüssel, deshalb lässt sich das Log der früheren Version nicht öffnen. Tideline hat mit einem leeren Log gestartet. Die alte Datei liegt noch auf diesem Gerät, wird aber nicht verwendet. Bereits synchronisierte QSOs liegen weiter in deinem Wavelog-Logbuch.",
   "startupErrorTitle": "Tideline konnte nicht starten",
   "startupErrorBody": "Beim Öffnen deines Logs ist ein Fehler aufgetreten. Deine QSOs wurden nicht verändert. Bitte starte die App neu; wenn das wiederholt passiert, melde es bitte auf GitHub.",
+  "startupSecretStoreBody": "Tideline braucht den System-Schlüsselbund, um dein Wavelog-Token sicher zu speichern, und es ist keiner verfügbar. Deine QSOs wurden nicht verändert. Installiere und starte unter Linux einen Secret-Service wie GNOME Keyring oder KWallet und starte die App dann neu.",
   "shortcutsUnbound": "Nicht belegt",
   "shortcutsOr": "oder",
   "onboardingWelcomeTitle": "Willkommen bei Tideline",

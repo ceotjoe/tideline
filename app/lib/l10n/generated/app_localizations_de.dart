@@ -207,6 +207,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Beim Öffnen deines Logs ist ein Fehler aufgetreten. Deine QSOs wurden nicht verändert. Bitte starte die App neu; wenn das wiederholt passiert, melde es bitte auf GitHub.';
 
   @override
+  String get startupSecretStoreBody =>
+      'Tideline braucht den System-Schlüsselbund, um dein Wavelog-Token sicher zu speichern, und es ist keiner verfügbar. Deine QSOs wurden nicht verändert. Installiere und starte unter Linux einen Secret-Service wie GNOME Keyring oder KWallet und starte die App dann neu.';
+
+  @override
   String get shortcutsUnbound => 'Nicht belegt';
 
   @override

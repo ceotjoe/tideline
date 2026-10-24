@@ -16,3 +16,25 @@ On a computer, Tideline works like a computer program.
 - **Right click** a QSO in the log: **Open QSO** or **Copy callsign**.
 - **Keyboard.** Everything can be done without the mouse: Tab moves between fields, the focus is always visible, and all
   commands have shortcuts. See [Keyboard shortcuts](keyboard-shortcuts.md).
+
+## Linux and Raspberry Pi (experimental)
+
+Tideline for Linux is experimental. The download page has a build for x86-64 PCs and one for 64-bit ARM, which runs on a
+Raspberry Pi 4 or 5 with the 64-bit desktop version of Raspberry Pi OS. Older Pi models and the 32-bit system are not
+supported.
+
+1. Install what Tideline needs:
+
+   ```bash
+   sudo apt install libgtk-3-0 libsecret-1-0 gnome-keyring
+   ```
+
+2. Unpack the download, for example `tar -xzf Tideline-<version>-linux-arm64.tar.gz`, and start `tideline` in the new
+   folder.
+
+- **System keyring.** Tideline keeps your Wavelog token in the system keyring and nowhere else. The Raspberry Pi OS
+  desktop already has one; **Raspberry Pi OS Lite** and other systems without a desktop session do not. Without a running
+  keyring, Tideline shows a message at start and does not open. Your log is not touched. Install and start a secret
+  service such as GNOME Keyring or KWallet, sign in to the desktop session, and start Tideline again.
+- **Status.** The Linux builds are built automatically, but the project has not tested them on real hardware yet.
+  Reports are welcome on GitHub.
