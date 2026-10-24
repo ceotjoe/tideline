@@ -93,3 +93,14 @@ Compare the store texts, screenshots and feature graphic (`docs/release/store-li
 works; the SBOM and checksums are attached to the GitHub release; the README links the right stores.
 
 Result:
+
+### PS-11 Linux arm64 on a Raspberry Pi (no keyring)
+**P3 · Raspberry Pi 4 or 5, 64-bit Raspberry Pi OS · Needs: the `linux-arm64` tarball**
+Unpack the tarball and start `tideline` with a running keyring (desktop session). Then stop the keyring service (or use
+Raspberry Pi OS Lite with a minimal X session) and start it again.
+
+**Expected:** with the keyring, the app starts and logs a QSO. Without it, the "Tideline couldn't start" screen explains
+the missing system keyring (EN and DE), the app does not open, `tideline.sqlite` is unchanged and no token is written to
+any file. Linux never blocks a release.
+
+Result:
