@@ -5,7 +5,7 @@ none of them needs to be done in one sitting. Tick what works and write down wha
 platforms, the language pass and the exit criteria for v1.0 are in [README.md](README.md); Android and Windows have their
 own lists ([android.md](android.md), [desktop.md](desktop.md)).
 
-**Build under test:** Tideline 0.7.0, build 9 · **Device:** ____ · **iOS/iPadOS:** ____ · **Wavelog:** ____ ·
+**Build under test:** Tideline 0.7.1, build 10 · **Device:** ____ · **iOS/iPadOS:** ____ · **Wavelog:** ____ ·
 **Language:** EN / DE
 
 ## 0. Before you start
@@ -135,6 +135,12 @@ own lists ([android.md](android.md), [desktop.md](desktop.md)).
 - [ ] Not offered for QSOs of a contest session or an activation, nor for a QSO changed here and still waiting. If the
   QSO is gone from Wavelog, nothing changes. Needs the `qso:read` permission; without a connection the message says so.
 
+## 5e. New in 0.7.1
+- [ ] Nothing changes on iPhone and iPad. Do a short regression pass: log a QSO offline, sync, open a QSO and change its
+  time with the date and time dialog. Everything from 0.7.0 still works.
+- [ ] (Linux only, not part of TestFlight.) A missing system keyring is explained at start. See PS-11 in
+  [cases/platforms-stores.md](cases/platforms-stores.md).
+
 ## 6. Things that must not happen
 - [ ] No network request without a user action, other than talking to your Wavelog.
 - [ ] The token never appears in screens, exports, backups or in what you attach to a report.
@@ -229,15 +235,15 @@ build.
 
 ## English
 
-Build 9 (0.7.0): a new date and time dialog and "Update from Wavelog" for changed QSOs.
-Please try: 0) The new features: a) Open a QSO and change its date or time. One dialog opens with the date selected: type over it, the cursor jumps to the time after the eighth digit, Enter sets it; the calendar and clock buttons still work. Check it in UTC, on iPhone and iPad, and with VoiceOver. b) Change the time of a synced QSO in Wavelog, open it in Tideline and use "Update from Wavelog"; then try "Remove from this device". Contest and activation QSOs do not offer it. Then the rest: 1) First setup with your Wavelog and a token. 2) Log QSOs offline, then sync. 3) A short contest session and a Cabrillo export. 4) Download a POTA list and run an activation. 5) VoiceOver on the log screen. 6) iPad rotation and the on-screen keyboard.
+Build 10 (0.7.1): no change for iPhone and iPad; a maintenance build (Linux fixes only). Please check that nothing broke. Build 9 (0.7.0) brought a new date and time dialog and "Update from Wavelog" for changed QSOs.
+Please try: 0) Still new since 0.7.0: a) Open a QSO and change its date or time. One dialog opens with the date selected: type over it, the cursor jumps to the time after the eighth digit, Enter sets it; the calendar and clock buttons still work. Check it in UTC, on iPhone and iPad, and with VoiceOver. b) Change the time of a synced QSO in Wavelog, open it in Tideline and use "Update from Wavelog"; then try "Remove from this device". Contest and activation QSOs do not offer it. Then the rest: 1) First setup with your Wavelog and a token. 2) Log QSOs offline, then sync. 3) A short contest session and a Cabrillo export. 4) Download a POTA list and run an activation. 5) VoiceOver on the log screen. 6) iPad rotation and the on-screen keyboard.
 The full checklist is in the repository: docs/testing/testflight.md.
 Known: iPhone is portrait only; no background sync on iOS; reference lists need a one-time download of 9 to 25 MB.
 
 ## Deutsch
 
-Build 9 (0.7.0): ein neuer Dialog für Datum und Uhrzeit und „Von Wavelog aktualisieren“ für geänderte QSOs.
-Bitte ausprobieren: 0) Die Neuerungen: a) Öffne ein QSO und ändere Datum oder Uhrzeit. Ein Dialog öffnet sich mit markiertem Datum: einfach überschreiben, nach der achten Ziffer springt der Cursor zur Uhrzeit, Enter übernimmt; Kalender und Uhr gibt es weiterhin per Taste. Prüfe es in UTC, auf iPhone und iPad und mit VoiceOver. b) Ändere die Zeit eines synchronisierten QSOs in Wavelog, öffne es in Tideline und nutze „Von Wavelog aktualisieren“; probiere danach „Von diesem Gerät entfernen“. Contest- und Aktivierungs-QSOs bieten es nicht an. Danach das Übrige: 1) Ersteinrichtung mit Deinem Wavelog und einem Token. 2) QSOs offline loggen, dann synchronisieren. 3) Eine kurze Contest-Sitzung und ein Cabrillo-Export. 4) Eine POTA-Liste laden und eine Aktivierung durchführen. 5) VoiceOver auf dem Log-Bildschirm. 6) iPad-Drehung und Bildschirmtastatur.
+Build 10 (0.7.1): keine Änderung für iPhone und iPad; ein Wartungs-Build (nur Linux-Korrekturen). Bitte prüfe, dass nichts kaputtgegangen ist. Build 9 (0.7.0) brachte einen neuen Dialog für Datum und Uhrzeit und „Von Wavelog aktualisieren“ für geänderte QSOs.
+Bitte ausprobieren: 0) Weiterhin neu seit 0.7.0: a) Öffne ein QSO und ändere Datum oder Uhrzeit. Ein Dialog öffnet sich mit markiertem Datum: einfach überschreiben, nach der achten Ziffer springt der Cursor zur Uhrzeit, Enter übernimmt; Kalender und Uhr gibt es weiterhin per Taste. Prüfe es in UTC, auf iPhone und iPad und mit VoiceOver. b) Ändere die Zeit eines synchronisierten QSOs in Wavelog, öffne es in Tideline und nutze „Von Wavelog aktualisieren“; probiere danach „Von diesem Gerät entfernen“. Contest- und Aktivierungs-QSOs bieten es nicht an. Danach das Übrige: 1) Ersteinrichtung mit Deinem Wavelog und einem Token. 2) QSOs offline loggen, dann synchronisieren. 3) Eine kurze Contest-Sitzung und ein Cabrillo-Export. 4) Eine POTA-Liste laden und eine Aktivierung durchführen. 5) VoiceOver auf dem Log-Bildschirm. 6) iPad-Drehung und Bildschirmtastatur.
 Die vollständige Checkliste liegt im Repository: docs/testing/testflight.md.
 Bekannt: iPhone nur im Hochformat; keine Hintergrund-Synchronisierung unter iOS; Referenzlisten brauchen einmalig einen
 Download von 9 bis 25 MB.
