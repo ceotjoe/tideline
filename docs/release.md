@@ -3,7 +3,7 @@
 Releases follow [Semantic Versioning](https://semver.org). Pushing a tag `vX.Y.Z` runs
 `.github/workflows/release.yml`, which builds release artifacts for every platform plus an SBOM (SPDX) and, once all builds
 have passed, creates the GitHub release ([ADR 0030](adr/0030-release-automation.md)): Windows portable zip and MSIX, the
-experimental Linux tarball, the SBOM and `SHA256SUMS.txt`, with the version's `CHANGELOG.md` section as notes (`0.x` is
+experimental Linux tarballs (x86-64 and arm64 for the Raspberry Pi), the SBOM and `SHA256SUMS.txt`, with the version's `CHANGELOG.md` section as notes (`0.x` is
 marked as a pre-release). The tag must be `v` plus the `app/pubspec.yaml` version or the run fails. *Run workflow* on any
 branch is a dry run: it builds but publishes nothing.
 

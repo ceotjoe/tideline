@@ -102,4 +102,6 @@ Work through these in testflight.md and tick them again for desktop.
 - Desktop has no background sync; open the app to sync. There is no tray icon.
 - Reference lists need a connection once (9 to 25 MB each).
 - Windows builds are only as trusted as the certificate they are signed with; a new publisher can trigger SmartScreen.
-- Linux is experimental and not tested at all by the project.
+- Linux (x86-64 and arm64 for the Raspberry Pi 4 and 5) is experimental and not tested on real hardware by the project.
+  Check on a Pi: start with a running keyring; stop the keyring service or use Raspberry Pi OS Lite and the app must show
+  the "system keyring" message, not open, and leave `tideline.sqlite` untouched; no token appears in any file.

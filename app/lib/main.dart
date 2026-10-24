@@ -27,6 +27,10 @@ Future<void> main() async {
     );
   } on Object catch (error) {
     debugPrint('Startup failed: ${error.runtimeType}');
-    runApp(const StartupErrorApp());
+    runApp(
+      StartupErrorApp(
+        secretStoreUnavailable: error is SecretStoreUnavailableException,
+      ),
+    );
   }
 }
