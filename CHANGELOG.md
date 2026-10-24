@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-10-24
+
+### Added
+- **Experimental Linux arm64 build** for the Raspberry Pi 4 and 5 (64-bit Raspberry Pi OS with desktop):
+  `Tideline-<version>-linux-arm64.tar.gz` is attached to each GitHub release, with checksums. Not yet tested on real
+  hardware. Manual: Linux and Raspberry Pi section in the desktop chapter.
+
+### Changed
+- **A missing system keyring is explained at start.** Without a running secret service (for example Raspberry Pi OS Lite)
+  Tideline shows a message that names the cause instead of the generic start error. Nothing falls back to other storage
+  and the log is not touched. EN and DE.
+
 ## [0.7.0] - 2026-10-16
 
 ### Added

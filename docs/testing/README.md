@@ -4,7 +4,7 @@ This is the entry point for anyone who tests Tideline by hand. Automated tests (
 accessibility and l10n tests, the end-to-end test) run in CI and do not replace this. The hand tests cover what they
 cannot: real devices, real screen readers, a real Wavelog and real use in the field.
 
-**Build under test:** Tideline 0.7.0 (build 9).
+**Build under test:** Tideline 0.7.1 (build 10).
 
 ## Pick your checklist
 
