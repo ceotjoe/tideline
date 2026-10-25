@@ -51,7 +51,7 @@ to the reference-list sources you can see. Open source under the MIT licence.
 
 You need a Wavelog server (version 3.1 or newer) and an API token, or you can try the built-in demo with no server.
 
-**What's New (1.0):** to be written with the release notes of 1.0.0.
+**What's New (1.0):** The first stable release of Tideline. Log offline, sync to your own Wavelog, run contests and SOTA, POTA and WWFF activations, in English and German.
 
 ## Deutsch
 
@@ -92,4 +92,4 @@ der MIT-Lizenz.
 
 Du brauchst einen Wavelog-Server (ab Version 3.1) und ein API-Token, oder Du probierst die eingebaute Demo ohne Server.
 
-**Was ist neu (1.0):** wird mit den Release-Notes von 1.0.0 geschrieben.
+**Was ist neu (1.0):** Die erste stabile Version von Tideline. Offline loggen, mit Deinem eigenen Wavelog synchronisieren, Contests und SOTA-, POTA- und WWFF-Aktivierungen, auf Deutsch und Englisch.

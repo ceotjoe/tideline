@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-25
+
+First stable release. No code changes since 0.7.1: the hand tests listed in `docs/testing/README.md` (data safety,
+real-world use, accessibility, platforms, language) are done, and the store releases follow.
+
+### Changed
+- Version 1.0.0, build 11. Tideline is no longer marked as a pre-release on GitHub.
+
 ## [0.7.1] - 2026-10-24
 
 ### Added

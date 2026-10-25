@@ -5,7 +5,7 @@ For testers of the Android build (phone and tablet), delivered through the Googl
 reporting form and the exit criteria are in [README.md](README.md). The iOS checklist in [testflight.md](testflight.md)
 explains each feature in more detail; this page lists what is different or only testable on Android.
 
-**Build under test:** Tideline 0.7.1, build ____ · **Device:** ____ · **Android:** ____ · **Wavelog:** ____ ·
+**Build under test:** Tideline 1.0.0, build ____ · **Device:** ____ · **Android:** ____ · **Wavelog:** ____ ·
 **Language:** EN / DE · **Screen reader:** TalkBack on / off
 
 ## 0. Before you start
