@@ -6,9 +6,9 @@ Tideline is an open-source, cross-platform logging app for amateur radio operato
 offline-first, on a summit, in a park, at a field day or in a contest, and synchronises them with your
 own [Wavelog](https://www.wavelog.org) instance whenever a connection is available.
 
-> **Status: v0.7.1, preparing v1.0.** Logging, sync, offline DXCC, ADIF, backups, contest mode, activations,
+> **Status: v1.0.0.** Logging, sync, offline DXCC, ADIF, backups, contest mode, activations,
 > Fast Log Entry, several accounts and field mode work and are tested end to end against a mock Wavelog. Test builds go
-> to TestFlight and Google Play (public testing); store releases follow the [roadmap](docs/roadmap.md). Follow the
+> to TestFlight and Google Play (public testing); the store releases follow. Follow the
 > [CHANGELOG](CHANGELOG.md).
 
 Platforms: **iOS · iPadOS · Android · macOS · Windows** (one Flutter codebase).
@@ -66,8 +66,7 @@ Tideline is built around four ideas:
 
 Requires the free TestFlight app from Apple.
 
-Both are test releases, not yet the final store versions. The App Store and Mac App Store links will appear here once
-v1.0 ships.
+Both are test releases. The App Store and Mac App Store links will appear here once the store versions are live.
 
 Windows (portable zip, MSIX) and an experimental Linux tarball are attached to each
 [GitHub release](https://github.com/ceotjoe/tideline/releases) with checksums.

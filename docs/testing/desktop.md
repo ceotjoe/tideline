@@ -4,7 +4,7 @@ For testers of the desktop builds. The general rules, the reporting form and the
 [README.md](README.md). Features are explained in [testflight.md](testflight.md); this page lists what is different on a
 computer. Linux is scaffolded but unofficial: reports are welcome, but they do not block a release.
 
-**Build under test:** Tideline 0.7.1 · **Computer:** ____ · **OS:** ____ · **Wavelog:** ____ · **Language:** EN / DE ·
+**Build under test:** Tideline 1.0.0 · **Computer:** ____ · **OS:** ____ · **Wavelog:** ____ · **Language:** EN / DE ·
 **Screen reader:** VoiceOver (Mac) / Narrator or NVDA (Windows) / none
 
 ## 0. Before you start
