@@ -15677,10 +15677,11 @@ class $$AccountsTableTableManager
                   getPrefetchedDataCallback: (items) async {
                     return [
                       if (stationProfilesRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           AccountRow,
                           $AccountsTable,
-                          StationProfileRow
+                          StationProfileRow,
+                          $StationProfilesTable
                         >(
                           currentTable: table,
                           referencedTable: $$AccountsTableReferences
@@ -15691,17 +15692,16 @@ class $$AccountsTableTableManager
                                 table,
                                 p0,
                               ).stationProfilesRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.accountId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'account_id',
                           typedResults: items,
                         ),
                       if (contestSessionsRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           AccountRow,
                           $AccountsTable,
-                          ContestSessionRow
+                          ContestSessionRow,
+                          $ContestSessionsTable
                         >(
                           currentTable: table,
                           referencedTable: $$AccountsTableReferences
@@ -15712,17 +15712,16 @@ class $$AccountsTableTableManager
                                 table,
                                 p0,
                               ).contestSessionsRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.accountId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'account_id',
                           typedResults: items,
                         ),
                       if (activationsRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           AccountRow,
                           $AccountsTable,
-                          ActivationRow
+                          ActivationRow,
+                          $ActivationsTable
                         >(
                           currentTable: table,
                           referencedTable: $$AccountsTableReferences
@@ -15733,34 +15732,32 @@ class $$AccountsTableTableManager
                                 table,
                                 p0,
                               ).activationsRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.accountId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'account_id',
                           typedResults: items,
                         ),
                       if (qsosRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           AccountRow,
                           $AccountsTable,
-                          QsoRow
+                          QsoRow,
+                          $QsosTable
                         >(
                           currentTable: table,
                           referencedTable: $$AccountsTableReferences
                               ._qsosRefsTable(db),
                           managerFromTypedResult: (p0) =>
                               $$AccountsTableReferences(db, table, p0).qsosRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.accountId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'account_id',
                           typedResults: items,
                         ),
                       if (qsoSyncRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           AccountRow,
                           $AccountsTable,
-                          QsoSyncRow
+                          QsoSyncRow,
+                          $QsoSyncTable
                         >(
                           currentTable: table,
                           referencedTable: $$AccountsTableReferences
@@ -15771,17 +15768,16 @@ class $$AccountsTableTableManager
                                 table,
                                 p0,
                               ).qsoSyncRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.accountId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'account_id',
                           typedResults: items,
                         ),
                       if (syncJournalRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           AccountRow,
                           $AccountsTable,
-                          SyncJournalRow
+                          SyncJournalRow,
+                          $SyncJournalTable
                         >(
                           currentTable: table,
                           referencedTable: $$AccountsTableReferences
@@ -15792,17 +15788,16 @@ class $$AccountsTableTableManager
                                 table,
                                 p0,
                               ).syncJournalRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.accountId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'account_id',
                           typedResults: items,
                         ),
                       if (workedBeforeRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           AccountRow,
                           $AccountsTable,
-                          WorkedBeforeRow
+                          WorkedBeforeRow,
+                          $WorkedBeforeTable
                         >(
                           currentTable: table,
                           referencedTable: $$AccountsTableReferences
@@ -15813,17 +15808,16 @@ class $$AccountsTableTableManager
                                 table,
                                 p0,
                               ).workedBeforeRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.accountId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'account_id',
                           typedResults: items,
                         ),
                       if (callsignDirectoryRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           AccountRow,
                           $AccountsTable,
-                          CallsignDirectoryRow
+                          CallsignDirectoryRow,
+                          $CallsignDirectoryTable
                         >(
                           currentTable: table,
                           referencedTable: $$AccountsTableReferences
@@ -15834,17 +15828,16 @@ class $$AccountsTableTableManager
                                 table,
                                 p0,
                               ).callsignDirectoryRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.accountId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'account_id',
                           typedResults: items,
                         ),
                       if (evictedQsosRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           AccountRow,
                           $AccountsTable,
-                          EvictedQsoRow
+                          EvictedQsoRow,
+                          $EvictedQsosTable
                         >(
                           currentTable: table,
                           referencedTable: $$AccountsTableReferences
@@ -15855,10 +15848,8 @@ class $$AccountsTableTableManager
                                 table,
                                 p0,
                               ).evictedQsosRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.accountId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'account_id',
                           typedResults: items,
                         ),
                     ];
@@ -16651,10 +16642,11 @@ class $$StationProfilesTableTableManager
                   getPrefetchedDataCallback: (items) async {
                     return [
                       if (contestSessionsRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           StationProfileRow,
                           $StationProfilesTable,
-                          ContestSessionRow
+                          ContestSessionRow,
+                          $ContestSessionsTable
                         >(
                           currentTable: table,
                           referencedTable: $$StationProfilesTableReferences
@@ -16665,17 +16657,16 @@ class $$StationProfilesTableTableManager
                                 table,
                                 p0,
                               ).contestSessionsRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.stationProfileId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'station_profile_id',
                           typedResults: items,
                         ),
                       if (activationsRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           StationProfileRow,
                           $StationProfilesTable,
-                          ActivationRow
+                          ActivationRow,
+                          $ActivationsTable
                         >(
                           currentTable: table,
                           referencedTable: $$StationProfilesTableReferences
@@ -16686,17 +16677,16 @@ class $$StationProfilesTableTableManager
                                 table,
                                 p0,
                               ).activationsRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.stationProfileId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'station_profile_id',
                           typedResults: items,
                         ),
                       if (qsosRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           StationProfileRow,
                           $StationProfilesTable,
-                          QsoRow
+                          QsoRow,
+                          $QsosTable
                         >(
                           currentTable: table,
                           referencedTable: $$StationProfilesTableReferences
@@ -16707,10 +16697,8 @@ class $$StationProfilesTableTableManager
                                 table,
                                 p0,
                               ).qsosRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.stationProfileId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'station_profile_id',
                           typedResults: items,
                         ),
                     ];
@@ -17066,10 +17054,11 @@ class $$ContestDefinitionsTableTableManager
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (contestSessionsRefs)
-                    await $_getPrefetchedData<
+                    await $_getPrefetchedDataByColumns<
                       ContestDefinitionRow,
                       $ContestDefinitionsTable,
-                      ContestSessionRow
+                      ContestSessionRow,
+                      $ContestSessionsTable
                     >(
                       currentTable: table,
                       referencedTable: $$ContestDefinitionsTableReferences
@@ -17080,10 +17069,8 @@ class $$ContestDefinitionsTableTableManager
                             table,
                             p0,
                           ).contestSessionsRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where(
-                            (e) => e.definitionId == item.id,
-                          ),
+                      currentColumn: 'id',
+                      referencedColumn: 'definition_id',
                       typedResults: items,
                     ),
                 ];
@@ -18101,10 +18088,11 @@ class $$ContestSessionsTableTableManager
                   getPrefetchedDataCallback: (items) async {
                     return [
                       if (qsosRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           ContestSessionRow,
                           $ContestSessionsTable,
-                          QsoRow
+                          QsoRow,
+                          $QsosTable
                         >(
                           currentTable: table,
                           referencedTable: $$ContestSessionsTableReferences
@@ -18115,17 +18103,16 @@ class $$ContestSessionsTableTableManager
                                 table,
                                 p0,
                               ).qsosRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.contestSessionId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'contest_session_id',
                           typedResults: items,
                         ),
                       if (contestLinksRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           ContestSessionRow,
                           $ContestSessionsTable,
-                          ContestLinkRow
+                          ContestLinkRow,
+                          $ContestLinksTable
                         >(
                           currentTable: table,
                           referencedTable: $$ContestSessionsTableReferences
@@ -18136,17 +18123,16 @@ class $$ContestSessionsTableTableManager
                                 table,
                                 p0,
                               ).contestLinksRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.sessionId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'session_id',
                           typedResults: items,
                         ),
                       if (serialAllocationsRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           ContestSessionRow,
                           $ContestSessionsTable,
-                          SerialAllocationRow
+                          SerialAllocationRow,
+                          $SerialAllocationsTable
                         >(
                           currentTable: table,
                           referencedTable: $$ContestSessionsTableReferences
@@ -18157,10 +18143,8 @@ class $$ContestSessionsTableTableManager
                                 table,
                                 p0,
                               ).serialAllocationsRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.sessionId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'session_id',
                           typedResults: items,
                         ),
                     ];
@@ -18812,10 +18796,11 @@ class $$ActivationsTableTableManager
                   getPrefetchedDataCallback: (items) async {
                     return [
                       if (qsosRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           ActivationRow,
                           $ActivationsTable,
-                          QsoRow
+                          QsoRow,
+                          $QsosTable
                         >(
                           currentTable: table,
                           referencedTable: $$ActivationsTableReferences
@@ -18826,10 +18811,8 @@ class $$ActivationsTableTableManager
                                 table,
                                 p0,
                               ).qsosRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.activationId == item.id,
-                              ),
+                          currentColumn: 'id',
+                          referencedColumn: 'activation_id',
                           typedResults: items,
                         ),
                     ];
@@ -20698,27 +20681,27 @@ class $$QsosTableTableManager
                   getPrefetchedDataCallback: (items) async {
                     return [
                       if (qsoSyncRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           QsoRow,
                           $QsosTable,
-                          QsoSyncRow
+                          QsoSyncRow,
+                          $QsoSyncTable
                         >(
                           currentTable: table,
                           referencedTable: $$QsosTableReferences
                               ._qsoSyncRefsTable(db),
                           managerFromTypedResult: (p0) =>
                               $$QsosTableReferences(db, table, p0).qsoSyncRefs,
-                          referencedItemsForCurrentItem: (
-                            item,
-                            referencedItems,
-                          ) => referencedItems.where((e) => e.qsoId == item.id),
+                          currentColumn: 'id',
+                          referencedColumn: 'qso_id',
                           typedResults: items,
                         ),
                       if (contestLinksRefs)
-                        await $_getPrefetchedData<
+                        await $_getPrefetchedDataByColumns<
                           QsoRow,
                           $QsosTable,
-                          ContestLinkRow
+                          ContestLinkRow,
+                          $ContestLinksTable
                         >(
                           currentTable: table,
                           referencedTable: $$QsosTableReferences
@@ -20728,10 +20711,8 @@ class $$QsosTableTableManager
                             table,
                             p0,
                           ).contestLinksRefs,
-                          referencedItemsForCurrentItem: (
-                            item,
-                            referencedItems,
-                          ) => referencedItems.where((e) => e.qsoId == item.id),
+                          currentColumn: 'id',
+                          referencedColumn: 'qso_id',
                           typedResults: items,
                         ),
                     ];
@@ -23128,10 +23109,11 @@ class $$DxccEntitiesTableTableManager
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (dxccPrefixesRefs)
-                    await $_getPrefetchedData<
+                    await $_getPrefetchedDataByColumns<
                       DxccEntityRow,
                       $DxccEntitiesTable,
-                      DxccPrefixRow
+                      DxccPrefixRow,
+                      $DxccPrefixesTable
                     >(
                       currentTable: table,
                       referencedTable: $$DxccEntitiesTableReferences
@@ -23142,8 +23124,8 @@ class $$DxccEntitiesTableTableManager
                             table,
                             p0,
                           ).dxccPrefixesRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.dxcc == item.dxcc),
+                      currentColumn: 'dxcc',
+                      referencedColumn: 'dxcc',
                       typedResults: items,
                     ),
                 ];
@@ -25602,10 +25584,11 @@ class $$DevicesTableTableManager
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (peerCursorsRefs)
-                    await $_getPrefetchedData<
+                    await $_getPrefetchedDataByColumns<
                       DeviceRow,
                       $DevicesTable,
-                      PeerCursorRow
+                      PeerCursorRow,
+                      $PeerCursorsTable
                     >(
                       currentTable: table,
                       referencedTable: $$DevicesTableReferences
@@ -25615,8 +25598,8 @@ class $$DevicesTableTableManager
                         table,
                         p0,
                       ).peerCursorsRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.deviceId == item.id),
+                      currentColumn: 'id',
+                      referencedColumn: 'device_id',
                       typedResults: items,
                     ),
                 ];

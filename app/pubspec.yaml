@@ -10,8 +10,8 @@ resolution: workspace
 
 dependencies:
   connectivity_plus: ^7.3.2
-  crypto: ^3.0.7
-  file_picker: ^13.1.0
+  crypto: ^3.0.8
+  file_picker: ^13.3.0
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -29,7 +29,7 @@ dependencies:
     path: ../packages/tideline_data
   tideline_domain:
     path: ../packages/tideline_domain
-  wakelock_plus: ^1.8.1
+  wakelock_plus: ^1.8.2
   wavelog_client:
     path: ../packages/wavelog_client
   # Serves the in-app demo account without a network (ADR 0031).
