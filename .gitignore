@@ -32,3 +32,4 @@ app/macos/Runner/Configs/Signing.local.xcconfig
 # Generated on demand by tool/store_screenshots.py
 /docs/release/screenshots/
 __pycache__/
+/docs/release/previews/
