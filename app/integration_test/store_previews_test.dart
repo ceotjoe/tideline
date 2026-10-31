@@ -150,6 +150,7 @@ void main() {
       // Recorded: the start of the activation itself.
     }
 
+    // The recording script watches stdout for this marker.
     // ignore: avoid_print
     print('PREVIEW_START');
     await pumpFor(tester, const Duration(seconds: 1));
@@ -169,13 +170,13 @@ void main() {
           '1507 ON4ABC 599 599 @Luc\n',
         ];
         final field = find.byType(TextField).first;
-        var typed = '';
+        final typed = StringBuffer();
         for (final line in lines) {
           for (var i = 1; i <= line.length; i++) {
-            await tester.enterText(field, typed + line.substring(0, i));
+            await tester.enterText(field, '$typed${line.substring(0, i)}');
             await pumpFor(tester, const Duration(milliseconds: 35));
           }
-          typed += line;
+          typed.write(line);
           await pumpFor(tester, const Duration(milliseconds: 500));
         }
         await pumpFor(tester, const Duration(milliseconds: 600));
@@ -229,6 +230,7 @@ void main() {
         throw TestFailure('Unknown PREVIEW "$_scene"');
     }
 
+    // The recording script watches stdout for this marker.
     // ignore: avoid_print
     print('PREVIEW_END');
     await pumpFor(tester, const Duration(milliseconds: 500));
