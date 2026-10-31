@@ -47,7 +47,9 @@ Future<void> pumpUntil(
       .evaluate()
       .map((e) => (e.widget as Text).data)
       .whereType<String>();
-  throw TestFailure('Timed out waiting for $finder. Texts: ${texts.join(' | ')}');
+  throw TestFailure(
+    'Timed out waiting for $finder. Texts: ${texts.join(' | ')}',
+  );
 }
 
 /// Types [text] into [field] one character at a time, like a person.
