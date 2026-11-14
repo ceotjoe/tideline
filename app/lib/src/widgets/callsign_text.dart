@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 
 /// A callsign that screen readers read letter by letter ("D O 1 H O Z")

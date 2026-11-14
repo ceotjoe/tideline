@@ -9,12 +9,12 @@
 //   flutter test integration_test/store_screenshots_test.dart -d <device> \
 //     --dart-define=STORE_LOCALE=de --dart-define=STORE_SHOT_WAIT_MS=0
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/main.dart' as app;
 import 'package:tideline/src/features/onboarding/onboarding_screen.dart';

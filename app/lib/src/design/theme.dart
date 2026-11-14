@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tideline/src/design/tokens/color_tokens.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 

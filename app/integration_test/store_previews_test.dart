@@ -9,12 +9,12 @@
 //
 // PREVIEW is one of: log (Fast Log Entry and sync), contest, activation.
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/main.dart' as app;
 import 'package:tideline/src/features/contest/contest_entry_panel.dart';

@@ -65,7 +65,6 @@ class SyncScheduler {
 
   /// Tells the scheduler whether the app is in the foreground. Leaving it
   /// drops the retry; the resume trigger covers the way back.
-  // ignore: avoid_positional_boolean_parameters
   void setForeground(bool value) {
     _foreground = value;
     if (!value) cancelRetry();

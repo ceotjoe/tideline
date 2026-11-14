@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/design/theme.dart';
 import 'package:tideline/src/services/app_services.dart';
@@ -56,25 +56,24 @@ class WorkedBeforeSection extends ConsumerWidget {
 
     // Progress: a modal dialog that cannot be dismissed while the index is
     // being rebuilt, with a live-region label for screen readers.
-    unawaited(
-      showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => PopScope(
-          canPop: false,
-          child: AlertDialog(
-            content: Semantics(
-              liveRegion: true,
-              child: Row(
-                children: [
-                  const SizedBox.square(
-                    dimension: 28,
-                    child: CircularProgressIndicator(),
-                  ),
-                  SizedBox(width: context.metrics.md),
-                  Expanded(child: Text(l10n.rebuildWorkedBeforeProgress)),
-                ],
-              ),
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          content: Semantics(
+            liveRegion: true,
+            child: Row(
+              children: [
+                const SizedBox.square(
+                  dimension: 28,
+                  child: CircularProgressIndicator(),
+                ),
+                SizedBox(width: context.metrics.md),
+                Expanded(child: Text(l10n.rebuildWorkedBeforeProgress)),
+              ],
             ),
           ),
         ),

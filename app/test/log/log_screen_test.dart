@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tideline/src/features/log/qso_detail.dart';
 import 'package:tideline/src/settings/app_settings.dart';
 import 'package:tideline_data/tideline_data.dart';

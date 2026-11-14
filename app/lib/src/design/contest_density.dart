@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tideline/src/design/tokens/metrics.dart';
 
 /// Gives [child] the dense variant of the Low Tide tokens (contest mode).

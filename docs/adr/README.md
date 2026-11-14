@@ -36,5 +36,6 @@
 - [0033](0033-request-economy.md) Request economy: cached refresh, debounced triggers, rate-limit retry
 - [0034](0034-remove-app-level-encryption.md) Remove app-level encryption (DB and backups) to avoid export-compliance declarations
 - [0035](0035-refresh-changed-qso-from-wavelog.md) Refresh a QSO that was changed in Wavelog
+- [0036](0036-adopt-material-ui-packages.md) Import the design library from material_ui and cupertino_ui
 
 New ADRs start from [0000-template.md](0000-template.md).

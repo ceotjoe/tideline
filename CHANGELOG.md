@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Built with Flutter 3.50.0: the app imports `material_ui` and `cupertino_ui` instead of the deprecated Material
+  and Cupertino libraries in the Flutter SDK (ADR 0036). No change for users.
+
 ## [1.0.0] - 2026-10-25
 
 First stable release. No code changes since 0.7.1: the hand tests listed in `docs/testing/README.md` (data safety,

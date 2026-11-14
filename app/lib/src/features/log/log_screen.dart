@@ -1,8 +1,6 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/commands/command_handlers.dart';
 import 'package:tideline/src/commands/command_registry.dart';
@@ -45,18 +43,17 @@ class _LogScreenState extends ConsumerState<LogScreen>
   void _open(BuildContext context, String id) {
     if (SizeClass.of(context) != SizeClass.compact) {
       // Tablets show the details over the log, so the entry form stays put.
-      unawaited(
-        showModalBottomSheet<void>(
-          context: context,
-          isScrollControlled: true,
-          showDragHandle: true,
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.sizeOf(context).height * 0.8,
-            maxWidth: 640,
-          ),
-          builder: (context) =>
-              QsoDetail(qsoId: id, onClosed: () => Navigator.of(context).pop()),
+
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+          maxWidth: 640,
         ),
+        builder: (context) =>
+            QsoDetail(qsoId: id, onClosed: () => Navigator.of(context).pop()),
       );
       return;
     }

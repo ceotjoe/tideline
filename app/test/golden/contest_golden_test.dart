@@ -1,11 +1,11 @@
 @Tags(['golden'])
 library;
 
+import 'package:flutter_test/flutter_test.dart';
 // Tests favour readable steps over cascades and tear-offs.
 // ignore_for_file: cascade_invocations
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tideline_domain/tideline_domain.dart';
 
 import '../contest/contest_harness.dart';

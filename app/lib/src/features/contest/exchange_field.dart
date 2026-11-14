@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tideline/l10n/generated/app_localizations.dart';
 import 'package:tideline/src/features/contest/contest_labels.dart';
 import 'package:tideline/src/widgets/upper_case_formatter.dart';
