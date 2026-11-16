@@ -7,9 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-16
+
+Maintenance release. No change in behaviour for users.
+
 ### Changed
 - Built with Flutter 3.50.0: the app imports `material_ui` and `cupertino_ui` instead of the deprecated Material
   and Cupertino libraries in the Flutter SDK (ADR 0036). No change for users.
+- Android: Android Gradle Plugin 9.1.1.
+- Dependency updates: `file_picker`, the Dart minor and patch group, and the Android Gradle build; GitHub Actions
+  `setup-java` 6.2.0.
+- Release tooling: `tool/store_previews.py` records Mac App Store app previews. Not part of the app.
 
 ## [1.0.0] - 2026-10-25
 
