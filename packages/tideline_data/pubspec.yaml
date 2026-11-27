@@ -11,7 +11,7 @@ dependencies:
   crypto: ^3.0.8
   drift: ^2.35.3
   meta: ^1.19.0
-  sqlite3: ^3.8.0
+  sqlite3: ^3.9.2
   tideline_adif: any
   tideline_domain: any
   wavelog_client: any
